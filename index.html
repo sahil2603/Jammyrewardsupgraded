@@ -495,30 +495,99 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   .grid3{grid-template-columns:1fr 1fr}.tiers{grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:820px){
+  /* NAV */
   .nav-links,.socials{display:none}.burger{display:block}
   nav.nav-open .nav-links{display:flex;flex-direction:column;gap:4px;
-    position:absolute;top:100%;left:0;right:0;
+    position:absolute;top:100%;left:0;right:0;z-index:100;
     background:rgba(9,6,15,.97);backdrop-filter:blur(16px);
     border-bottom:1px solid var(--line);padding:10px 18px 16px;margin:0}
   nav.nav-open .nav-links a{padding:13px 12px;font-size:1.02rem;border-radius:10px}
   .sidetabs{display:none}
-  .grid3,.grid2,.tiers,.lb2-podium{grid-template-columns:1fr}
-  .podium{grid-template-columns:1fr}
   .login{font-size:.78rem;padding:8px 12px;gap:5px}
   .login svg{display:none}
   .brand{font-size:.95rem}
   .notlive{display:none}
   .nav-in{gap:10px}
-  .wordmark{font-size:clamp(2.2rem,10vw,3rem)}
+
+  /* HERO */
+  .wordmark{font-size:clamp(2rem,10vw,2.8rem)}
   .hero{padding:22px 0 36px}
   .skew{min-width:unset;width:100%}
   .hero-cta{flex-direction:column;align-items:center;gap:10px}
-  .wl-chips{grid-template-columns:1fr 1fr}
+
+  /* GRIDS */
+  .grid3,.grid2,.tiers{grid-template-columns:1fr}
+  .podium{grid-template-columns:1fr}
   .vp-grid{grid-template-columns:1fr}
-  .vault-wrap{grid-template-columns:1fr}
-  .vault-mascot{display:none}
   .vpg4{grid-template-columns:1fr 1fr}
   .vp-mid{grid-template-columns:1fr}
+
+  /* VAULT HOME — stack, hide mascot */
+  .vault-wrap{grid-template-columns:1fr;gap:16px}
+  .vault-mascot{display:none}
+  .vault-right{padding:0}
+
+  /* VAULT PAGE */
+  .vp-main-grid{grid-template-columns:1fr;gap:20px}
+  .vp-mascot-panel{display:none}
+  .vp-mini-row{grid-template-columns:1fr 1fr}
+
+  /* LOBBY */
+  .lobby-stats{flex-wrap:wrap;padding:20px 16px}
+  .lstat{min-width:45%;padding:10px 12px}
+  .lstat-div{display:none}
+  .lobby-grid{grid-template-columns:1fr}
+
+  /* LEADERBOARD — horizontal scroll for podium */
+  .lb2-podium{
+    display:flex;flex-direction:row;
+    overflow-x:auto;gap:12px;
+    padding-bottom:12px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .lb2-podium::-webkit-scrollbar{display:none}
+  .lb2-pod{min-width:200px;flex:none}
+
+  /* LIVE PLAYERS */
+  .vpp-col-head{display:none}
+  .vpp-row{grid-template-columns:48px 1fr auto;gap:10px;padding:14px 16px}
+  .vpp-wager{display:none}
+  .vpp-right-col{display:none}
+  .vpp-info .vpp-links{display:none}
+  .vpp-head{padding:16px}
+  .vpp-tabs{padding:0 12px;overflow-x:auto;flex-wrap:nowrap}
+  .vpp-tab{white-space:nowrap}
+
+  /* WATCH LIVE */
+  .wl-chips{grid-template-columns:1fr 1fr}
+
+  /* PARTNER CARDS */
+  .vp-grid{gap:16px}
+
+  /* FOOTER */
+  .foot-in{grid-template-columns:1fr 1fr;gap:24px}
+
+  /* REVIEWS */
+  .reviews-grid{grid-template-columns:1fr}
+
+  /* BONUS */
+  .grid2{grid-template-columns:1fr}
+
+  /* WRAP padding on very small */
+  .wrap{width:min(1180px,95vw)}
+}
+
+@media(max-width:480px){
+  .vpg4{grid-template-columns:1fr}
+  .vp-mini-row{grid-template-columns:1fr}
+  .lc-body h3{font-size:1.1rem}
+  .vault-balance{font-size:2rem}
+  .wordmark{font-size:clamp(1.8rem,9vw,2.4rem)}
+  .foot-in{grid-template-columns:1fr}
+  .hero-pill{font-size:.65rem}
+  .lb2-pod{min-width:160px}
+  .lbt{min-width:100px;padding:10px 14px}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
 /* ===== LEADERBOARD v2 ===== */
