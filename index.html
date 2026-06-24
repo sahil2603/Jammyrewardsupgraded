@@ -1048,79 +1048,77 @@ nav{border-bottom:1px solid transparent!important;
 }
 
 /* rows */
-.vpp-list{padding:0}
+/* ── PLAYER CARDS — like jammmyslots.com/community-vault ── */
+.vpp-list{padding:0;display:flex;flex-direction:column;gap:0}
 .vpp-row{
-  display:grid;grid-template-columns:60px 1fr 110px 1fr;
-  gap:14px;align-items:center;
-  padding:16px 26px;
-  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:16px;
+  padding:18px 26px;
+  border-bottom:1px solid rgba(255,255,255,.06);
   transition:.22s;position:relative;
 }
 .vpp-row:last-child{border-bottom:0}
-.vpp-row:hover{background:rgba(255,255,255,.03)}
-.vpp-row.rank1{
-  background:linear-gradient(90deg,rgba(251,191,36,.06) 0%,transparent 60%);
-}
-.vpp-row.rank1:hover{background:linear-gradient(90deg,rgba(251,191,36,.1) 0%,rgba(255,255,255,.02) 60%)}
+.vpp-row:hover{background:rgba(255,255,255,.025)}
+.vpp-row.rank1{background:linear-gradient(90deg,rgba(251,191,36,.05),transparent 60%)}
+.vpp-row.rank1:hover{background:linear-gradient(90deg,rgba(251,191,36,.09),transparent 60%)}
 
-/* rank badge */
-.vpp-rank-wrap{display:flex;align-items:center;justify-content:center}
-.vpp-rank{
-  width:36px;height:36px;border-radius:10px;
-  display:grid;place-items:center;
-  font-family:'Lilita One','Arial Black',sans-serif;font-size:1rem;
-  background:rgba(255,255,255,.06);border:1px solid var(--line);
-  color:var(--faint);
-}
-.vpp-rank.gold{
-  background:linear-gradient(135deg,rgba(251,191,36,.25),rgba(251,191,36,.08));
-  border-color:rgba(251,191,36,.4);color:var(--neon-gold);
-  box-shadow:0 0 16px rgba(251,191,36,.2);
-}
-.vpp-rank.silver{
-  background:linear-gradient(135deg,rgba(148,163,184,.2),rgba(148,163,184,.06));
-  border-color:rgba(148,163,184,.35);color:#94a3b8;
-}
-.vpp-rank.bronze{
-  background:linear-gradient(135deg,rgba(180,120,60,.2),rgba(180,120,60,.06));
-  border-color:rgba(180,120,60,.35);color:#b4783c;
-}
-
-/* player info with avatar */
-.vpp-info{display:flex;align-items:center;gap:12px}
+/* avatar — circular like real site */
 .vpp-avatar{
-  width:36px;height:36px;border-radius:10px;flex:none;
+  width:48px;height:48px;border-radius:50%;flex:none;
   display:grid;place-items:center;
-  font-family:'Lilita One','Arial Black',sans-serif;font-size:.9rem;
-  color:#fff;text-transform:uppercase;
+  font-family:'Lilita One','Arial Black',sans-serif;font-size:1.1rem;
+  color:#fff;text-transform:uppercase;font-weight:700;
   background:linear-gradient(135deg,var(--av-a,#a855f7),var(--av-b,#22d3ee));
+  border:2px solid rgba(255,255,255,.12);
+  box-shadow:0 4px 12px rgba(0,0,0,.4);
 }
-.vpp-names b{display:block;font-weight:600;font-size:.95rem;color:#fff}
-.vpp-names span{color:var(--faint);font-size:.78rem;margin-top:1px;display:block}
+.vpp-rank-wrap{display:none} /* rank is now inside the info block */
 
-/* wager */
-.vpp-wager{
+/* main info block — takes all available space */
+.vpp-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.vpp-info b{font-size:1rem;font-weight:700;color:#fff;display:block}
+.vpp-info .vpp-meta{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  font-size:.8rem;color:var(--muted);
+}
+.vpp-rank-badge{
+  font-size:.72rem;font-weight:700;padding:2px 7px;border-radius:99px;
+  background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);
+}
+.vpp-rank-badge.gold{background:rgba(251,191,6,.15);color:var(--neon-gold)}
+.vpp-rank-badge.silver{background:rgba(148,163,184,.15);color:#94a3b8}
+.vpp-rank-badge.bronze{background:rgba(180,120,60,.15);color:#b4783c}
+.vpp-dot{color:rgba(255,255,255,.25);font-size:.6rem}
+.vpp-info .vpp-links{
+  display:flex;flex-direction:column;gap:2px;
+  font-size:.78rem;color:var(--muted);margin-top:3px;
+}
+.vpp-info .vpp-links span{color:rgba(255,255,255,.85)}
+
+/* right side — pct + dollar */
+.vpp-right-col{
+  display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex:none;
+}
+.vpp-pct-big{
   font-family:'Lilita One','Arial Black',sans-serif;
-  color:var(--neon-gold);font-size:1.05rem;
-  white-space:nowrap;text-align:right;
-  text-shadow:0 0 14px rgba(251,191,36,.3);
+  font-size:1rem;color:var(--neon-green);font-weight:700;
+  text-shadow:0 0 10px rgba(74,222,128,.3);
+}
+.vpp-dollar{font-size:.85rem;color:var(--muted);font-weight:600}
+
+/* platform badge bottom-left like real site */
+.vpp-platform{
+  position:absolute;bottom:14px;left:90px;
+  font-size:.7rem;font-weight:700;letter-spacing:.05em;
+  color:rgba(255,255,255,.4);
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  padding:2px 8px;border-radius:4px;
 }
 
-/* share column */
-.vpp-share{display:flex;flex-direction:column;gap:7px}
-.vpp-pct-bar{
-  height:7px;background:rgba(255,255,255,.07);
-  border-radius:99px;overflow:hidden;
+@media(max-width:860px){
+  .vpp-row{padding:14px 16px}
+  .vpp-info .vpp-links{display:none}
+  .vpp-platform{display:none}
 }
-.vpp-pct-bar div{
-  height:100%;border-radius:99px;
-  background:linear-gradient(90deg,var(--neon-purple),var(--neon-cyan));
-  transition:width 1.4s cubic-bezier(.4,0,.2,1);
-  box-shadow:0 0 8px rgba(168,85,247,.4);
-}
-.vpp-share-meta{display:flex;justify-content:space-between;align-items:center}
-.vpp-share-pct{font-size:.78rem;color:var(--muted)}
-.vpp-share-val{font-size:.82rem;color:var(--neon-green);font-weight:600}
 
 @media(max-width:860px){
   .vpg4{grid-template-columns:1fr 1fr}
@@ -1729,81 +1727,129 @@ nav{border-bottom:1px solid transparent!important;
         <div id="vaultPlayers" class="vpp-list">
 
           <div class="vpp-row rank1">
-            <div class="vpp-rank-wrap"><span class="vpp-rank gold">1</span></div>
+            <div class="vpp-avatar" style="--av-a:#f59e0b;--av-b:#ef4444">H</div>
             <div class="vpp-info">
-              <div class="vpp-avatar" style="--av-a:#f59e0b;--av-b:#ef4444">H</div>
-              <div class="vpp-names"><b>hyerslp</b><span>hyers</span></div>
+              <b>hyerslp</b>
+              <div class="vpp-meta">
+                <span class="vpp-rank-badge gold">#1</span>
+                <span class="vpp-dot">•</span>
+                <span>$14,303 wagered</span>
+              </div>
+              <div class="vpp-links">
+                <span>Upgrader: <span>Hyers</span> · $14,303</span>
+                <span>Kick: <span>@Hyerslp</span></span>
+              </div>
             </div>
-            <div class="vpp-wager">$14,303</div>
-            <div class="vpp-share">
-              <div class="vpp-pct-bar"><div style="width:82.4%"></div></div>
-              <div class="vpp-share-meta"><span class="vpp-share-pct">82.42%</span><span class="vpp-share-val">$659</span></div>
+            <div class="vpp-right-col">
+              <div class="vpp-pct-big">82.42%</div>
+              <div class="vpp-dollar">$659</div>
             </div>
+            <div class="vpp-platform">Upgrader</div>
           </div>
 
           <div class="vpp-row">
-            <div class="vpp-rank-wrap"><span class="vpp-rank silver">2</span></div>
+            <div class="vpp-avatar" style="--av-a:#a855f7;--av-b:#5b8def">G</div>
             <div class="vpp-info">
-              <div class="vpp-avatar" style="--av-a:#a855f7;--av-b:#5b8def">G</div>
-              <div class="vpp-names"><b>goaties_boy</b><span>Goaties_Boy</span></div>
+              <b>goaties_boy</b>
+              <div class="vpp-meta">
+                <span class="vpp-rank-badge silver">#2</span>
+                <span class="vpp-dot">•</span>
+                <span>$1,620 wagered</span>
+              </div>
+              <div class="vpp-links">
+                <span>Upgrader: <span>Goaties</span> · $1,620</span>
+                <span>Kick: <span>@Goatie_Boy</span></span>
+              </div>
             </div>
-            <div class="vpp-wager">$1,620</div>
-            <div class="vpp-share">
-              <div class="vpp-pct-bar"><div style="width:9.33%"></div></div>
-              <div class="vpp-share-meta"><span class="vpp-share-pct">9.33%</span><span class="vpp-share-val">$75</span></div>
+            <div class="vpp-right-col">
+              <div class="vpp-pct-big">9.38%</div>
+              <div class="vpp-dollar">$75</div>
             </div>
+            <div class="vpp-platform">Upgrader</div>
           </div>
 
           <div class="vpp-row">
-            <div class="vpp-rank-wrap"><span class="vpp-rank bronze">3</span></div>
+            <div class="vpp-avatar" style="--av-a:#22d3ee;--av-b:#3ddc84">L</div>
             <div class="vpp-info">
-              <div class="vpp-avatar" style="--av-a:#22d3ee;--av-b:#3ddc84">L</div>
-              <div class="vpp-names"><b>lexbra_</b><span>Pineapplexp</span></div>
+              <b>lexbra_</b>
+              <div class="vpp-meta">
+                <span class="vpp-rank-badge bronze">#3</span>
+                <span class="vpp-dot">•</span>
+                <span>$636 wagered</span>
+              </div>
+              <div class="vpp-links">
+                <span>Upgrader: <span>Nunoz</span> · $636</span>
+                <span>Kick: <span>@Pineapplexp</span></span>
+              </div>
             </div>
-            <div class="vpp-wager">$636</div>
-            <div class="vpp-share">
-              <div class="vpp-pct-bar"><div style="width:3.67%"></div></div>
-              <div class="vpp-share-meta"><span class="vpp-share-pct">3.67%</span><span class="vpp-share-val">$29</span></div>
+            <div class="vpp-right-col">
+              <div class="vpp-pct-big">3.67%</div>
+              <div class="vpp-dollar">$29</div>
             </div>
+            <div class="vpp-platform">Upgrader</div>
           </div>
 
           <div class="vpp-row">
-            <div class="vpp-rank-wrap"><span class="vpp-rank">4</span></div>
+            <div class="vpp-avatar" style="--av-a:#f472b6;--av-b:#a855f7">F</div>
             <div class="vpp-info">
-              <div class="vpp-avatar" style="--av-a:#f472b6;--av-b:#a855f7">F</div>
-              <div class="vpp-names"><b>.frowenn</b><span>batu.rky</span></div>
+              <b>.frowenn</b>
+              <div class="vpp-meta">
+                <span class="vpp-rank-badge">#4</span>
+                <span class="vpp-dot">•</span>
+                <span>$586 wagered</span>
+              </div>
+              <div class="vpp-links">
+                <span>Upgrader: <span>Nunoz</span> · $586</span>
+                <span>Kick: <span>@baturky</span></span>
+              </div>
             </div>
-            <div class="vpp-wager">$586</div>
-            <div class="vpp-share">
-              <div class="vpp-pct-bar"><div style="width:3.37%"></div></div>
-              <div class="vpp-share-meta"><span class="vpp-share-pct">3.37%</span><span class="vpp-share-val">$27</span></div>
+            <div class="vpp-right-col">
+              <div class="vpp-pct-big">3.37%</div>
+              <div class="vpp-dollar">$27</div>
             </div>
+            <div class="vpp-platform">Upgrader</div>
           </div>
 
           <div class="vpp-row">
-            <div class="vpp-rank-wrap"><span class="vpp-rank">5</span></div>
+            <div class="vpp-avatar" style="--av-a:#34d399;--av-b:#22d3ee">R</div>
             <div class="vpp-info">
-              <div class="vpp-avatar" style="--av-a:#34d399;--av-b:#22d3ee">R</div>
-              <div class="vpp-names"><b>ryuxformylove</b><span>RYU</span></div>
+              <b>ryuxformylove</b>
+              <div class="vpp-meta">
+                <span class="vpp-rank-badge">#5</span>
+                <span class="vpp-dot">•</span>
+                <span>$204 wagered</span>
+              </div>
+              <div class="vpp-links">
+                <span>Upgrader: <span>RYU</span> · $204</span>
+                <span>Kick: <span>@ryuxformylove</span></span>
+              </div>
             </div>
-            <div class="vpp-wager">$204</div>
-            <div class="vpp-share">
-              <div class="vpp-pct-bar"><div style="width:1.18%"></div></div>
-              <div class="vpp-share-meta"><span class="vpp-share-pct">1.18%</span><span class="vpp-share-val">$9</span></div>
+            <div class="vpp-right-col">
+              <div class="vpp-pct-big">1.18%</div>
+              <div class="vpp-dollar">$9</div>
             </div>
+            <div class="vpp-platform">Upgrader</div>
           </div>
 
           <div class="vpp-row">
-            <div class="vpp-rank-wrap"><span class="vpp-rank">6</span></div>
+            <div class="vpp-avatar" style="--av-a:#64748b;--av-b:#475569">K</div>
             <div class="vpp-info">
-              <div class="vpp-avatar" style="--av-a:#64748b;--av-b:#475569">K</div>
-              <div class="vpp-names"><b>kgblack.</b><span>KGBLACK</span></div>
+              <b>kgblack.</b>
+              <div class="vpp-meta">
+                <span class="vpp-rank-badge">#6</span>
+                <span class="vpp-dot">•</span>
+                <span>$5 wagered</span>
+              </div>
+              <div class="vpp-links">
+                <span>Upgrader: <span>KGBLACK</span> · $5</span>
+                <span>Kick: <span>@kgblack</span></span>
+              </div>
             </div>
-            <div class="vpp-wager">$5</div>
-            <div class="vpp-share">
-              <div class="vpp-pct-bar"><div style="width:.03%"></div></div>
-              <div class="vpp-share-meta"><span class="vpp-share-pct">0.03%</span><span class="vpp-share-val">$0</span></div>
+            <div class="vpp-right-col">
+              <div class="vpp-pct-big">0.03%</div>
+              <div class="vpp-dollar">$0</div>
             </div>
+            <div class="vpp-platform">Upgrader</div>
           </div>
 
         </div>
