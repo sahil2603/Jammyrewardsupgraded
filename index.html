@@ -1084,7 +1084,7 @@ nav{border-bottom:1px solid transparent!important;
   display:flex;flex-direction:column;gap:2px;
   font-size:.78rem;color:var(--muted);margin-top:3px;
 }
-.vpp-info .vpp-links span{color:rgba(255,255,255,.85)}
+.vpp-info .vpp-links span{color:rgba(255,255,255,.85);text-decoration:none}
 
 /* right side — pct + dollar */
 .vpp-right-col{
@@ -1107,25 +1107,15 @@ nav{border-bottom:1px solid transparent!important;
 }
 
 @media(max-width:860px){
-  .vpp-row{padding:14px 16px}
+  .vpp-col-head{display:none}
+  .vpp-row{grid-template-columns:48px 1fr auto;gap:12px;padding:14px 16px}
+  .vpp-wager{display:none}
+  .vpp-right-col{display:none}
   .vpp-info .vpp-links{display:none}
   .vpp-platform{display:none}
-}
-
-@media(max-width:860px){
   .vpg4{grid-template-columns:1fr 1fr}
-  .vp-mid{grid-template-columns:1fr}
-  .vp-detail-grid{grid-template-columns:1fr}
-  .vpp-row,.vpp-col-head{grid-template-columns:48px 1fr auto}
-  .vpp-share{display:none}
   .vpp-tabs{padding:0 14px}
-  .vpp-head,.vpp-row{padding-left:16px;padding-right:16px}
-}
-
-
-
-
-
+  .vpp-head{padding-left:16px;padding-right:16px}
 }
 
 
@@ -1745,11 +1735,11 @@ nav{border-bottom:1px solid transparent!important;
                 <span>Kick: <span>@Hyerslp</span></span>
               </div>
             </div>
+            <div class="vpp-wager">$14,303</div>
             <div class="vpp-right-col">
               <div class="vpp-pct-big">82.42%</div>
               <div class="vpp-dollar">$659</div>
             </div>
-            <div class="vpp-platform">Upgrader</div>
           </div>
 
           <div class="vpp-row">
@@ -1766,11 +1756,11 @@ nav{border-bottom:1px solid transparent!important;
                 <span>Kick: <span>@Goatie_Boy</span></span>
               </div>
             </div>
+            <div class="vpp-wager">$1,620</div>
             <div class="vpp-right-col">
               <div class="vpp-pct-big">9.38%</div>
               <div class="vpp-dollar">$75</div>
             </div>
-            <div class="vpp-platform">Upgrader</div>
           </div>
 
           <div class="vpp-row">
@@ -1787,11 +1777,11 @@ nav{border-bottom:1px solid transparent!important;
                 <span>Kick: <span>@Pineapplexp</span></span>
               </div>
             </div>
+            <div class="vpp-wager">$636</div>
             <div class="vpp-right-col">
               <div class="vpp-pct-big">3.67%</div>
               <div class="vpp-dollar">$29</div>
             </div>
-            <div class="vpp-platform">Upgrader</div>
           </div>
 
           <div class="vpp-row">
@@ -1808,11 +1798,11 @@ nav{border-bottom:1px solid transparent!important;
                 <span>Kick: <span>@baturky</span></span>
               </div>
             </div>
+            <div class="vpp-wager">$586</div>
             <div class="vpp-right-col">
               <div class="vpp-pct-big">3.37%</div>
               <div class="vpp-dollar">$27</div>
             </div>
-            <div class="vpp-platform">Upgrader</div>
           </div>
 
           <div class="vpp-row">
@@ -1829,11 +1819,11 @@ nav{border-bottom:1px solid transparent!important;
                 <span>Kick: <span>@ryuxformylove</span></span>
               </div>
             </div>
+            <div class="vpp-wager">$204</div>
             <div class="vpp-right-col">
               <div class="vpp-pct-big">1.18%</div>
               <div class="vpp-dollar">$9</div>
             </div>
-            <div class="vpp-platform">Upgrader</div>
           </div>
 
           <div class="vpp-row">
@@ -1850,11 +1840,11 @@ nav{border-bottom:1px solid transparent!important;
                 <span>Kick: <span>@kgblack</span></span>
               </div>
             </div>
+            <div class="vpp-wager">$5</div>
             <div class="vpp-right-col">
               <div class="vpp-pct-big">0.03%</div>
               <div class="vpp-dollar">$0</div>
             </div>
-            <div class="vpp-platform">Upgrader</div>
           </div>
 
         </div>
