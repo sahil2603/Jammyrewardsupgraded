@@ -333,33 +333,24 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(16px);
 /* coins spill from the jar — created & animated in JS (Web Animations API) */
 
 
-/* ── VAULT HOME — title+mascot LEFT, data RIGHT ── */
+
+
+/* ── VAULT HOME — floats freely on background, no card ── */
 .vault-wrap{
-  display:grid;grid-template-columns:320px 1fr;gap:0;
-  margin:28px 0;border-radius:20px;overflow:hidden;
-  border:1px solid rgba(168,85,247,.2);
-  box-shadow:0 20px 60px -20px rgba(0,0,0,.7);
+  display:grid;grid-template-columns:300px 1fr;gap:60px;
+  margin:28px 0;align-items:center;
 }
-.vault-left{
-  background:#0e0b1a;
-  padding:36px 30px;
-  display:flex;flex-direction:column;justify-content:space-between;
-}
-.vault-right{
-  background:#0b0916;
-  border-left:1px solid rgba(255,255,255,.06);
-  padding:36px 36px;
-}
+.vault-left{display:flex;flex-direction:column;align-items:flex-start}
+.vault-right{padding:0}
 .vault-mascot{
-  width:clamp(110px,13vw,170px);display:block;
+  width:clamp(150px,16vw,220px);display:block;
   animation:bob 4s ease-in-out infinite;
-  filter:drop-shadow(0 12px 28px rgba(168,85,247,.35));
+  filter:drop-shadow(0 16px 40px rgba(168,85,247,.4));
   cursor:pointer;margin-top:20px;
 }
 @media(max-width:860px){
-  .vault-wrap{grid-template-columns:1fr}
-  .vault-right{border-left:0;border-top:1px solid rgba(255,255,255,.06)}
-  .vault-mascot{width:100px;margin-top:14px}
+  .vault-wrap{grid-template-columns:1fr;gap:24px}
+  .vault-mascot{width:140px}
 }
 .vault-tag{font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(192,132,252,.7);display:flex;align-items:center;gap:6px;margin-bottom:8px}
 .vault-title{font-family:'Lilita One','Arial Black',sans-serif;font-size:clamp(1.7rem,3.5vw,2.4rem);letter-spacing:1px;line-height:1;margin-bottom:6px}
@@ -1315,7 +1306,7 @@ nav{border-bottom:1px solid transparent!important;
         <img src="https://www.jammmyslots.com/jammyslots-mascot.png" alt="Jammmy mascot" class="vault-mascot" onclick="openVaultModal()">
       </div>
 
-      <!-- RIGHT: live balance + bar + stats -->
+      <!-- RIGHT: live balance + bar + mini cards + buttons — floating freely -->
       <div class="vault-right">
         <div class="vault-balance-label">CURRENT BALANCE</div>
         <div class="vault-balance display" data-count="800" data-prefix="$" onclick="openVaultModal()" style="cursor:pointer">$0</div>
@@ -1324,14 +1315,20 @@ nav{border-bottom:1px solid transparent!important;
           <div class="vault-bar"><div class="vault-bar-fill" id="vaultBar"></div></div>
           <div class="vault-bar-meta"><span class="vault-pct">80% complete</span><span>$200 remaining</span></div>
         </div>
-        <div class="vault-stat-rows">
-          <div class="vsr"><span class="vsr-label">All Leaderboards Wagered</span><span class="vsr-val">$134,179</span></div>
-          <div class="vsr"><span class="vsr-label">Claimed (Linked)</span><span class="vsr-val green">$17,354</span></div>
-          <div class="vsr"><span class="vsr-label">Unclaimed</span><span class="vsr-val gold">$116,826</span></div>
-          <div class="vsr"><span class="vsr-label">Active Players</span><span class="vsr-val">6</span></div>
-          <div class="vsr" style="border-bottom:0"><span class="vsr-label">Live Leaderboards</span><span class="vsr-val">1</span></div>
+        <!-- mini cards row — LAST ADDED + STATUS -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0">
+          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 18px">
+            <div style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--faint);margin-bottom:8px">LAST ADDED</div>
+            <div style="font-family:'Lilita One',sans-serif;font-size:1.5rem;color:var(--neon-green)">+$100</div>
+            <div style="font-size:.76rem;color:var(--faint);margin-top:3px">1st April</div>
+          </div>
+          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 18px">
+            <div style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--faint);margin-bottom:8px">STATUS</div>
+            <div style="display:flex;align-items:center;gap:8px;font-family:'Lilita One',sans-serif;font-size:1.3rem;color:#fff"><span class="live-dot"></span>Active</div>
+            <div style="font-size:.76rem;color:var(--faint);margin-top:3px">Live &amp; filling up</div>
+          </div>
         </div>
-        <div class="vault-btns" style="margin-top:20px">
+        <div class="vault-btns">
           <button class="vbtn green-btn" onclick="nav('vault')">📈 VIEW VAULT</button>
           <button class="vbtn dark-btn" onclick="nav('loyalty')">EARN COINS</button>
         </div>
