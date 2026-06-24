@@ -918,27 +918,20 @@ nav{border-bottom:1px solid transparent!important;
 
 /* ── Main layout: big card left, mascot panel right ── */
 .vp-main-grid{
-  display:grid;grid-template-columns:1fr 300px;
-  gap:0;margin-bottom:28px;border-radius:16px;overflow:hidden;
+  display:grid;grid-template-columns:1fr 240px;
+  gap:56px;margin-bottom:28px;align-items:start;
 }
-.vp-main-card{
-  background:#111018;
-  border:1px solid rgba(255,255,255,.08);
-  border-right:0;padding:32px 36px;
-}
+.vp-main-card{background:none;border:none;padding:0}
 .vp-mascot-panel{
-  background:#0d0b14;
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:0 16px 16px 0;
+  background:none;border:none;padding:0;
   display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:28px 20px;gap:16px;
-  position:relative;
+  align-items:center;justify-content:flex-start;
+  padding-top:4px;gap:14px;
 }
 .vp-mascot-img{
-  width:clamp(130px,14vw,190px);
+  width:clamp(150px,18vw,220px);
   animation:bob 4s ease-in-out infinite;
-  filter:drop-shadow(0 12px 28px rgba(168,85,247,.3));
+  filter:drop-shadow(0 20px 40px rgba(168,85,247,.45));
   cursor:pointer;
 }
 
@@ -954,14 +947,14 @@ nav{border-bottom:1px solid transparent!important;
 .vp-bar-meta{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-bottom:24px}
 .vp-bar-meta .vpct{color:var(--neon-green);font-weight:600}
 
-/* two mini cards — PROGRESS + LAST ADDED */
+/* two mini cards — subtle, not heavy */
 .vp-mini-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
 .vp-mini{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:16px 18px}
 .vp-mini-lbl{font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:8px}
 .vp-mini-val{font-family:'Lilita One','Arial Black',sans-serif;font-size:1.6rem;line-height:1}
 .vp-mini-sub{font-size:.76rem;color:var(--muted);margin-top:4px}
 
-/* stat rows — plain dividers */
+/* stat rows — plain dividers, no box */
 .vp-stat-rows{border-top:1px solid rgba(255,255,255,.07)}
 .vp-sr{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.06);transition:.15s}
 .vp-sr:last-child{border-bottom:0}
@@ -970,19 +963,17 @@ nav{border-bottom:1px solid transparent!important;
 .vp-sr-val{font-family:'Lilita One','Arial Black',sans-serif;font-size:1.05rem;color:#fff;letter-spacing:.3px}
 .vp-sr-val.green{color:var(--neon-green)}.vp-sr-val.gold{color:var(--neon-gold)}
 
-/* mascot panel coin J */
+/* live badge */
 .vp-mascot-panel .vpp-count{
   background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);
   color:var(--neon-green);font-weight:700;font-size:.8rem;
   padding:5px 14px;border-radius:99px;letter-spacing:.05em;
 }
 
-/* responsive */
 @media(max-width:860px){
-  .vp-main-grid{grid-template-columns:1fr}
-  .vp-main-card{border-right:1px solid rgba(255,255,255,.08);border-radius:16px 16px 0 0}
-  .vp-mascot-panel{border-radius:0 0 16px 16px;flex-direction:row;padding:20px 24px}
-  .vp-mascot-img{width:90px}
+  .vp-main-grid{grid-template-columns:1fr;gap:24px}
+  .vp-mascot-panel{flex-direction:row;align-items:center}
+  .vp-mascot-img{width:110px}
   .vp-mini-row{grid-template-columns:1fr 1fr}
 }
 
