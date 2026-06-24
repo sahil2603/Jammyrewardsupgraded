@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0a0613">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <style>
 :root{
   --bg:#09060f;
@@ -2202,7 +2202,7 @@ document.addEventListener('click',function(e){
   /* ── STARS (subtle, slow) ── */
   var starCols=['#c084fc','#67e8f9','#4ade80','#fbbf24','#f472b6','#818cf8'];
   var stars=[];
-  var SN=Math.min(64,Math.floor(W/26));
+  var SN=isMobile?Math.min(28,Math.floor(W/36)):Math.min(52,Math.floor(W/26));
   for(var i=0;i<SN;i++)stars.push({
     x:Math.random()*W, y:Math.random()*H,
     vx:(Math.random()-.5)*.08, vy:(Math.random()-.5)*.08,  // very slow
@@ -2215,7 +2215,7 @@ document.addEventListener('click',function(e){
   var coinSymbols=['₿','Ξ','₮','◎','Ł','Ð'];
   var coinColors=['#f7931a','#627eea','#26a17b','#9945ff','#aaaaaa','#c2a633'];
   var coins=[];
-  var CN=16;
+  var CN=isMobile?8:14;
   for(var i=0;i<CN;i++)coins.push({
     x:Math.random()*W,
     y:Math.random()*H, // spread across full height, not bottom-heavy
@@ -2233,7 +2233,7 @@ document.addEventListener('click',function(e){
   /* ── CUTE ICONS (slow float, no rotation flicker) ── */
   var icons=['🍒','💎','⭐','👑','🎰','🏆','🎲','🍀','💰','🎁','🌈','🃏'];
   var floaters=[];
-  var FN=20;
+  var FN=isMobile?8:18;
   for(var i=0;i<FN;i++)floaters.push({
     x:Math.random()*W,
     y:Math.random()*H,
@@ -2252,7 +2252,7 @@ document.addEventListener('click',function(e){
     ['#fbbf24','#fb923c'],['#818cf8','#c084fc']
   ];
   var ribbons=[];
-  var RN=11;
+  var RN=isMobile?5:10;
   for(var i=0;i<RN;i++)ribbons.push({
     x:Math.random()*W,
     y:Math.random()*H, // spread out
@@ -2280,7 +2280,7 @@ document.addEventListener('click',function(e){
   /* ── SPARKS (tiny dots, minimal) ── */
   var pCols=['rgba(192,132,252,.5)','rgba(103,232,249,.4)','rgba(244,114,182,.4)','rgba(74,222,128,.35)'];
   var sparks=[];
-  var PN=28;
+  var PN=isMobile?12:24;
   for(var i=0;i<PN;i++)sparks.push({
     x:Math.random()*W, y:Math.random()*H,
     vx:(Math.random()-.5)*.15, vy:-(Math.random()*.18+.05),
@@ -2294,8 +2294,9 @@ document.addEventListener('click',function(e){
   var SPEED=isMobile?2.0:2.4;   // make the slow drift actually visible
   function loop(){
     requestAnimationFrame(loop);
+    if(document.hidden)return;
     frame++;
-    // 60fps desktop, 30fps mobile
+    // 30fps desktop, 20fps mobile
     var skip=isMobile?2:1;
     if(frame%skip!==0)return;
 
@@ -2575,15 +2576,20 @@ document.addEventListener('click',function(e){
 
 
 /* ---- cursor glow trail on cards ---- */
-document.addEventListener('mousemove',function(e){
-  var card=e.target.closest('.rcard,.bcard,.vp-card,.wl-stream,.vps-card');
-  if(!card)return;
-  var r=card.getBoundingClientRect();
-  var x=((e.clientX-r.left)/r.width*100)+'%';
-  var y=((e.clientY-r.top)/r.height*100)+'%';
-  card.style.setProperty('--mx',x);
-  card.style.setProperty('--my',y);
-},{passive:true});
+(function(){
+  var _raf=false,_ex=0,_ey=0;
+  document.addEventListener('mousemove',function(e){_ex=e.clientX;_ey=e.clientY;
+    if(_raf)return;_raf=true;
+    requestAnimationFrame(function(){
+      _raf=false;
+      var card=document.elementFromPoint(_ex,_ey);
+      if(card)card=card.closest('.rcard,.bcard,.vp-card,.wl-stream,.vps-card');
+      if(card){var r=card.getBoundingClientRect();
+        card.style.setProperty('--mx',((_ex-r.left)/r.width*100)+'%');
+        card.style.setProperty('--my',((_ey-r.top)/r.height*100)+'%');}
+    });
+  },{passive:true});
+})();
 
 /* ---- vault modal ---- */
 function openVaultModal(){
