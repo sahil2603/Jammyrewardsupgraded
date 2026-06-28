@@ -113,6 +113,18 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(16px);
 @keyframes scanline{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}}
 @keyframes coinSpin{0%{transform:translate(-50%,0) scale(0) rotateY(0deg)}20%{transform:translate(-50%,-60px) scale(1.1) rotateY(180deg);opacity:1}80%{transform:translate(-50%,-60px) scale(1) rotateY(540deg);opacity:1}100%{transform:translate(-50%,0) scale(0) rotateY(720deg);opacity:0}}
 @keyframes gradientBorder{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes neonPulseGreen{
+  0%,100%{box-shadow:0 0 16px rgba(22,163,74,.6),0 0 32px rgba(22,163,74,.3),0 8px 28px -8px rgba(22,163,74,.5);filter:brightness(1)}
+  50%{box-shadow:0 0 28px rgba(74,222,128,.9),0 0 56px rgba(74,222,128,.5),0 8px 36px -8px rgba(74,222,128,.7);filter:brightness(1.12)}
+}
+@keyframes neonPulsePink{
+  0%,100%{box-shadow:0 0 16px rgba(190,24,93,.6),0 0 32px rgba(190,24,93,.3),0 8px 28px -8px rgba(190,24,93,.5);filter:brightness(1)}
+  50%{box-shadow:0 0 28px rgba(244,114,182,.9),0 0 56px rgba(244,114,182,.5),0 8px 36px -8px rgba(244,114,182,.7);filter:brightness(1.12)}
+}
+@keyframes neonPulseCyan{
+  0%,100%{box-shadow:0 0 16px rgba(14,116,144,.6),0 0 32px rgba(34,211,238,.3),0 8px 28px -8px rgba(14,116,144,.5);filter:brightness(1)}
+  50%{box-shadow:0 0 28px rgba(34,211,238,.9),0 0 56px rgba(34,211,238,.5),0 8px 36px -8px rgba(34,211,238,.7);filter:brightness(1.12)}
+}
 
 
 /* ===== HERO ===== */
@@ -1442,7 +1454,7 @@ nav{border-bottom:1px solid transparent!important;
               <li>🎉 Giveaways: $100–$500</li>
               <li>🏆 $400 weekly leaderboard — top 7 paid</li>
             </ul>
-            <button class="vp-btn" style="background:#16a34a;color:#fff;font-weight:800;box-shadow:0 8px 28px -8px rgba(22,163,74,.4)" onclick="go('https://winovo.io')">Claim Bonus &rsaquo;</button>
+            <button class="vp-btn" style="background:#16a34a;color:#fff;font-weight:800;box-shadow:0 0 20px rgba(22,163,74,.7),0 0 40px rgba(22,163,74,.4),0 8px 28px -8px rgba(22,163,74,.6);animation:neonPulseGreen 2s ease-in-out infinite;border:1px solid rgba(74,222,128,.5)" onclick="go('https://winovo.io')">Claim Bonus &rsaquo;</button>
           </div>
         </div>
 
@@ -1460,7 +1472,7 @@ nav{border-bottom:1px solid transparent!important;
               <li>⚡ Instant withdrawals</li>
               <li>🔒 Secure &amp; fair gaming</li>
             </ul>
-            <button class="vp-btn" style="background:#be185d;color:#fff;font-weight:800;box-shadow:0 8px 28px -8px rgba(190,24,93,.4)" onclick="go('https://upgrader.com')">Claim Bonus &rsaquo;</button>
+            <button class="vp-btn" style="background:#be185d;color:#fff;font-weight:800;box-shadow:0 0 20px rgba(190,24,93,.7),0 0 40px rgba(190,24,93,.4),0 8px 28px -8px rgba(190,24,93,.6);animation:neonPulsePink 2s ease-in-out infinite .3s;border:1px solid rgba(244,114,182,.5)" onclick="go('https://upgrader.com')">Claim Bonus &rsaquo;</button>
           </div>
         </div>
 
@@ -1479,7 +1491,7 @@ nav{border-bottom:1px solid transparent!important;
               <li>🏁 Weekly / Monthly Wager Race</li>
               <li>🎡 Daily Wheel Spin &amp; VIP Transfer</li>
             </ul>
-            <button class="vp-btn" style="background:#0e7490;color:#fff;font-weight:800;box-shadow:0 8px 28px -8px rgba(14,116,144,.4)" onclick="go('https://runewager.com')">Claim Bonus &rsaquo;</button>
+            <button class="vp-btn" style="background:#0e7490;color:#fff;font-weight:800;box-shadow:0 0 20px rgba(14,116,144,.7),0 0 40px rgba(34,211,238,.4),0 8px 28px -8px rgba(14,116,144,.6);animation:neonPulseCyan 2s ease-in-out infinite .6s;border:1px solid rgba(34,211,238,.5)" onclick="go('https://runewager.com')">Claim Bonus &rsaquo;</button>
           </div>
         </div>
 
