@@ -3,557 +3,492 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>JammmyRewards — Casino Bonuses, Leaderboards &amp; the Community Vault</title>
-<meta name="description" content="Sign up under code JAMMMY for exclusive bonuses across Upgrader, Winovo and RustMagic, weekly leaderboards, and a share of the Community Vault every time it fills."/>
-<meta property="og:title" content="JammmyRewards"/>
-<meta property="og:description" content="Bonuses, leaderboards and the Community Vault. Code JAMMMY."/>
-<meta property="og:type" content="website"/>
+<title>JammmyRewards — The Future of Community Rewards</title>
+<meta name="description" content="Experience the next generation of online casino rewards, exclusive leaderboards, and community-driven gaming."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --bg:#0b0c10;
-  --bg2:#111319;
-  --card:#161821;
-  --border:rgba(255,255,255,0.08);
-  --text:#f2f3f7;
-  --text2:#aab0c0;
-  --muted:#6b7180;
-
-  --magenta:#e93fbc;
-  --violet:#7c4dff;
-  --green:#4cd964;
-  --sky:#3fa9f5;
-  --amber:#e8a055;
-  --coral:#e8566b;
-
-  --jar-gradient: linear-gradient(180deg, var(--amber) 0%, var(--magenta) 16%, var(--violet) 34%, var(--green) 52%, var(--sky) 68%, var(--amber) 84%, var(--coral) 100%);
-
-  --font-display:'Baloo 2',sans-serif;
-  --font-body:'Plus Jakarta Sans',sans-serif;
-  --font-mono:'JetBrains Mono',monospace;
-
+  --bg:#0b0c10; --bg2:#0f1117; --card:#151722; --border:rgba(255,255,255,0.09);
+  --text:#f2f3f7; --text2:#a9afc1; --muted:#6b7180;
+  --magenta:#e93fbc; --violet:#7c4dff; --green:#4cd964; --sky:#3fa9f5; --amber:#e8a055; --coral:#e8566b;
+  --jar-gradient: linear-gradient(90deg, var(--amber), var(--magenta), var(--violet), var(--sky));
+  --font-display:'Baloo 2',sans-serif; --font-body:'Plus Jakarta Sans',sans-serif; --font-mono:'JetBrains Mono',monospace;
   --radius:18px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:var(--font-body);
-  line-height:1.6;
-  overflow-x:hidden;
-  -webkit-font-smoothing:antialiased;
-}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
 img,video{max-width:100%;display:block;}
 a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;}
 .wrap{max-width:1280px;margin:0 auto;padding:0 2.5rem;}
 @media(max-width:640px){.wrap{padding:0 1.2rem;}}
 
-::selection{background:var(--magenta);color:#fff;}
-:focus-visible{outline:2px solid var(--sky);outline-offset:3px;}
-@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important;}}
-
-/* ── NAV ─────────────────────────────────────────────────────────── */
-.nav{
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:1rem 2.5rem;
-  background:rgba(11,12,16,0.72);
-  backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--border);
-}
+/* NAV */
+.nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(11,12,16,0.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
 @media(max-width:640px){.nav{padding:.85rem 1.2rem;}}
-.nav-brand{display:flex;align-items:center;gap:.65rem;}
-.nav-brand img{width:38px;height:38px;object-fit:contain;}
-.nav-brand .wm{font-family:var(--font-display);font-weight:800;font-size:1.15rem;letter-spacing:.2px;}
-.nav-brand .wm .j1{color:#fff;}
-.nav-brand .wm .j2{
-  background:var(--jar-gradient);-webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.nav-links{display:flex;gap:2rem;align-items:center;}
-.nav-links a{font-size:.88rem;font-weight:600;color:var(--text2);transition:color .2s;}
+.nav-brand{display:flex;align-items:center;gap:.6rem;}
+.nav-brand img{width:34px;height:34px;object-fit:contain;}
+.nav-live{display:flex;align-items:center;gap:.4rem;font-size:.75rem;font-weight:700;color:var(--coral);margin-left:.3rem;}
+.nav-live .dot{width:6px;height:6px;border-radius:50%;background:var(--coral);}
+.nav-live.on{color:var(--green);} .nav-live.on .dot{background:var(--green);box-shadow:0 0 6px var(--green);}
+.nav-links{display:flex;gap:1.8rem;align-items:center;}
+.nav-links a{font-size:.86rem;font-weight:600;color:var(--text2);transition:color .2s;}
 .nav-links a:hover{color:#fff;}
-.nav-cta{
-  display:inline-flex;align-items:center;gap:.5rem;
-  background:var(--jar-gradient);color:#0b0c10;
-  font-family:var(--font-display);font-weight:700;font-size:.85rem;
-  padding:.6rem 1.3rem;border-radius:30px;
-  box-shadow:0 6px 20px rgba(233,63,188,0.25);
-  transition:transform .2s;
-}
-.nav-cta:hover{transform:translateY(-2px);}
-.nav-burger{display:none;width:22px;height:16px;position:relative;cursor:pointer;background:none;border:none;flex-shrink:0;}
+.nav-right{display:flex;align-items:center;gap:.9rem;}
+.nav-social{display:flex;gap:.6rem;}
+.nav-social a{width:32px;height:32px;border-radius:8px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text2);transition:all .2s;}
+.nav-social a:hover{color:#fff;border-color:rgba(255,255,255,0.25);}
+.nav-social svg{width:16px;height:16px;}
+.nav-login{display:inline-flex;align-items:center;gap:.5rem;background:#1c1f2b;border:1px solid var(--border);color:#fff;font-weight:700;font-size:.85rem;padding:.65rem 1.2rem;border-radius:30px;transition:background .2s;}
+.nav-login:hover{background:#252838;}
+.nav-burger{display:none;width:22px;height:16px;position:relative;background:none;border:none;flex-shrink:0;}
 .nav-burger span{position:absolute;left:0;right:0;height:2px;background:#fff;border-radius:2px;transition:transform .25s,opacity .25s;}
-.nav-burger span:nth-child(1){top:0;}
-.nav-burger span:nth-child(2){top:7px;}
-.nav-burger span:nth-child(3){top:14px;}
+.nav-burger span:nth-child(1){top:0;} .nav-burger span:nth-child(2){top:7px;} .nav-burger span:nth-child(3){top:14px;}
 .nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
 .nav-burger.open span:nth-child(2){opacity:0;}
 .nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-.mobile-menu{
-  display:none;position:fixed;top:64px;left:0;right:0;z-index:199;
-  background:rgba(11,12,16,0.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);
-  padding:1rem 1.2rem 1.5rem;flex-direction:column;gap:.2rem;
-}
+.mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;z-index:199;background:rgba(11,12,16,0.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:1rem 1.2rem 1.5rem;flex-direction:column;}
 .mobile-menu.open{display:flex;}
 .mobile-menu a{padding:.85rem .5rem;font-weight:600;font-size:.95rem;border-bottom:1px solid var(--border);}
-.mobile-menu a:last-child{border-bottom:none;}
-@media(max-width:860px){
-  .nav-links{display:none;}
-  .nav-cta{display:none;}
-  .nav-burger{display:block;}
-  .nav-brand .wm{font-size:1rem;}
-}
+@media(max-width:900px){.nav-links{display:none;} .nav-social{display:none;} .nav-login span{display:none;} .nav-burger{display:block;}}
 
-/* ── HERO ────────────────────────────────────────────────────────── */
-.hero{
-  position:relative;overflow:hidden;
-  padding:8.5rem 2.5rem 5rem;
-  display:flex;align-items:center;gap:3rem;
-  max-width:1280px;margin:0 auto;
-  min-height:88vh;
+/* FLOATING SIDE CTAS */
+.float-ctas{position:fixed;right:18px;top:52%;transform:translateY(-50%);z-index:150;display:flex;flex-direction:column;gap:.7rem;}
+@media(max-width:760px){.float-ctas{display:none;}}
+.float-cta{
+  width:92px;background:linear-gradient(160deg,rgba(233,63,188,0.14),rgba(124,77,255,0.14));
+  border:1px solid rgba(233,63,188,0.35);border-radius:14px;padding:.8rem .5rem;text-align:center;
+  box-shadow:0 0 20px rgba(233,63,188,0.15);transition:transform .2s,box-shadow .2s;
 }
-@media(max-width:640px){.hero{padding:7rem 1.2rem 3rem;flex-direction:column;text-align:center;min-height:auto;}}
-.hero::before{
-  content:"";position:absolute;top:-10%;left:55%;width:900px;height:900px;
-  background:radial-gradient(circle, rgba(124,77,255,0.18), transparent 60%);
-  pointer-events:none;
+.float-cta:hover{transform:translateX(-4px);box-shadow:0 0 28px rgba(233,63,188,0.3);}
+.float-cta .lbl{font-family:var(--font-display);font-weight:700;font-size:.62rem;letter-spacing:.5px;color:#fff;text-transform:uppercase;line-height:1.2;margin-top:.4rem;}
+.float-cta svg{width:22px;height:22px;color:var(--magenta);margin:0 auto;}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;padding:5rem 2.5rem 4rem;text-align:center;}
+@media(max-width:640px){.hero{padding:3.5rem 1.2rem 3rem;}}
+.hero-rainbow{
+  position:absolute;top:38%;left:50%;transform:translateX(-50%);width:1100px;height:550px;
+  border-radius:50%;
+  background:conic-gradient(from 180deg at 50% 100%, var(--amber), var(--magenta), var(--violet), var(--sky), var(--green), var(--amber));
+  -webkit-mask:radial-gradient(circle at 50% 100%, transparent 220px, #000 224px, #000 340px, transparent 344px);
+  mask:radial-gradient(circle at 50% 100%, transparent 220px, #000 224px, #000 340px, transparent 344px);
+  opacity:.55;filter:blur(1px);pointer-events:none;
 }
-.hero::after{
-  content:"";position:absolute;bottom:-20%;left:5%;width:700px;height:700px;
-  background:radial-gradient(circle, rgba(233,63,188,0.12), transparent 60%);
-  pointer-events:none;
-}
-.hero-copy{flex:1;position:relative;z-index:1;min-width:280px;}
+.hero-content{position:relative;z-index:1;max-width:780px;margin:0 auto;}
 .hero-tag{
-  display:inline-flex;align-items:center;gap:.5rem;
-  font-family:var(--font-mono);font-size:.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
-  color:var(--green);background:rgba(76,217,100,0.08);border:1px solid rgba(76,217,100,0.28);
-  padding:.4rem 1rem;border-radius:20px;margin-bottom:1.6rem;
+  display:inline-flex;align-items:center;font-family:var(--font-mono);font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:#c9b6ff;background:rgba(124,77,255,0.1);border:1px solid rgba(124,77,255,0.35);padding:.5rem 1.2rem;border-radius:20px;margin-bottom:1.6rem;
 }
-.hero-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 1.6s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hero h1{
-  font-family:var(--font-display);font-weight:800;
-  font-size:clamp(2.6rem,6vw,4.6rem);line-height:1.02;letter-spacing:-1px;
-  margin-bottom:1.4rem;
-}
-.hero h1 .rainbow{
-  background:var(--jar-gradient);-webkit-background-clip:text;background-clip:text;color:transparent;
-  background-size:200% 200%;
-  animation:rainbowShift 8s ease infinite;
-}
-@keyframes rainbowShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-.hero p{font-size:1.08rem;color:var(--text2);max-width:480px;margin-bottom:2.2rem;}
-@media(max-width:640px){.hero p{margin-left:auto;margin-right:auto;}}
-.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2.4rem;}
-@media(max-width:640px){.hero-actions{justify-content:center;}}
-.btn-primary{
-  display:inline-flex;align-items:center;gap:.5rem;
-  background:var(--jar-gradient);color:#0b0c10;
-  font-family:var(--font-display);font-weight:700;font-size:.95rem;
-  padding:.95rem 1.9rem;border-radius:14px;
-  box-shadow:0 10px 30px rgba(233,63,188,0.28);
-  transition:transform .2s,box-shadow .2s;border:none;cursor:pointer;
-}
-.btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(233,63,188,0.4);}
-.btn-secondary{
-  display:inline-flex;align-items:center;gap:.5rem;
-  background:transparent;color:#fff;border:1.5px solid var(--border);
-  font-family:var(--font-display);font-weight:700;font-size:.95rem;
-  padding:.95rem 1.9rem;border-radius:14px;
-  transition:border-color .2s,background .2s;
-}
-.btn-secondary:hover{border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.04);}
-.hero-code{
-  display:inline-flex;align-items:center;gap:.9rem;
-  background:var(--card);border:1px solid var(--border);border-radius:14px;
-  padding:.7rem .7rem .7rem 1.1rem;
-}
-.hero-code .lbl{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;}
-.hero-code .code{font-family:var(--font-mono);font-weight:700;font-size:1.1rem;color:#fff;}
-.hero-code button{
-  font-family:var(--font-body);font-weight:700;font-size:.78rem;
-  background:rgba(255,255,255,0.08);color:#fff;border:none;border-radius:9px;
-  padding:.55rem 1rem;cursor:pointer;transition:background .2s;
-}
-.hero-code button:hover{background:rgba(255,255,255,0.16);}
+.hero h1{font-family:var(--font-display);font-weight:800;font-size:clamp(2.4rem,7vw,4.6rem);letter-spacing:-1px;line-height:1;margin-bottom:1.3rem;}
+.hero h1 .g1{background:linear-gradient(90deg,var(--amber),var(--magenta),var(--violet),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero h1 .g2{color:#fff;}
+.hero p{color:var(--text2);font-size:1.05rem;max-width:560px;margin:0 auto 2.4rem;}
+.hero-visual{position:relative;z-index:1;width:220px;margin:0 auto 2.4rem;filter:drop-shadow(0 20px 50px rgba(0,0,0,0.55));animation:float 5s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
+.hero-actions{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;}
+.btn{font-family:var(--font-display);font-weight:700;font-size:.92rem;padding:.9rem 1.8rem;border-radius:12px;border:none;transition:transform .2s,box-shadow .2s;}
+.btn-fill{background:linear-gradient(90deg,var(--violet),var(--magenta));color:#fff;box-shadow:0 10px 26px rgba(124,77,255,0.3);}
+.btn-fill:hover{transform:translateY(-3px);}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid var(--border);}
+.btn-outline:hover{border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.04);}
 
-.hero-visual{position:relative;z-index:1;flex-shrink:0;width:380px;display:flex;justify-content:center;}
-@media(max-width:640px){.hero-visual{width:240px;}}
-.hero-visual img{
-  width:100%;filter:drop-shadow(0 30px 60px rgba(0,0,0,0.5));
-  animation:float 5s ease-in-out infinite;
-}
-@keyframes float{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-16px) rotate(2deg);}}
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);max-width:1180px;margin:0 auto 5rem;padding:0 2.5rem;}
+@media(max-width:760px){.stats-row{grid-template-columns:repeat(2,1fr);padding:0 1.2rem;gap:1px;}}
+.stat-box{background:var(--card);border:1px solid var(--border);padding:1.8rem 1rem;text-align:center;}
+.stat-box:not(:last-child){border-right:none;}
+@media(max-width:760px){.stat-box{border-right:1px solid var(--border) !important;}}
+.stat-box:first-child{border-radius:16px 0 0 16px;} .stat-box:last-child{border-radius:0 16px 16px 0;}
+.stat-num{font-family:var(--font-display);font-weight:800;font-size:1.9rem;}
+.stat-num.c-mag{color:var(--magenta);} .stat-num.c-sky{color:var(--sky);} .stat-num.c-white{color:#fff;}
+.stat-lbl{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:.4rem;font-weight:700;}
 
-/* ── STAT STRIP ──────────────────────────────────────────────────── */
-.stat-strip{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  max-width:1280px;margin:0 auto;padding:0 2.5rem 5rem;gap:1px;
-}
-@media(max-width:860px){.stat-strip{grid-template-columns:repeat(2,1fr);padding:0 1.2rem 3rem;}}
-.stat{
-  background:var(--card);border:1px solid var(--border);
-  padding:1.6rem 1.4rem;text-align:center;
-}
-.stat:first-child{border-radius:16px 0 0 16px;}
-.stat:last-child{border-radius:0 16px 16px 0;}
-@media(max-width:860px){
-  .stat:nth-child(1){border-radius:16px 0 0 0;}
-  .stat:nth-child(2){border-radius:0 16px 0 0;}
-  .stat:nth-child(3){border-radius:0 0 0 16px;}
-  .stat:nth-child(4){border-radius:0 0 16px 0;}
-}
-.stat-val{font-family:var(--font-mono);font-weight:700;font-size:1.7rem;color:#fff;}
-.stat-lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:.35rem;}
-.stat-soon{font-size:.6rem;color:var(--green);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:.5rem;opacity:.85;}
-
-/* ── SECTION SHARED ──────────────────────────────────────────────── */
-.section{padding:6rem 2.5rem;position:relative;}
-@media(max-width:640px){.section{padding:4rem 1.2rem;}}
+/* SECTION SHARED */
+.section{padding:5.5rem 2.5rem;}
+@media(max-width:640px){.section{padding:3.5rem 1.2rem;}}
 .section-inner{max-width:1180px;margin:0 auto;}
-.eyebrow{
-  display:inline-flex;align-items:center;gap:.5rem;
-  font-family:var(--font-mono);font-size:.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;
-  padding:.35rem .9rem;border-radius:20px;margin-bottom:1.1rem;
-}
-.section-title{
-  font-family:var(--font-display);font-weight:800;font-size:clamp(1.8rem,3.6vw,2.7rem);
-  letter-spacing:-.5px;margin-bottom:.8rem;
-}
-.section-desc{color:var(--text2);max-width:560px;font-size:1rem;margin-bottom:2.8rem;}
+.section-head{text-align:center;max-width:640px;margin:0 auto 3rem;}
+.section-title{font-family:var(--font-display);font-weight:800;font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:.7rem;}
+.section-title .grad{background:linear-gradient(90deg,var(--magenta),var(--violet),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.section-desc{color:var(--text2);font-size:1rem;}
 
-/* ── VAULT (signature section) ──────────────────────────────────── */
-.vault-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-.vault-layout{display:flex;align-items:center;gap:4rem;}
-@media(max-width:900px){.vault-layout{flex-direction:column;text-align:center;}}
-.vault-info{flex:1;min-width:280px;}
-.vault-meter-wrap{display:grid;flex-shrink:0;width:230px;height:257px;filter:drop-shadow(0 20px 40px rgba(0,0,0,0.5));}
-@media(max-width:640px){.vault-meter-wrap{width:190px;height:212px;}}
-.vault-meter-wrap > img{grid-area:1/1;width:100%;height:100%;object-fit:contain;}
-.vault-meter-fill{clip-path:inset(86% 0 0 0);transition:clip-path 1.4s cubic-bezier(.22,1,.36,1);}
-.vault-pct{
-  text-align:center;margin-top:1rem;
-  font-family:var(--font-mono);font-weight:700;font-size:1.1rem;color:#fff;
-}
-.vault-preview-card{
-  margin-top:1.4rem;background:#000;border-radius:14px;overflow:hidden;
-  border:1px solid var(--border);position:relative;width:230px;
-}
-@media(max-width:640px){.vault-preview-card{width:190px;}}
-.vault-preview-card video{width:100%;display:block;aspect-ratio:1/1;object-fit:cover;}
-.vault-preview-label{
-  position:absolute;bottom:0;left:0;right:0;
-  background:linear-gradient(to top, rgba(0,0,0,0.85), transparent);
-  padding:1.6rem .8rem .6rem;font-size:.72rem;font-weight:700;color:#fff;text-align:center;
-}
-.vault-stats{display:flex;gap:2rem;margin:1.8rem 0 2rem;flex-wrap:wrap;}
-@media(max-width:900px){.vault-stats{justify-content:center;}}
-.vault-stat .v{font-family:var(--font-mono);font-weight:700;font-size:1.5rem;color:#fff;}
-.vault-stat .l{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:.2rem;}
+/* WHY PLAY CARDS */
+.why-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;}
+@media(max-width:700px){.why-grid{grid-template-columns:1fr;}}
+.why-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;position:relative;overflow:hidden;transition:transform .2s;}
+.why-card:hover{transform:translateY(-3px);}
+.why-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;}
+.why-card.c1::before{background:var(--violet);} .why-card.c2::before{background:var(--amber);}
+.why-card.c3::before{background:var(--sky);} .why-card.c4::before{background:var(--green);}
+.why-icon{font-size:1.6rem;margin-bottom:1rem;}
+.why-card h3{font-family:var(--font-display);font-weight:700;font-size:1.25rem;margin-bottom:.6rem;}
+.why-card p{color:var(--text2);font-size:.9rem;margin-bottom:1.4rem;}
+.why-link{font-weight:700;font-size:.88rem;}
+.c1 .why-link{color:#c9b6ff;} .c2 .why-link{color:var(--amber);} .c3 .why-link{color:var(--sky);} .c4 .why-link{color:var(--green);}
 
-/* ── PARTNERS ────────────────────────────────────────────────────── */
-.partner-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;}
+/* VAULT SECTION */
+.vault-sec{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.vault-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:3rem;align-items:center;}
+@media(max-width:900px){.vault-grid{grid-template-columns:1fr;text-align:center;}}
+.vault-eyebrow{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--font-mono);font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#c9b6ff;margin-bottom:.8rem;}
+.vault-left h2{font-family:var(--font-display);font-weight:800;font-size:clamp(1.8rem,3.6vw,2.6rem);margin-bottom:1rem;}
+.vault-left h2 .grn{color:var(--green);}
+.vault-left p{color:var(--text2);margin-bottom:1.8rem;max-width:400px;}
+@media(max-width:900px){.vault-left p{margin-left:auto;margin-right:auto;}}
+.vault-left img{width:160px;margin:0 auto;}
+@media(min-width:901px){.vault-left img{margin:0;}}
+.vault-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;}
+.vault-bal-lbl{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+.vault-bal{font-family:var(--font-display);font-weight:800;font-size:2.6rem;margin:.3rem 0 .2rem;}
+.vault-goal{color:var(--text2);font-size:.88rem;margin-bottom:1rem;}
+.vault-goal b{color:#fff;}
+.vault-bar{height:10px;border-radius:6px;background:#22242f;overflow:hidden;margin-bottom:.6rem;}
+.vault-bar-fill{height:100%;background:linear-gradient(90deg,var(--sky),var(--green));border-radius:6px;}
+.vault-bar-labels{display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:1.4rem;}
+.vault-bar-labels .pct{color:var(--green);font-weight:700;}
+.vault-bar-labels .rem{color:var(--muted);}
+.vault-row{display:flex;justify-content:space-between;align-items:center;padding:.85rem 0;border-top:1px solid var(--border);}
+.vault-row .l{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+.vault-row .v{font-weight:700;font-size:.92rem;}
+.vault-row .v.grn{color:var(--green);}
+.vault-status{display:inline-flex;align-items:center;gap:.4rem;}
+.vault-status .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);}
+.vault-btns{display:flex;gap:.8rem;margin-top:1.4rem;}
+.vault-btns .btn{flex:1;font-size:.85rem;padding:.8rem 1rem;}
+.btn-vault-view{background:var(--green);color:#0b0c10;}
+.btn-vault-earn{background:transparent;border:1.5px solid var(--border);color:#fff;}
+
+/* PARTNERS */
+.partner-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
 @media(max-width:900px){.partner-grid{grid-template-columns:1fr;}}
-.partner-card{
-  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:2rem;position:relative;overflow:hidden;transition:transform .25s,border-color .25s;
-}
-.partner-card:hover{transform:translateY(-4px);}
-.partner-card::before{
-  content:"";position:absolute;top:0;left:0;right:0;height:3px;
-}
-.partner-card.p1::before{background:var(--magenta);} .partner-card.p1:hover{border-color:rgba(233,63,188,0.4);}
-.partner-card.p2::before{background:var(--sky);} .partner-card.p2:hover{border-color:rgba(63,169,245,0.4);}
-.partner-card.p3::before{background:var(--green);} .partner-card.p3:hover{border-color:rgba(76,217,100,0.4);}
-.partner-name{font-family:var(--font-display);font-weight:700;font-size:1.4rem;margin-bottom:.3rem;}
-.partner-tag{font-size:.8rem;color:var(--text2);margin-bottom:1.4rem;}
-.partner-bonus{
-  display:inline-block;font-family:var(--font-mono);font-weight:700;font-size:.85rem;
-  padding:.4rem .9rem;border-radius:8px;margin-bottom:1.4rem;
-}
-.p1 .partner-bonus{background:rgba(233,63,188,0.12);color:var(--magenta);}
-.p2 .partner-bonus{background:rgba(63,169,245,0.12);color:var(--sky);}
-.p3 .partner-bonus{background:rgba(76,217,100,0.12);color:var(--green);}
-.partner-link{
-  display:inline-flex;align-items:center;gap:.4rem;font-weight:700;font-size:.88rem;color:#fff;
-}
-.partner-link svg{width:14px;height:14px;transition:transform .2s;}
-.partner-card:hover .partner-link svg{transform:translate(2px,-2px);}
+.partner-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:transform .2s;}
+.partner-card:hover{transform:translateY(-3px);}
+.partner-logo-box{height:130px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:1.5rem;}
+.pc1 .partner-logo-box{background:linear-gradient(135deg,rgba(63,169,245,0.14),rgba(124,77,255,0.08));color:var(--sky);}
+.pc2 .partner-logo-box{background:linear-gradient(135deg,rgba(63,169,245,0.2),rgba(124,77,255,0.1));}
+.pc2 .plogo-circle{width:64px;height:64px;border-radius:16px;background:var(--sky);color:#0b0c10;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.6rem;}
+.pc3 .partner-logo-box{background:linear-gradient(135deg,rgba(233,63,188,0.14),rgba(124,77,255,0.08));color:var(--magenta);}
+.partner-body{padding:1.6rem;}
+.partner-name{font-family:var(--font-display);font-weight:700;font-size:1.3rem;margin-bottom:.3rem;}
+.partner-badge{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:.3rem .7rem;border-radius:6px;margin-bottom:1rem;}
+.pc1 .partner-badge{background:rgba(63,169,245,0.12);color:var(--sky);}
+.pc2 .partner-badge{background:rgba(63,169,245,0.12);color:var(--sky);}
+.pc3 .partner-badge{background:rgba(233,63,188,0.12);color:var(--magenta);}
+.partner-perks{list-style:none;margin-bottom:1.4rem;}
+.partner-perks li{font-size:.85rem;color:var(--text2);margin-bottom:.55rem;display:flex;gap:.5rem;}
+.partner-claim{display:block;text-align:center;font-family:var(--font-display);font-weight:700;font-size:.9rem;padding:.85rem;border-radius:10px;color:#fff;}
+.pc1 .partner-claim{background:var(--sky);color:#0b0c10;}
+.pc2 .partner-claim{background:var(--sky);color:#0b0c10;}
+.pc3 .partner-claim{background:var(--magenta);}
+.winovo-card{margin-top:1.2rem;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.winovo-top{padding:2.4rem;text-align:center;background:linear-gradient(135deg,rgba(232,160,85,0.1),rgba(124,77,255,0.06));}
+.winovo-top .wname{font-family:var(--font-display);font-weight:800;font-size:1.7rem;color:var(--amber);}
+.winovo-body{padding:1.8rem 2rem 2rem;}
+.winovo-body h3{font-family:var(--font-display);font-weight:700;font-size:1.3rem;margin-bottom:1rem;}
+.winovo-body ul{list-style:none;margin-bottom:1.4rem;}
+.winovo-body li{font-size:.9rem;color:var(--text2);margin-bottom:.6rem;}
+.winovo-claim{display:block;text-align:center;font-family:var(--font-display);font-weight:700;padding:.9rem;border-radius:10px;background:var(--amber);color:#0b0c10;}
 
-/* ── GAME REQUESTS ───────────────────────────────────────────────── */
-.req-tabs{display:flex;gap:.6rem;margin-bottom:2rem;flex-wrap:wrap;}
-.req-tab{
-  font-family:var(--font-display);font-weight:700;font-size:.85rem;
-  padding:.6rem 1.3rem;border-radius:30px;border:1.5px solid var(--border);
-  background:transparent;color:var(--text2);cursor:pointer;transition:all .2s;
-}
-.req-tab.active{background:var(--jar-gradient);color:#0b0c10;border-color:transparent;}
-.req-list{display:flex;flex-direction:column;gap:.7rem;}
-.req-row{
-  display:flex;align-items:center;justify-content:space-between;gap:1rem;
-  background:var(--card);border:1px solid var(--border);border-radius:12px;
-  padding:1rem 1.3rem;flex-wrap:wrap;
-}
-.req-row-name{font-weight:700;font-size:.95rem;}
-.req-row-meta{font-size:.78rem;color:var(--muted);margin-top:.15rem;}
-.req-btn{
-  font-family:var(--font-display);font-weight:700;font-size:.8rem;
-  padding:.55rem 1.1rem;border-radius:9px;border:1.5px solid var(--violet);
-  background:rgba(124,77,255,0.1);color:#c9b6ff;cursor:pointer;transition:all .2s;white-space:nowrap;
-}
-.req-btn:hover{background:var(--violet);color:#fff;}
+/* LEADERBOARDS */
+.lb-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;margin-bottom:1.5rem;}
+@media(max-width:760px){.lb-grid{grid-template-columns:1fr;}}
+.lb-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;position:relative;overflow:hidden;}
+.lb-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;}
+.lb1::before{background:var(--sky);} .lb2::before{background:var(--amber);}
+.lb-logo{width:56px;height:56px;border-radius:14px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:1.3rem;margin-bottom:1.2rem;}
+.lb1 .lb-logo{color:var(--sky);} .lb2 .lb-logo{color:var(--amber);}
+.lb-card h3{font-family:var(--font-display);font-weight:700;font-size:1.2rem;margin-bottom:.6rem;}
+.lb-card p{color:var(--text2);font-size:.9rem;margin-bottom:1.4rem;}
+.lb-btn{display:inline-flex;align-items:center;gap:.4rem;font-weight:700;font-size:.88rem;padding:.8rem 1.4rem;border-radius:10px;border:1.5px solid var(--border);color:#fff;}
+.lb-note{display:flex;gap:.7rem;background:rgba(232,160,85,0.08);border:1px solid rgba(232,160,85,0.28);border-radius:12px;padding:1rem 1.3rem;font-size:.85rem;color:var(--text2);}
+.lb-note b{color:var(--amber);}
 
-/* ── LIVE HIGHLIGHTS ─────────────────────────────────────────────── */
-.highlight-empty{
-  background:var(--card);border:1.5px dashed var(--border);border-radius:var(--radius);
-  padding:3.5rem 2rem;text-align:center;
-}
-.highlight-empty .ic{font-size:2.2rem;margin-bottom:1rem;}
-.highlight-empty h3{font-family:var(--font-display);font-size:1.2rem;margin-bottom:.5rem;}
-.highlight-empty p{color:var(--text2);font-size:.9rem;max-width:380px;margin:0 auto 1.5rem;}
+/* REVIEWS */
+.reviews-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2.2rem;flex-wrap:wrap;gap:1rem;}
+.reviews-eyebrow{font-family:var(--font-mono);font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
+.reviews-empty{background:var(--card);border:1.5px dashed var(--border);border-radius:var(--radius);padding:3.5rem 2rem;text-align:center;color:var(--text2);margin-bottom:2rem;}
 
-/* ── LOYALTY ─────────────────────────────────────────────────────── */
-.loyalty-layout{display:flex;gap:3rem;align-items:flex-start;}
-@media(max-width:900px){.loyalty-layout{flex-direction:column;}}
-.loyalty-coin{flex-shrink:0;width:200px;}
-@media(max-width:900px){.loyalty-coin{width:150px;margin:0 auto;}}
-.loyalty-coin-wrap{
-  flex-shrink:0;width:200px;height:200px;border-radius:50%;overflow:hidden;background:#000;
-  border:1px solid var(--border);
-}
-@media(max-width:900px){.loyalty-coin-wrap{width:150px;height:150px;margin:0 auto;}}
-.loyalty-coin-wrap video{width:100%;height:100%;object-fit:cover;}
-.tier-track{flex:1;display:flex;flex-direction:column;gap:.7rem;}
-.tier-row{
-  display:flex;align-items:center;gap:1rem;
-  background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem 1.3rem;
-}
-.tier-badge{
-  width:38px;height:38px;border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-mono);font-weight:700;font-size:.85rem;color:#0b0c10;
-}
-.tier-name{font-weight:700;font-size:.95rem;}
-.tier-desc{font-size:.8rem;color:var(--muted);}
+/* WATCH LIVE */
+.live-eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-mono);font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);background:rgba(76,217,100,0.08);border:1px solid rgba(76,217,100,0.28);padding:.4rem 1rem;border-radius:20px;margin-bottom:1.3rem;}
+.live-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);}
+.live-head h2{font-family:var(--font-display);font-weight:800;font-size:clamp(2rem,4.5vw,3rem);margin-bottom:.8rem;}
+.live-head h2 .grn{color:var(--green);}
+.live-head p{color:var(--text2);margin-bottom:1.6rem;}
+.live-follow{display:inline-flex;align-items:center;gap:.5rem;border:1.5px solid var(--green);color:var(--green);font-weight:700;font-size:.85rem;padding:.75rem 1.4rem;border-radius:10px;margin-bottom:2.2rem;}
+.live-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+@media(max-width:860px){.live-cards{grid-template-columns:repeat(2,1fr);}}
+.live-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem;}
+.live-card .t{font-weight:700;font-size:.95rem;margin-bottom:.2rem;}
+.live-card .s{font-size:.8rem;color:var(--muted);}
+.live-card.off .s{color:var(--muted);}
+.live-stream-embed{margin-top:2.2rem;background:#000;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);aspect-ratio:16/9;}
+.live-stream-embed iframe{width:100%;height:100%;border:0;}
 
-/* ── LIVE STREAM ─────────────────────────────────────────────────── */
-.stream-card{
-  background:#000;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);
-  position:relative;aspect-ratio:16/9;
-}
-.stream-card iframe{width:100%;height:100%;border:0;}
-.stream-badge{
-  position:absolute;top:1rem;left:1rem;z-index:2;
-  display:flex;align-items:center;gap:.4rem;
-  background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);
-  padding:.4rem .8rem;border-radius:20px;font-size:.72rem;font-weight:700;
-}
-
-/* ── FOOTER ──────────────────────────────────────────────────────── */
+/* FOOTER */
 footer{border-top:1px solid var(--border);padding:3.5rem 2.5rem 2rem;}
 .footer-inner{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;gap:3rem;flex-wrap:wrap;}
 .footer-brand{display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem;}
 .footer-brand img{width:30px;}
 .footer-brand span{font-family:var(--font-display);font-weight:800;}
+.footer-desc{color:var(--muted);font-size:.85rem;max-width:260px;margin-bottom:1.2rem;}
+.footer-social{display:flex;gap:.6rem;}
+.footer-social a{width:34px;height:34px;border-radius:9px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text2);}
+.footer-social svg{width:16px;height:16px;}
 .footer-cols{display:flex;gap:3.5rem;flex-wrap:wrap;}
 .footer-col h4{font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:1rem;}
-.footer-col a{display:block;font-size:.88rem;color:var(--text2);margin-bottom:.65rem;transition:color .2s;}
-.footer-col a:hover{color:#fff;}
-.footer-bottom{
-  max-width:1180px;margin:2.5rem auto 0;padding-top:1.8rem;border-top:1px solid var(--border);
-  font-size:.78rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;
-}
+.footer-col a,.footer-col span{display:block;font-size:.88rem;color:var(--text2);margin-bottom:.65rem;}
+.footer-partners{display:flex;flex-direction:column;gap:.7rem;}
+.footer-partners .fp{font-family:var(--font-display);font-weight:700;font-size:.85rem;color:var(--text2);}
+.footer-bottom{max-width:1180px;margin:2.5rem auto 0;padding-top:1.8rem;border-top:1px solid var(--border);font-size:.8rem;color:var(--muted);text-align:center;}
 </style>
 </head>
 <body>
 
 <nav class="nav">
   <a href="#" class="nav-brand">
-    <img src="jar-clean.png" alt="Jammmy mascot"/>
-    <span class="wm"><span class="j1">JAMMMY</span><span class="j2">REWARDS</span></span>
+    <img src="jar-clean.png" alt="Jammmy"/>
+    <span class="nav-live" id="navLive"><span class="dot"></span>Not Live</span>
   </a>
   <div class="nav-links">
-    <a href="#vault">Vault</a>
-    <a href="#partners">Partners</a>
-    <a href="#requests">Requests</a>
+    <a href="#">Home</a>
+    <a href="#leaderboards">Leaderboards</a>
+    <a href="#bonuses">Bonuses</a>
+    <a href="#reviews">Reviews</a>
     <a href="#loyalty">Loyalty</a>
-    <a href="#live">Live</a>
+    <a href="#vault">Vault</a>
   </div>
-  <a href="#" class="nav-cta">Join with JAMMMY</a>
-  <button class="nav-burger" id="navBurger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <div class="nav-right">
+    <div class="nav-social">
+      <a href="https://discord.gg/n78hu5Zhwu" target="_blank" aria-label="Discord"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 5.3A18 18 0 0 0 15.6 4l-.3.6a13 13 0 0 1 4 1.6 17 17 0 0 0-15 0 13 13 0 0 1 4-1.6L8 4a18 18 0 0 0-4.7 1.3S0 10 0 15.6a18 18 0 0 0 5.6 2L6.4 16a10 10 0 0 1-1.6-.8l.4-.3a13 13 0 0 0 13.6 0l.4.3a10 10 0 0 1-1.6.8l.8 1.6a18 18 0 0 0 5.6-2c0-5.6-3.3-10.3-3.3-10.3ZM8 13.5c-.9 0-1.6-.9-1.6-2s.7-2 1.6-2 1.6.9 1.6 2-.7 2-1.6 2Zm8 0c-.9 0-1.6-.9-1.6-2s.7-2 1.6-2 1.6.9 1.6 2-.7 2-1.6 2Z"/></svg></a>
+      <a href="https://kick.com/jammmyslots" target="_blank" aria-label="Kick" style="color:#53FC18;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h5v5.5L13 3h6l-7.5 8L19 21h-6l-5-6.5V21H3z"/></svg></a>
+      <a href="https://x.com/JammmySlots" target="_blank" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23 22h-6.9l-5.4-7-6.2 7H1.3l8.1-9.3L1 2h7.1l4.9 6.4L18.9 2Zm-1.2 18h1.9L7.4 4H5.4l12.3 16Z"/></svg></a>
+      <a href="https://www.youtube.com/@jammmyslots" target="_blank" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12s0-3.5-.4-5.2c-.3-.9-1-1.6-1.9-1.9C17.9 4.5 12 4.5 12 4.5s-5.9 0-7.7.4c-.9.3-1.6 1-1.9 1.9C2 8.5 2 12 2 12s0 3.5.4 5.2c.3.9 1 1.6 1.9 1.9 1.8.4 7.7.4 7.7.4s5.9 0 7.7-.4c.9-.3 1.6-1 1.9-1.9.4-1.7.4-5.2.4-5.2ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg></a>
+      <a href="https://instagram.com/jammmyslots" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2.7 0 3.1 0 4.1.1 1 0 1.7.2 2.3.5.6.2 1.1.6 1.6 1.1.5.5.8.9 1.1 1.6.3.6.5 1.3.5 2.3.1 1 .1 1.4.1 4.1s0 3.1-.1 4.1c0 1-.2 1.7-.5 2.3-.2.6-.6 1.1-1.1 1.6-.5.5-.9.8-1.6 1.1-.6.3-1.3.5-2.3.5-1 .1-1.4.1-4.1.1s-3.1 0-4.1-.1c-1 0-1.7-.2-2.3-.5-.6-.2-1.1-.6-1.6-1.1-.5-.5-.8-.9-1.1-1.6-.3-.6-.5-1.3-.5-2.3C2 15.1 2 14.7 2 12s0-3.1.1-4.1c0-1 .2-1.7.5-2.3.2-.6.6-1.1 1.1-1.6.5-.5.9-.8 1.6-1.1.6-.3 1.3-.5 2.3-.5C8.9 2 9.3 2 12 2Zm0 1.8c-2.6 0-3 0-4 .1-.8 0-1.3.2-1.6.3-.4.1-.7.3-1 .6-.3.3-.5.6-.6 1-.1.3-.3.8-.3 1.6-.1 1-.1 1.4-.1 4s0 3 .1 4c0 .8.2 1.3.3 1.6.1.4.3.7.6 1 .3.3.6.5 1 .6.3.1.8.3 1.6.3 1 .1 1.4.1 4 .1s3 0 4-.1c.8 0 1.3-.2 1.6-.3.4-.1.7-.3 1-.6.3-.3.5-.6.6-1 .1-.3.3-.8.3-1.6.1-1 .1-1.4.1-4s0-3-.1-4c0-.8-.2-1.3-.3-1.6-.1-.4-.3-.7-.6-1-.3-.3-.6-.5-1-.6-.3-.1-.8-.3-1.6-.3-1-.1-1.4-.1-4-.1Zm0 3.7a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm0 1.8a2.7 2.7 0 1 0 0 5.4 2.7 2.7 0 0 0 0-5.4Zm4.7-1.9a1 1 0 1 1 0 2.1 1 1 0 0 1 0-2.1Z"/></svg></a>
+    </div>
+    <a href="#" class="nav-login"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="flex-shrink:0;"><path d="M20.3 5.3A18 18 0 0 0 15.6 4l-.3.6a13 13 0 0 1 4 1.6 17 17 0 0 0-15 0 13 13 0 0 1 4-1.6L8 4a18 18 0 0 0-4.7 1.3S0 10 0 15.6a18 18 0 0 0 5.6 2L6.4 16a10 10 0 0 1-1.6-.8l.4-.3a13 13 0 0 0 13.6 0l.4.3a10 10 0 0 1-1.6.8l.8 1.6a18 18 0 0 0 5.6-2c0-5.6-3.3-10.3-3.3-10.3ZM8 13.5c-.9 0-1.6-.9-1.6-2s.7-2 1.6-2 1.6.9 1.6 2-.7 2-1.6 2Zm8 0c-.9 0-1.6-.9-1.6-2s.7-2 1.6-2 1.6.9 1.6 2-.7 2-1.6 2Z"/></svg><span>Login with Discord</span></a>
+    <button class="nav-burger" id="navBurger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#vault">Vault</a>
-  <a href="#partners">Partners</a>
-  <a href="#requests">Requests</a>
-  <a href="#loyalty">Loyalty</a>
-  <a href="#live">Live</a>
-  <a href="#" class="nav-cta" style="justify-content:center;margin-top:.6rem;">Join with JAMMMY</a>
+  <a href="#">Home</a><a href="#leaderboards">Leaderboards</a><a href="#bonuses">Bonuses</a>
+  <a href="#reviews">Reviews</a><a href="#loyalty">Loyalty</a><a href="#vault">Vault</a>
 </div>
-<script>
-  const burger = document.getElementById('navBurger');
-  const menu = document.getElementById('mobileMenu');
-  burger.addEventListener('click', () => {
-    const open = menu.classList.toggle('open');
-    burger.classList.toggle('open', open);
-    burger.setAttribute('aria-expanded', open);
-  });
-  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    menu.classList.remove('open'); burger.classList.remove('open');
-  }));
-</script>
 
+<div class="float-ctas">
+  <a href="#" class="float-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg><div class="lbl">Request<br/>a Slot</div></a>
+  <a href="#" class="float-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 3 21 9.5 9.5 21H3v-6.5Z"/><path d="M3 14.5 9.5 21"/></svg><div class="lbl">Request<br/>a Battle</div></a>
+</div>
+
+<!-- HERO -->
 <section class="hero">
-  <div class="hero-copy">
-    <div class="hero-tag"><span class="dot"></span>Live on Kick · Vault filling now</div>
-    <h1>One jar.<br/>Every <span class="rainbow">win</span> we share.</h1>
-    <p>Sign up under code JAMMMY for bonuses across every partner casino, climb the weekly leaderboards, and watch the Community Vault fill — the whole community cashes out when it does.</p>
+  <div class="hero-rainbow"></div>
+  <div class="hero-content">
+    <div class="hero-tag">The Future of Community Rewards</div>
+    <h1><span class="g1">JAMMMY</span><span class="g2">REWARDS</span></h1>
+    <p>Experience the next generation of online casino rewards, exclusive leaderboards, and community-driven gaming.</p>
+    <img class="hero-visual" src="jar-clean.png" alt="Jammmy the jar"/>
     <div class="hero-actions">
-      <a href="#partners" class="btn-primary">Get Started</a>
-      <a href="#vault" class="btn-secondary">Watch the Vault</a>
+      <a href="#bonuses" class="btn btn-fill">Explore Bonuses</a>
+      <a href="#loyalty" class="btn btn-outline">Join Loyalty</a>
+      <a href="#leaderboards" class="btn btn-fill">Leaderboards</a>
     </div>
-    <div class="hero-code">
-      <div><div class="lbl">Your code</div><div class="code">JAMMMY</div></div>
-      <button onclick="navigator.clipboard.writeText('JAMMMY');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1400)">Copy</button>
-    </div>
-  </div>
-  <div class="hero-visual">
-    <img src="jar-clean.png" alt="Jammmy the jar"/>
   </div>
 </section>
 
-<div class="stat-strip">
-  <div class="stat"><div class="stat-val">—</div><div class="stat-lbl">Vault Balance</div><div class="stat-soon">● Tracking soon</div></div>
-  <div class="stat"><div class="stat-val">—</div><div class="stat-lbl">Active Players</div><div class="stat-soon">● Tracking soon</div></div>
-  <div class="stat"><div class="stat-val">3</div><div class="stat-lbl">Partner Casinos</div></div>
-  <div class="stat"><div class="stat-val">JAMMMY</div><div class="stat-lbl">Your Code</div></div>
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat-box"><div class="stat-num c-mag">$184,381</div><div class="stat-lbl">Leaderboard Wagered</div></div>
+  <div class="stat-box"><div class="stat-num c-sky">$800</div><div class="stat-lbl">Vault Balance</div></div>
+  <div class="stat-box"><div class="stat-num c-white">7</div><div class="stat-lbl">Active Players</div></div>
+  <div class="stat-box"><div class="stat-num c-white">4</div><div class="stat-lbl">Verified Casinos</div></div>
 </div>
 
-<!-- ═══ VAULT ═══ -->
-<section class="section vault-section" id="vault">
-  <div class="section-inner">
-    <div class="vault-layout">
-      <div class="vault-info">
-        <div class="eyebrow" style="background:rgba(233,63,188,0.1);color:var(--magenta);">⬡ Community Vault</div>
-        <h2 class="section-title">Every wager fills<br/>the jar a little more.</h2>
-        <p class="section-desc">The Vault is a shared pot that grows as the community wagers across our partners. When it hits the goal, everyone linked splits the payout — watch it fill live.</p>
-        <div class="vault-stats">
-          <div class="vault-stat"><div class="v">—</div><div class="l">Current</div></div>
-          <div class="vault-stat"><div class="v">—</div><div class="l">Goal</div></div>
-          <div class="vault-stat"><div class="v">0%</div><div class="l">Complete</div></div>
-        </div>
-        <a href="#" class="btn-primary">Link Your Username</a>
-      </div>
-      <div>
-        <div class="vault-meter-wrap">
-          <img src="jar-dim.png" alt=""/>
-          <img class="vault-meter-fill" id="vaultFill" src="jar-clean.png" alt="Vault fill level"/>
-        </div>
-        <div class="vault-pct">14% full</div>
-        <div class="vault-preview-card">
-          <video autoplay loop muted playsinline><source src="jar-anim.webm" type="video/webm"></video>
-          <div class="vault-preview-label">🎉 What happens at 100%</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ PARTNERS ═══ -->
-<section class="section" id="partners">
-  <div class="section-inner">
-    <div class="eyebrow" style="background:rgba(63,169,245,0.1);color:var(--sky);">🎰 Verified Partners</div>
-    <h2 class="section-title">Sign up once, win everywhere.</h2>
-    <p class="section-desc">Every partner below is hand-picked and pays into the Vault. Use code JAMMMY at signup on each one.</p>
-    <div class="partner-grid">
-      <div class="partner-card p1">
-        <div class="partner-name">Upgrader</div>
-        <div class="partner-tag">Case battles, upgrades &amp; leaderboards</div>
-        <div class="partner-bonus">Code: JAMMMY</div><br/>
-        <a href="#" class="partner-link">Visit Upgrader <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-      </div>
-      <div class="partner-card p2">
-        <div class="partner-name">RustMagic</div>
-        <div class="partner-tag">Rust skin battles &amp; case openings</div>
-        <div class="partner-bonus">Code: JAMMMY</div><br/>
-        <a href="#" class="partner-link">Visit RustMagic <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-      </div>
-      <div class="partner-card p3">
-        <div class="partner-name">Winovo</div>
-        <div class="partner-tag">Slots &amp; live casino, 10% rakeback</div>
-        <div class="partner-bonus">10% Rakeback</div><br/>
-        <a href="#" class="partner-link">Visit Winovo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ GAME REQUESTS ═══ -->
-<section class="section" id="requests" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
-  <div class="section-inner">
-    <div class="eyebrow" style="background:rgba(124,77,255,0.1);color:var(--violet);">🎮 Game &amp; Battle Requests</div>
-    <h2 class="section-title">Pick the game, we'll play it.</h2>
-    <p class="section-desc">Browse each partner's game library and drop a request — slot picks or battle calls, your choice shows up in Jammmy's queue.</p>
-    <div class="req-tabs">
-      <button class="req-tab active">Upgrader</button>
-      <button class="req-tab">RustMagic</button>
-      <button class="req-tab">Winovo</button>
-    </div>
-    <div class="req-list">
-      <div class="req-row"><div><div class="req-row-name">Case Battle — 5 Case Mix</div><div class="req-row-meta">Upgrader · Battle request</div></div><button class="req-btn">Request</button></div>
-      <div class="req-row"><div><div class="req-row-name">Gates of Olympus 1000</div><div class="req-row-meta">Slot · High volatility</div></div><button class="req-btn">Request</button></div>
-      <div class="req-row"><div><div class="req-row-name">Sweet Bonanza</div><div class="req-row-meta">Slot · Medium volatility</div></div><button class="req-btn">Request</button></div>
-      <div class="req-row"><div><div class="req-row-name">Upgrade Duel — 50/50</div><div class="req-row-meta">Upgrader · Battle request</div></div><button class="req-btn">Request</button></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ LIVE HIGHLIGHTS ═══ -->
+<!-- WHY PLAY -->
 <section class="section">
   <div class="section-inner">
-    <div class="eyebrow" style="background:rgba(232,86,107,0.1);color:var(--coral);">🔥 Live Highlights</div>
-    <h2 class="section-title">When it goes off, it lands here.</h2>
-    <p class="section-desc">Jammmy picks the best battle and slot moments from stream and features them below — clip it, tag it, and it might make the cut.</p>
-    <div class="highlight-empty">
-      <div class="ic">🏆</div>
-      <h3>No highlights featured yet</h3>
-      <p>Submit a clip in Discord during stream — Jammmy hand-picks the top plays and pins them here.</p>
-      <a href="#" class="btn-secondary">Submit in Discord</a>
+    <div class="section-head">
+      <h2 class="section-title">Why play with <span class="grad">Jammmy</span></h2>
+      <p class="section-desc">Real rewards, a real community, and offers you won't find on the casino alone.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card c1">
+        <div class="why-icon">🎁</div>
+        <h3>Exclusive Bonus Codes</h3>
+        <p>Hand-picked reloads, rakeback and deposit offers. Sign up under <strong style="color:#fff;">JAMMMY</strong> to unlock everything.</p>
+        <a href="#bonuses" class="why-link">View Bonuses →</a>
+      </div>
+      <div class="why-card c2">
+        <div class="why-icon">🏆</div>
+        <h3>Weekly Leaderboards</h3>
+        <p>Prizes across partner races. Wager, climb the board and get paid.</p>
+        <a href="#leaderboards" class="why-link">See Leaderboard →</a>
+      </div>
+      <div class="why-card c3">
+        <div class="why-icon">⬡</div>
+        <h3>Community Vault</h3>
+        <p>Every wager fills the shared jar. Hit the goal and the community cashes out together.</p>
+        <a href="#vault" class="why-link">View Vault →</a>
+      </div>
+      <div class="why-card c4">
+        <div class="why-icon">⚡</div>
+        <h3>Loyalty Tiers</h3>
+        <p>Rank up and unlock VIP perks, drops, giveaways and exclusive race invites.</p>
+        <a href="#loyalty" class="why-link">Join Loyalty →</a>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ LOYALTY ═══ -->
-<section class="section" id="loyalty" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+<!-- VAULT -->
+<section class="section vault-sec" id="vault">
   <div class="section-inner">
-    <div class="eyebrow" style="background:rgba(76,217,100,0.1);color:var(--green);">⚡ Loyalty Program</div>
-    <h2 class="section-title">Rank up, cash in.</h2>
-    <p class="section-desc">Earn coins just for being part of the community — redeem them for raffle entries, drops, and race invites.</p>
-    <div class="loyalty-layout">
-      <div class="loyalty-coin-wrap">
-        <video autoplay loop muted playsinline class="loyalty-coin"><source src="coin.webm" type="video/webm"></video>
+    <div class="vault-grid">
+      <div class="vault-left">
+        <div class="vault-eyebrow">○ Community Vault</div>
+        <h2>JAMMMY <span class="grn">VAULT</span></h2>
+        <p>Watch the community jar fill up in real time. Every wager builds toward the next payout.</p>
+        <img src="jar-clean.png" alt="Jammmy vault jar"/>
       </div>
-      <div class="tier-track">
-        <div class="tier-row"><div class="tier-badge" style="background:var(--amber);">1</div><div><div class="tier-name">Sign Up</div><div class="tier-desc">20 coins for linking your Discord</div></div></div>
-        <div class="tier-row"><div class="tier-badge" style="background:var(--magenta);">2</div><div><div class="tier-name">Stream Rewards</div><div class="tier-desc">Earn coins live on stream or completing tasks</div></div></div>
-        <div class="tier-row"><div class="tier-badge" style="background:var(--violet);">3</div><div><div class="tier-name">Special Events</div><div class="tier-desc">Bonus coins during community events</div></div></div>
-        <div class="tier-row"><div class="tier-badge" style="background:var(--sky);">4</div><div><div class="tier-name">Raffles</div><div class="tier-desc">Spend coins on active raffle entries</div></div></div>
+      <div class="vault-panel">
+        <div class="vault-bal-lbl">Current Balance</div>
+        <div class="vault-bal">$800</div>
+        <div class="vault-goal">Goal: <b>$1,000</b></div>
+        <div class="vault-bar"><div class="vault-bar-fill" style="width:80%;"></div></div>
+        <div class="vault-bar-labels"><span class="pct">80% complete</span><span class="rem">$200 remaining</span></div>
+        <div class="vault-row"><span class="l">Last Added</span><span class="v grn">+$100</span></div>
+        <div class="vault-row"><span class="l">Date</span><span class="v">1st April</span></div>
+        <div class="vault-row"><span class="l">Status</span><span class="v vault-status"><span class="dot"></span>Active</span></div>
+        <div class="vault-btns">
+          <a href="#" class="btn btn-vault-view">✓ View Vault</a>
+          <a href="#loyalty" class="btn btn-vault-earn">Earn Coins</a>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ LIVE STREAM ═══ -->
-<section class="section" id="live">
+<!-- VERIFIED PARTNERS -->
+<section class="section" id="bonuses">
   <div class="section-inner">
-    <div class="eyebrow" style="background:rgba(63,169,245,0.1);color:var(--sky);">📺 Watch Live</div>
-    <h2 class="section-title">Catch Jammmy live on Kick.</h2>
-    <p class="section-desc">Battles, slot calls, and Vault milestones happen live — pull up a seat.</p>
-    <div class="stream-card">
-      <div class="stream-badge">🔴 Live</div>
+    <h2 class="section-title" style="margin-bottom:.5rem;">VERIFIED PARTNERS</h2>
+    <p class="section-desc" style="margin-bottom:.8rem;">Hand-picked casinos with the best player rewards.</p>
+    <div style="height:2px;background:var(--jar-gradient);margin-bottom:2.6rem;border-radius:2px;"></div>
+    <div class="partner-grid">
+      <div class="partner-card pc1">
+        <div class="partner-logo-box">DegenCity</div>
+        <div class="partner-body">
+          <div class="partner-name">DegenCity</div>
+          <div class="partner-badge">10% Cashback for 7 Days</div>
+          <ul class="partner-perks">
+            <li>💰 10% Cashback for 7 days</li>
+            <li>⚡ Instant Cashouts</li>
+            <li>🎁 Tip &amp; Giveaways</li>
+            <li>✨ Daily Promo Codes</li>
+          </ul>
+          <a href="#" class="partner-claim">Claim Bonus ›</a>
+        </div>
+      </div>
+      <div class="partner-card pc2">
+        <div class="partner-logo-box"><div class="plogo-circle">Up</div></div>
+        <div class="partner-body">
+          <div class="partner-name">Upgrader</div>
+          <div class="partner-badge">Bi-Weekly Leaderboard</div>
+          <ul class="partner-perks">
+            <li>🏆 Monthly leaderboard prizes</li>
+            <li>📨 Promo codes daily</li>
+            <li>⚡ Instant withdrawals</li>
+            <li>🔒 Secure &amp; fair gaming</li>
+          </ul>
+          <a href="#" class="partner-claim">Claim Bonus ›</a>
+        </div>
+      </div>
+      <div class="partner-card pc3">
+        <div class="partner-logo-box">RustMagic</div>
+        <div class="partner-body">
+          <div class="partner-name">RustMagic</div>
+          <div class="partner-badge">Bi-Weekly Leaderboard</div>
+          <ul class="partner-perks">
+            <li>🎁 Exclusive Deposit Bonus</li>
+            <li>⚡ Instant Cashouts</li>
+          </ul>
+          <a href="#" class="partner-claim">Claim Bonus ›</a>
+        </div>
+      </div>
+    </div>
+    <div class="winovo-card">
+      <div class="winovo-top"><div class="wname">WINOVO</div></div>
+      <div class="winovo-body">
+        <h3>Winovo.io</h3>
+        <ul>
+          <li>🎁 Exclusive Deposit Bonus</li>
+          <li>⚡ Instant Cashouts</li>
+          <li>🛡️ 24/7 Support</li>
+        </ul>
+        <a href="#" class="winovo-claim">Claim Bonus ›</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPETITIVE LEADERBOARDS -->
+<section class="section" id="leaderboards" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="section-inner">
+    <div class="section-head">
+      <h2 class="section-title">Competitive <span class="grad">Leaderboards</span></h2>
+      <p class="section-desc">Wager on partner sites and climb the ranks for cash prizes, coins, and vault share.</p>
+    </div>
+    <div class="lb-grid">
+      <div class="lb-card lb1">
+        <div class="lb-logo">Up</div>
+        <h3>Upgrader Leaderboard</h3>
+        <p>Compete for prizes and climb the ranks in the Upgrader leaderboard.</p>
+        <a href="#" class="lb-btn">View Leaderboard →</a>
+      </div>
+      <div class="lb-card lb2">
+        <div class="lb-logo">W</div>
+        <h3>Winovo.io $400 Weekly Leaderboard</h3>
+        <p>Compete for $400 in weekly prizes across the top 7 places on the Winovo.io leaderboard.</p>
+        <a href="#" class="lb-btn">View Leaderboard →</a>
+      </div>
+    </div>
+    <div class="lb-note">⚠️ <span><b>Note:</b> Users must deposit more than the placement prize. If the deposit is less than the prize, the prize will be voided.</span></div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="section" id="reviews">
+  <div class="section-inner">
+    <div class="reviews-head">
+      <div>
+        <div class="reviews-eyebrow">Slot Reviews</div>
+        <h2 class="section-title" style="margin-bottom:.3rem;">Latest <span class="grad">Reviews</span></h2>
+        <p class="section-desc">In-depth breakdowns of the hottest slots.</p>
+      </div>
+      <a href="#" class="btn btn-outline">All Reviews →</a>
+    </div>
+    <div class="reviews-empty">Reviews loading…</div>
+    <div style="text-align:center;"><a href="#" class="btn btn-outline">Browse All Reviews →</a></div>
+  </div>
+</section>
+
+<!-- WATCH LIVE -->
+<section class="section">
+  <div class="section-inner">
+    <div class="live-eyebrow"><span class="dot"></span>Live Streams</div>
+    <div class="live-head">
+      <h2>WATCH <span class="grn">LIVE</span></h2>
+      <p>Casino gameplay, giveaways, and community events most evenings.</p>
+    </div>
+    <a href="https://kick.com/jammmyslots" target="_blank" class="live-follow">Follow on Kick ↗</a>
+    <div class="live-cards">
+      <div class="live-card"><div class="t">Watch Live</div><div class="s">kick.com/jammmyslots</div></div>
+      <div class="live-card"><div class="t">Follow</div><div class="s">Get notified</div></div>
+      <div class="live-card"><div class="t">Discord</div><div class="s">Join community</div></div>
+      <div class="live-card off"><div class="t">Status</div><div class="s">Offline</div></div>
+    </div>
+    <div class="live-stream-embed">
       <iframe src="https://player.kick.com/jammmyslots" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Jammmy live on Kick"></iframe>
     </div>
   </div>
@@ -563,30 +498,48 @@ footer{border-top:1px solid var(--border);padding:3.5rem 2.5rem 2rem;}
   <div class="footer-inner">
     <div>
       <div class="footer-brand"><img src="jar-clean.png" alt=""/><span>JAMMMYREWARDS</span></div>
-      <p style="color:var(--muted);font-size:.85rem;max-width:260px;">The Community Vault, weekly leaderboards, and every bonus under code JAMMMY.</p>
+      <p class="footer-desc">The premier destination for casino enthusiasts and slot players.</p>
+      <div class="footer-social">
+        <a href="https://kick.com/jammmyslots" target="_blank" style="color:#53FC18;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h5v5.5L13 3h6l-7.5 8L19 21h-6l-5-6.5V21H3z"/></svg></a>
+        <a href="https://discord.gg/n78hu5Zhwu" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 5.3A18 18 0 0 0 15.6 4l-.3.6a13 13 0 0 1 4 1.6 17 17 0 0 0-15 0 13 13 0 0 1 4-1.6L8 4a18 18 0 0 0-4.7 1.3S0 10 0 15.6a18 18 0 0 0 5.6 2L6.4 16a10 10 0 0 1-1.6-.8l.4-.3a13 13 0 0 0 13.6 0l.4.3a10 10 0 0 1-1.6.8l.8 1.6a18 18 0 0 0 5.6-2c0-5.6-3.3-10.3-3.3-10.3ZM8 13.5c-.9 0-1.6-.9-1.6-2s.7-2 1.6-2 1.6.9 1.6 2-.7 2-1.6 2Zm8 0c-.9 0-1.6-.9-1.6-2s.7-2 1.6-2 1.6.9 1.6 2-.7 2-1.6 2Z"/></svg></a>
+      </div>
     </div>
     <div class="footer-cols">
       <div class="footer-col">
-        <h4>Site</h4>
-        <a href="#vault">Vault</a>
-        <a href="#partners">Partners</a>
-        <a href="#requests">Requests</a>
-        <a href="#loyalty">Loyalty</a>
+        <h4>Quick Links</h4>
+        <a href="#">Home</a><a href="#leaderboards">Leaderboards</a><a href="#bonuses">Bonuses</a>
+        <a href="#reviews">Reviews</a><a href="#loyalty">Loyalty</a><a href="#vault">Vault</a>
       </div>
       <div class="footer-col">
-        <h4>Community</h4>
-        <a href="https://discord.gg/n78hu5Zhwu" target="_blank">Discord</a>
-        <a href="https://kick.com/jammmyslots" target="_blank">Kick</a>
-        <a href="https://x.com/JammmySlots" target="_blank">X / Twitter</a>
-        <a href="https://www.youtube.com/@jammmyslots" target="_blank">YouTube</a>
+        <h4>Resources</h4>
+        <a href="https://www.begambleaware.org" target="_blank">Responsible Gambling</a>
+        <a href="#loyalty">Loyalty Program</a>
+        <span>Jammmy Coins</span>
+      </div>
+      <div class="footer-col">
+        <h4>Partners</h4>
+        <div class="footer-partners">
+          <span class="fp">◆ DegenCity</span>
+          <span class="fp">Up Upgrader</span>
+          <span class="fp">✦ RustMagic</span>
+          <span class="fp">🐉 Winovo</span>
+        </div>
       </div>
     </div>
   </div>
-  <div class="footer-bottom">
-    <span>© 2026 JammmyRewards. 18+ Gamble Responsibly.</span>
-    <span>Please play responsibly · <a href="https://www.begambleaware.org" target="_blank" style="color:var(--text2);">BeGambleAware.org</a></span>
-  </div>
+  <div class="footer-bottom">© 2026 JammmyRewards. All rights reserved. · 18+ Gamble Responsibly.</div>
 </footer>
 
+<script>
+  const burger = document.getElementById('navBurger');
+  const menu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    burger.classList.toggle('open', open);
+  });
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    menu.classList.remove('open'); burger.classList.remove('open');
+  }));
+</script>
 </body>
 </html>
