@@ -128,7 +128,18 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(16px);
 
 
 /* ===== HERO ===== */
-.hero{text-align:center;padding:34px 0 50px;position:relative;isolation:isolate;overflow-x:hidden}
+.hero{text-align:center;padding:34px 0 50px;position:relative;isolation:isolate;overflow-x:hidden;
+  background:linear-gradient(135deg,
+    #e040fb 0%, #7c4dff 14%, #448aff 28%, #00e5ff 42%,
+    #69f0ae 56%, #ffff00 70%, #ff9100 84%, #ff1744 100%);
+  background-size:300% 300%;
+  animation:rainbowShift 6s ease infinite;
+}
+@keyframes rainbowShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
 .pill{display:inline-flex;align-items:center;gap:8px;font-size:.74rem;font-weight:600;letter-spacing:.22em;
   text-transform:uppercase;color:#d7c9ff;padding:9px 20px;border-radius:99px;position:relative;background:var(--bg2)}
 .pill::before{content:"";position:absolute;inset:0;border-radius:99px;padding:1.5px;background:var(--rainbow);background-size:200% auto;animation:rainbowShift 3s linear infinite;
@@ -1237,14 +1248,7 @@ nav{border-bottom:1px solid transparent!important;
 
 </style>
 <style>
-#liveRainbow{
-  position:absolute;
-  inset:0;                   /* fills the hero exactly */
-  width:100%;height:100%;
-  z-index:-1;pointer-events:none;
-  opacity:0;                 /* starts invisible — JS animates it in */
-}
-@media(prefers-reduced-motion:reduce){#liveRainbow{opacity:1!important}}
+#liveRainbow{display:none}
 </style>
 </head>
 <body>
