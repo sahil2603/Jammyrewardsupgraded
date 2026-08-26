@@ -2702,61 +2702,71 @@ document.addEventListener('click',function(e){
     var W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
 
-    /* The arc is centred below the canvas, so it rises as a gentle curve.
-       Centre point is slightly below the bottom-centre of the hero.          */
-    var cx = W / 2;
-    var cy = H + H * 0.45;   /* below the hero = shallow curve */
+    /* We want the arc to touch EXACTLY the bottom-left (0, H) and
+       bottom-right (W, H) corners of the canvas.
+       Centre is at (W/2, cy) below the bottom edge.
+       Radius R = distance from (W/2, cy) to corner (0, H):
+         R^2 = (W/2)^2 + (cy - H)^2
+       We pick a sag: how far below the bottom the centre sits.
+       Larger sag = shallower, wider arc. */
+    var sag = H * 0.55;           /* distance below bottom edge */
+    var cx  = W / 2;
+    var cy  = H + sag;
+    /* Radius from centre to the corner */
+    var R = Math.sqrt((W/2)*(W/2) + sag*sag);
 
-    /* Radius = distance from that centre to the bottom corners */
-    var cornerR = Math.sqrt(cx*cx + (H * 0.45)*(H * 0.45));
+    /* Angle from centre to the left corner (0, H) */
+    var angleToCorner = Math.atan2(H - cy, 0 - cx); /* negative y-axis diff */
+    /* Arc spans from left corner to right corner, sweeping upward */
+    var fullStart = angleToCorner;                    /* points at bottom-left  */
+    var fullEnd   = Math.PI - Math.abs(angleToCorner) + Math.PI; /* bottom-right (mirror) */
+    /* Simpler: symmetric about -PI/2 */
+    var halfSpan   = Math.abs(angleToCorner - (-Math.PI/2));  /* span from top to corner */
+    var midAngle   = -Math.PI / 2;
+    var startAngle = midAngle - halfSpan * progress;
+    var endAngle   = midAngle + halfSpan * progress;
 
-    /* We draw multiple concentric strokes (thick → thin) to get a wide,
-       feathered rainbow without any hard edges.                             */
-    var BANDS = 7;
-    var totalThickness = Math.min(H * 0.62, 340); /* arc width on screen */
-
-    /* Sweep angle — at progress 0, angle is 0 (invisible).
-       At progress 1, the arc spans from the left bottom corner to the right. */
-    var fullAngle = Math.PI; /* 180° = left corner to right corner */
-    var angle     = fullAngle * progress;
-
-    /* Mid angle is straight up from the centre (pointing at the hero) */
-    var midAngle  = -Math.PI / 2; /* 270° = straight up */
-    var startAngle = midAngle - angle / 2;
-    var endAngle   = midAngle + angle / 2;
+    /* Draw concentric bands — thick bands that blend into each other */
+    var BANDS = 9;
+    var thickness = Math.min(H * 0.72, 400);
 
     for(var b = 0; b < BANDS; b++){
-      var t      = b / BANDS;
-      var radius = cornerR - totalThickness * 0.5 + totalThickness * t;
-      var thick  = (totalThickness / BANDS) * 1.8; /* overlap for smooth blend */
+      var t      = b / (BANDS - 1);
+      /* Vary radius so bands fan outward from inner to outer */
+      var radius = R - thickness * 0.5 + thickness * t;
 
-      /* Build a gradient along the arc using createLinearGradient.
-         We tint by cycling the hue offset to create the colour-shift animation. */
-      var numStops = HUES.length;
-      /* Sample the colour at this band position based on a slow hue walk */
-      var hue = (HUES[b % HUES.length] + hueOffset) % 360;
-      var hueNext = (HUES[(b+1) % HUES.length] + hueOffset) % 360;
+      /* Alpha: peaks at mid-band, fades to 0 at inner and outer edges */
+      var edgeFade = Math.sin(Math.PI * t);          /* 0→1→0 across bands */
+      var alpha    = progress * 0.92 * edgeFade;
 
-      /* Opacity: full in the middle, fades at both ends + top of band */
-      var alpha = progress * (0.75 + 0.25 * Math.sin(Math.PI * t));
-
-      /* Build a linear gradient that sweeps the rainbow colours left→right */
-      var grd = ctx.createLinearGradient(0, 0, W, 0);
-      for(var i = 0; i <= numStops; i++){
-        var sh = (HUES[i % numStops] + hueOffset) % 360;
-        grd.addColorStop(i / numStops, 'hsla('+sh+',100%,60%,'+ alpha.toFixed(2)+')');
+      /* Colour gradient left → right across the full width */
+      var grd = ctx.createLinearGradient(0, H, W, H);
+      var stops = [
+        [300, 100, 65],   // magenta/pink  (left corner)
+        [260, 100, 65],   // purple
+        [220, 100, 65],   // blue
+        [180, 100, 65],   // cyan
+        [130, 100, 65],   // green
+        [60,  100, 65],   // yellow
+        [30,  100, 65],   // orange
+        [0,   100, 65],   // red/pink      (right corner)
+      ];
+      for(var i = 0; i < stops.length; i++){
+        var h = (stops[i][0] + hueOffset) % 360;
+        var a = alpha.toFixed(3);
+        grd.addColorStop(i / (stops.length - 1),
+          'hsla('+h+','+stops[i][1]+'%,'+stops[i][2]+'%,'+a+')');
       }
 
       ctx.beginPath();
       ctx.arc(cx, cy, radius, startAngle, endAngle);
       ctx.strokeStyle = grd;
-      ctx.lineWidth   = thick;
+      ctx.lineWidth   = (thickness / BANDS) * 2.2;
       ctx.lineCap     = 'round';
       ctx.stroke();
     }
 
-    /* Fade the canvas itself in during the first part of the sweep */
-    canvas.style.opacity = Math.min(progress * 2, 1).toFixed(3);
+    canvas.style.opacity = Math.min(progress * 1.5, 1).toFixed(3);
   }
 
   function animate(ts){
