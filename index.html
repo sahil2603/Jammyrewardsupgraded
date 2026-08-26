@@ -1241,13 +1241,14 @@ nav{border-bottom:1px solid transparent!important;
   position:absolute;          /* scrolls with the hero — no scroll jank */
   left:50%;bottom:-20px;
   transform:translateX(-50%);
-  width:min(190vw,2600px);height:820px;
+  width:min(200vw,2800px);height:480px;
   z-index:-1;pointer-events:none;
   /* colours set by JS every ~33ms — no transition to avoid layout cost */
   background:transparent;
+  filter:saturate(1.35) brightness(1.08);
   will-change:transform;
 }
-@media(max-width:768px){#liveRainbow{height:460px;width:200vw}}
+@media(max-width:768px){#liveRainbow{height:340px;width:220vw}}
 @media(prefers-reduced-motion:reduce){#liveRainbow{display:none}}
 </style>
 </head>
