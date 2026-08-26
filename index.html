@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>JammmySlots — Community Casino Rewards</title>
-<meta name="description" content="The future of community rewards. Exclusive casino bonuses, leaderboards, raffles and loyalty with JammmySlots.">
+<title>JammmyRewards — Community Casino Rewards</title>
+<meta name="description" content="The future of community rewards. Exclusive casino bonuses, leaderboards, raffles and loyalty with JammmyRewards.">
 <meta name="theme-color" content="#0a0613">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -114,21 +114,21 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(16px);
 @keyframes coinSpin{0%{transform:translate(-50%,0) scale(0) rotateY(0deg)}20%{transform:translate(-50%,-60px) scale(1.1) rotateY(180deg);opacity:1}80%{transform:translate(-50%,-60px) scale(1) rotateY(540deg);opacity:1}100%{transform:translate(-50%,0) scale(0) rotateY(720deg);opacity:0}}
 @keyframes gradientBorder{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 @keyframes neonPulseGreen{
-  0%,100%{box-shadow:0 0 16px rgba(22,163,74,.6),0 0 32px rgba(22,163,74,.3),0 8px 28px -8px rgba(22,163,74,.5);filter:brightness(1)}
-  50%{box-shadow:0 0 28px rgba(74,222,128,.9),0 0 56px rgba(74,222,128,.5),0 8px 36px -8px rgba(74,222,128,.7);filter:brightness(1.12)}
+  0%,100%{filter:brightness(1) drop-shadow(0 0 10px rgba(74,222,128,.55))}
+  50%{filter:brightness(1.12) drop-shadow(0 0 18px rgba(74,222,128,.85))}
 }
 @keyframes neonPulsePink{
-  0%,100%{box-shadow:0 0 16px rgba(190,24,93,.6),0 0 32px rgba(190,24,93,.3),0 8px 28px -8px rgba(190,24,93,.5);filter:brightness(1)}
-  50%{box-shadow:0 0 28px rgba(244,114,182,.9),0 0 56px rgba(244,114,182,.5),0 8px 36px -8px rgba(244,114,182,.7);filter:brightness(1.12)}
+  0%,100%{filter:brightness(1) drop-shadow(0 0 10px rgba(244,114,182,.55))}
+  50%{filter:brightness(1.12) drop-shadow(0 0 18px rgba(244,114,182,.85))}
 }
 @keyframes neonPulseCyan{
-  0%,100%{box-shadow:0 0 16px rgba(14,116,144,.6),0 0 32px rgba(34,211,238,.3),0 8px 28px -8px rgba(14,116,144,.5);filter:brightness(1)}
-  50%{box-shadow:0 0 28px rgba(34,211,238,.9),0 0 56px rgba(34,211,238,.5),0 8px 36px -8px rgba(34,211,238,.7);filter:brightness(1.12)}
+  0%,100%{filter:brightness(1) drop-shadow(0 0 10px rgba(34,211,238,.55))}
+  50%{filter:brightness(1.12) drop-shadow(0 0 18px rgba(34,211,238,.85))}
 }
 
 
 /* ===== HERO ===== */
-.hero{text-align:center;padding:34px 0 50px;position:relative;isolation:isolate}
+.hero{text-align:center;padding:34px 0 50px;position:relative;isolation:isolate;overflow-x:hidden}
 .pill{display:inline-flex;align-items:center;gap:8px;font-size:.74rem;font-weight:600;letter-spacing:.22em;
   text-transform:uppercase;color:#d7c9ff;padding:9px 20px;border-radius:99px;position:relative;background:var(--bg2)}
 .pill::before{content:"";position:absolute;inset:0;border-radius:99px;padding:1.5px;background:var(--rainbow);background-size:200% auto;animation:rainbowShift 3s linear infinite;
@@ -471,7 +471,7 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(16px);
   box-shadow:0 36px 70px -20px rgba(168,85,247,.5),0 0 0 1px rgba(168,85,247,.2),inset 0 1px 0 rgba(255,255,255,.1);
 }
 .vp-card:hover::before{opacity:1;background-size:200% auto;animation:rainbowShift 2s linear infinite}
-/* Winovo gold, Upgrader blue, Runewager green */
+/* Upgrader pink, RustMagic pink, DegenCity cyan */
 .vp-card:nth-child(1):hover{border-color:rgba(251,191,36,.4);box-shadow:0 36px 70px -20px rgba(251,191,36,.4),0 0 0 1px rgba(251,191,36,.15)}
 .vp-card:nth-child(2):hover{border-color:rgba(91,141,239,.4);box-shadow:0 36px 70px -20px rgba(91,141,239,.4),0 0 0 1px rgba(91,141,239,.15)}
 .vp-card:nth-child(3):hover{border-color:rgba(74,222,128,.4);box-shadow:0 36px 70px -20px rgba(74,222,128,.4),0 0 0 1px rgba(74,222,128,.15)}
@@ -714,7 +714,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .wl-kick-btn:hover{background:#22c55e;color:#0a2012}
 .wl-chips{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0 30px}
 .wl-chip{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;
-  display:flex;align-items:center;gap:12px}
+  display:flex;align-items:center;gap:12px;min-width:0}
+.wlc-title,.wlc-sub{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .wlc-title{font-weight:600;font-size:.92rem}
 .wlc-sub{color:var(--faint);font-size:.8rem;margin-top:2px}
 .wl-offline-dot{width:10px;height:10px;border-radius:50%;background:var(--faint);flex:none}
@@ -1271,8 +1272,8 @@ nav{border-bottom:1px solid transparent!important;
 <nav>
   <div class="wrap nav-in">
     <div class="brand">
-      <img src="https://www.jammmyslots.com/jammyslots-mascot.png" alt="JammmySlots" style="width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 3px 8px rgba(168,85,247,.45))">
-      <span>JammmySlots</span>
+      <img src="jar-clean.png" alt="JammmyRewards" style="width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 3px 8px rgba(168,85,247,.45))">
+      <span>JammmyRewards</span>
     </div>
     <span class="notlive"><span class="d"></span> Not Live</span>
     <div class="nav-links">
@@ -1318,7 +1319,7 @@ nav{border-bottom:1px solid transparent!important;
         <div style="position:absolute;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(168,85,247,.3),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);animation:floatUp 3s ease-in-out infinite;pointer-events:none;z-index:0"></div>
         <div style="position:absolute;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.25),transparent 70%);top:10%;left:90%;animation:floatUp 4s ease-in-out infinite .7s;pointer-events:none;z-index:0"></div>
         <div style="position:absolute;width:50px;height:50px;border-radius:50%;background:radial-gradient(circle,rgba(244,114,182,.25),transparent 70%);top:75%;left:-10%;animation:floatUp 3.5s ease-in-out infinite 1.2s;pointer-events:none;z-index:0"></div>
-        <img class="mascot mascot-glow" src="https://www.jammmyslots.com/jammyslots-mascot.png" alt="JammmySlots mascot" style="position:relative;z-index:1">
+        <img class="mascot mascot-glow" src="jar-clean.png" alt="JammmyRewards mascot" style="position:relative;z-index:1">
       </div>
       <div class="hero-cta">
         <button class="skew primary" onclick="nav('bonuses')" style="animation:borderGlow 2s ease-in-out infinite"><span>EXPLORE BONUSES</span></button>
@@ -1399,7 +1400,7 @@ nav{border-bottom:1px solid transparent!important;
           <h2 class="vault-title"><span class="vj">JAMMMY</span> <span class="vv" style="background:var(--rainbow);background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:rainbowShift 4s linear infinite">VAULT</span></h2>
           <p class="vault-sub">Watch the community jar fill up in real time. Every wager builds toward the next payout.</p>
         </div>
-        <img src="https://www.jammmyslots.com/jammyslots-mascot.png" alt="Jammmy mascot" class="vault-mascot" onclick="openVaultModal()">
+        <img src="jar-clean.png" alt="Jammmy mascot" class="vault-mascot" onclick="openVaultModal()">
       </div>
 
       <!-- RIGHT: live balance + bar + mini cards + buttons — floating freely -->
@@ -1440,32 +1441,34 @@ nav{border-bottom:1px solid transparent!important;
       </div>
       <div class="vp-grid">
 
-        <!-- WINOVO -->
+        <!-- DEGENCITY -->
         <div class="vp-card">
-          <div class="vp-logo-wrap" style="background:linear-gradient(160deg,#1a1208,#0e0905)">
-            <img src="https://www.jammmyslots.com/winovo.png" alt="Winovo" class="vp-logo">
+          <div class="vp-logo-wrap" style="background:linear-gradient(160deg,#1a0a1a,#0a0508)">
+            <img src="https://www.jammmyslots.com/degencity.png" alt="DegenCity" class="vp-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-family:'Lilita One',sans-serif;font-size:1.3rem;color:#c084fc;letter-spacing:.02em">DegenCity</div>
           </div>
           <div class="vp-body">
-            <div class="vp-cas">Winovo.io</div>
-            <div class="vp-tag-s" style="color:#f59e0b">$400 Weekly Leaderboard</div>
+            <div class="vp-cas">DegenCity</div>
+            <div class="vp-tag-s" style="color:#60a5fa">10% Cashback for 7 Days</div>
             <ul class="vp-feats">
-              <li>💰 Tiered deposit bonuses up to 20%</li>
-              <li>🎁 Promocodes on engagement &amp; activity</li>
-              <li>🎉 Giveaways: $100–$500</li>
-              <li>🏆 $400 weekly leaderboard — top 7 paid</li>
+              <li>💰 10% Cashback for 7 days</li>
+              <li>⚡ Instant Cashouts</li>
+              <li>🎁 Tip &amp; Giveaways</li>
+              <li>✨ Daily Promo Codes</li>
             </ul>
-            <button class="vp-btn" style="background:#16a34a;color:#fff;font-weight:800;box-shadow:0 0 20px rgba(22,163,74,.7),0 0 40px rgba(22,163,74,.4),0 8px 28px -8px rgba(22,163,74,.6);animation:neonPulseGreen 2s ease-in-out infinite;border:1px solid rgba(74,222,128,.5)" onclick="go('https://winovo.io')">Claim Bonus &rsaquo;</button>
+            <button class="vp-btn" style="background:#0e7490;color:#fff;font-weight:800;box-shadow:0 0 20px rgba(14,116,144,.7),0 0 40px rgba(34,211,238,.4),0 8px 28px -8px rgba(14,116,144,.6);animation:neonPulseCyan 2s ease-in-out infinite;border:1px solid rgba(34,211,238,.5)" onclick="go('https://degencity.com')">Claim Bonus &rsaquo;</button>
           </div>
         </div>
 
         <!-- UPGRADER -->
         <div class="vp-card">
           <div class="vp-logo-wrap" style="background:linear-gradient(160deg,#0d1526,#080e1a)">
-            <img src="https://www.jammmyslots.com/Upgrader-landscape.png" alt="Upgrader" class="vp-logo">
+            <img src="https://www.jammmyslots.com/Upgrader-landscape.png" alt="Upgrader" class="vp-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-family:'Lilita One',sans-serif;font-size:1.3rem;color:#60a5fa;letter-spacing:.02em">Upgrader</div>
           </div>
           <div class="vp-body">
             <div class="vp-cas">Upgrader</div>
-            <div class="vp-tag-s" style="color:#60a5fa">Monthly Leaderboard</div>
+            <div class="vp-tag-s" style="color:#60a5fa">Bi-Weekly Leaderboard</div>
             <ul class="vp-feats">
               <li>🏆 Monthly leaderboard prizes</li>
               <li>🎁 Promo codes daily</li>
@@ -1476,27 +1479,57 @@ nav{border-bottom:1px solid transparent!important;
           </div>
         </div>
 
-        <!-- RUNEWAGER -->
+        <!-- RUSTMAGIC -->
         <div class="vp-card">
-          <div class="vp-logo-wrap" style="background:linear-gradient(160deg,#0f1a0f,#080e08)">
-            <img src="https://www.jammmyslots.com/Runewagerlogo.webp" alt="Runewager" class="vp-logo">
+          <div class="vp-logo-wrap" style="background:linear-gradient(160deg,#1a0d05,#0e0805)">
+            <img src="https://www.jammmyslots.com/rustmagic.png" alt="RustMagic" class="vp-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-family:'Lilita One',sans-serif;font-size:1.3rem;color:#fb923c;letter-spacing:.02em">RustMagic</div>
           </div>
           <div class="vp-body">
-            <div class="vp-cas">Runewager</div>
-            <div class="vp-tag-s" style="color:#f59e0b">Exclusive Deal</div>
+            <div class="vp-cas">RustMagic</div>
+            <div class="vp-tag-s" style="color:#f472b6">Bi-Weekly Leaderboard</div>
             <ul class="vp-feats">
-              <li>💰 FTD / Deposit Bonuses</li>
+              <li>🎁 Exclusive Deposit Bonus</li>
+              <li>⚡ Instant Cashouts</li>
               <li>🎯 Wager Challenges</li>
-              <li>💸 Instant &amp; Weekly Cashback</li>
-              <li>🏁 Weekly / Monthly Wager Race</li>
-              <li>🎡 Daily Wheel Spin &amp; VIP Transfer</li>
+              <li>🏁 Bi-Weekly Wager Race</li>
             </ul>
-            <button class="vp-btn" style="background:#0e7490;color:#fff;font-weight:800;box-shadow:0 0 20px rgba(14,116,144,.7),0 0 40px rgba(34,211,238,.4),0 8px 28px -8px rgba(14,116,144,.6);animation:neonPulseCyan 2s ease-in-out infinite .6s;border:1px solid rgba(34,211,238,.5)" onclick="go('https://runewager.com')">Claim Bonus &rsaquo;</button>
+            <button class="vp-btn" style="background:#be185d;color:#fff;font-weight:800;box-shadow:0 0 20px rgba(190,24,93,.7),0 0 40px rgba(190,24,93,.4),0 8px 28px -8px rgba(190,24,93,.6);animation:neonPulsePink 2s ease-in-out infinite .6s;border:1px solid rgba(244,114,182,.5)" onclick="go('https://rustmagic.com')">Claim Bonus &rsaquo;</button>
           </div>
         </div>
 
       </div>
     </div>
+
+    <!-- COMPETITIVE LEADERBOARDS PREVIEW -->
+    <div class="lb-preview-wrap reveal" style="max-width:1100px;margin:60px auto 0;padding:0 20px;text-align:center">
+      <h2 class="vp-title" style="font-size:clamp(1.8rem,4vw,2.6rem)">Competitive <span class="g">Leaderboards</span></h2>
+      <p class="vp-sub" style="max-width:520px;margin:10px auto 34px">Wager on partner sites and climb the ranks for cash prizes, coins, and vault share.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;text-align:left" class="lb-preview-grid">
+        <div style="background:rgba(20,20,30,.6);border:1px solid rgba(96,165,250,.25);border-top:3px solid #60a5fa;border-radius:16px;padding:28px">
+          <div style="width:56px;height:56px;border-radius:14px;background:rgba(96,165,250,.12);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+            <img src="https://www.jammmyslots.com/Upgrader-landscape.png" alt="Upgrader" style="width:32px;height:32px;object-fit:contain">
+          </div>
+          <h3 style="font-family:'Lilita One',sans-serif;font-size:1.2rem;margin-bottom:8px">Upgrader Leaderboard</h3>
+          <p style="color:var(--faint);font-size:.9rem;margin-bottom:20px">Compete for prizes and climb the ranks in the Upgrader leaderboard.</p>
+          <button onclick="nav('leaderboards');lbTab(document.querySelector('.lbt'),'upgrader')" style="background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#fff;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer">View Leaderboard &rarr;</button>
+        </div>
+        <div style="background:rgba(20,20,30,.6);border:1px solid rgba(244,114,182,.25);border-top:3px solid #f472b6;border-radius:16px;padding:28px">
+          <div style="width:56px;height:56px;border-radius:14px;background:rgba(244,114,182,.12);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+            <img src="https://www.jammmyslots.com/rustmagic.png" alt="RustMagic" style="width:32px;height:32px;object-fit:contain" onerror="this.outerHTML='<span style=\'font-family:Lilita One,sans-serif;color:#f472b6;font-size:1.3rem\'>R</span>'">
+          </div>
+          <h3 style="font-family:'Lilita One',sans-serif;font-size:1.2rem;margin-bottom:8px">RustMagic Leaderboard</h3>
+          <p style="color:var(--faint);font-size:.9rem;margin-bottom:20px">Compete for prizes and climb the ranks in the RustMagic leaderboard.</p>
+          <button onclick="nav('leaderboards');lbTab(document.querySelector('.lbt'),'rustmagic')" style="background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#fff;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer">View Leaderboard &rarr;</button>
+        </div>
+      </div>
+      <div style="margin-top:24px;display:flex;gap:10px;align-items:flex-start;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:14px;padding:18px 22px;text-align:left">
+        <span style="font-size:1.1rem">⚠️</span>
+        <span style="color:var(--faint);font-size:.88rem"><b style="color:#f59e0b">Note:</b> Users must deposit more than the placement prize. If the deposit is less than the prize, the prize will be voided.</span>
+      </div>
+      <button onclick="nav('leaderboards')" style="margin-top:26px;background:transparent;border:1.5px solid rgba(255,255,255,.3);color:#fff;font-weight:700;padding:13px 28px;border-radius:12px;cursor:pointer;font-family:'Lilita One',sans-serif;letter-spacing:.02em">All Leaderboards &rarr;</button>
+    </div>
+    <style>@media(max-width:700px){.lb-preview-grid{grid-template-columns:1fr !important}}</style>
 
     <!-- WATCH LIVE -->
     <div class="wl-wrap reveal" style="margin-top:50px;padding-bottom:40px">
@@ -1540,11 +1573,10 @@ nav{border-bottom:1px solid transparent!important;
     <div style="padding:40px 0 10px">
       <!-- Casino tabs -->
       <div class="lb-casino-tabs">
-        <button class="lbt active" onclick="lbTab(this,'winovo')"><img src="https://www.jammmyslots.com/winovo.png" alt="Winovo"></button>
-        <button class="lbt" onclick="lbTab(this,'upgrader')"><img src="https://www.jammmyslots.com/Upgrader-landscape.png" alt="Upgrader"></button>
-        <button class="lbt" onclick="lbTab(this,'runewager')"><img src="https://www.jammmyslots.com/Runewagerlogo.webp" alt="Runewager"></button>
+        <button class="lbt active" onclick="lbTab(this,'upgrader')"><img src="https://www.jammmyslots.com/Upgrader-landscape.png" alt="Upgrader"></button>
+        <button class="lbt" onclick="lbTab(this,'rustmagic')"><img src="https://www.jammmyslots.com/rustmagic.png" alt="RustMagic" onerror="this.outerHTML='<span style=\'font-family:Lilita One,sans-serif;font-size:1.1rem\'>RustMagic</span>'"></button>
       </div>
-      <div class="lb-updated">Last updated · 6/23/2026, 12:03:16 AM</div>
+      <div class="lb-updated">Last updated · <span id="lbUpdatedTime"></span></div>
 
       <!-- Podium -->
       <div class="lb2-podium reveal">
@@ -1574,44 +1606,65 @@ nav{border-bottom:1px solid transparent!important;
 
       <!-- Date range + countdown -->
       <div class="lb2-range reveal">
-        <div class="lb2-dates">Jun 23, 2026 &rarr; Jun 30, 2026</div>
-        <div class="lb2-countdown">&#x23F0; WINOVO COMPETITION ENDS IN &nbsp;<b id="lb-cd2">--</b></div>
+        <div class="lb2-dates" id="lb2-dates">Loading period&hellip;</div>
+        <div class="lb2-countdown">&#x23F0; <span id="lb-cd-label">UPGRADER</span> COMPETITION ENDS IN &nbsp;<b id="lb-cd2">--</b></div>
+      </div>
+
+      <div style="text-align:center;margin-top:26px">
+        <button onclick="document.getElementById('lb-full-list').classList.toggle('lb-full-open');this.textContent=document.getElementById('lb-full-list').classList.contains('lb-full-open')?'Hide Full Leaderboard ↑':'Full Leaderboard ↗'" style="background:transparent;border:1.5px solid rgba(74,222,128,.5);color:#4ade80;font-weight:800;padding:13px 30px;border-radius:12px;cursor:pointer;font-family:'Lilita One',sans-serif;letter-spacing:.02em;box-shadow:0 0 16px rgba(74,222,128,.15)">Full Leaderboard &#x2197;</button>
+      </div>
+
+      <!-- Full ranked list (ranks 4+), hidden until "Full Leaderboard" is clicked -->
+      <div id="lb-full-list" class="lb-full-list">
+        <div class="lb-full-row-head">
+          <span>Rank</span><span>Player</span><span>Wagered</span><span>Prize</span>
+        </div>
+        <div id="lbFullRows"><div style="padding:30px;text-align:center;color:var(--faint)">Connecting to live leaderboard&hellip;</div></div>
+      </div>
+
+      <div class="lb-note reveal" style="max-width:760px;margin:34px auto 0;display:flex;gap:10px;align-items:flex-start;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:14px;padding:18px 22px;text-align:left">
+        <span style="font-size:1.1rem">⚠️</span>
+        <span style="color:var(--faint);font-size:.88rem"><b style="color:#f59e0b">Note:</b> Users must deposit more than the placement prize. If the deposit is less than the prize, the prize will be voided.</span>
       </div>
     </div>
   </section>
+  <style>
+  .lb-full-list{max-width:900px;margin:26px auto 0;padding:0 20px;overflow:hidden;max-height:0;transition:max-height .5s ease;}
+  .lb-full-list.lb-full-open{max-height:2400px;}
+  .lb-full-row-head{display:grid;grid-template-columns:70px 1fr 120px 90px;padding:14px 20px;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);border-bottom:1px solid rgba(255,255,255,.08)}
+  .lb-full-row{display:grid;grid-template-columns:70px 1fr 120px 90px;align-items:center;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.05);font-size:.9rem}
+  .lb-full-row:hover{background:rgba(255,255,255,.03)}
+  </style>
 
   <!-- BONUSES -->
   <section class="page" id="bonuses">
-    <div class="sec-head"><h2>Casino <span class="g">Bonuses</span></h2><p>Hand-picked offers and exclusive codes. Sign up under JAMMMY to unlock rakeback, reloads and the leaderboard.</p></div>
+    <div class="sec-head"><h2>Casino <span class="g">Bonuses</span></h2><p>Hand-picked offers from our live partners. Sign up under JAMMMY to unlock leaderboard prizes and vault share.</p></div>
     <div class="inner">
       <div class="grid2 reveal">
-        <div class="bcard feat">
-          <div class="top"><span class="cas">Stake.com</span><span class="ribbon">Featured</span></div>
-          <div class="offer"><b>10% rakeback</b> + weekly bonus drops</div>
+        <div class="bcard">
+          <div class="top"><span class="cas">DegenCity</span><span class="ribbon" style="background:#0e7490">10% Cashback for 7 Days</span></div>
           <div class="codebox"><div class="code"><span style="color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em">Code</span><span class="cv">JAMMMY</span></div><button class="copybtn" onclick="copy(this,'JAMMMY')">Copy</button></div>
-          <div class="feats"><span>Instant payouts</span><span>VIP rakeback</span><span>Raffle entries</span></div>
-          <button class="claim" onclick="go()">Claim on Stake</button>
+          <div class="feats"><span>💰 10% Cashback for 7 days</span><span>⚡ Instant Cashouts</span><span>🎁 Tip &amp; Giveaways</span><span>✨ Daily Promo Codes</span></div>
+          <button class="claim" onclick="go('https://degencity.com')">Claim Bonus</button>
         </div>
         <div class="bcard">
-          <div class="top"><span class="cas">Reload Boost</span><span class="ribbon">Weekly</span></div>
-          <div class="offer"><b>Up to $200</b> matched every week</div>
+          <div class="top"><span class="cas">Upgrader</span><span class="ribbon" style="background:#be185d">Bi-Weekly Leaderboard</span></div>
           <div class="codebox"><div class="code"><span style="color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em">Code</span><span class="cv">JAMMMY</span></div><button class="copybtn" onclick="copy(this,'JAMMMY')">Copy</button></div>
-          <div class="feats"><span>Silver VIP+</span><span>Auto-credited</span></div>
-          <button class="claim" onclick="go()">Activate reload</button>
+          <div class="feats"><span>🏆 Monthly leaderboard prizes</span><span>🎁 Promo codes daily</span><span>⚡ Instant withdrawals</span><span>🔒 Secure &amp; fair gaming</span></div>
+          <button class="claim" onclick="go('https://upgrader.com')">Claim Bonus</button>
         </div>
         <div class="bcard">
-          <div class="top"><span class="cas">Rakeback</span><span class="ribbon">Always on</span></div>
-          <div class="offer"><b>Up to 18%</b> back on every wager</div>
+          <div class="top"><span class="cas">RustMagic</span><span class="ribbon" style="background:#be185d">Bi-Weekly Leaderboard</span></div>
           <div class="codebox"><div class="code"><span style="color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em">Code</span><span class="cv">JAMMMY</span></div><button class="copybtn" onclick="copy(this,'JAMMMY')">Copy</button></div>
-          <div class="feats"><span>Scales by tier</span><span>Win or lose</span></div>
-          <button class="claim" onclick="go()">Start earning</button>
+          <div class="feats"><span>🎁 Exclusive Deposit Bonus</span><span>⚡ Instant Cashouts</span></div>
+          <button class="claim" onclick="go('https://rustmagic.com')">Claim Bonus</button>
         </div>
         <div class="bcard">
-          <div class="top"><span class="cas">$1.5K Raffle</span><span class="ribbon">Live</span></div>
-          <div class="offer"><b>$100 wagered</b> = 1 ticket</div>
-          <div class="codebox"><div class="code"><span style="color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em">Drawn</span><span class="cv">SUNDAY</span></div><button class="copybtn" onclick="nav('home')">View</button></div>
-          <div class="feats"><span>3,418 tickets in</span><span>Live on stream</span></div>
-          <button class="claim" onclick="go()">Enter raffle</button>
+          <div class="top"><span class="cas">Jammmy Raffles</span><span class="ribbon">Live</span></div>
+          <div style="color:var(--faint);font-size:.9rem;margin:6px 0 14px">Spend loyalty points on active raffles</div>
+          <div class="codebox"><div class="code"><span style="color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em">Entry</span><span class="cv">POINTS</span></div><button class="copybtn" onclick="nav('loyalty')">View</button></div>
+          <div class="feats"><span>Loyalty program</span><span>Live on stream</span></div>
+          <button class="claim" onclick="nav('loyalty')">Enter Raffles</button>
         </div>
       </div>
     </div>
@@ -1798,7 +1851,7 @@ nav{border-bottom:1px solid transparent!important;
         <!-- RIGHT: mascot panel -->
         <div class="vp-mascot-panel">
           <span class="vpp-count">● Live</span>
-          <img src="https://www.jammmyslots.com/jammyslots-mascot.png" alt="Jammmy mascot" class="vp-mascot-img" onclick="openVaultModal()">
+          <img src="jar-clean.png" alt="Jammmy mascot" class="vp-mascot-img" onclick="openVaultModal()">
         </div>
       </div>
 
@@ -1812,7 +1865,7 @@ nav{border-bottom:1px solid transparent!important;
           <div class="vpl-est">Estimated unclaimed vault share: <b>$697</b></div>
         </div>
         <div class="vpl-casinos">
-          <div class="vpl-cas"><img src="https://www.jammmyslots.com/Runewagerlogo.webp" alt="Runewager" style="height:28px;object-fit:contain"><div><b>Runewager</b><span>$1,769 unclaimed · 4 players</span></div><button class="vpl-btn">Tap to add username</button></div>
+          <div class="vpl-cas"><img src="https://www.jammmyslots.com/rustmagic.png" alt="RustMagic" style="height:28px;object-fit:contain" onerror="this.outerHTML='<span style=\'font-family:Lilita One,sans-serif;font-size:.95rem\'>RustMagic</span>'"><div><b>RustMagic</b><span>$1,769 unclaimed · 4 players</span></div><button class="vpl-btn">Tap to add username</button></div>
           <div class="vpl-cas"><img src="https://www.jammmyslots.com/Upgrader-landscape.png" alt="Upgrader" style="height:28px;object-fit:contain"><div><b>Upgrader</b><span>$115,056 unclaimed · 100 players</span></div><button class="vpl-btn">Tap to add username</button></div>
         </div>
         <button class="vpl-open-btn">Open Settings</button>
@@ -1826,9 +1879,10 @@ nav{border-bottom:1px solid transparent!important;
           <button class="vpp-refresh" onclick="refreshVaultPlayers()">↻ Refresh</button>
         </div>
         <div class="vpp-tabs">
-          <button class="vpp-tab active">Runewager</button>
+          <button class="vpp-tab active">All</button>
+          <button class="vpp-tab">DegenCity</button>
           <button class="vpp-tab">Upgrader</button>
-          <button class="vpp-tab">Winovo.io</button>
+          <button class="vpp-tab">RustMagic</button>
         </div>
         <div class="vpp-col-head">
           <div>Rank</div>
@@ -1977,7 +2031,7 @@ nav{border-bottom:1px solid transparent!important;
 
     <!-- Col 1: Brand -->
     <div class="foot-brand">
-      <div class="brand"><img src="https://www.jammmyslots.com/jammyslots-mascot.png" alt="JammmySlots" style="width:28px;height:28px;object-fit:contain"> JammmySlots</div>
+      <div class="brand"><img src="jar-clean.png" alt="JammmyRewards" style="width:28px;height:28px;object-fit:contain"> JammmyRewards</div>
       <p>The premier destination for casino enthusiasts and slot players.</p>
       <div class="foot-socials">
         <a title="Discord" href="https://discord.gg/jammmyslots" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 5a18 18 0 0 0-4.5-1.4l-.2.5A16 16 0 0 1 18 5a16 16 0 0 0-12 0 16 16 0 0 1 2.7-.9l-.2-.5A18 18 0 0 0 4 5C1.6 8.6 1 12.2 1.2 15.7A18 18 0 0 0 6.7 18l.4-.6a12 12 0 0 1-1.9-.9l.5-.4a13 13 0 0 0 11 0l.5.4a12 12 0 0 1-1.9.9l.4.6a18 18 0 0 0 5.5-2.3C23.2 11.6 22.4 8 20 5M8.7 14c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8m6.6 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8"/></svg></a>
@@ -2004,22 +2058,22 @@ nav{border-bottom:1px solid transparent!important;
       <h4>Resources</h4>
       <a href="https://www.begambleaware.org" target="_blank">Responsible Gambling</a>
       <a onclick="nav('loyalty')">Loyalty Program</a>
-      <a href="https://stake.com/?c=JAMMMY" target="_blank">Play on Stake</a>
+      <a onclick="nav('vault')">Community Vault</a>
     </div>
 
     <!-- Col 4: Partners -->
     <div class="foot-col">
       <h4>Partners</h4>
       <div class="foot-partners">
-        <img class="foot-partner-logo" src="https://www.jammmyslots.com/Upgrader-landscape.png" alt="Upgrader" onclick="go('https://upgrader.com')">
-        <img class="foot-partner-logo" src="https://www.jammmyslots.com/Runewagerlogo.webp" alt="Runewager" onclick="go('https://runewager.com')" style="height:22px">
-        <img class="foot-partner-logo" src="https://www.jammmyslots.com/winovo.png" alt="Winovo" onclick="go('https://winovo.io')" style="height:22px">
+        <img class="foot-partner-logo" src="https://www.jammmyslots.com/degencity.png" alt="DegenCity" onclick="go('https://degencity.com')" style="height:22px" onerror="this.outerHTML='<span onclick=\'window.open(&quot;https://degencity.com&quot;)\' style=\'font-family:Lilita One,sans-serif;font-size:.85rem;color:#c084fc;cursor:pointer\'>DegenCity</span>'">
+        <img class="foot-partner-logo" src="https://www.jammmyslots.com/Upgrader-landscape.png" alt="Upgrader" onclick="go('https://upgrader.com')" onerror="this.outerHTML='<span onclick=\'window.open(&quot;https://upgrader.com&quot;)\' style=\'font-family:Lilita One,sans-serif;font-size:.85rem;color:#60a5fa;cursor:pointer\'>Upgrader</span>'">
+        <img class="foot-partner-logo" src="https://www.jammmyslots.com/rustmagic.png" alt="RustMagic" onclick="go('https://rustmagic.com')" style="height:22px" onerror="this.outerHTML='<span onclick=\'window.open(&quot;https://rustmagic.com&quot;)\' style=\'font-family:Lilita One,sans-serif;font-size:.85rem;color:#fb923c;cursor:pointer\'>RustMagic</span>'">
       </div>
     </div>
 
   </div>
   <div class="wrap foot-bottom">
-    © 2026 JammmySlots. All rights reserved. &nbsp;·&nbsp; 18+ Gamble Responsibly.
+    © 2026 JammmyRewards. All rights reserved. &nbsp;·&nbsp; 18+ Gamble Responsibly.
   </div>
 </footer>
 
@@ -2133,20 +2187,95 @@ setInterval(addFeed,2600);
 /* ============================================================
    LEADERBOARD
 ============================================================ */
+var CURRENT_LB_CASINO = 'upgrader';
 function lbTab(btn,casino){
   document.querySelectorAll('.lbt').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  var el=document.querySelector('.lb2-countdown');
-  if(el)el.innerHTML='⏰ '+casino.toUpperCase()+' COMPETITION ENDS IN &nbsp;<b id="lb-cd2">--</b>';
-  lbcd2();
+  if(btn)btn.classList.add('active');
+  CURRENT_LB_CASINO = casino;
+  var lbl=document.getElementById('lb-cd-label');
+  if(lbl)lbl.textContent=casino.toUpperCase();
+  loadLeaderboard(casino);
+}
+// Bi-weekly periods anchored to a fixed reference Sunday so it always shows a real,
+// future-or-current window instead of a stale hardcoded date.
+function currentLbPeriod(){
+  var anchor = Date.UTC(2026,0,4,12,0,0); // a known period-start Sunday, noon UTC
+  var msPer14d = 14*24*60*60*1000;
+  var now = Date.now();
+  var periodsElapsed = Math.floor((now-anchor)/msPer14d);
+  var start = anchor + periodsElapsed*msPer14d;
+  var end = start + msPer14d;
+  return {start:new Date(start), end:new Date(end)};
 }
 function lbcd2(){
-  var n=new Date(),target=new Date('2026-06-28T23:59:59Z');
-  var s=Math.max(0,Math.floor((target-n)/1000));
-  var el=document.getElementById('lb-cd2');
-  if(el)el.textContent=Math.floor(s/86400)+'d '+Math.floor(s/3600)%24+'h '+Math.floor(s/60)%60+'m';
+  var period = currentLbPeriod();
+  var n = new Date();
+  var s = Math.max(0, Math.floor((period.end - n)/1000));
+  var el = document.getElementById('lb-cd2');
+  if(el) el.textContent = s<=0 ? 'ENDED' : Math.floor(s/86400)+'d '+Math.floor(s/3600)%24+'h '+Math.floor(s/60)%60+'m';
+  var datesEl = document.getElementById('lb2-dates');
+  if(datesEl){
+    var opts = {month:'short', day:'numeric', year:'numeric'};
+    datesEl.textContent = period.start.toLocaleDateString('en-US',opts)+' \u2192 '+period.end.toLocaleDateString('en-US',opts);
+  }
+  var updEl = document.getElementById('lbUpdatedTime');
+  if(updEl) updEl.textContent = n.toLocaleString('en-US');
 }
 lbcd2();setInterval(lbcd2,1000);
+
+/* ── Live leaderboard data ──────────────────────────────────
+   Wired for two APIs (specs from Sahil):
+   - Upgrader: POST https://api.upgrader.com/leaderboard/connect-by-key
+       body: {apiKey}, header Referer: upgrader.com
+   - RustMagic: GET https://api.rustmagic.com/api/affiliates-data/users
+       header: x-api-key, optional ?fromTime&toTime (unix seconds)
+   Direct browser calls from a public static site would expose these keys
+   in page source — that's a real security gap, not just a TODO. Until
+   there's a small backend/proxy to hold the keys server-side, this stays
+   wired to render cleanly with an honest "not connected yet" state rather
+   than a fake number. */
+var LB_API_KEYS = { upgrader: null, rustmagic: null }; // fill in once a safe proxy exists
+
+async function loadLeaderboard(casino){
+  var rowsEl = document.getElementById('lbFullRows');
+  if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Connecting to live leaderboard&hellip;</div>';
+  var key = LB_API_KEYS[casino];
+  if(!key){
+    if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Live '+casino+' data connects once the API key is added server-side.</div>';
+    return;
+  }
+  try{
+    var wagers;
+    if(casino === 'upgrader'){
+      var res = await fetch('https://api.upgrader.com/leaderboard/connect-by-key', {
+        method:'POST', headers:{'Content-Type':'application/json','Referer':'upgrader.com'},
+        body: JSON.stringify({apiKey:key})
+      });
+      var data = await res.json();
+      wagers = (data.wagers||[]).map(w=>({rank:w.rank, name:w.username, wager:w.wager}));
+    } else if(casino === 'rustmagic'){
+      var res2 = await fetch('https://api.rustmagic.com/api/affiliates-data/users', { headers:{'x-api-key':key} });
+      var data2 = await res2.json();
+      wagers = (data2.users||data2||[]).map((w,i)=>({rank:i+1, name:w.username||w.name, wager:w.wager||w.wagered}));
+    }
+    renderLeaderboardRows(wagers||[]);
+  }catch(e){
+    if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Couldn\'t load live data right now — try refreshing.</div>';
+    console.error('Leaderboard fetch failed:', e);
+  }
+}
+function renderLeaderboardRows(wagers){
+  var rowsEl = document.getElementById('lbFullRows');
+  if(!rowsEl) return;
+  if(!wagers.length){
+    rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">No wagers recorded for this period yet.</div>';
+    return;
+  }
+  rowsEl.innerHTML = wagers.slice(3).map(function(w){
+    return '<div class="lb-full-row"><span>#'+w.rank+'</span><span>'+(w.name||'—')+'</span><span>$'+Number(w.wager||0).toLocaleString()+'</span><span>—</span></div>';
+  }).join('');
+}
+loadLeaderboard('upgrader');
 
 /* ============================================================
    VAULT
