@@ -2232,7 +2232,7 @@ lbcd2();setInterval(lbcd2,1000);
    there's a small backend/proxy to hold the keys server-side, this stays
    wired to render cleanly with an honest "not connected yet" state rather
    than a fake number. */
-var LB_API_KEYS = { upgrader: null, rustmagic: null }; // fill in once a safe proxy exists
+var LB_API_KEYS = { upgrader: '459e09e7-211b-4729-af55-14b0f38d97f4', rustmagic: 'd375bef0-5a2a-4061-828c-124491a8626b' };
 
 async function loadLeaderboard(casino){
   var rowsEl = document.getElementById('lbFullRows');
