@@ -2227,7 +2227,7 @@ lbcd2();setInterval(lbcd2,1000);
    calls are blocked by CORS on both APIs (verified), and would also expose
    the raw API keys in page source. The proxy holds the keys privately and
    does the real API calls server-side, where neither problem applies. */
-var LB_PROXY_URL = 'PASTE_YOUR_WORKER_URL_HERE'; // e.g. https://jammy-lb-proxy.yourname.workers.dev
+var LB_PROXY_URL = 'https://jammy-lb-proxy.sahil-sah2603.workers.dev';
 
 async function loadLeaderboard(casino){
   var rowsEl = document.getElementById('lbFullRows');
