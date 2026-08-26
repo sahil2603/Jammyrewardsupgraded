@@ -2728,7 +2728,7 @@ document.addEventListener('click',function(e){
       var g = Math.round(STOPS[si][1]*(1-frac)+STOPS[ni][1]*frac);
       var b = Math.round(STOPS[si][2]*(1-frac)+STOPS[ni][2]*frac);
       var pct = BAND_START + (BAND_END-BAND_START)*(i/n);
-      stops.push('rgba('+r+','+g+','+b+',.56) '+pct.toFixed(1)+'%');
+      stops.push('rgba('+r+','+g+','+b+',.85) '+pct.toFixed(1)+'%');
     }
     return 'radial-gradient(60% 100% at 50% 100%,'
       +'transparent '+BAND_START+'%,'
