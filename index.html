@@ -1238,18 +1238,13 @@ nav{border-bottom:1px solid transparent!important;
 </style>
 <style>
 #liveRainbow{
-  position:absolute;          /* scrolls with the hero — no scroll jank */
-  left:50%;bottom:-20px;
-  transform:translateX(-50%);
-  width:min(200vw,2800px);height:480px;
+  position:absolute;
+  inset:0;                   /* fills the hero exactly */
+  width:100%;height:100%;
   z-index:-1;pointer-events:none;
-  /* colours set by JS every ~33ms — no transition to avoid layout cost */
-  background:transparent;
-  filter:saturate(1.35) brightness(1.08);
-  will-change:transform;
+  opacity:0;                 /* starts invisible — JS animates it in */
 }
-@media(max-width:768px){#liveRainbow{height:340px;width:220vw}}
-@media(prefers-reduced-motion:reduce){#liveRainbow{display:none}}
+@media(prefers-reduced-motion:reduce){#liveRainbow{opacity:1!important}}
 </style>
 </head>
 <body>
@@ -1311,7 +1306,7 @@ nav{border-bottom:1px solid transparent!important;
   <!-- HOME -->
   <section class="page show" id="home">
     <div class="hero">
-      <div id="liveRainbow"></div>
+      <canvas id="liveRainbow"></canvas>
       <span class="pill">The future of community rewards</span>
       <h1 class="wordmark"><span class="jam">JAMMMY</span><span class="slots">REWARDS</span></h1>
       <p class="sub">Experience the next generation of online casino rewards, exclusive leaderboards, and community-driven gaming.</p>
@@ -2681,56 +2676,114 @@ document.addEventListener('click',function(e){
   wrap.addEventListener('click', function(){ if(!animating) launchCoin(); });
 })();
 
-/* ---- LIVE RAINBOW (JS-driven, scrolls with page) ---- */
+/* ---- LIVE RAINBOW CANVAS — corner-to-corner arc with sweep-in ---- */
 (function(){
-  var el = document.getElementById('liveRainbow');
-  if(!el) return;
+  var canvas = document.getElementById('liveRainbow');
+  if(!canvas || !canvas.getContext) return;
+  var ctx = canvas.getContext('2d');
 
-  // 7 rainbow hue stops (OKLCH-style, approx sRGB)
-  var STOPS = [
-    [168,85,247],   // violet
-    [91,141,239],   // blue
-    [34,211,238],   // cyan
-    [61,220,132],   // green
-    [255,210,61],   // yellow
-    [255,122,61],   // orange
-    [255,61,182],   // pink
-  ];
+  /* Hue stops for the cycling rainbow */
+  var HUES = [270, 220, 180, 130, 60, 30, 300]; // violet→blue→cyan→green→yellow→orange→pink
 
-  var t = 0;
-  var BAND_START = 46;   // % from centre where colour begins
-  var BAND_END   = 98;   // % where it fades out
+  /* Entry animation state */
+  var SWEEP_MS   = 1800;   // how long the reveal sweep takes
+  var startTime  = null;
+  var hueOffset  = 0;      // drives the colour cycle
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 
-  function buildGradient(offset){
-    // offset shifts which hue leads — creates the spinning rainbow effect
-    var n = STOPS.length;
-    var stops = [];
-    for(var i=0;i<n;i++){
-      var si = (i + Math.floor(offset)) % n;
-      var frac = offset % 1;
-      var ni = (si+1) % n;
-      var r = Math.round(STOPS[si][0]*(1-frac)+STOPS[ni][0]*frac);
-      var g = Math.round(STOPS[si][1]*(1-frac)+STOPS[ni][1]*frac);
-      var b = Math.round(STOPS[si][2]*(1-frac)+STOPS[ni][2]*frac);
-      var pct = BAND_START + (BAND_END-BAND_START)*(i/n);
-      stops.push('rgba('+r+','+g+','+b+',.85) '+pct.toFixed(1)+'%');
-    }
-    return 'radial-gradient(60% 100% at 50% 100%,'
-      +'transparent '+BAND_START+'%,'
-      +stops.join(',')
-      +',transparent '+BAND_END+'%)';
+  function resize(){
+    var hero = canvas.parentElement;
+    canvas.width  = hero.offsetWidth;
+    canvas.height = hero.offsetHeight;
   }
 
-  var lastFrame = 0;
-  function animate(ts){
-    if(!document.hidden && ts - lastFrame > 40){ // ~25fps — colour cycle only needs low fps
-      t += 0.004;             // hue cycle speed — bigger = faster spin
-      el.style.backgroundImage = buildGradient(t); // backgroundImage not background (cheaper)
-      lastFrame = ts;
+  function drawRainbow(progress){
+    /* progress: 0 = invisible, 1 = fully stretched corner-to-corner */
+    var W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+
+    /* The arc is centred below the canvas, so it rises as a gentle curve.
+       Centre point is slightly below the bottom-centre of the hero.          */
+    var cx = W / 2;
+    var cy = H + H * 0.45;   /* below the hero = shallow curve */
+
+    /* Radius = distance from that centre to the bottom corners */
+    var cornerR = Math.sqrt(cx*cx + (H * 0.45)*(H * 0.45));
+
+    /* We draw multiple concentric strokes (thick → thin) to get a wide,
+       feathered rainbow without any hard edges.                             */
+    var BANDS = 7;
+    var totalThickness = Math.min(H * 0.62, 340); /* arc width on screen */
+
+    /* Sweep angle — at progress 0, angle is 0 (invisible).
+       At progress 1, the arc spans from the left bottom corner to the right. */
+    var fullAngle = Math.PI; /* 180° = left corner to right corner */
+    var angle     = fullAngle * progress;
+
+    /* Mid angle is straight up from the centre (pointing at the hero) */
+    var midAngle  = -Math.PI / 2; /* 270° = straight up */
+    var startAngle = midAngle - angle / 2;
+    var endAngle   = midAngle + angle / 2;
+
+    for(var b = 0; b < BANDS; b++){
+      var t      = b / BANDS;
+      var radius = cornerR - totalThickness * 0.5 + totalThickness * t;
+      var thick  = (totalThickness / BANDS) * 1.8; /* overlap for smooth blend */
+
+      /* Build a gradient along the arc using createLinearGradient.
+         We tint by cycling the hue offset to create the colour-shift animation. */
+      var numStops = HUES.length;
+      /* Sample the colour at this band position based on a slow hue walk */
+      var hue = (HUES[b % HUES.length] + hueOffset) % 360;
+      var hueNext = (HUES[(b+1) % HUES.length] + hueOffset) % 360;
+
+      /* Opacity: full in the middle, fades at both ends + top of band */
+      var alpha = progress * (0.75 + 0.25 * Math.sin(Math.PI * t));
+
+      /* Build a linear gradient that sweeps the rainbow colours left→right */
+      var grd = ctx.createLinearGradient(0, 0, W, 0);
+      for(var i = 0; i <= numStops; i++){
+        var sh = (HUES[i % numStops] + hueOffset) % 360;
+        grd.addColorStop(i / numStops, 'hsla('+sh+',100%,60%,'+ alpha.toFixed(2)+')');
+      }
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, startAngle, endAngle);
+      ctx.strokeStyle = grd;
+      ctx.lineWidth   = thick;
+      ctx.lineCap     = 'round';
+      ctx.stroke();
     }
+
+    /* Fade the canvas itself in during the first part of the sweep */
+    canvas.style.opacity = Math.min(progress * 2, 1).toFixed(3);
+  }
+
+  function animate(ts){
+    if(!startTime) startTime = ts;
+    var elapsed  = ts - startTime;
+    var progress = reduceMotion ? 1 : Math.min(elapsed / SWEEP_MS, 1);
+
+    /* Ease-out curve for the sweep */
+    var eased = 1 - Math.pow(1 - progress, 3);
+
+    /* Slowly shift hue over time for the live colour cycle */
+    hueOffset = (ts / 120) % 360;
+
+    drawRainbow(eased);
+
     requestAnimationFrame(animate);
   }
-  requestAnimationFrame(animate);
+
+  resize();
+  window.addEventListener('resize', function(){ resize(); });
+
+  if(reduceMotion){
+    drawRainbow(1);
+    canvas.style.opacity = '1';
+  } else {
+    requestAnimationFrame(animate);
+  }
 })();
 
 
