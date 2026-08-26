@@ -2222,41 +2222,25 @@ function lbcd2(){
 lbcd2();setInterval(lbcd2,1000);
 
 /* ── Live leaderboard data ──────────────────────────────────
-   Wired for two APIs (specs from Sahil):
-   - Upgrader: POST https://api.upgrader.com/leaderboard/connect-by-key
-       body: {apiKey}, header Referer: upgrader.com
-   - RustMagic: GET https://api.rustmagic.com/api/affiliates-data/users
-       header: x-api-key, optional ?fromTime&toTime (unix seconds)
-   Direct browser calls from a public static site would expose these keys
-   in page source — that's a real security gap, not just a TODO. Until
-   there's a small backend/proxy to hold the keys server-side, this stays
-   wired to render cleanly with an honest "not connected yet" state rather
-   than a fake number. */
-var LB_API_KEYS = { upgrader: '459e09e7-211b-4729-af55-14b0f38d97f4', rustmagic: 'd375bef0-5a2a-4061-828c-124491a8626b' };
+   Goes through a small Cloudflare Worker proxy (see /worker.js in the repo)
+   instead of calling Upgrader/RustMagic directly from the browser — direct
+   calls are blocked by CORS on both APIs (verified), and would also expose
+   the raw API keys in page source. The proxy holds the keys privately and
+   does the real API calls server-side, where neither problem applies. */
+var LB_PROXY_URL = 'PASTE_YOUR_WORKER_URL_HERE'; // e.g. https://jammy-lb-proxy.yourname.workers.dev
 
 async function loadLeaderboard(casino){
   var rowsEl = document.getElementById('lbFullRows');
   if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Connecting to live leaderboard&hellip;</div>';
-  var key = LB_API_KEYS[casino];
-  if(!key){
-    if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Live '+casino+' data connects once the API key is added server-side.</div>';
+  if(!LB_PROXY_URL || LB_PROXY_URL.indexOf('PASTE_YOUR') === 0){
+    if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Live '+casino+' data connects once the proxy URL is set.</div>';
     return;
   }
   try{
-    var wagers;
-    if(casino === 'upgrader'){
-      var res = await fetch('https://api.upgrader.com/leaderboard/connect-by-key', {
-        method:'POST', headers:{'Content-Type':'application/json','Referer':'upgrader.com'},
-        body: JSON.stringify({apiKey:key})
-      });
-      var data = await res.json();
-      wagers = (data.wagers||[]).map(w=>({rank:w.rank, name:w.username, wager:w.wager}));
-    } else if(casino === 'rustmagic'){
-      var res2 = await fetch('https://api.rustmagic.com/api/affiliates-data/users', { headers:{'x-api-key':key} });
-      var data2 = await res2.json();
-      wagers = (data2.users||data2||[]).map((w,i)=>({rank:i+1, name:w.username||w.name, wager:w.wager||w.wagered}));
-    }
-    renderLeaderboardRows(wagers||[]);
+    var res = await fetch(LB_PROXY_URL + '?casino=' + casino);
+    var data = await res.json();
+    if(data.error) throw new Error(data.error);
+    renderLeaderboardRows(data.wagers || []);
   }catch(e){
     if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Couldn\'t load live data right now — try refreshing.</div>';
     console.error('Leaderboard fetch failed:', e);
