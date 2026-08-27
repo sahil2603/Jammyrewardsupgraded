@@ -566,9 +566,9 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   cursor:pointer;transition:color .18s}
 .foot-col a:hover{color:#fff}
 .foot-partners{display:flex;flex-direction:column;gap:14px}
-.foot-partner-logo{height:26px;object-fit:contain;opacity:.7;filter:grayscale(30%);
-  transition:.2s;cursor:pointer}
-.foot-partner-logo:hover{opacity:1;filter:none}
+.foot-partner-logo{height:34px;object-fit:contain;opacity:.92;filter:none;
+  transition:.2s;cursor:pointer;will-change:transform}
+.foot-partner-logo:hover{opacity:1;filter:brightness(1.15);transform:translateY(-2px)}
 .foot-bottom{border-top:1px solid var(--line);padding:20px 0;
   display:flex;justify-content:center;align-items:center;
   color:var(--faint);font-size:.8rem;text-align:center}
@@ -2226,9 +2226,9 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
     <div class="foot-col">
       <h4>Partners</h4>
       <div class="foot-partners">
-        <img loading="lazy" class="foot-partner-logo" src="degencity.svg" alt="DegenCity" onclick="go('https://degencity.com')" style="height:20px;width:auto;object-fit:contain;cursor:pointer">
+        <img loading="lazy" class="foot-partner-logo" src="degencity.svg" alt="DegenCity" onclick="go('https://degencity.com')">
         <img loading="lazy" class="foot-partner-logo" src="https://www.jammmyslots.com/Upgrader-landscape.png" alt="Upgrader" onclick="go('https://upgrader.com')" onerror="this.outerHTML='<span onclick=\'window.open(&quot;https://upgrader.com&quot;)\' style=\'font-family:Lilita One,sans-serif;font-size:.85rem;color:#60a5fa;cursor:pointer\'>Upgrader</span>'">
-        <img loading="lazy" class="foot-partner-logo" src="rustmagic.svg" alt="RustMagic" onclick="go('https://rustmagic.com')" style="height:20px;width:auto;object-fit:contain;cursor:pointer">
+        <img loading="lazy" class="foot-partner-logo" src="rustmagic.svg" alt="RustMagic" onclick="go('https://rustmagic.com')">
       </div>
     </div>
 
