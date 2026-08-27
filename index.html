@@ -2414,7 +2414,14 @@ async function loadLeaderboard(casino){
       /* RustMagic — server-side via Worker (x-api-key works fine there) */
       var res2 = await fetch(LB_PROXY_URL + '?casino=rustmagic');
       data = await res2.json();
-      if(data.error) throw new Error(data.error);
+      if(data.error){
+        var msg = String(data.error);
+        if(msg.indexOf('429') !== -1 || msg.indexOf('rate') !== -1){
+          if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">⏳ RustMagic rate limit reached — data updates every 15 minutes. Check back shortly.</div>';
+          return;
+        }
+        throw new Error(data.error);
+      }
       wagers = data.wagers || [];
     }
     renderLeaderboardRows(wagers);
@@ -2426,7 +2433,7 @@ async function loadLeaderboard(casino){
 function renderLeaderboardRows(wagers){
   var rowsEl = document.getElementById('lbFullRows');
   if(!rowsEl) return;
-  if(!wagers.length){
+  if(!wagers || !wagers.length){
     rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">No wagers recorded for this period yet.</div>';
     return;
   }
@@ -2452,7 +2459,7 @@ function renderLeaderboardRows(wagers){
   /* Full list (all players) */
   rowsEl.innerHTML = wagers.map(function(w){
     var initial = (w.name||'?').charAt(0).toUpperCase();
-    var hasWager = wagers.some(function(w){ return w.wager && w.wager > 0; });
+    var hasWager = (wagers||[]).some(function(w){ return w.wager && w.wager > 0; });
     var wagerAmt = (w.wager && w.wager > 0) ? '$'+Number(w.wager).toLocaleString() : (hasWager ? '—' : '');
     return '<div class="lb-full-row">'
       +'<span style="color:var(--purple);font-weight:700">#'+w.rank+'</span>'
