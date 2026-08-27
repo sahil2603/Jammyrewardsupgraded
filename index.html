@@ -165,13 +165,14 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(10px);transform:transl
    so it can never bleed past its container regardless of which font actually renders. */
 .wordmark{font-family:'Lilita One','Arial Black','Impact',system-ui,sans-serif;font-size:clamp(2.4rem,5.6vw,4.4rem);line-height:1;margin:20px 0 8px;letter-spacing:.5px;position:relative;
   display:inline-block;max-width:94%}
-/* Curated neon duotone flow (magenta -> purple -> electric blue -> cyan -> bright flash -> back
-   to magenta) instead of a full 7-color rainbow — reads as a cleaner, more premium neon-sign
-   effect at this size rather than a busy rainbow. Paired with a pulsing glow underneath for a
-   genuine "alive" neon feel. */
+/* Swapped to the same --rainbow flow used on the nav logo (full purple→blue→cyan→green→
+   gold→orange→pink cycle) per feedback — reads better than the narrower magenta/cyan-only
+   duotone tried earlier. Font stays exactly as-is (Lilita One), only the color source changed.
+   Kept the text-stroke + brightness/saturate boost from the legibility fixes, since those solve
+   a real contrast problem independent of which gradient is flowing through. */
 .wordmark .jam,.wordmark .slots{
-  background:linear-gradient(90deg,#ff2ec4,#c026d3,#8b5cf6,#4f7ff0,#22d3ee,#eafcff,#22d3ee,#8b5cf6,#c026d3,#ff2ec4);
-  background-size:420% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
+  background:var(--rainbow);
+  background-size:300% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
   animation:rainbowShift 7s linear infinite;text-shadow:none;
   -webkit-text-stroke:1px rgba(20,8,40,.4);
   filter:saturate(1.35) brightness(1.12)
@@ -599,7 +600,7 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(10px);transform:transl
 .vp-btn:hover{filter:brightness(1.15);transform:translateY(-3px)}
 
 @media(max-width:860px){
-  .vault-wrap{grid-template-columns:1fr}
+  .vault-wrap{grid-template-columns:1fr}.vault-mascot{display:none}
   .ps-slide.active{grid-template-columns:1fr}.ps-right{display:none}
   .vp-grid{grid-template-columns:1fr}
 }
@@ -671,15 +672,14 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   .vpg4{grid-template-columns:1fr 1fr}
   .vp-mid{grid-template-columns:1fr}
 
-  /* VAULT HOME — stack (mascot now stays visible on mobile, just resized/reflowed) */
+  /* VAULT HOME — stack, hide mascot */
   .vault-wrap{grid-template-columns:1fr;gap:16px}
-  .vault-mascot{width:110px;margin:8px auto 0;align-self:center}
+  .vault-mascot{display:none}
   .vault-right{padding:0}
 
-  /* VAULT PAGE — mascot panel now stays visible on mobile too, centered above the stats */
+  /* VAULT PAGE */
   .vp-main-grid{grid-template-columns:1fr;gap:20px}
-  .vp-mascot-panel{flex-direction:row;justify-content:center;order:-1}
-  .vp-mascot-img{width:100px}
+  .vp-mascot-panel{display:none}
   .vp-mini-row{grid-template-columns:1fr 1fr}
 
   /* LOBBY */
