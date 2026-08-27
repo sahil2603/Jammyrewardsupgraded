@@ -66,8 +66,8 @@ a{color:inherit;text-decoration:none}
 img{max-width:100%}
 
 /* ===== NAV ===== */
-nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(16px);
-  background:rgba(9,6,15,.74);border-bottom:1px solid var(--line)}
+nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(10px);transform:translateZ(0);
+  background:rgba(9,6,15,.82);border-bottom:1px solid var(--line)}
 .nav-in{display:flex;align-items:center;gap:22px;height:72px}
 .brand{display:flex;align-items:center;gap:10px;font-family:'Lilita One','Arial Black','Impact',system-ui,sans-serif;font-size:1.15rem}
 .brand span{background:var(--rainbow);background-size:300% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:rainbowShift 7s linear infinite;filter:drop-shadow(0 0 10px rgba(168,85,247,.35))}
@@ -2739,12 +2739,21 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeVaultMo
 ============================================================ */
 runReveals();runCounts();initKickStream();
 setTimeout(()=>{var b=document.getElementById('vaultBar');if(b)b.style.width='80%';},800);
-// Force reveal on any scroll so content never stays hidden
-window.addEventListener('scroll',function(){
+// Force reveal on any scroll so content never stays hidden.
+// Was re-running a full DOM query on every single scroll event, forever — scroll fires
+// dozens of times per second while actively scrolling, so this was doing real work on
+// every tick for the entire life of the page, even though the IntersectionObserver above
+// already handles reveals correctly on its own. This was a real, avoidable contributor to
+// scroll jank. Kept the same fallback guarantee (nothing stays hidden once the user
+// scrolls) but it now runs once on the first scroll and removes itself immediately after,
+// instead of running on every tick indefinitely.
+function forceRevealFallback(){
   document.querySelectorAll('.page.show .reveal:not(.in)').forEach(function(el){
     el.classList.add('in');
   });
-},{ passive:true });
+  window.removeEventListener('scroll', forceRevealFallback);
+}
+window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true });
 </script>
 
 <!-- VAULT POPUP MODAL -->
