@@ -144,9 +144,10 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(16px);
    next to a flat white half — background-size is wide (420%) so the color sweep is slow and
    deliberate across the whole wordmark rather than a fast, cheap-looking shimmer. */
 .wordmark .jam,.wordmark .slots{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent;
-  background-size:420% auto;animation:rainbowShift 9s linear infinite;text-shadow:none}
+  background-size:420% auto;animation:rainbowShift 9s linear infinite;text-shadow:none;
+  -webkit-text-stroke:1px rgba(10,6,20,.4)}
 .wordmark .slots{animation-delay:-1.6s}
-.wordmark::after{content:"";position:absolute;inset:-6% -4%;background:linear-gradient(100deg,transparent 40%,rgba(255,255,255,.55) 50%,transparent 60%);
+.wordmark::after{content:"";position:absolute;inset:-6% -4%;background:linear-gradient(100deg,transparent 40%,rgba(255,255,255,.32) 50%,transparent 60%);
   background-size:220% 100%;mix-blend-mode:overlay;animation:wordmarkSheen 5s ease-in-out infinite;pointer-events:none}
 @keyframes wordmarkSheen{0%{background-position:160% 0}55%,100%{background-position:-60% 0}}
 }
@@ -1049,9 +1050,14 @@ body::before{
 .stats .rcard:nth-child(2){border-top-color:var(--neon-cyan)}
 .stats .rcard:nth-child(3){border-top-color:var(--neon-pink)}
 
-/* --- hero wordmark extra glow --- */
-.wordmark{filter:drop-shadow(0 0 40px rgba(192,132,252,.6)) drop-shadow(0 8px 20px rgba(0,0,0,.4))!important}
-.wordmark .slots{text-shadow:0 0 40px rgba(255,255,255,.5),0 0 80px rgba(192,132,252,.4)!important}
+/* --- hero wordmark extra glow ---
+   Previously had a white text-shadow glow on .slots from when it was solid white text.
+   Now that both words share one flowing gradient, that white haze sat directly on top of
+   the letters and blew out to a washed-out blob whenever the gradient cycled into its
+   lighter gold/pink phase. Replaced with a dark contact shadow for contrast (works at every
+   phase of the gradient) plus a consistent brand-purple ambient glow instead of a light one. */
+.wordmark{filter:drop-shadow(0 0 34px rgba(168,85,247,.55)) drop-shadow(0 6px 16px rgba(0,0,0,.55))!important}
+.wordmark .jam,.wordmark .slots{text-shadow:0 2px 10px rgba(0,0,0,.5)!important}
 
 /* --- animated pill border --- */
 .pill::before{animation:borderSpin 3s linear infinite!important}
