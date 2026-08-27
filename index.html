@@ -134,28 +134,32 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(16px);
 
 
 /* ===== HERO ===== */
-.hero{text-align:center;padding:34px 0 50px;position:relative;isolation:isolate;overflow-x:hidden}
+.hero{text-align:center;padding:34px 0 50px;position:relative;isolation:isolate;overflow-x:hidden;
+  display:flex;flex-direction:column;align-items:center}
 .pill{display:inline-flex;align-items:center;gap:8px;font-size:.74rem;font-weight:600;letter-spacing:.22em;
   text-transform:uppercase;color:#d7c9ff;padding:9px 20px;border-radius:99px;position:relative;background:var(--bg2)}
 .pill::before{content:"";position:absolute;inset:0;border-radius:99px;padding:1.5px;background:var(--rainbow);background-size:200% auto;animation:rainbowShift 3s linear infinite;
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;box-shadow:0 0 20px rgba(168,85,247,.3)}
-.wordmark{font-family:'Lilita One','Arial Black','Impact',system-ui,sans-serif;font-size:clamp(2.8rem,7.5vw,5.8rem);line-height:.95;margin:20px 0 8px;letter-spacing:.5px;position:relative;display:inline-block}
-/* Dedicated high-saturation neon gradient for the wordmark — the shared site-wide --rainbow
-   passes through a muddier yellow/olive segment that reads as "dull" at this large a size, so
-   the title gets its own punchier stop list instead. Starts and ends on the same color so the
-   9s loop has no visible seam. The "shine" is baked in as bright stops WITHIN this gradient
-   (a bright near-white flash between colors) instead of a separate blended overlay layer —
-   that overlay approach rendered as a solid grey box in some browsers, which is the bug that
-   was reported. Baking it into the text-fill gradient itself is naturally clipped to the
-   letters, so there's no separate box that can render wrong. */
+/* Font-size deliberately conservative here (was 5.8rem/7.5vw). "Lilita One" is a wide bold
+   display font and isn't reachable in this sandbox to measure directly (fonts.googleapis.com
+   isn't on the allowed network list), so the previous size was tuned against a narrower
+   fallback font and overflowed its container in a real browser — which is what threw off the
+   centering. Sized down with real margin against that risk, plus a hard max-width safety net
+   so it can never bleed past its container regardless of which font actually renders. */
+.wordmark{font-family:'Lilita One','Arial Black','Impact',system-ui,sans-serif;font-size:clamp(2.4rem,5.6vw,4.4rem);line-height:1;margin:20px 0 8px;letter-spacing:.5px;position:relative;
+  display:inline-block;max-width:94%}
+/* Curated neon duotone flow (magenta -> purple -> electric blue -> cyan -> bright flash -> back
+   to magenta) instead of a full 7-color rainbow — reads as a cleaner, more premium neon-sign
+   effect at this size rather than a busy rainbow. Paired with a pulsing glow underneath for a
+   genuine "alive" neon feel. */
 .wordmark .jam,.wordmark .slots{
-  background:linear-gradient(90deg,#ff3db6,#c084fc,#a855f7,#5b8def,#22d3ee,#f4f9ff,#3ddc84,#ffd23d,#ff7a3d,#ff3db6);
+  background:linear-gradient(90deg,#ff2ec4,#c026d3,#8b5cf6,#4f7ff0,#22d3ee,#eafcff,#22d3ee,#8b5cf6,#c026d3,#ff2ec4);
   background-size:420% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
-  animation:rainbowShift 8s linear infinite;text-shadow:none;
-  -webkit-text-stroke:1px rgba(30,10,55,.35);
-  filter:saturate(1.4) brightness(1.1)
+  animation:rainbowShift 7s linear infinite;text-shadow:none;
+  -webkit-text-stroke:1px rgba(20,8,40,.4);
+  filter:saturate(1.35) brightness(1.12)
 }
-.wordmark .slots{animation-delay:-1.6s}
+.wordmark .slots{animation-delay:-1.4s}
 .hero .sub{color:var(--muted);font-size:clamp(1rem,2.4vw,1.25rem);max-width:620px;margin:6px auto 0}
 .mascot{width:clamp(130px,14vw,180px);margin:22px auto 6px;display:block;animation:mascotBob 4.5s ease-in-out infinite;will-change:transform;transform:translateZ(0)}
 @keyframes mascotBob{
