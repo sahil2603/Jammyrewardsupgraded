@@ -2390,7 +2390,7 @@ lbcd2();setInterval(lbcd2,1000);
    calls are blocked by CORS on both APIs (verified), and would also expose
    the raw API keys in page source. The proxy holds the keys privately and
    does the real API calls server-side, where neither problem applies. */
-var LB_PROXY_URL = 'PASTE_YOUR_WORKER_URL_HERE'; // e.g. https://jammy-lb-proxy.yourname.workers.dev
+var LB_PROXY_URL = 'https://jammy-lb-proxy.sahil-sah2603.workers.dev';
 
 async function loadLeaderboard(casino){
   var rowsEl = document.getElementById('lbFullRows');
@@ -2416,8 +2416,38 @@ function renderLeaderboardRows(wagers){
     rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">No wagers recorded for this period yet.</div>';
     return;
   }
-  rowsEl.innerHTML = wagers.slice(3).map(function(w){
-    return '<div class="lb-full-row"><span>#'+w.rank+'</span><span>'+(w.name||'—')+'</span><span>$'+Number(w.wager||0).toLocaleString()+'</span><span>—</span></div>';
+  /* Populate podium (top 3) */
+  var podOrder = [1,0,2]; /* visual order: 2nd, 1st, 3rd */
+  var pods = document.querySelectorAll('.lb2-pod');
+  if(pods.length >= 3){
+    podOrder.forEach(function(dataIdx, podIdx){
+      var w = wagers[dataIdx];
+      if(!w) return;
+      var pod = pods[podIdx];
+      var nameEl = pod.querySelector('.lb2-name');
+      var wagerEl = pod.querySelector('.lb2-wager, .lb2-wagered');
+      var avatarEl = pod.querySelector('.lb2-avatar');
+      if(nameEl) nameEl.textContent = w.name || '—';
+      if(wagerEl) wagerEl.textContent = '$' + Number(w.wager||0).toLocaleString() + ' wagered';
+      if(avatarEl){
+        avatarEl.textContent = (w.name||'?').charAt(0).toUpperCase();
+        avatarEl.title = w.name || '';
+      }
+    });
+  }
+  /* Full list (all players) */
+  rowsEl.innerHTML = wagers.map(function(w){
+    var initial = (w.name||'?').charAt(0).toUpperCase();
+    var wagerAmt = w.wager ? '$'+Number(w.wager).toLocaleString() : '—';
+    return '<div class="lb-full-row">'
+      +'<span style="color:var(--purple);font-weight:700">#'+w.rank+'</span>'
+      +'<span style="display:flex;align-items:center;gap:8px">'
+        +'<span style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;flex:none">'+initial+'</span>'
+        +(w.name||'—')
+      +'</span>'
+      +'<span>'+wagerAmt+'</span>'
+      +'<span>—</span>'
+    +'</div>';
   }).join('');
 }
 loadLeaderboard('upgrader');
