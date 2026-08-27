@@ -177,12 +177,19 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(10px);transform:transl
    duotone tried earlier. Font stays exactly as-is (Lilita One), only the color source changed.
    Kept the text-stroke + brightness/saturate boost from the legibility fixes, since those solve
    a real contrast problem independent of which gradient is flowing through. */
+/* Same hue journey as --rainbow (purple/blue/cyan/green/gold/orange/pink, matching the nav
+   logo per feedback), but with bright white flashes inserted between cyan->green and
+   green->gold specifically. Green sitting directly next to cyan or gold blends into a dirty
+   muddy/olive color at this size — small and short-lived on the nav logo, but a large,
+   lingering patch on the big hero title, which is what was reading as "dull" on real devices
+   even after the glow-clipping fix. The flashes break that up without changing the overall
+   color feel. */
 .wordmark .jam,.wordmark .slots{
-  background:var(--rainbow);
-  background-size:300% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
+  background:linear-gradient(90deg,#a855f7,#5b8def,#22d3ee,#eafcff,#3ddc84,#eafcff,#ffd23d,#ff7a3d,#ff3db6,#a855f7);
+  background-size:340% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
   animation:rainbowShift 7s linear infinite;text-shadow:none;
   -webkit-text-stroke:1px rgba(20,8,40,.4);
-  filter:saturate(1.35) brightness(1.12)
+  filter:saturate(1.4) brightness(1.15)
 }
 .wordmark .slots{animation-delay:-1.4s}
 .hero .sub{color:var(--muted);font-size:clamp(1rem,2.4vw,1.25rem);max-width:620px;margin:6px auto 0}
