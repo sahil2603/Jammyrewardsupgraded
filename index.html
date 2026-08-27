@@ -139,12 +139,10 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(16px);
 }
 .wordmark .slots{color:#fff;text-shadow:0 3px 0 rgba(124,58,237,.45),0 0 32px rgba(168,85,247,.5)}
 .hero .sub{color:var(--muted);font-size:clamp(1rem,2.4vw,1.25rem);max-width:620px;margin:6px auto 0}
-.mascot{width:clamp(130px,14vw,180px);margin:22px auto 6px;display:block;animation:mascotBob 4.5s ease-in-out infinite}
+.mascot{width:clamp(130px,14vw,180px);margin:22px auto 6px;display:block;animation:mascotBob 4.5s ease-in-out infinite;will-change:transform;transform:translateZ(0)}
 @keyframes mascotBob{
-  0%,100%{transform:translateY(0) rotate(-2deg) scale(1)}
-  25%{transform:translateY(-10px) rotate(0deg) scale(1.03)}
-  50%{transform:translateY(-20px) rotate(2deg) scale(1.06)}
-  75%{transform:translateY(-10px) rotate(0deg) scale(1.03)}
+  0%,100%{transform:translateY(0px) rotate(-1.5deg)}
+  50%{transform:translateY(-18px) rotate(1.5deg)}
 }
 /* Mascot aura glow — the pulsing coloured halo under the jar */
 .mascot-aura{
@@ -159,7 +157,7 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(16px);
     transparent 85%
   );
   filter:blur(22px);
-  animation:auraPulse 4.5s ease-in-out infinite;
+  animation:auraPulse 4.5s ease-in-out infinite;will-change:transform,opacity;transform:translateZ(0);
   pointer-events:none;
   z-index:-1;
 }
@@ -170,7 +168,7 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(16px);
   75%{transform:scaleX(1.08) scaleY(1.12);opacity:.9}
 }
 /* Floating sparkles around mascot */
-.mascot-sparkle{
+.mascot-sparkle{will-change:transform,opacity;transform:translateZ(0);
   position:absolute;border-radius:50%;pointer-events:none;
   animation:sparkleDrift 3s ease-in-out infinite;
 }
@@ -180,8 +178,8 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(16px);
 .mascot-sparkle:nth-child(4){width:5px;height:5px;background:#fbbf24;top:55%;right:5%;animation-delay:2.1s;animation-duration:3s}
 .mascot-sparkle:nth-child(5){width:3px;height:3px;background:#38bdf8;bottom:35%;left:8%;animation-delay:2.8s;animation-duration:2.6s}
 @keyframes sparkleDrift{
-  0%,100%{transform:translateY(0) scale(1);opacity:.5}
-  50%{transform:translateY(-12px) scale(1.4);opacity:1}
+  0%,100%{transform:translateY(0px);opacity:.35}
+  50%{transform:translateY(-12px);opacity:.9}
 }
 .mascot-glow{filter:drop-shadow(0 20px 40px rgba(168,85,247,.35))}
 .hero-cta{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:30px}
@@ -203,7 +201,7 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(16px);
 .why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:34px}
 .why-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px 20px;text-align:left;
   transition:transform .25s,border-color .25s,box-shadow .25s}
-.why-card:hover{transform:translateY(-9px);border-color:rgba(168,85,247,.4);box-shadow:0 28px 56px -22px rgba(168,85,247,.55),inset 0 1px 0 rgba(255,255,255,.06)}.why-card:hover .why-ic{transform:scale(1.15) rotate(-5deg)}
+.why-card:hover{transform:translateY(-9px);border-color:rgba(168,85,247,.4);box-shadow:0 28px 56px -22px rgba(168,85,247,.55),inset 0 1px 0 rgba(255,255,255,.06)}.why-card:hover .why-ic{transform:rotate(-8deg)}
 .why-card .why-ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:1.4rem;
   background:var(--panel-2);border:1px solid rgba(168,85,247,.25);margin-bottom:14px;filter:drop-shadow(0 4px 10px rgba(168,85,247,.25));transition:transform .3s}
 .why-card h3{font-family:'Lilita One','Arial Black','Impact',system-ui,sans-serif;font-size:1.12rem;letter-spacing:.4px}
@@ -291,7 +289,7 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(16px);
 .thumb{height:200px;position:relative;overflow:hidden;display:grid;place-items:center;}
 .thumb:has(img[src]:not([src=""])) b{display:none}
 .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;z-index:3;transition:transform .5s ease}
-.thumb img[src]:not([src=""]){display:block}.rcard:hover .thumb img{transform:scale(1.06)}
+.thumb img[src]:not([src=""]){display:block}.rcard:hover .thumb img{opacity:.92}
 .thumb b{font-family:'Lilita One','Arial Black','Impact',system-ui,sans-serif;font-size:1.5rem;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.6);z-index:1;text-align:center;padding:0 10px;line-height:1.05}
 .thumb::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.2),transparent 60%);z-index:2}
 .meta-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
@@ -410,7 +408,7 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(16px);
 
 /* ===== MASCOT LIVE ANIMATIONS ===== */
 .mascot-wrap{position:relative;width:clamp(130px,14vw,180px);margin:22px auto 6px;display:block;filter:drop-shadow(0 0 0px transparent);transition:filter .4s}
-.mascot-wrap .mascot{width:100%;margin:0;display:block;animation:mascotBob 4.5s ease-in-out infinite}
+.mascot-wrap .mascot{width:100%;margin:0;display:block;animation:mascotBob 4.5s ease-in-out infinite;will-change:transform;transform:translateZ(0)}
 
 /* coins spill from the jar — created & animated in JS (Web Animations API) */
 
@@ -438,7 +436,7 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(16px);
 .vault-title{font-family:'Lilita One','Arial Black',sans-serif;font-size:clamp(1.7rem,3.5vw,2.4rem);letter-spacing:1px;line-height:1;margin-bottom:6px}
 .vj{color:#fff}.vv{color:#22c55e;text-shadow:0 0 20px rgba(34,197,94,.4)}
 .vault-sub{color:var(--muted);font-size:.84rem;line-height:1.5;max-width:260px;margin-bottom:0}
-.vault-mascot{width:clamp(90px,10vw,140px);display:block;animation:mascotBob 4.5s ease-in-out infinite;flex:none}
+.vault-mascot{width:clamp(90px,10vw,140px);display:block;animation:mascotBob 4.5s ease-in-out infinite;flex:none;will-change:transform;transform:translateZ(0)}
 .vault-balance-label{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:3px}
 .vault-balance{font-family:'Lilita One','Arial Black',sans-serif;font-size:clamp(2rem,4.5vw,3.2rem);letter-spacing:2px;color:#fff;line-height:1;cursor:pointer;text-shadow:0 0 30px rgba(74,222,128,.3);animation:pulseGlow 3s ease-in-out infinite}
 .vault-goal-label{color:var(--muted);font-size:.8rem;margin:4px 0 10px}.vault-goal-label span{color:#22c55e;font-weight:700}
@@ -546,8 +544,8 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(16px);
 }
 
 /* reveal */
-.reveal{opacity:0;transform:translateY(20px) scale(.98);transition:.65s cubic-bezier(.16,1,.3,1)}
-.reveal.in{opacity:1;transform:none}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
 
 /* footer */
 footer{border-top:1px solid var(--line);margin-top:40px;padding:56px 0 0;
@@ -778,7 +776,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   letter-spacing:3px;color:#38bdf8;text-shadow:0 0 35px rgba(56,189,248,.45),0 0 70px rgba(56,189,248,.2)}
 .loy2-underline{height:3px;background:linear-gradient(90deg,transparent,#38bdf8,#7dd3fc,#38bdf8,transparent);
   border-radius:2px;margin:14px auto 0;max-width:600px;animation:glowPulse 2.5s ease-in-out infinite}
-@keyframes glowPulse{0%,100%{opacity:.7;box-shadow:none}50%{opacity:1;box-shadow:0 0 12px rgba(56,189,248,.5)}}
+@keyframes glowPulse{0%,100%{opacity:.65}50%{opacity:1}}
 .loy2-card{
   border-radius:22px;padding:34px 38px;margin-bottom:22px;
   position:relative;overflow:hidden;
@@ -1386,7 +1384,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 .wl-chip{transition:transform .2s,box-shadow .2s,border-color .2s !important}
 .wl-chip:hover{transform:translateY(-3px) !important;box-shadow:0 12px 28px -8px rgba(168,85,247,.3) !important;border-color:rgba(168,85,247,.5) !important}
 .lb2-pod{transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s !important}
-.lb2-pod:hover{transform:translateY(-5px) scale(1.02) !important;box-shadow:0 20px 44px -12px rgba(168,85,247,.35) !important}
+.lb2-pod:hover{transform:translateY(-6px) !important;box-shadow:0 22px 48px -12px rgba(168,85,247,.38) !important}
 .ly-step{transition:transform .2s,box-shadow .2s !important}
 .ly-step:hover{transform:translateY(-3px) !important;box-shadow:0 16px 36px -8px rgba(168,85,247,.3) !important}
 /* ── UPDATE 6: mascot 3D tilt ── */
@@ -1407,7 +1405,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 .rev-stat .lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
 .rev-stat .val{font-weight:700;font-size:1rem;color:#fff}
 /* ── UPDATE 5: neon canvas bg ── */
-#neonBg{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.9}
+#neonBg{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.9;contain:strict;isolation:isolate}
 </style>
 </head>
 <body>
