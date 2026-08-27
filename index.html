@@ -2438,7 +2438,8 @@ function renderLeaderboardRows(wagers){
   /* Full list (all players) */
   rowsEl.innerHTML = wagers.map(function(w){
     var initial = (w.name||'?').charAt(0).toUpperCase();
-    var wagerAmt = w.wager ? '$'+Number(w.wager).toLocaleString() : '—';
+    var hasWager = wagers.some(function(w){ return w.wager && w.wager > 0; });
+    var wagerAmt = (w.wager && w.wager > 0) ? '$'+Number(w.wager).toLocaleString() : (hasWager ? '—' : '');
     return '<div class="lb-full-row">'
       +'<span style="color:var(--purple);font-weight:700">#'+w.rank+'</span>'
       +'<span style="display:flex;align-items:center;gap:8px">'
