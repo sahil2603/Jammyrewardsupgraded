@@ -1250,6 +1250,62 @@ nav{border-bottom:1px solid transparent!important;
 @media(max-width:768px){#liveRainbow{height:460px;width:200vw}}
 @media(prefers-reduced-motion:reduce){#liveRainbow{display:none}}
 </style>
+<style>
+/* ── UPDATE 9: Nav link popping colors ── */
+.nav-links a[data-page="leaderboards"]{color:#a78bfa}
+.nav-links a[data-page="leaderboards"]:hover,.nav-links a[data-page="leaderboards"].active{color:#c4b5fd !important}
+.nav-links a[data-page="bonuses"]{color:#34d399}
+.nav-links a[data-page="bonuses"]:hover,.nav-links a[data-page="bonuses"].active{color:#6ee7b7 !important}
+.nav-links a[data-page="reviews"]{color:#f472b6}
+.nav-links a[data-page="reviews"]:hover,.nav-links a[data-page="reviews"].active{color:#f9a8d4 !important}
+.nav-links a[data-page="loyalty"]{color:#fbbf24}
+.nav-links a[data-page="loyalty"]:hover,.nav-links a[data-page="loyalty"].active{color:#fcd34d !important}
+.nav-links a[data-page="vault"]{color:#38bdf8}
+.nav-links a[data-page="vault"]:hover,.nav-links a[data-page="vault"].active{color:#7dd3fc !important}
+/* ── UPDATE 9: Social brand colors ── */
+a[title="Discord"] svg{fill:#5865f2 !important;color:#5865f2}
+a[title="Discord"]:hover svg{filter:brightness(1.2) drop-shadow(0 0 6px #5865f2)}
+a[title="YouTube"] svg{fill:#ff0000 !important;color:#ff0000}
+a[title="YouTube"]:hover svg{filter:brightness(1.2) drop-shadow(0 0 6px #f00)}
+a[title="Instagram"]{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+a[title="Instagram"] svg{stroke:url(#igGrad2)}
+/* ── UPDATE 2+7: lb-preview card hover ── */
+.lb-preview-wrap [style*="border-radius:16px"]{transition:transform .28s cubic-bezier(.22,1,.36,1),box-shadow .28s,border-color .28s !important;cursor:pointer}
+.lb-preview-wrap [style*="rgba(96,165,250,.25)"]:hover{transform:translateY(-7px) !important;box-shadow:0 28px 60px -14px rgba(96,165,250,.5) !important;border-color:rgba(96,165,250,.7) !important}
+.lb-preview-wrap [style*="rgba(244,114,182,.25)"]:hover{transform:translateY(-7px) !important;box-shadow:0 28px 60px -14px rgba(244,114,182,.5) !important;border-color:rgba(244,114,182,.7) !important}
+/* ── UPDATE 7: Global card hover ── */
+.vp-card{transition:transform .28s cubic-bezier(.22,1,.36,1),box-shadow .28s,border-color .28s !important}
+.vp-card:hover{transform:translateY(-7px) scale(1.01) !important;box-shadow:0 28px 64px -16px rgba(168,85,247,.45),0 0 0 1px rgba(168,85,247,.4) !important;border-color:rgba(168,85,247,.55) !important}
+.bcard{transition:transform .28s cubic-bezier(.22,1,.36,1),box-shadow .28s,border-color .28s !important}
+.bcard:hover{transform:translateY(-6px) scale(1.01) !important;box-shadow:0 28px 64px -16px rgba(168,85,247,.4),0 0 0 1px rgba(168,85,247,.3) !important}
+.why-card{transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s !important}
+.why-card:hover{transform:translateY(-6px) !important;box-shadow:0 20px 48px -12px rgba(168,85,247,.35) !important}
+.wl-chip{transition:transform .2s,box-shadow .2s,border-color .2s !important}
+.wl-chip:hover{transform:translateY(-3px) !important;box-shadow:0 12px 28px -8px rgba(168,85,247,.3) !important;border-color:rgba(168,85,247,.5) !important}
+.lb2-pod{transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s !important}
+.lb2-pod:hover{transform:translateY(-5px) scale(1.02) !important;box-shadow:0 20px 44px -12px rgba(168,85,247,.35) !important}
+.ly-step{transition:transform .2s,box-shadow .2s !important}
+.ly-step:hover{transform:translateY(-3px) !important;box-shadow:0 16px 36px -8px rgba(168,85,247,.3) !important}
+/* ── UPDATE 6: mascot 3D tilt ── */
+.mascot-wrap{perspective:700px;cursor:pointer}
+.mascot-wrap .mascot{transform-style:preserve-3d;transition:filter .25s;will-change:transform}
+.mascot-wrap:hover .mascot{filter:drop-shadow(0 0 26px rgba(168,85,247,.8)) drop-shadow(0 18px 38px rgba(0,0,0,.55)) !important}
+/* ── UPDATE 8: Review card base styles ── */
+.rev-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:24px;transition:transform .28s cubic-bezier(.22,1,.36,1),box-shadow .28s}
+.rev-card:hover{transform:translateY(-7px);box-shadow:0 28px 64px -16px rgba(168,85,247,.4),0 0 0 1px rgba(168,85,247,.3)}
+.rev-img{width:100%;height:200px;object-fit:cover;display:block}
+.rev-body{padding:20px 22px}
+.rev-title{font-family:'Lilita One',sans-serif;font-size:1.35rem;margin-bottom:8px}
+.rev-desc{color:var(--muted);font-size:.9rem;margin-bottom:14px;line-height:1.6}
+.rev-meta{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:.82rem}
+.rev-pub{background:rgba(168,85,247,.15);color:#c084fc;border:1px solid rgba(168,85,247,.3);border-radius:8px;padding:4px 12px;font-weight:700}
+.rev-vol{font-weight:700}.rev-vol.low{color:#4ade80}.rev-vol.med{color:#fbbf24}.rev-vol.high{color:#f87171}
+.rev-stats{display:flex;gap:18px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.rev-stat .lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.rev-stat .val{font-weight:700;font-size:1rem;color:#fff}
+/* ── UPDATE 5: neon canvas bg ── */
+#neonBg{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.6}
+</style>
 </head>
 <body>
 <canvas id="bgCanvas"></canvas>
@@ -1272,7 +1328,7 @@ nav{border-bottom:1px solid transparent!important;
 <nav>
   <div class="wrap nav-in">
     <div class="brand">
-      <img src="jar-clean.png" alt="JammmyRewards" style="width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 3px 8px rgba(168,85,247,.45))">
+      <img src="logo.png" alt="JammmyRewards" style="width:42px;height:42px;object-fit:contain;filter:drop-shadow(0 3px 12px rgba(168,85,247,.6))">
       <span>JammmyRewards</span>
     </div>
     <span class="notlive"><span class="d"></span> Not Live</span>
@@ -1297,10 +1353,10 @@ nav{border-bottom:1px solid transparent!important;
 </nav>
 
 <div class="sidetabs">
-  <a class="sidetab slot" href="https://discord.gg/jammmyslots" target="_blank" rel="noopener" title="Request a Slot on Discord">
+  <a class="sidetab slot" href="https://discord.gg/jammmy" target="_blank" rel="noopener" title="Request a Slot on Discord">
     <img src="https://www.jammmyslots.com/request-a-slot.png" alt="Request a Slot" style="width:100%;display:block;border-radius:6px;pointer-events:none;will-change:auto;transform:translateZ(0)">
   </a>
-  <a class="sidetab battle" href="https://discord.gg/jammmyslots" target="_blank" rel="noopener" title="Request a Battle on Discord">
+  <a class="sidetab battle" href="https://discord.gg/jammmy" target="_blank" rel="noopener" title="Request a Battle on Discord">
     <img src="https://www.jammmyslots.com/request-a-battle.png" alt="Request a Battle" style="width:100%;display:block;border-radius:6px;pointer-events:none;will-change:auto;transform:translateZ(0)">
   </a>
 </div>
@@ -1400,7 +1456,7 @@ nav{border-bottom:1px solid transparent!important;
           <h2 class="vault-title"><span class="vj">JAMMMY</span> <span class="vv" style="background:var(--rainbow);background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:rainbowShift 4s linear infinite">VAULT</span></h2>
           <p class="vault-sub">Watch the community jar fill up in real time. Every wager builds toward the next payout.</p>
         </div>
-        <img src="jar-clean.png" alt="Jammmy mascot" class="vault-mascot" onclick="openVaultModal()">
+        <img src="logo.png" alt="Jammmy mascot" class="vault-mascot" onclick="openVaultModal()">
       </div>
 
       <!-- RIGHT: live balance + bar + mini cards + buttons — floating freely -->
@@ -1551,7 +1607,7 @@ nav{border-bottom:1px solid transparent!important;
           <div><div class="wlc-title">Follow</div><div class="wlc-sub">Get notified</div></div>
           <span class="wl-chip-arrow">&#x2197;</span>
         </a>
-        <a href="https://discord.gg/jammmyslots" target="_blank" class="wl-chip wl-chip-link">
+        <a href="https://discord.gg/jammmy" target="_blank" class="wl-chip wl-chip-link">
           <span style="font-size:1.4rem">💬</span>
           <div><div class="wlc-title">Discord</div><div class="wlc-sub">Join community</div></div>
           <span class="wl-chip-arrow">&#x2197;</span>
@@ -1849,7 +1905,7 @@ nav{border-bottom:1px solid transparent!important;
         <!-- RIGHT: mascot panel -->
         <div class="vp-mascot-panel">
           <span class="vpp-count">● Live</span>
-          <img src="jar-clean.png" alt="Jammmy mascot" class="vp-mascot-img" onclick="openVaultModal()">
+          <img src="logo.png" alt="Jammmy mascot" class="vp-mascot-img" onclick="openVaultModal()">
         </div>
       </div>
 
@@ -2029,14 +2085,14 @@ nav{border-bottom:1px solid transparent!important;
 
     <!-- Col 1: Brand -->
     <div class="foot-brand">
-      <div class="brand"><img src="jar-clean.png" alt="JammmyRewards" style="width:28px;height:28px;object-fit:contain"> JammmyRewards</div>
+      <div class="brand"><img src="logo.png" alt="JammmyRewards" style="width:32px;height:32px;object-fit:contain"> JammmyRewards</div>
       <p>The premier destination for casino enthusiasts and slot players.</p>
       <div class="foot-socials">
-        <a title="Discord" href="https://discord.gg/jammmyslots" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 5a18 18 0 0 0-4.5-1.4l-.2.5A16 16 0 0 1 18 5a16 16 0 0 0-12 0 16 16 0 0 1 2.7-.9l-.2-.5A18 18 0 0 0 4 5C1.6 8.6 1 12.2 1.2 15.7A18 18 0 0 0 6.7 18l.4-.6a12 12 0 0 1-1.9-.9l.5-.4a13 13 0 0 0 11 0l.5.4a12 12 0 0 1-1.9.9l.4.6a18 18 0 0 0 5.5-2.3C23.2 11.6 22.4 8 20 5M8.7 14c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8m6.6 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8"/></svg></a>
+        <a title="Discord" href="https://discord.gg/jammmy" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 5a18 18 0 0 0-4.5-1.4l-.2.5A16 16 0 0 1 18 5a16 16 0 0 0-12 0 16 16 0 0 1 2.7-.9l-.2-.5A18 18 0 0 0 4 5C1.6 8.6 1 12.2 1.2 15.7A18 18 0 0 0 6.7 18l.4-.6a12 12 0 0 1-1.9-.9l.5-.4a13 13 0 0 0 11 0l.5.4a12 12 0 0 1-1.9.9l.4.6a18 18 0 0 0 5.5-2.3C23.2 11.6 22.4 8 20 5M8.7 14c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8m6.6 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8"/></svg></a>
         <a title="Kick" href="https://kick.com/jammmyslots" target="_blank" style="color:#53fc18"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h6v5l3-5h7l-5 9 5 9h-7l-3-5v5H3z"/></svg></a>
         <a title="Twitter / X" href="https://x.com/jammmyslots" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h3l-7 8 8 12h-6l-5-7-5 7H3l8-9L2 2h6l4 6zm-1 18h2L7 4H5z"/></svg></a>
         <a title="YouTube" href="https://youtube.com/@jammmyslots" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.5a3 3 0 0 0-2-2C19 5 12 5 12 5s-7 0-9 .5a3 3 0 0 0-2 2C1 9.5 1 12 1 12s0 2.5.5 4.5a3 3 0 0 0 2 2C5 19 12 19 12 19s7 0 9-.5a3 3 0 0 0 2-2c.5-2 .5-4.5.5-4.5s0-2.5-.5-4.5M10 15V9l5 3z"/></svg></a>
-        <a title="Instagram" href="https://instagram.com/jammmyslots" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a title="Instagram" href="https://www.instagram.com/code_jammmy?igsh=MWpmNzJpMndoYmlnbw%3D%3D" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
       </div>
     </div>
 
@@ -2242,7 +2298,7 @@ async function loadLeaderboard(casino){
     if(data.error) throw new Error(data.error);
     renderLeaderboardRows(data.wagers || []);
   }catch(e){
-    if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Couldn\'t load live data right now — try refreshing.</div>';
+    if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Couldn\'t load live data right now — try refreshing.<div class="lb-error-detail">'+String(e).replace(/</g,'&lt;')+'</div></div>';
     console.error('Leaderboard fetch failed:', e);
   }
 }
@@ -2732,8 +2788,6 @@ document.addEventListener('click',function(e){
   requestAnimationFrame(animate);
 })();
 
-
-/* ---- cursor glow trail on cards ---- */
 (function(){
   var _raf=false,_ex=0,_ey=0;
   document.addEventListener('mousemove',function(e){_ex=e.clientX;_ey=e.clientY;
@@ -2820,6 +2874,90 @@ window.addEventListener('scroll',function(){
 </div>
 <style>@keyframes popIn{from{opacity:0;transform:scale(.92) translateY(16px)}to{opacity:1;transform:none}}
 #vaultModal{display:none!important}#vaultModal.open{display:flex!important}</style>
+<!-- Instagram gradient def for icon -->
+<svg width="0" height="0" style="position:absolute"><defs>
+  <linearGradient id="igGrad2" x1="0" y1="1" x2="1" y2="0">
+    <stop offset="0%" stop-color="#f09433"/><stop offset="25%" stop-color="#e6683c"/>
+    <stop offset="50%" stop-color="#dc2743"/><stop offset="75%" stop-color="#cc2366"/>
+    <stop offset="100%" stop-color="#bc1888"/>
+  </linearGradient>
+</defs></svg>
+
+<!-- UPDATE 5: Neon casino background canvas -->
+<canvas id="neonBg"></canvas>
+<script>
+(function(){
+  var c = document.getElementById('neonBg');
+  var ctx = c.getContext('2d');
+  var W, H, particles = [];
+  var SYMS = ['7','★','♦','🍒','BAR','₿','Ξ','$','⚡'];
+  var COLS = ['#a855f7','#22d3ee','#f472b6','#fbbf24','#4ade80','#fb923c','#818cf8'];
+
+  function resize(){
+    W = c.width = window.innerWidth;
+    H = c.height = window.innerHeight;
+  }
+  function mkp(randomY){
+    var sz = 13 + Math.random()*20;
+    return {
+      x: Math.random()*W, y: randomY ? Math.random()*H : -30,
+      size: sz, sym: SYMS[Math.floor(Math.random()*SYMS.length)],
+      col: COLS[Math.floor(Math.random()*COLS.length)],
+      speed: 0.3+Math.random()*0.7, drift: (Math.random()-.5)*.4,
+      alpha: .15+Math.random()*.3, glow: Math.random()>.6,
+      rot: Math.random()*Math.PI*2, rotSpd: (Math.random()-.5)*.008
+    };
+  }
+  var n = window.innerWidth<640?14:26;
+  resize(); for(var i=0;i<n;i++) particles.push(mkp(true));
+  window.addEventListener('resize', resize);
+
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(function(p){
+      p.y += p.speed; p.x += p.drift; p.rot += p.rotSpd;
+      if(p.y > H+40){ Object.assign(p, mkp(false)); }
+      ctx.save();
+      ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.globalAlpha = p.alpha;
+      ctx.font = 'bold '+p.size+'px "Lilita One",monospace';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      if(p.glow){ ctx.shadowColor = p.col; ctx.shadowBlur = p.size*1.2; }
+      ctx.fillStyle = p.col; ctx.fillText(p.sym, 0, 0);
+      ctx.restore();
+    });
+    requestAnimationFrame(tick);
+  }
+  if(!window.matchMedia('(prefers-reduced-motion:reduce)').matches) requestAnimationFrame(tick);
+  else { ctx.clearRect(0,0,W,H); }
+})();
+</script>
+
+<!-- UPDATE 6: Mascot 3D tilt on hover -->
+<script>
+(function(){
+  var wrap = document.querySelector('.mascot-wrap');
+  var mascot = wrap && wrap.querySelector('.mascot');
+  if(!wrap || !mascot) return;
+  var tx=0,ty=0,cx=0,cy=0,raf;
+  wrap.addEventListener('mousemove', function(e){
+    var r = wrap.getBoundingClientRect();
+    cx = e.clientX - r.left - r.width/2;
+    cy = e.clientY - r.top - r.height/2;
+    if(!raf) raf = requestAnimationFrame(function(){
+      tx = cx/r.width*28; ty = -cy/r.height*22;
+      mascot.style.transform = 'rotateY('+tx+'deg) rotateX('+ty+'deg) scale(1.05)';
+      raf = null;
+    });
+  });
+  wrap.addEventListener('mouseleave', function(){
+    mascot.style.transition = 'transform .5s cubic-bezier(.22,1,.36,1), filter .25s';
+    mascot.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
+    setTimeout(function(){ mascot.style.transition = 'filter .25s'; }, 500);
+  });
+})();
+</script>
+
 </body>
 </html>
 <!-- INJECTED STYLES -->
