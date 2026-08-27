@@ -46,6 +46,14 @@ body{
   font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--text);
   line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased;
 }
+/* Buttons don't inherit page text color by default in most browsers — without this, any
+   button that doesn't set its own explicit `color` falls back to the browser's default button
+   text color instead of the site's theme, which reads as dim/washed-out gray on this dark
+   background. This was the actual cause of the unreadable "Upgrader" tab label. Several other
+   buttons on the site had the same latent gap (.copybtn, .lc-btn, .loy2-btn, .outline-btn,
+   .vbtn, .vp-btn, .wl-kick-btn), so fixing it once globally here instead of patching each one
+   individually — any button-specific color rule elsewhere still simply overrides this. */
+button{color:inherit}
 /* layered background */
 #stars{position:fixed;inset:0;z-index:-3;pointer-events:none}
 body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
@@ -745,11 +753,17 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 /* ===== LEADERBOARD v2 ===== */
 .lb-casino-tabs{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}
 .lbt{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 22px;cursor:pointer;
-  transition:.2s;min-width:140px;display:grid;place-items:center}
+  transition:.2s;min-width:140px;display:grid;place-items:center;
+  /* Buttons don't inherit the page's text color by default in most browsers — they fall back
+     to the browser's own default button text color, which reads as dim/washed-out gray on this
+     dark background. That's what made the "Upgrader" label (plain text, unlike RustMagic's
+     which is baked into its logo image) hard to read. */
+  color:var(--text)}
 .lbt img{height:36px;max-width:120px;object-fit:contain;filter:grayscale(.6);opacity:.7;transition:.2s}
-.lbt.active{border-color:#d97706;background:rgba(217,119,6,.12)}
+.lbt.active{border-color:#d97706;background:rgba(217,119,6,.12);color:#fde68a}
 .lbt.active img{filter:none;opacity:1}
 .lbt:hover img{filter:none;opacity:1}
+.lbt:hover{color:#fff}
 .lb-updated{text-align:center;color:var(--faint);font-size:.82rem;margin-bottom:28px}
 .lb2-podium{display:grid;grid-template-columns:1fr 1.1fr 1fr;gap:16px;max-width:800px;margin:0 auto;align-items:end}
 .lb2-pod{
