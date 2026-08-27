@@ -151,7 +151,14 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(10px);transform:transl
 
 
 /* ===== HERO ===== */
-.hero{text-align:center;padding:34px 0 50px;position:relative;isolation:isolate;overflow-x:hidden;
+/* overflow-x:hidden removed here — body already has it as the real page-wide safety net
+   against horizontal scroll, so this was purely redundant. What it was actually doing: on
+   mobile there's only ~11px of margin between the title and this container's edge, but the
+   title's neon glow (drop-shadow blur radius up to 52px) needs much more room than that to
+   bleed outward — so ~80% of the glow was being silently clipped away, which is why the title
+   looked flat/dull on phones specifically even though the exact same CSS looks vivid on
+   desktop where there's enough margin for the glow to actually show. */
+.hero{text-align:center;padding:34px 0 50px;position:relative;isolation:isolate;
   display:flex;flex-direction:column;align-items:center}
 .pill{display:inline-flex;align-items:center;gap:8px;font-size:.74rem;font-weight:600;letter-spacing:.22em;
   text-transform:uppercase;color:#d7c9ff;padding:9px 20px;border-radius:99px;position:relative;background:var(--bg2)}
