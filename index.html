@@ -2390,22 +2390,41 @@ lbcd2();setInterval(lbcd2,1000);
    calls are blocked by CORS on both APIs (verified), and would also expose
    the raw API keys in page source. The proxy holds the keys privately and
    does the real API calls server-side, where neither problem applies. */
+var UPGRADER_API_KEY = '459e09e7-211b-4729-af55-14b0f38d97f4';
 var LB_PROXY_URL = 'https://jammy-lb-proxy.sahil-sah2603.workers.dev';
 
 async function loadLeaderboard(casino){
   var rowsEl = document.getElementById('lbFullRows');
   if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Connecting to live leaderboard&hellip;</div>';
-  if(!LB_PROXY_URL || LB_PROXY_URL.indexOf('PASTE_YOUR') === 0){
-    if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Live '+casino+' data connects once the proxy URL is set.</div>';
-    return;
-  }
   try{
-    var res = await fetch(LB_PROXY_URL + '?casino=' + casino);
-    var data = await res.json();
-    if(data.error) throw new Error(data.error);
-    renderLeaderboardRows(data.wagers || []);
+    var data, wagers;
+    if(casino === 'upgrader'){
+      /* Upgrader requires browser-origin call with real Referer — call directly like Jammy's site does */
+      var res = await fetch('https://api.upgrader.com/leaderboard/connect-by-key', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({apiKey: UPGRADER_API_KEY})
+      });
+      data = await res.json();
+      wagers = (data.wagers||[]).map(function(w){ return {rank:w.rank, name:w.username, wager:w.wager}; });
+      /* Update meta from API response */
+      if(data.currentEntry){
+        var datesEl = document.getElementById('lb2-dates');
+        if(datesEl && data.currentEntry.startDate && data.currentEntry.endDate){
+          var opts={month:'short',day:'numeric',year:'numeric'};
+          datesEl.textContent = new Date(data.currentEntry.startDate).toLocaleDateString('en-US',opts)+' \u2192 '+new Date(data.currentEntry.endDate).toLocaleDateString('en-US',opts);
+        }
+      }
+    } else {
+      /* RustMagic — server-side via Worker (x-api-key works fine there) */
+      var res2 = await fetch(LB_PROXY_URL + '?casino=rustmagic');
+      data = await res2.json();
+      if(data.error) throw new Error(data.error);
+      wagers = data.wagers || [];
+    }
+    renderLeaderboardRows(wagers);
   }catch(e){
-    if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Couldn\'t load live data right now — try refreshing.<div class="lb-error-detail">'+String(e).replace(/</g,'&lt;')+'</div></div>';
+    if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Couldn\'t load live data right now — try refreshing.<div class="lb-error-detail">'+String(e).slice(0,120)+'</div></div>';
     console.error('Leaderboard fetch failed:', e);
   }
 }
