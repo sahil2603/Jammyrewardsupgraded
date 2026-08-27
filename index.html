@@ -139,18 +139,23 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(16px);
   text-transform:uppercase;color:#d7c9ff;padding:9px 20px;border-radius:99px;position:relative;background:var(--bg2)}
 .pill::before{content:"";position:absolute;inset:0;border-radius:99px;padding:1.5px;background:var(--rainbow);background-size:200% auto;animation:rainbowShift 3s linear infinite;
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;box-shadow:0 0 20px rgba(168,85,247,.3)}
-.wordmark{font-family:'Lilita One','Arial Black','Impact',system-ui,sans-serif;font-size:clamp(2.8rem,7.5vw,5.8rem);line-height:.95;margin:20px 0 8px;letter-spacing:.5px;filter:drop-shadow(0 8px 28px rgba(168,85,247,.65)) drop-shadow(0 0 60px rgba(168,85,247,.3));position:relative;display:inline-block}
-/* Full title flows as ONE continuous gradient across both words instead of a colored half
-   next to a flat white half — background-size is wide (420%) so the color sweep is slow and
-   deliberate across the whole wordmark rather than a fast, cheap-looking shimmer. */
-.wordmark .jam,.wordmark .slots{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent;
-  background-size:420% auto;animation:rainbowShift 9s linear infinite;text-shadow:none;
-  -webkit-text-stroke:1px rgba(10,6,20,.4)}
-.wordmark .slots{animation-delay:-1.6s}
-.wordmark::after{content:"";position:absolute;inset:-6% -4%;background:linear-gradient(100deg,transparent 40%,rgba(255,255,255,.32) 50%,transparent 60%);
-  background-size:220% 100%;mix-blend-mode:overlay;animation:wordmarkSheen 5s ease-in-out infinite;pointer-events:none}
-@keyframes wordmarkSheen{0%{background-position:160% 0}55%,100%{background-position:-60% 0}}
+.wordmark{font-family:'Lilita One','Arial Black','Impact',system-ui,sans-serif;font-size:clamp(2.8rem,7.5vw,5.8rem);line-height:.95;margin:20px 0 8px;letter-spacing:.5px;position:relative;display:inline-block}
+/* Dedicated high-saturation neon gradient for the wordmark — the shared site-wide --rainbow
+   passes through a muddier yellow/olive segment that reads as "dull" at this large a size, so
+   the title gets its own punchier stop list instead. Starts and ends on the same color so the
+   9s loop has no visible seam. The "shine" is baked in as bright stops WITHIN this gradient
+   (a bright near-white flash between colors) instead of a separate blended overlay layer —
+   that overlay approach rendered as a solid grey box in some browsers, which is the bug that
+   was reported. Baking it into the text-fill gradient itself is naturally clipped to the
+   letters, so there's no separate box that can render wrong. */
+.wordmark .jam,.wordmark .slots{
+  background:linear-gradient(90deg,#ff3db6,#c084fc,#a855f7,#5b8def,#22d3ee,#f4f9ff,#3ddc84,#ffd23d,#ff7a3d,#ff3db6);
+  background-size:420% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:rainbowShift 8s linear infinite;text-shadow:none;
+  -webkit-text-stroke:1px rgba(30,10,55,.35);
+  filter:saturate(1.4) brightness(1.1)
 }
+.wordmark .slots{animation-delay:-1.6s}
 .hero .sub{color:var(--muted);font-size:clamp(1rem,2.4vw,1.25rem);max-width:620px;margin:6px auto 0}
 .mascot{width:clamp(130px,14vw,180px);margin:22px auto 6px;display:block;animation:mascotBob 4.5s ease-in-out infinite;will-change:transform;transform:translateZ(0)}
 @keyframes mascotBob{
@@ -1051,13 +1056,16 @@ body::before{
 .stats .rcard:nth-child(3){border-top-color:var(--neon-pink)}
 
 /* --- hero wordmark extra glow ---
-   Previously had a white text-shadow glow on .slots from when it was solid white text.
-   Now that both words share one flowing gradient, that white haze sat directly on top of
-   the letters and blew out to a washed-out blob whenever the gradient cycled into its
-   lighter gold/pink phase. Replaced with a dark contact shadow for contrast (works at every
-   phase of the gradient) plus a consistent brand-purple ambient glow instead of a light one. */
-.wordmark{filter:drop-shadow(0 0 34px rgba(168,85,247,.55)) drop-shadow(0 6px 16px rgba(0,0,0,.55))!important}
-.wordmark .jam,.wordmark .slots{text-shadow:0 2px 10px rgba(0,0,0,.5)!important}
+   Multi-color neon glow (purple + cyan + pink blurs stacked) instead of a single flat tint,
+   so it reads as a genuine neon-sign glow rather than a dull, muted shadow. A soft dark contact
+   shadow underneath keeps it grounded against the background at every phase of the gradient. */
+.wordmark{filter:
+  drop-shadow(0 0 20px rgba(255,61,182,.5))
+  drop-shadow(0 0 36px rgba(168,85,247,.55))
+  drop-shadow(0 0 52px rgba(34,211,238,.35))
+  drop-shadow(0 6px 14px rgba(0,0,0,.5))
+  !important}
+.wordmark .jam,.wordmark .slots{text-shadow:0 2px 8px rgba(0,0,0,.4)!important}
 
 /* --- animated pill border --- */
 .pill::before{animation:borderSpin 3s linear infinite!important}
