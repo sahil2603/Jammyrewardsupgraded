@@ -11,8 +11,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <style>
 :root{
-  --bg:#07040e;
-  --bg2:#0a0617;
+  --bg:#05101e;
+  --bg2:#0a1a30;
   --panel:#100a1f;
   --panel-2:#150d2c;
   --line:rgba(255,255,255,.08);
@@ -855,7 +855,7 @@ body::before{
 }
 
 /* ── FLOATING ICONS ── */
-#bgCanvas{position:fixed;inset:0;z-index:-1;pointer-events:none}
+#bgCanvas{display:none!important}
 /* --- floating particles canvas --- */
 #particles{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.6}
 
@@ -2392,225 +2392,9 @@ document.addEventListener('click',function(e){
 
 
 
-/* ============================================================
-   BACKGROUND — slow drift, smooth fade, no flicker
-============================================================ */
-(function(){
-  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
 
-  var cs=document.getElementById('bgCanvas'),xs=cs?cs.getContext('2d'):null;
-  if(!xs)return;
-  var W,H;
-  function size(){W=cs.width=innerWidth;H=cs.height=innerHeight;}
-  size();addEventListener('resize',size);
+/* Background animation replaced by snow canvas */
 
-  /* ── STARS (subtle, slow) ── */
-  var starCols=['#c084fc','#67e8f9','#4ade80','#fbbf24','#f472b6','#818cf8'];
-  var stars=[];
-  var SN=isMobile?Math.min(28,Math.floor(W/36)):Math.min(52,Math.floor(W/26));
-  for(var i=0;i<SN;i++)stars.push({
-    x:Math.random()*W, y:Math.random()*H,
-    vx:(Math.random()-.5)*.08, vy:(Math.random()-.5)*.08,  // very slow
-    r:Math.random()*1.2+.3,
-    col:starCols[i%starCols.length],
-    a:Math.random()*.45+.35  // brighter
-  });
-
-  /* ── CRYPTO COINS (slow drift upward, gentle spin) ── */
-  var coinSymbols=['₿','Ξ','₮','◎','Ł','Ð'];
-  var coinColors=['#f7931a','#627eea','#26a17b','#9945ff','#aaaaaa','#c2a633'];
-  var coins=[];
-  var CN=isMobile?8:14;
-  for(var i=0;i<CN;i++)coins.push({
-    x:Math.random()*W,
-    y:Math.random()*H, // spread across full height, not bottom-heavy
-    vy:-(Math.random()*.12+.04),  // very slow upward drift
-    vx:(Math.random()-.5)*.06,   // minimal horizontal
-    rot:Math.random()*360,
-    rspeed:(Math.random()-.5)*.25, // very gentle spin
-    size:Math.random()*8+10,
-    sym:coinSymbols[i%coinSymbols.length],
-    col:coinColors[i%coinColors.length],
-    life:Math.random(), // stagger starts
-    a:Math.random()*.4+.4  // brighter
-  });
-
-  /* ── CUTE ICONS (slow float, no rotation flicker) ── */
-  var icons=['🍒','💎','⭐','👑','🎰','🏆','🎲','🍀','💰','🎁','🌈','🃏'];
-  var floaters=[];
-  var FN=isMobile?8:18;
-  for(var i=0;i<FN;i++)floaters.push({
-    x:Math.random()*W,
-    y:Math.random()*H,
-    vy:-(Math.random()*.1+.03),  // very slow
-    vx:(Math.random()-.5)*.05,
-    rot:0, // no rotation — was causing flicker
-    size:Math.random()*6+13,
-    icon:icons[i%icons.length],
-    life:Math.random(),
-    a:Math.random()*.4+.3  // more visible
-  });
-
-  /* ── RIBBONS (slow, gentle wave) ── */
-  var ribbonCols=[
-    ['#c084fc','#f472b6'],['#67e8f9','#4ade80'],
-    ['#fbbf24','#fb923c'],['#818cf8','#c084fc']
-  ];
-  var ribbons=[];
-  var RN=isMobile?5:10;
-  for(var i=0;i<RN;i++)ribbons.push({
-    x:Math.random()*W,
-    y:Math.random()*H, // spread out
-    vy:-(Math.random()*.1+.03), // very slow
-    vx:(Math.random()-.5)*.05,
-    w:Math.random()*3+2,
-    h:Math.random()*50+25,
-    rot:Math.random()*40-20, // mild angle, not full 360
-    rspeed:(Math.random()-.5)*.08, // barely rotates
-    cols:ribbonCols[i%ribbonCols.length],
-    life:Math.random(),
-    a:Math.random()*.42+.3, // more visible
-    wave:Math.random()*Math.PI*2,
-    waveSpeed:Math.random()*.012+.006 // very slow wave
-  });
-
-  // Life increment rates — key to smoothness
-  // At 60fps, life+=0.001 means 1000 frames = ~16s per cycle = smooth
-  var STAR_LIFE_INC   = 0;     // stars don't use life
-  var COIN_LIFE_INC   = 0.0008; // ~20s full cycle
-  var FLOAT_LIFE_INC  = 0.0007; // ~24s full cycle
-  var RIBBON_LIFE_INC = 0.0006; // ~28s full cycle
-  var SPARK_LIFE_INC  = 0.002;  // ~8s (small dots, faster ok)
-
-  /* ── SPARKS (tiny dots, minimal) ── */
-  var pCols=['rgba(192,132,252,.5)','rgba(103,232,249,.4)','rgba(244,114,182,.4)','rgba(74,222,128,.35)'];
-  var sparks=[];
-  var PN=isMobile?12:24;
-  for(var i=0;i<PN;i++)sparks.push({
-    x:Math.random()*W, y:Math.random()*H,
-    vx:(Math.random()-.5)*.15, vy:-(Math.random()*.18+.05),
-    r:Math.random()*1.4+.5,
-    col:pCols[i%pCols.length],
-    life:Math.random()
-  });
-
-  var frame=0;
-  var isMobile=innerWidth<768;
-  var SPEED=isMobile?2.0:2.4;   // make the slow drift actually visible
-  function loop(){
-    requestAnimationFrame(loop);
-    if(document.hidden)return;
-    frame++;
-    // 30fps desktop, 20fps mobile
-    var skip=isMobile?2:1;
-    if(frame%skip!==0)return;
-
-    xs.clearRect(0,0,W,H);
-
-    /* ── Stars ── */
-    for(var i=0;i<stars.length;i++){
-      var p=stars[i];
-      p.x+=p.vx*SPEED; p.y+=p.vy*SPEED;
-      if(p.x<0||p.x>W)p.vx*=-1;
-      if(p.y<0||p.y>H)p.vy*=-1;
-      xs.globalAlpha=p.a;
-      xs.fillStyle=p.col;
-      xs.beginPath();xs.arc(p.x,p.y,p.r,0,6.28);xs.fill();
-      // connections only every 6 frames
-      if(frame%12===0){
-        for(var j=i+1;j<stars.length;j++){
-          var q=stars[j],dx=p.x-q.x,dy=p.y-q.y,d=dx*dx+dy*dy;
-          if(d<8000){xs.globalAlpha=(1-d/8000)*.1;xs.strokeStyle=p.col;xs.lineWidth=.4;xs.beginPath();xs.moveTo(p.x,p.y);xs.lineTo(q.x,q.y);xs.stroke();}
-        }
-      }
-    }
-
-    /* ── Sparks ── */
-    for(var i=0;i<sparks.length;i++){
-      var f=sparks[i];
-      f.x+=f.vx*SPEED; f.y+=f.vy*SPEED; f.life+=SPARK_LIFE_INC;
-      if(f.y<-10||f.life>1){f.y=H+10;f.x=Math.random()*W;f.life=0;}
-      var al=Math.sin(f.life*Math.PI)*.6; // brighter
-      xs.globalAlpha=al;
-      xs.fillStyle=f.col;
-      xs.beginPath();xs.arc(f.x,f.y,f.r,0,6.28);xs.fill();
-    }
-
-    /* ── Crypto coins ── */
-    for(var i=0;i<coins.length;i++){
-      var coin=coins[i];
-      coin.x+=coin.vx*SPEED; coin.y+=coin.vy*SPEED;
-      coin.rot+=coin.rspeed;
-      coin.life+=COIN_LIFE_INC;
-      if(coin.y<-60||coin.life>1){
-        coin.y=H+60; coin.x=Math.random()*W; coin.life=0;
-      }
-      var al2=Math.sin(coin.life*Math.PI)*coin.a;
-      xs.save();
-      xs.translate(coin.x,coin.y);
-      xs.rotate(coin.rot*Math.PI/180);
-      xs.globalAlpha=al2;
-      // circle border only — no inner glow (was causing flicker)
-      xs.beginPath();xs.arc(0,0,coin.size*.8,0,6.28);
-      xs.strokeStyle=coin.col;xs.lineWidth=1.2;xs.stroke();
-      xs.fillStyle=coin.col+'22';xs.fill();
-      // symbol
-      xs.fillStyle=coin.col;
-      xs.font='bold '+(coin.size*.85)+'px monospace';
-      xs.textAlign='center';xs.textBaseline='middle';
-      xs.fillText(coin.sym,0,0);
-      xs.restore();
-    }
-
-    /* ── Cute icons (no rotation to prevent flicker) ── */
-    for(var i=0;i<floaters.length;i++){
-      var fl=floaters[i];
-      fl.x+=fl.vx*SPEED; fl.y+=fl.vy*SPEED;
-      fl.life+=FLOAT_LIFE_INC;
-      if(fl.y<-60||fl.life>1){fl.y=H+60;fl.x=Math.random()*W;fl.life=0;}
-      var al3=Math.sin(fl.life*Math.PI)*fl.a;
-      xs.save();
-      xs.translate(fl.x,fl.y);
-      xs.globalAlpha=al3;
-      xs.font=fl.size+'px serif';
-      xs.textAlign='center';xs.textBaseline='middle';
-      xs.fillText(fl.icon,0,0);
-      xs.restore();
-    }
-
-    /* ── Ribbons ── */
-    for(var i=0;i<ribbons.length;i++){
-      var rb=ribbons[i];
-      rb.x+=(rb.vx+Math.sin(rb.wave)*0.15)*SPEED; // very gentle sway
-      rb.y+=rb.vy*SPEED;
-      rb.rot+=rb.rspeed;
-      rb.wave+=rb.waveSpeed;
-      rb.life+=RIBBON_LIFE_INC;
-      if(rb.y<-160||rb.life>1){rb.y=H+80;rb.x=Math.random()*W;rb.life=0;}
-      var al4=Math.sin(rb.life*Math.PI)*rb.a;
-      xs.save();
-      xs.translate(rb.x,rb.y);
-      xs.rotate(rb.rot*Math.PI/180);
-      xs.globalAlpha=al4;
-      var g=xs.createLinearGradient(0,-rb.h/2,0,rb.h/2);
-      g.addColorStop(0,rb.cols[0]);
-      g.addColorStop(.5,rb.cols[1]);
-      g.addColorStop(1,rb.cols[0]);
-      xs.fillStyle=g;
-      xs.beginPath();
-      xs.moveTo(-rb.w/2,-rb.h/2);
-      xs.bezierCurveTo(-rb.w*1.5,-rb.h/4,rb.w*1.5,0,-rb.w/2,rb.h/2);
-      xs.bezierCurveTo(rb.w/2,rb.h/4,-rb.w,0,rb.w/2,-rb.h/2);
-      xs.closePath();
-      xs.fill();
-      xs.restore();
-    }
-
-    xs.globalAlpha=1;
-    xs.shadowBlur=0;
-  }
-  loop();
-})();
 
 
 /* ---- GOLD J COIN (mascot) ---- */
@@ -2831,160 +2615,154 @@ window.addEventListener('scroll',function(){
   var c = document.getElementById('neonBg');
   var ctx = c.getContext('2d');
   var W, H, flakes = [], bolts = [], boltTimer = 0;
-  var COUNT = window.innerWidth < 640 ? 55 : 110;
+  /* Fewer flakes = smooth 60fps; offscreen cache = cheap drawImage each frame */
+  var COUNT = window.innerWidth < 640 ? 22 : 42;
+  var SIZES  = [6,8,10,13,16,20]; /* discrete sizes for cache efficiency */
+  var cache  = {};                 /* size -> offscreen canvas sprite */
 
-  /* Draw a 6-arm crystalline snowflake like the real crystal reference */
-  function drawFlake(x, y, r, rot, alpha){
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(rot);
-    ctx.globalAlpha = alpha;
-    ctx.lineCap = 'round';
-
-    var grd = ctx.createRadialGradient(0,0,0, 0,0,r);
-    grd.addColorStop(0,   'rgba(235,250,255,1)');
-    grd.addColorStop(0.35,'rgba(180,230,255,0.9)');
-    grd.addColorStop(1,   'rgba(80,180,255,0)');
-    ctx.strokeStyle = grd;
-    ctx.shadowColor = '#88ccff';
-    ctx.shadowBlur  = r * 2.8;
-
-    for(var arm = 0; arm < 6; arm++){
-      ctx.save();
-      ctx.rotate(arm * Math.PI / 3);
-
-      /* Main arm */
-      ctx.lineWidth = Math.max(0.7, r * 0.085);
-      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, -r); ctx.stroke();
-
+  /* Pre-render one flake sprite per size bucket (called once at startup) */
+  function bakeSprite(r){
+    var pad = r * 3;
+    var dim = Math.ceil(pad * 2);
+    var oc  = document.createElement('canvas');
+    oc.width = oc.height = dim;
+    var ox  = oc.getContext('2d');
+    ox.translate(dim/2, dim/2);
+    ox.lineCap = 'round';
+    /* Single global shadow — baked in, zero cost per frame */
+    ox.shadowColor = 'rgba(140,210,255,0.85)';
+    ox.shadowBlur  = r * 1.6;
+    /* Gradient: bright centre → transparent edge */
+    var grd = ox.createRadialGradient(0,0,0, 0,0,r*1.1);
+    grd.addColorStop(0,   'rgba(240,252,255,1)');
+    grd.addColorStop(0.5, 'rgba(190,235,255,0.9)');
+    grd.addColorStop(1,   'rgba(100,195,255,0)');
+    ox.strokeStyle = grd;
+    /* 6 arms */
+    for(var arm=0; arm<6; arm++){
+      ox.save();
+      ox.rotate(arm * Math.PI/3);
+      ox.lineWidth = Math.max(0.6, r*0.08);
+      ox.beginPath(); ox.moveTo(0,0); ox.lineTo(0,-r); ox.stroke();
       /* 3 branch pairs */
-      var bdata = [[0.28, 0.36, 46], [0.52, 0.29, 42], [0.74, 0.2, 38]];
-      bdata.forEach(function(b){
-        var bLen = r * b[1], bPos = -r * b[0], ang = b[2] * Math.PI / 180;
-        ctx.lineWidth = Math.max(0.45, r * 0.052);
-        ctx.beginPath(); ctx.moveTo(0, bPos);
-        ctx.lineTo(Math.sin(-ang)*bLen, bPos - Math.cos(ang)*bLen); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(0, bPos);
-        ctx.lineTo(Math.sin(ang)*bLen, bPos - Math.cos(ang)*bLen); ctx.stroke();
-        /* Sub-branches on main branches */
-        if(r > 10){
-          var subLen = bLen * 0.4, subAng = ang + 0.4;
-          var bx = Math.sin(-ang)*bLen, by = bPos - Math.cos(ang)*bLen;
-          ctx.lineWidth = Math.max(0.3, r * 0.035);
-          ctx.beginPath(); ctx.moveTo(bx, by);
-          ctx.lineTo(bx + Math.sin(-subAng)*subLen, by - Math.cos(subAng)*subLen); ctx.stroke();
-          var bx2 = Math.sin(ang)*bLen, by2 = bPos - Math.cos(ang)*bLen;
-          ctx.beginPath(); ctx.moveTo(bx2, by2);
-          ctx.lineTo(bx2 + Math.sin(subAng)*subLen, by2 - Math.cos(subAng)*subLen); ctx.stroke();
-        }
+      var bd = [[0.3,0.34,44],[0.54,0.27,40],[0.76,0.18,36]];
+      bd.forEach(function(b){
+        var bl=r*b[1], bp=-r*b[0], ag=b[2]*Math.PI/180;
+        ox.lineWidth = Math.max(0.4, r*0.048);
+        ox.beginPath(); ox.moveTo(0,bp); ox.lineTo(Math.sin(-ag)*bl, bp-Math.cos(ag)*bl); ox.stroke();
+        ox.beginPath(); ox.moveTo(0,bp); ox.lineTo(Math.sin(ag)*bl,  bp-Math.cos(ag)*bl); ox.stroke();
       });
-
       /* Tip facets */
-      ctx.lineWidth = Math.max(0.4, r * 0.065);
-      ctx.beginPath(); ctx.moveTo(0,-r); ctx.lineTo( r*0.09,-r+r*0.14); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(0,-r); ctx.lineTo(-r*0.09,-r+r*0.14); ctx.stroke();
-
-      ctx.restore();
+      ox.lineWidth = Math.max(0.35, r*0.055);
+      ox.beginPath(); ox.moveTo(0,-r); ox.lineTo( r*0.08,-r+r*0.12); ox.stroke();
+      ox.beginPath(); ox.moveTo(0,-r); ox.lineTo(-r*0.08,-r+r*0.12); ox.stroke();
+      ox.restore();
     }
-    ctx.restore();
+    return oc;
+  }
+
+  function getSprite(r){
+    /* Snap to nearest discrete size for maximum cache reuse */
+    var bucket = SIZES.reduce(function(prev,curr){ return Math.abs(curr-r)<Math.abs(prev-r)?curr:prev; });
+    if(!cache[bucket]) cache[bucket] = bakeSprite(bucket);
+    return cache[bucket];
   }
 
   function mkFlake(randomY){
-    var r = 6 + Math.random()*17;
+    var r = SIZES[Math.floor(Math.random()*SIZES.length)];
     return {
-      x: Math.random()*W, y: randomY ? Math.random()*H : -r*2,
+      x: Math.random()*W, y: randomY ? Math.random()*H : -r*3,
       r: r, rot: Math.random()*Math.PI*2,
-      speed: 0.25 + Math.random()*0.75,
-      drift: (Math.random()-.5)*0.32,
-      rotSpd: (Math.random()-.5)*0.005,
+      speed: 0.2+Math.random()*0.6,
+      drift: (Math.random()-.5)*0.28,
+      rotSpd: (Math.random()-.5)*0.004,
       wobble: Math.random()*Math.PI*2,
-      wobbleSpd: 0.007 + Math.random()*0.011,
-      alpha: 0.32 + Math.random()*0.48
+      wobbleSpd: 0.006+Math.random()*0.009,
+      alpha: 0.28+Math.random()*0.5
     };
   }
 
-  /* Neon electric bolt with fork branches */
+  /* Neon bolt */
   function mkBolt(){
-    var sx = 0.05*W + Math.random()*0.9*W;
-    var segs = [];
-    var cx = sx, cy = 0;
-    var steps = 12 + Math.floor(Math.random()*8);
+    var sx=0.05*W+Math.random()*0.9*W, segs=[], cx=sx, cy=0;
+    var steps=10+Math.floor(Math.random()*7);
     for(var i=0;i<steps;i++){
-      var nx = cx + (Math.random()-.44)*W*0.13;
-      var ny = cy + H/steps*(0.65+Math.random()*0.7);
+      var nx=cx+(Math.random()-.44)*W*0.12, ny=cy+H/steps*(0.6+Math.random()*0.8);
       segs.push({x1:cx,y1:cy,x2:nx,y2:ny,fork:false});
-      /* Fork branch */
-      if(Math.random()>.62){
+      if(Math.random()>.65){
         var fx=nx,fy=ny;
-        var fsteps = 3+Math.floor(Math.random()*4);
-        for(var f=0;f<fsteps;f++){
-          var fnx=fx+(Math.random()-.5)*W*0.08;
-          var fny=fy+H/steps*(0.4+Math.random()*0.6);
+        for(var f=0;f<3+Math.floor(Math.random()*3);f++){
+          var fnx=fx+(Math.random()-.5)*W*0.07, fny=fy+H/steps*(0.4+Math.random()*0.5);
           segs.push({x1:fx,y1:fy,x2:fnx,y2:fny,fork:true});
           fx=fnx;fy=fny;
         }
       }
       cx=nx;cy=ny;
     }
-    return {segs:segs, life:1, decay:0.045+Math.random()*0.055};
+    return {segs:segs, life:1, decay:0.05+Math.random()*0.06};
   }
 
   function drawBolt(lt){
+    ctx.lineCap='round';
     lt.segs.forEach(function(seg){
-      var a = lt.life*(seg.fork?.5:.88);
-      /* Core white-blue */
+      var a=lt.life*(seg.fork?.45:.85);
       ctx.beginPath(); ctx.moveTo(seg.x1,seg.y1); ctx.lineTo(seg.x2,seg.y2);
-      ctx.strokeStyle = 'rgba(215,240,255,'+Math.min(a,.95)+')';
-      ctx.lineWidth = seg.fork ? lt.life*1.4 : lt.life*(lt.life>.6?4:2.2);
-      ctx.shadowColor = '#00aaff'; ctx.shadowBlur = lt.life>.7 ? 42 : 18;
+      ctx.strokeStyle='rgba(215,242,255,'+Math.min(a,.9)+')';
+      ctx.lineWidth=seg.fork?lt.life*1.2:lt.life*(lt.life>.6?3.5:2);
+      ctx.shadowColor='#0088ff'; ctx.shadowBlur=lt.life>.7?38:16;
       ctx.stroke();
-      /* Electric glow halo */
-      ctx.beginPath(); ctx.moveTo(seg.x1,seg.y1); ctx.lineTo(seg.x2,seg.y2);
-      ctx.strokeStyle = 'rgba(40,160,255,'+Math.min(a*.38,.36)+')';
-      ctx.lineWidth = seg.fork ? lt.life*6 : lt.life*(lt.life>.6?18:9);
-      ctx.shadowColor = '#1188ff'; ctx.shadowBlur = lt.life>.7 ? 60 : 28;
+      ctx.strokeStyle='rgba(30,150,255,'+Math.min(a*.32,.3)+')';
+      ctx.lineWidth=seg.fork?lt.life*5:lt.life*(lt.life>.6?14:7);
+      ctx.shadowBlur=lt.life>.7?55:25;
       ctx.stroke();
-      ctx.shadowBlur = 0;
+      ctx.shadowBlur=0;
     });
   }
 
   function resize(){
-    W = c.width  = window.innerWidth;
-    H = c.height = window.innerHeight;
+    W=c.width=window.innerWidth;
+    H=c.height=window.innerHeight;
   }
 
+  /* Pre-bake all sprites at startup */
+  SIZES.forEach(function(s){ cache[s] = bakeSprite(s); });
   resize();
   window.addEventListener('resize', resize);
   for(var i=0;i<COUNT;i++) flakes.push(mkFlake(true));
 
-  var lastTs = 0;
+  var lastTs=0;
+  var FRAME_GAP = 33; /* ~30fps cap — half the CPU cost of 60fps, still looks smooth */
   function tick(ts){
-    var dt = Math.min(ts-lastTs, 50); lastTs = ts;
+    if(ts - lastTs < FRAME_GAP){ requestAnimationFrame(tick); return; }
+    var dt=Math.min(ts-lastTs,80); lastTs=ts;
     ctx.clearRect(0,0,W,H);
 
+    /* Snow — cheap drawImage only */
     flakes.forEach(function(f){
-      f.wobble += f.wobbleSpd;
-      f.x += f.drift + Math.sin(f.wobble)*0.28;
-      f.y += f.speed;
-      f.rot += f.rotSpd;
-      if(f.y > H+f.r*3) Object.assign(f, mkFlake(false));
-      drawFlake(f.x, f.y, f.r, f.rot, f.alpha);
+      f.wobble+=f.wobbleSpd;
+      f.x+=f.drift+Math.sin(f.wobble)*0.25;
+      f.y+=f.speed; f.rot+=f.rotSpd;
+      if(f.y>H+f.r*3) Object.assign(f,mkFlake(false));
+      var sprite=getSprite(f.r), half=sprite.width/2;
+      ctx.save();
+      ctx.translate(f.x,f.y); ctx.rotate(f.rot); ctx.globalAlpha=f.alpha;
+      ctx.drawImage(sprite,-half,-half);
+      ctx.restore();
     });
 
-    boltTimer += dt;
-    if(boltTimer > 1600 + Math.random()*2600){
-      boltTimer = 0;
+    /* Lightning */
+    boltTimer+=dt;
+    if(boltTimer>2000+Math.random()*3000){
+      boltTimer=0;
       bolts.push(mkBolt());
-      if(Math.random()>.5) setTimeout(function(){ bolts.push(mkBolt()); }, 85);
+      if(Math.random()>.5) setTimeout(function(){ bolts.push(mkBolt()); },90);
     }
-    ctx.save(); ctx.lineCap = 'round';
-    bolts = bolts.filter(function(lt){
-      lt.life -= lt.decay;
+    bolts=bolts.filter(function(lt){
+      lt.life-=lt.decay;
       if(lt.life<=0) return false;
       drawBolt(lt);
       return true;
     });
-    ctx.restore();
 
     requestAnimationFrame(tick);
   }
