@@ -2824,132 +2824,167 @@ window.addEventListener('scroll',function(){
   </linearGradient>
 </defs></svg>
 
-<!-- Snow + lightning + slots background -->
+<!-- Crystalline snowflake + neon lightning background -->
 <canvas id="neonBg"></canvas>
 <script>
 (function(){
   var c = document.getElementById('neonBg');
   var ctx = c.getContext('2d');
-  var W, H;
-  var snowflakes = [], slotSymbols = [], lightning = [];
-  var SLOT_SYMS = ['7','★','♦','🍒','BAR','✦','⚡','♠','♣','◆'];
-  var SNOW_COUNT = window.innerWidth < 640 ? 90 : 170;
-  var SYM_COUNT  = window.innerWidth < 640 ? 10 : 22;
+  var W, H, flakes = [], bolts = [], boltTimer = 0;
+  var COUNT = window.innerWidth < 640 ? 55 : 110;
+
+  /* Draw a 6-arm crystalline snowflake like the real crystal reference */
+  function drawFlake(x, y, r, rot, alpha){
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rot);
+    ctx.globalAlpha = alpha;
+    ctx.lineCap = 'round';
+
+    var grd = ctx.createRadialGradient(0,0,0, 0,0,r);
+    grd.addColorStop(0,   'rgba(235,250,255,1)');
+    grd.addColorStop(0.35,'rgba(180,230,255,0.9)');
+    grd.addColorStop(1,   'rgba(80,180,255,0)');
+    ctx.strokeStyle = grd;
+    ctx.shadowColor = '#88ccff';
+    ctx.shadowBlur  = r * 2.8;
+
+    for(var arm = 0; arm < 6; arm++){
+      ctx.save();
+      ctx.rotate(arm * Math.PI / 3);
+
+      /* Main arm */
+      ctx.lineWidth = Math.max(0.7, r * 0.085);
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, -r); ctx.stroke();
+
+      /* 3 branch pairs */
+      var bdata = [[0.28, 0.36, 46], [0.52, 0.29, 42], [0.74, 0.2, 38]];
+      bdata.forEach(function(b){
+        var bLen = r * b[1], bPos = -r * b[0], ang = b[2] * Math.PI / 180;
+        ctx.lineWidth = Math.max(0.45, r * 0.052);
+        ctx.beginPath(); ctx.moveTo(0, bPos);
+        ctx.lineTo(Math.sin(-ang)*bLen, bPos - Math.cos(ang)*bLen); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, bPos);
+        ctx.lineTo(Math.sin(ang)*bLen, bPos - Math.cos(ang)*bLen); ctx.stroke();
+        /* Sub-branches on main branches */
+        if(r > 10){
+          var subLen = bLen * 0.4, subAng = ang + 0.4;
+          var bx = Math.sin(-ang)*bLen, by = bPos - Math.cos(ang)*bLen;
+          ctx.lineWidth = Math.max(0.3, r * 0.035);
+          ctx.beginPath(); ctx.moveTo(bx, by);
+          ctx.lineTo(bx + Math.sin(-subAng)*subLen, by - Math.cos(subAng)*subLen); ctx.stroke();
+          var bx2 = Math.sin(ang)*bLen, by2 = bPos - Math.cos(ang)*bLen;
+          ctx.beginPath(); ctx.moveTo(bx2, by2);
+          ctx.lineTo(bx2 + Math.sin(subAng)*subLen, by2 - Math.cos(subAng)*subLen); ctx.stroke();
+        }
+      });
+
+      /* Tip facets */
+      ctx.lineWidth = Math.max(0.4, r * 0.065);
+      ctx.beginPath(); ctx.moveTo(0,-r); ctx.lineTo( r*0.09,-r+r*0.14); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0,-r); ctx.lineTo(-r*0.09,-r+r*0.14); ctx.stroke();
+
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  function mkFlake(randomY){
+    var r = 6 + Math.random()*17;
+    return {
+      x: Math.random()*W, y: randomY ? Math.random()*H : -r*2,
+      r: r, rot: Math.random()*Math.PI*2,
+      speed: 0.25 + Math.random()*0.75,
+      drift: (Math.random()-.5)*0.32,
+      rotSpd: (Math.random()-.5)*0.005,
+      wobble: Math.random()*Math.PI*2,
+      wobbleSpd: 0.007 + Math.random()*0.011,
+      alpha: 0.32 + Math.random()*0.48
+    };
+  }
+
+  /* Neon electric bolt with fork branches */
+  function mkBolt(){
+    var sx = 0.05*W + Math.random()*0.9*W;
+    var segs = [];
+    var cx = sx, cy = 0;
+    var steps = 12 + Math.floor(Math.random()*8);
+    for(var i=0;i<steps;i++){
+      var nx = cx + (Math.random()-.44)*W*0.13;
+      var ny = cy + H/steps*(0.65+Math.random()*0.7);
+      segs.push({x1:cx,y1:cy,x2:nx,y2:ny,fork:false});
+      /* Fork branch */
+      if(Math.random()>.62){
+        var fx=nx,fy=ny;
+        var fsteps = 3+Math.floor(Math.random()*4);
+        for(var f=0;f<fsteps;f++){
+          var fnx=fx+(Math.random()-.5)*W*0.08;
+          var fny=fy+H/steps*(0.4+Math.random()*0.6);
+          segs.push({x1:fx,y1:fy,x2:fnx,y2:fny,fork:true});
+          fx=fnx;fy=fny;
+        }
+      }
+      cx=nx;cy=ny;
+    }
+    return {segs:segs, life:1, decay:0.045+Math.random()*0.055};
+  }
+
+  function drawBolt(lt){
+    lt.segs.forEach(function(seg){
+      var a = lt.life*(seg.fork?.5:.88);
+      /* Core white-blue */
+      ctx.beginPath(); ctx.moveTo(seg.x1,seg.y1); ctx.lineTo(seg.x2,seg.y2);
+      ctx.strokeStyle = 'rgba(215,240,255,'+Math.min(a,.95)+')';
+      ctx.lineWidth = seg.fork ? lt.life*1.4 : lt.life*(lt.life>.6?4:2.2);
+      ctx.shadowColor = '#00aaff'; ctx.shadowBlur = lt.life>.7 ? 42 : 18;
+      ctx.stroke();
+      /* Electric glow halo */
+      ctx.beginPath(); ctx.moveTo(seg.x1,seg.y1); ctx.lineTo(seg.x2,seg.y2);
+      ctx.strokeStyle = 'rgba(40,160,255,'+Math.min(a*.38,.36)+')';
+      ctx.lineWidth = seg.fork ? lt.life*6 : lt.life*(lt.life>.6?18:9);
+      ctx.shadowColor = '#1188ff'; ctx.shadowBlur = lt.life>.7 ? 60 : 28;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    });
+  }
 
   function resize(){
-    W = c.width = window.innerWidth;
+    W = c.width  = window.innerWidth;
     H = c.height = window.innerHeight;
-  }
-
-  function mkSnow(randomY){
-    var sz = 1.5 + Math.random()*3.5;
-    return {
-      x: Math.random()*W,
-      y: randomY ? Math.random()*H : -10,
-      r: sz,
-      speed: 0.5 + Math.random()*1.2,
-      drift: (Math.random()-.5)*0.5,
-      alpha: .6 + Math.random()*.4,
-      wobble: Math.random()*Math.PI*2,
-      wobbleSpeed: 0.012+Math.random()*.02
-    };
-  }
-
-  function mkSym(randomY){
-    return {
-      x: Math.random()*W,
-      y: randomY ? Math.random()*H : -40,
-      sym: SLOT_SYMS[Math.floor(Math.random()*SLOT_SYMS.length)],
-      size: 14 + Math.random()*18,
-      speed: 0.25 + Math.random()*.5,
-      drift: (Math.random()-.5)*.3,
-      alpha: .22 + Math.random()*.35,
-      rot: Math.random()*Math.PI*2,
-      rotSpd: (Math.random()-.5)*.006,
-      glow: Math.random()>.5
-    };
-  }
-
-  /* Lightning bolt: a branching jagged line that flashes briefly */
-  function mkLightning(){
-    var x = Math.random()*W;
-    var segs = [];
-    var cx = x, cy = 0;
-    var steps = 8 + Math.floor(Math.random()*6);
-    for(var i=0;i<steps;i++){
-      var nx = cx + (Math.random()-.45)*120;
-      var ny = cy + H/steps * (0.8+Math.random()*.4);
-      segs.push({x1:cx,y1:cy,x2:nx,y2:ny});
-      cx=nx; cy=ny;
-    }
-    return {segs:segs, life:1.0, decay: 0.04+Math.random()*0.06, bright:true};
   }
 
   resize();
   window.addEventListener('resize', resize);
-
-  for(var i=0;i<SNOW_COUNT;i++) snowflakes.push(mkSnow(true));
-  for(var j=0;j<SYM_COUNT;j++) slotSymbols.push(mkSym(true));
-
-  // Spawn lightning occasionally
-  var lightTimer = 0;
+  for(var i=0;i<COUNT;i++) flakes.push(mkFlake(true));
 
   var lastTs = 0;
   function tick(ts){
-    var dt = Math.min(ts - lastTs, 50); lastTs = ts;
+    var dt = Math.min(ts-lastTs, 50); lastTs = ts;
     ctx.clearRect(0,0,W,H);
 
-    /* ── Snow ── */
-    snowflakes.forEach(function(s){
-      s.wobble += s.wobbleSpeed;
-      s.x += s.drift + Math.sin(s.wobble)*0.4;
-      s.y += s.speed;
-      if(s.y > H+10) Object.assign(s, mkSnow(false));
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-      ctx.fillStyle = 'rgba(210,230,255,'+s.alpha+')';
-      ctx.shadowColor = '#a8d4ff'; ctx.shadowBlur = s.r*4;
-      ctx.fill();
-      ctx.shadowBlur = 0;
+    flakes.forEach(function(f){
+      f.wobble += f.wobbleSpd;
+      f.x += f.drift + Math.sin(f.wobble)*0.28;
+      f.y += f.speed;
+      f.rot += f.rotSpd;
+      if(f.y > H+f.r*3) Object.assign(f, mkFlake(false));
+      drawFlake(f.x, f.y, f.r, f.rot, f.alpha);
     });
 
-    /* ── Slot symbols ── */
-    slotSymbols.forEach(function(s){
-      s.y += s.speed; s.x += s.drift; s.rot += s.rotSpd;
-      if(s.y > H+50) Object.assign(s, mkSym(false));
-      ctx.save();
-      ctx.translate(s.x, s.y); ctx.rotate(s.rot);
-      ctx.globalAlpha = Math.min(s.alpha, 0.75);
-      ctx.font = 'bold '+s.size+'px "Lilita One",sans-serif';
-      ctx.textAlign='center'; ctx.textBaseline='middle';
-      if(s.glow){ ctx.shadowColor='#38bdf8'; ctx.shadowBlur=s.size*1.8; }
-      ctx.fillStyle='#bfdbfe';
-      ctx.fillText(s.sym,0,0);
-      ctx.restore();
-    });
-
-    /* ── Lightning ── */
-    lightTimer += dt;
-    if(lightTimer > 1200 + Math.random()*2000){
-      lightTimer = 0;
-      lightning.push(mkLightning());
-      if(Math.random()>.6) setTimeout(function(){ lightning.push(mkLightning()); }, 80);
+    boltTimer += dt;
+    if(boltTimer > 1600 + Math.random()*2600){
+      boltTimer = 0;
+      bolts.push(mkBolt());
+      if(Math.random()>.5) setTimeout(function(){ bolts.push(mkBolt()); }, 85);
     }
-    lightning = lightning.filter(function(lt){
+    ctx.save(); ctx.lineCap = 'round';
+    bolts = bolts.filter(function(lt){
       lt.life -= lt.decay;
-      if(lt.life <= 0) return false;
-      var glow = lt.life > .7;
-      lt.segs.forEach(function(seg){
-        ctx.beginPath();
-        ctx.moveTo(seg.x1,seg.y1); ctx.lineTo(seg.x2,seg.y2);
-        ctx.strokeStyle = 'rgba('+(glow?'180,220,255':'120,180,255')+','+Math.min(lt.life*.85,.85)+')';
-        ctx.lineWidth = glow ? 2.5+lt.life*2 : 1+lt.life*1.5;
-        ctx.shadowColor='#38bdf8'; ctx.shadowBlur=glow?28:12;
-        ctx.stroke();
-        ctx.shadowBlur=0;
-      });
+      if(lt.life<=0) return false;
+      drawBolt(lt);
       return true;
     });
+    ctx.restore();
 
     requestAnimationFrame(tick);
   }
