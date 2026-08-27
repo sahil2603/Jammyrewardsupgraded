@@ -2399,23 +2399,18 @@ async function loadLeaderboard(casino){
   try{
     var data, wagers;
     if(casino === 'upgrader'){
-      /* Upgrader requires browser-origin call with real Referer — call directly like Jammy's site does */
-      var res = await fetch('https://api.upgrader.com/leaderboard/connect-by-key', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({apiKey: UPGRADER_API_KEY})
-      });
-      data = await res.json();
-      wagers = (data.wagers||[]).map(function(w){ return {rank:w.rank, name:w.username, wager:w.wager}; });
-      /* Update meta from API response */
-      if(data.currentEntry){
-        var datesEl = document.getElementById('lb2-dates');
-        if(datesEl && data.currentEntry.startDate && data.currentEntry.endDate){
-          var opts={month:'short',day:'numeric',year:'numeric'};
-          datesEl.textContent = new Date(data.currentEntry.startDate).toLocaleDateString('en-US',opts)+' \u2192 '+new Date(data.currentEntry.endDate).toLocaleDateString('en-US',opts);
-        }
-      }
-    } else {
+      /* Upgrader's API has CORS allowlist — only jammmyslots.com is allowlisted, not our domain yet.
+         Show clean holding state with direct link instead of a CORS error. */
+      if(rowsEl) rowsEl.innerHTML = '<div style="padding:34px;text-align:center">'
+        +'<div style="font-size:2rem;margin-bottom:12px">🏆</div>'
+        +'<div style="font-weight:700;font-size:1.1rem;margin-bottom:8px">Upgrader Leaderboard</div>'
+        +'<div style="color:var(--faint);font-size:.9rem;max-width:420px;margin:0 auto 20px">Live data coming soon — Upgrader needs to allowlist this domain. '
+        +'In the meantime, view the full leaderboard directly on Upgrader.</div>'
+        +'<a href="https://upgrader.com/leaderboard" target="_blank" rel="noopener" '
+        +'style="display:inline-block;background:#be185d;color:#fff;font-weight:700;padding:12px 24px;border-radius:10px;text-decoration:none;font-family:\'Lilita One\',sans-serif;letter-spacing:.02em">'
+        +'View on Upgrader ↗</a>'
+        +'</div>';
+      return;
       /* RustMagic — server-side via Worker (x-api-key works fine there) */
       var res2 = await fetch(LB_PROXY_URL + '?casino=rustmagic');
       data = await res2.json();
