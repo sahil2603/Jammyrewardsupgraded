@@ -599,7 +599,7 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(10px);transform:transl
 .vp-btn:hover{filter:brightness(1.15);transform:translateY(-3px)}
 
 @media(max-width:860px){
-  .vault-wrap{grid-template-columns:1fr}.vault-mascot{display:none}
+  .vault-wrap{grid-template-columns:1fr}
   .ps-slide.active{grid-template-columns:1fr}.ps-right{display:none}
   .vp-grid{grid-template-columns:1fr}
 }
@@ -671,14 +671,15 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   .vpg4{grid-template-columns:1fr 1fr}
   .vp-mid{grid-template-columns:1fr}
 
-  /* VAULT HOME — stack, hide mascot */
+  /* VAULT HOME — stack (mascot now stays visible on mobile, just resized/reflowed) */
   .vault-wrap{grid-template-columns:1fr;gap:16px}
-  .vault-mascot{display:none}
+  .vault-mascot{width:110px;margin:8px auto 0;align-self:center}
   .vault-right{padding:0}
 
-  /* VAULT PAGE */
+  /* VAULT PAGE — mascot panel now stays visible on mobile too, centered above the stats */
   .vp-main-grid{grid-template-columns:1fr;gap:20px}
-  .vp-mascot-panel{display:none}
+  .vp-mascot-panel{flex-direction:row;justify-content:center;order:-1}
+  .vp-mascot-img{width:100px}
   .vp-mini-row{grid-template-columns:1fr 1fr}
 
   /* LOBBY */
