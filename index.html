@@ -1295,7 +1295,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 .rev-stat .lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
 .rev-stat .val{font-weight:700;font-size:1rem;color:#fff}
 /* ── UPDATE 5: neon canvas bg ── */
-#neonBg{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.6}
+#neonBg{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.9}
 </style>
 </head>
 <body>
@@ -2824,10 +2824,7 @@ window.addEventListener('scroll',function(){
   </linearGradient>
 </defs></svg>
 
-<!-- UPDATE 5 v2: Snow + lightning + slots background -->
-<canvas id="neonBg"></canvas>
-<script>
-<!-- UPDATE 5 v2: Snow + lightning + slots background -->
+<!-- Snow + lightning + slots background -->
 <canvas id="neonBg"></canvas>
 <script>
 (function(){
@@ -2836,8 +2833,8 @@ window.addEventListener('scroll',function(){
   var W, H;
   var snowflakes = [], slotSymbols = [], lightning = [];
   var SLOT_SYMS = ['7','★','♦','🍒','BAR','✦','⚡','♠','♣','◆'];
-  var SNOW_COUNT = window.innerWidth < 640 ? 60 : 130;
-  var SYM_COUNT  = window.innerWidth < 640 ? 5  : 10;
+  var SNOW_COUNT = window.innerWidth < 640 ? 90 : 170;
+  var SYM_COUNT  = window.innerWidth < 640 ? 10 : 22;
 
   function resize(){
     W = c.width = window.innerWidth;
@@ -2852,7 +2849,7 @@ window.addEventListener('scroll',function(){
       r: sz,
       speed: 0.5 + Math.random()*1.2,
       drift: (Math.random()-.5)*0.5,
-      alpha: .4 + Math.random()*.5,
+      alpha: .6 + Math.random()*.4,
       wobble: Math.random()*Math.PI*2,
       wobbleSpeed: 0.012+Math.random()*.02
     };
@@ -2866,7 +2863,7 @@ window.addEventListener('scroll',function(){
       size: 14 + Math.random()*18,
       speed: 0.25 + Math.random()*.5,
       drift: (Math.random()-.5)*.3,
-      alpha: .08 + Math.random()*.18,
+      alpha: .22 + Math.random()*.35,
       rot: Math.random()*Math.PI*2,
       rotSpd: (Math.random()-.5)*.006,
       glow: Math.random()>.5
@@ -2911,7 +2908,7 @@ window.addEventListener('scroll',function(){
       ctx.beginPath();
       ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
       ctx.fillStyle = 'rgba(210,230,255,'+s.alpha+')';
-      ctx.shadowColor = '#a8d4ff'; ctx.shadowBlur = s.r*2.5;
+      ctx.shadowColor = '#a8d4ff'; ctx.shadowBlur = s.r*4;
       ctx.fill();
       ctx.shadowBlur = 0;
     });
@@ -2922,7 +2919,7 @@ window.addEventListener('scroll',function(){
       if(s.y > H+50) Object.assign(s, mkSym(false));
       ctx.save();
       ctx.translate(s.x, s.y); ctx.rotate(s.rot);
-      ctx.globalAlpha = s.alpha;
+      ctx.globalAlpha = Math.min(s.alpha, 0.75);
       ctx.font = 'bold '+s.size+'px "Lilita One",sans-serif';
       ctx.textAlign='center'; ctx.textBaseline='middle';
       if(s.glow){ ctx.shadowColor='#38bdf8'; ctx.shadowBlur=s.size*1.8; }
@@ -2933,7 +2930,7 @@ window.addEventListener('scroll',function(){
 
     /* ── Lightning ── */
     lightTimer += dt;
-    if(lightTimer > 3000 + Math.random()*4000){
+    if(lightTimer > 1200 + Math.random()*2000){
       lightTimer = 0;
       lightning.push(mkLightning());
       if(Math.random()>.6) setTimeout(function(){ lightning.push(mkLightning()); }, 80);
