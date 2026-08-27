@@ -188,7 +188,6 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(10px);transform:transl
   background:linear-gradient(90deg,#a855f7,#5b8def,#22d3ee,#eafcff,#3ddc84,#eafcff,#ffd23d,#ff7a3d,#ff3db6,#a855f7);
   background-size:340% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
   animation:rainbowShift 7s linear infinite;text-shadow:none;
-  -webkit-text-stroke:1px rgba(20,8,40,.4);
   filter:saturate(1.4) brightness(1.15)
 }
 .wordmark .slots{animation-delay:-1.4s}
@@ -614,7 +613,7 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(10px);transform:transl
 .vp-btn:hover{filter:brightness(1.15);transform:translateY(-3px)}
 
 @media(max-width:860px){
-  .vault-wrap{grid-template-columns:1fr}.vault-mascot{display:none}
+  .vault-wrap{grid-template-columns:1fr}
   .ps-slide.active{grid-template-columns:1fr}.ps-right{display:none}
   .vp-grid{grid-template-columns:1fr}
 }
@@ -674,7 +673,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 
   /* HERO */
   .wordmark{font-size:clamp(2rem,10vw,2.8rem)}
-  .wordmark .jam,.wordmark .slots{-webkit-text-stroke:0.6px rgba(20,8,40,.28);filter:saturate(1.5) brightness(1.2)}
+  .wordmark .jam,.wordmark .slots{filter:saturate(1.5) brightness(1.2)}
   .hero{padding:22px 0 36px}
   .skew{min-width:unset;width:100%}
   .hero-cta{flex-direction:column;align-items:center;gap:10px}
@@ -686,14 +685,15 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   .vpg4{grid-template-columns:1fr 1fr}
   .vp-mid{grid-template-columns:1fr}
 
-  /* VAULT HOME — stack, hide mascot */
+  /* VAULT HOME — stack (mascot stays visible on mobile, resized/reflowed) */
   .vault-wrap{grid-template-columns:1fr;gap:16px}
-  .vault-mascot{display:none}
+  .vault-mascot{width:110px;margin:8px auto 0;align-self:center}
   .vault-right{padding:0}
 
-  /* VAULT PAGE */
+  /* VAULT PAGE — mascot panel stays visible on mobile too, centered above the stats */
   .vp-main-grid{grid-template-columns:1fr;gap:20px}
-  .vp-mascot-panel{display:none}
+  .vp-mascot-panel{flex-direction:row;justify-content:center;order:-1}
+  .vp-mascot-img{width:100px}
   .vp-mini-row{grid-template-columns:1fr 1fr}
 
   /* LOBBY */
@@ -748,11 +748,12 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   .lc-body h3{font-size:1.1rem}
   .vault-balance{font-size:2rem}
   .wordmark{font-size:clamp(1.8rem,9vw,2.4rem)}
-  /* The 1px dark text-stroke used for contrast on desktop doesn't scale down with font-size,
-     so at mobile's much smaller rendered letter size it was eating into a large chunk of each
-     thin glyph stroke and muddying the color — thinned out and lightened here so the neon
-     gradient reads bright and clean instead of dull/dark. */
-  .wordmark .jam,.wordmark .slots{-webkit-text-stroke:0.4px rgba(20,8,40,.22);filter:saturate(1.55) brightness(1.25)}
+  /* Text-stroke removed entirely (not just thinned) — two rounds of thinning it didn't fully
+     resolve reports of the title looking dull on real phones, and -webkit-text-stroke is a
+     plausible culprit for rendering inconsistently across WebKit versions in ways this sandbox
+     can't reproduce (no real iOS Safari available here). Relying on saturation/brightness plus
+     the dark drop-shadow contact-shadow for contrast instead, which is more predictable. */
+  .wordmark .jam,.wordmark .slots{filter:saturate(1.6) brightness(1.3)}
   .foot-in{grid-template-columns:1fr}
   .hero-pill{font-size:.65rem}
   /* Vault "unclaimed wagering" casino rows — stack image+text+button vertically on narrow
@@ -1120,7 +1121,7 @@ body::before{
   drop-shadow(0 0 52px rgba(34,211,238,.35))
   drop-shadow(0 6px 14px rgba(0,0,0,.5))
   !important}
-.wordmark .jam,.wordmark .slots{text-shadow:0 2px 8px rgba(0,0,0,.4)!important}
+.wordmark .jam,.wordmark .slots{text-shadow:0 2px 6px rgba(0,0,0,.55)!important}
 
 /* --- animated pill border --- */
 .pill::before{animation:borderSpin 3s linear infinite!important}
