@@ -312,7 +312,7 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(10px);transform:transl
 .lstat-icon{width:26px;height:26px;margin:0 auto 8px;opacity:.85;filter:drop-shadow(0 0 8px currentColor);
   transition:transform .35s ease,opacity .35s ease}
 .lstat:hover .lstat-icon{transform:scale(1.18) rotate(-6deg);opacity:1}
-.lstat-num{font-size:2.4rem;background:var(--rainbow);-webkit-background-clip:text;
+.lstat-num{font-size:clamp(1.5rem,6.5vw,2.4rem);background:var(--rainbow);-webkit-background-clip:text;
   background-clip:text;color:transparent;background-size:220%;animation:rainbowShift 6s linear infinite;
   transition:filter .35s ease}
 .lstat:hover .lstat-num{filter:brightness(1.25) saturate(1.3)}
@@ -740,16 +740,24 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   .lstat-div{display:none}
   .lobby-grid{grid-template-columns:1fr}
 
-  /* LEADERBOARD — horizontal scroll for podium */
+  /* LEADERBOARD — stacked podium (was horizontal-scroll, which cut off the 3rd card and
+     needed a swipe to discover — replaced with #1 full-width on top, #2/#3 side-by-side
+     below, matching the pattern used on Jake's site). DOM order stays untouched (silver,
+     gold-center, bronze) since the existing nth-child tier-color rules key off that exact
+     order — only visual placement changes, via grid `order`. !important is needed here
+     because there's an unconditional (non-mobile) .lb2-podium rule later in the file that
+     otherwise wins the cascade on mobile too, despite being outside this media query. */
   .lb2-podium{
-    display:flex;flex-direction:row;
-    overflow-x:auto;gap:12px;
-    padding-bottom:12px;
-    -webkit-overflow-scrolling:touch;
-    scrollbar-width:none;
+    display:grid!important;grid-template-columns:1fr 1fr!important;gap:12px!important;
+    max-width:100%!important;margin:0!important;align-items:stretch!important;
   }
-  .lb2-podium::-webkit-scrollbar{display:none}
-  .lb2-pod{min-width:200px;flex:none}
+  .lb2-pod.center{grid-column:1/-1;order:-1}
+  .lb2-pod{min-width:0}
+  .lb2-avatar{width:52px!important;height:52px!important;margin:8px auto!important;font-size:1.15rem!important}
+  .lb2-pod.center .lb2-avatar{width:64px!important;height:64px!important}
+  .lb2-name{font-size:.92rem}
+  .lb2-prize{font-size:1.4rem}
+  .lb2-pod.center .lb2-prize{font-size:1.8rem}
 
   /* LIVE PLAYERS */
   .vpp-col-head{display:none}
@@ -1650,6 +1658,31 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 .rev-stat .val{font-weight:700;font-size:1rem;color:#fff}
 /* ── UPDATE 5: neon canvas bg ── */
 #neonBg{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.9;will-change:transform}
+
+/* ── MOBILE BOTTOM NAV ── hidden by default (desktop), shown fixed-to-bottom on mobile only */
+.mobbar{display:none}
+@media(max-width:820px){
+  .mobbar{
+    display:flex;position:fixed;left:0;right:0;bottom:0;top:auto;z-index:80;
+    background:rgba(9,6,15,.96);backdrop-filter:blur(10px);
+    border-top:1px solid var(--line);
+    padding:8px 4px calc(8px + env(safe-area-inset-bottom));
+  }
+  .mobbar-item{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+    color:var(--muted);text-decoration:none;font-size:.68rem;font-weight:600;
+    letter-spacing:.01em;padding:4px 2px;border-radius:10px;transition:color .2s;
+  }
+  .mobbar-ic{font-size:1.35rem;line-height:1}
+  .mobbar-item.active{color:#fbbf24}
+  /* Body needs bottom breathing room so the fixed bar never covers the last bit of content —
+     matches the nav's own real height (icon+label+padding+safe-area) rather than a guess. */
+  body{padding-bottom:64px}
+  /* So any scroll-into-view or anchor jump accounts for the fixed bottom bar's height instead
+     of letting it sit right at the reserved edge and get partially covered — matches this
+     same 64px reservation. */
+  html{scroll-padding-bottom:64px}
+}
 </style>
 </head>
 <body>
@@ -1696,6 +1729,22 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
     <button class="login"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 5a18 18 0 0 0-4.5-1.4l-.2.5A16 16 0 0 1 18 5a16 16 0 0 0-12 0 16 16 0 0 1 2.5-.9l-.2-.5A18 18 0 0 0 4 5C1.6 8.6 1 12.2 1.2 15.7A18 18 0 0 0 6.7 18l.4-.6a12 12 0 0 1-1.9-.9l.5-.4a13 13 0 0 0 11 0l.5.4a12 12 0 0 1-1.9.9l.4.6a18 18 0 0 0 5.5-2.3C23.2 11.6 22.4 8 20 5M8.7 14c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8m6.6 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8"/></svg> Login with Discord</button>
     <button class="burger" onclick="mobNav()"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
   </div>
+</nav>
+
+<!-- MOBILE BOTTOM NAV — fixed bar shown only on mobile, matching Jake's site pattern -->
+<nav class="mobbar" aria-label="Mobile navigation">
+  <a href="javascript:void(0)" class="mobbar-item" data-page="home" onclick="nav('home')">
+    <span class="mobbar-ic">🏠</span><span>Home</span>
+  </a>
+  <a href="javascript:void(0)" class="mobbar-item" data-page="leaderboards" onclick="nav('leaderboards')">
+    <span class="mobbar-ic">🏆</span><span>Leaderboard</span>
+  </a>
+  <a href="javascript:void(0)" class="mobbar-item" data-page="bonuses" onclick="nav('bonuses')">
+    <span class="mobbar-ic">🎁</span><span>Bonuses</span>
+  </a>
+  <a href="https://discord.gg/jammmy" target="_blank" rel="noopener" class="mobbar-item">
+    <span class="mobbar-ic">💬</span><span>Discord</span>
+  </a>
 </nav>
 
 <div class="sidetabs">
@@ -2497,6 +2546,7 @@ function showPage(id){
   if(!pg){id='home';pg=document.getElementById('home');}
   pg.classList.add('show');
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('active',a.dataset.page===id));
+  document.querySelectorAll('.mobbar-item').forEach(a=>a.classList.toggle('active',a.dataset.page===id));
   var n=document.querySelector('nav');if(n)n.classList.toggle('not-home',id!=='home');
   /* Was window.scrollTo({top:0,behavior:'smooth'}) — on mobile this could land near the
      bottom of the new page instead of the top. Cause: the mobile nav click handler used to
