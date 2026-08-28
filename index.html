@@ -1569,8 +1569,22 @@ nav{border-bottom:1px solid transparent!important;
   .vpp-head{padding-left:16px;padding-right:16px}
 }
 
-
-
+/* Real tap feedback for touch devices — scoped to (hover:none) so it only applies where
+   there's no mouse (i.e. it won't double up with the desktop hover effect on click). A quick,
+   snappy scale-down on press instead of touch devices just inheriting the desktop hover
+   treatment (lift + big glow), which felt slow/heavy for a tap and could stick visually. */
+@media (hover:none){
+  .vp-card,.rcard,.bcard,.vault-card,.lb2-pod,.loy2-card,.lobby-card,.pod,.lobby-stats,.lstat{
+    transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease!important}
+  .vp-card:active,.rcard:active,.bcard:active,.vault-card:active,.lb2-pod:active,
+  .loy2-card:active,.lobby-card:active,.pod:active{
+    transform:scale(.97)!important;box-shadow:0 6px 18px -6px rgba(168,85,247,.4)!important}
+  .lobby-stats:active{transform:scale(.985)!important}
+  .lstat:active{transform:scale(.95)!important}
+  .vp-btn:active,.rbtn:active,.bbtn:active,.lc-btn:active,.loy2-btn:active,.vbtn:active,
+  .lbt:active,.dark-btn:active,.green-btn:active,.outline-btn:active{
+    transform:scale(.95)!important;transition:transform .1s ease!important}
+}
 
 </style>
 <style>
@@ -2593,6 +2607,19 @@ setInterval(addFeed,2600);
     setTimeout(function(){el.style.transform='scale(1)';},150);
   },2800);
 })();
+
+/* ============================================================
+   MOBILE HOVER FIX
+   iOS Safari has a well-known quirk: tapping an element with a :hover style
+   applies that hover state persistently (card stays "lifted"/glowing) until
+   the user taps something else, since touch devices have no real mouse-leave
+   event. The documented fix is exactly this — the mere presence of a
+   touchstart listener anywhere on the page makes iOS treat taps as transient
+   instead of persistent hover, with zero changes needed to the ~113 existing
+   :hover rules scattered across the stylesheet (rewriting all of those in
+   place risked silently changing which layered/!important rule wins where).
+============================================================ */
+document.addEventListener('touchstart', function(){}, {passive:true});
 
 /* ============================================================
    LEADERBOARD
