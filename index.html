@@ -474,7 +474,8 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(10px);transform:transl
 .bcard.feat::before{background:linear-gradient(90deg,#fbbf24,#ff7a3d,#fbbf24)}
 .bcard.feat:hover{border-color:rgba(251,191,36,.6);box-shadow:0 32px 64px -24px rgba(251,191,36,.4),0 0 0 1px rgba(251,191,36,.15)}
 .bcard .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.bcard .cas{font-family:'Lilita One','Arial Black','Impact',system-ui,sans-serif;font-size:1.5rem}
+.bcard .cas{font-family:'Lilita One','Arial Black','Impact',system-ui,sans-serif;font-size:1.5rem;display:flex;align-items:center;gap:10px}
+.bcard .cas img{height:32px;width:auto;max-width:140px;object-fit:contain;flex:none}
 .bcard .ribbon{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
   background:var(--pg);color:#fff;padding:5px 12px;border-radius:8px}
 .bcard.feat .ribbon{background:linear-gradient(135deg,#ffe27a,var(--gold));color:#3a2700}
@@ -2051,25 +2052,25 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
     <div class="inner">
       <div class="grid2 reveal">
         <div class="bcard">
-          <div class="top"><span class="cas">DegenCity</span><span class="ribbon" style="background:#0e7490">10% Cashback for 7 Days</span></div>
+          <div class="top"><span class="cas"><img src="degencity.png" alt="DegenCity">DegenCity</span><span class="ribbon" style="background:#0e7490">10% Cashback for 7 Days</span></div>
           <div class="codebox"><div class="code"><span style="color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em">Code</span><span class="cv">JAMMMY</span></div><button class="copybtn" onclick="copy(this,'JAMMMY')">Copy</button></div>
           <div class="feats"><span>💰 10% Cashback for 7 days</span><span>⚡ Instant Cashouts</span><span>🎁 Tip &amp; Giveaways</span><span>✨ Daily Promo Codes</span></div>
           <button class="claim" onclick="go('https://degencity.com')">Claim Bonus</button>
         </div>
         <div class="bcard">
-          <div class="top"><span class="cas">Upgrader</span><span class="ribbon" style="background:#be185d">Bi-Weekly Leaderboard</span></div>
+          <div class="top"><span class="cas"><img src="upgrader.png" alt="Upgrader" style="border-radius:22%">Upgrader</span><span class="ribbon" style="background:#be185d">Bi-Weekly Leaderboard</span></div>
           <div class="codebox"><div class="code"><span style="color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em">Code</span><span class="cv">JAMMMY</span></div><button class="copybtn" onclick="copy(this,'JAMMMY')">Copy</button></div>
           <div class="feats"><span>🏆 Monthly leaderboard prizes</span><span>🎁 Promo codes daily</span><span>⚡ Instant withdrawals</span><span>🔒 Secure &amp; fair gaming</span></div>
           <button class="claim" onclick="go('https://upgrader.com')">Claim Bonus</button>
         </div>
         <div class="bcard">
-          <div class="top"><span class="cas">RustMagic</span><span class="ribbon" style="background:#be185d">Bi-Weekly Leaderboard</span></div>
+          <div class="top"><span class="cas"><img src="rustmagic.png" alt="RustMagic">RustMagic</span><span class="ribbon" style="background:#be185d">Bi-Weekly Leaderboard</span></div>
           <div class="codebox"><div class="code"><span style="color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em">Code</span><span class="cv">JAMMMY</span></div><button class="copybtn" onclick="copy(this,'JAMMMY')">Copy</button></div>
           <div class="feats"><span>🎁 Exclusive Deposit Bonus</span><span>⚡ Instant Cashouts</span></div>
           <button class="claim" onclick="go('https://rustmagic.com')">Claim Bonus</button>
         </div>
         <div class="bcard">
-          <div class="top"><span class="cas">Jammmy Raffles</span><span class="ribbon">Live</span></div>
+          <div class="top"><span class="cas"><img src="logo.png" alt="Jammmy" style="border-radius:22%">Jammmy Raffles</span><span class="ribbon">Live</span></div>
           <div style="color:var(--faint);font-size:.9rem;margin:6px 0 14px">Spend loyalty points on active raffles</div>
           <div class="codebox"><div class="code"><span style="color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em">Entry</span><span class="cv">POINTS</span></div><button class="copybtn" onclick="nav('loyalty')">View</button></div>
           <div class="feats"><span>Loyalty program</span><span>Live on stream</span></div>
