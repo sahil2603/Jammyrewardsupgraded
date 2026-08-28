@@ -3023,11 +3023,18 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
 (function(){
   var c = document.getElementById('neonBg');
   var ctx = c.getContext('2d');
-  var W, H, flakes = [], bolts = [], boltTimer = 0;
+  var W, H, flakes = [], bolts = [], boltTimer = 0, stars = [];
   /* Fewer flakes = smooth 60fps; offscreen cache = cheap drawImage each frame */
   var COUNT = window.innerWidth < 640 ? 22 : 42;
+  var STAR_COUNT = window.innerWidth < 640 ? 16 : 30;
+  var STAR_COLORS = [
+    {glow:'rgba(56,189,248,0.95)',  core:'rgba(224,247,255,1)', mid:'rgba(125,211,252,0.9)'},  /* neon blue */
+    {glow:'rgba(244,114,182,0.95)', core:'rgba(255,235,247,1)', mid:'rgba(249,168,212,0.9)'},  /* pink */
+    {glow:'rgba(74,222,128,0.95)',  core:'rgba(230,255,237,1)', mid:'rgba(134,239,172,0.9)'}   /* light green */
+  ];
   var SIZES  = [6,8,10,13,16,20]; /* discrete sizes for cache efficiency */
   var cache  = {};                 /* size -> offscreen canvas sprite */
+  var starCache = [];              /* one sprite per STAR_COLORS entry */
 
   /* Pre-render one flake sprite per size bucket (called once at startup) */
   function bakeSprite(r){
@@ -3075,6 +3082,50 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     var bucket = SIZES.reduce(function(prev,curr){ return Math.abs(curr-r)<Math.abs(prev-r)?curr:prev; });
     if(!cache[bucket]) cache[bucket] = bakeSprite(bucket);
     return cache[bucket];
+  }
+
+  /* Four-point sparkle sprite for the twinkling stars — distinct from the snowflake shape,
+     one pre-baked sprite per colour so per-frame drawing is still just a cheap drawImage. */
+  function bakeStar(colorSet){
+    var r = 11, pad = r*2.4, dim = Math.ceil(pad*2);
+    var oc = document.createElement('canvas');
+    oc.width = oc.height = dim;
+    var ox = oc.getContext('2d');
+    ox.translate(dim/2, dim/2);
+    ox.shadowColor = colorSet.glow;
+    ox.shadowBlur = r*1.8;
+    var grd = ox.createRadialGradient(0,0,0, 0,0,r);
+    grd.addColorStop(0, colorSet.core);
+    grd.addColorStop(0.45, colorSet.mid);
+    grd.addColorStop(1, 'rgba(255,255,255,0)');
+    ox.fillStyle = grd;
+    /* Four-point sparkle: a tall thin diamond crossed with a shorter one */
+    function point(len, wid){
+      ox.beginPath();
+      ox.moveTo(0,-len); ox.lineTo(wid,0); ox.lineTo(0,len); ox.lineTo(-wid,0);
+      ox.closePath(); ox.fill();
+    }
+    point(r, r*0.16);
+    point(r*0.55, r*0.55*0.16);
+    ox.save(); ox.rotate(Math.PI/2);
+    point(r, r*0.16);
+    point(r*0.55, r*0.55*0.16);
+    ox.restore();
+    return oc;
+  }
+
+  function mkStar(){
+    var cs = STAR_COLORS[Math.floor(Math.random()*STAR_COLORS.length)];
+    var ci = STAR_COLORS.indexOf(cs);
+    return {
+      x: Math.random()*W, y: Math.random()*H,
+      scale: 0.45+Math.random()*0.85,
+      colorIdx: ci,
+      phase: Math.random()*Math.PI*2,
+      speed: 0.015+Math.random()*0.025,
+      driftX: (Math.random()-.5)*0.06,
+      driftY: (Math.random()-.5)*0.06
+    };
   }
 
   function mkFlake(randomY){
@@ -3135,9 +3186,11 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
 
   /* Pre-bake all sprites at startup */
   SIZES.forEach(function(s){ cache[s] = bakeSprite(s); });
+  STAR_COLORS.forEach(function(cs){ starCache.push(bakeStar(cs)); });
   resize();
   window.addEventListener('resize', resize);
   for(var i=0;i<COUNT;i++) flakes.push(mkFlake(true));
+  for(var j=0;j<STAR_COUNT;j++) stars.push(mkStar());
 
   var lastTs=0;
   var FRAME_GAP = 33; /* ~30fps cap — half the CPU cost of 60fps, still looks smooth */
@@ -3145,6 +3198,22 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     if(ts - lastTs < FRAME_GAP){ requestAnimationFrame(tick); return; }
     var dt=Math.min(ts-lastTs,80); lastTs=ts;
     ctx.clearRect(0,0,W,H);
+
+    /* Twinkling stars — stationary-ish with a slow drift, opacity pulses via sine wave for
+       the twinkle effect. Drawn before snow so falling flakes pass in front of them. */
+    stars.forEach(function(s){
+      s.phase += s.speed;
+      s.x += s.driftX; s.y += s.driftY;
+      if(s.x<-20) s.x=W+20; if(s.x>W+20) s.x=-20;
+      if(s.y<-20) s.y=H+20; if(s.y>H+20) s.y=-20;
+      var tw = (Math.sin(s.phase)+1)/2; /* 0..1 */
+      var sprite = starCache[s.colorIdx], half = sprite.width/2*s.scale;
+      ctx.save();
+      ctx.translate(s.x,s.y);
+      ctx.globalAlpha = 0.15+tw*0.75;
+      ctx.drawImage(sprite, -half, -half, sprite.width*s.scale, sprite.height*s.scale);
+      ctx.restore();
+    });
 
     /* Snow — cheap drawImage only */
     flakes.forEach(function(f){
