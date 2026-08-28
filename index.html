@@ -148,6 +148,43 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(10px);transform:transl
   0%,100%{filter:brightness(1) drop-shadow(0 0 10px rgba(34,211,238,.55))}
   50%{filter:brightness(1.12) drop-shadow(0 0 18px rgba(34,211,238,.85))}
 }
+/* "Radium" CTA treatment for the Verified Partners Claim Bonus buttons — bright toxic-green
+   glow with dark high-contrast text (like hazard signage) instead of the previous cyan/pink,
+   since a saturated electric green reads as far more "shoot out at you" against this
+   purple-heavy dark theme than another cool tone would. Pulsing glow + a moving sheen sweep
+   layered on top for a genuine "alive" neon-sign feel. */
+.vp-btn-radium{
+  background:linear-gradient(135deg,#d4ff00,#8aff00 55%,#39ff6a);
+  background-size:220% auto;color:#0a1400;
+  border:1px solid rgba(212,255,0,.65);
+  position:relative;overflow:hidden;
+  animation:radiumPulse 2.4s ease-in-out infinite;
+}
+.vp-btn-radium::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(100deg,transparent 35%,rgba(255,255,255,.65) 50%,transparent 65%);
+  background-size:220% 100%;background-position:170% 0;
+  animation:radiumSheen 3.4s ease-in-out infinite;
+}
+.vp-btn-radium:hover{filter:brightness(1.1) !important}
+@keyframes radiumPulse{
+  0%,100%{box-shadow:0 0 18px rgba(163,230,53,.65),0 0 34px rgba(163,230,53,.35),0 8px 24px -8px rgba(0,0,0,.6)}
+  50%{box-shadow:0 0 28px rgba(163,230,53,.9),0 0 54px rgba(163,230,53,.55),0 8px 24px -8px rgba(0,0,0,.6)}
+}
+@keyframes radiumSheen{
+  0%{background-position:170% 0}
+  55%,100%{background-position:-70% 0}
+}
+/* Subtle always-on "breathing" glow on the partner cards themselves, not just on hover, so
+   they feel alive at rest — hover's existing (stronger, !important) glow still simply takes
+   over on top of this when the user actually hovers. */
+@keyframes vpCardBreathe{
+  0%,100%{box-shadow:0 4px 30px rgba(0,0,0,.5)}
+  50%{box-shadow:0 4px 42px rgba(168,85,247,.3)}
+}
+.vp-card{animation:vpCardBreathe 4.5s ease-in-out infinite}
+.vp-card:nth-child(2){animation-delay:.9s}
+.vp-card:nth-child(3){animation-delay:1.8s}
 
 
 /* ===== HERO ===== */
@@ -1173,7 +1210,8 @@ nav{border-bottom:1px solid transparent!important;
 .vp-card{background:linear-gradient(180deg,rgba(192,132,252,.08),rgba(12,8,24,.95))!important;
   border:1px solid rgba(192,132,252,.18)!important}
 .vp-logo-wrap{border-bottom:1px solid rgba(192,132,252,.15)!important}
-.vp-btn{box-shadow:0 8px 24px -8px rgba(0,0,0,.5)!important;letter-spacing:.5px!important}
+.vp-btn{letter-spacing:.5px!important}
+.vp-btn:not(.vp-btn-radium){box-shadow:0 8px 24px -8px rgba(0,0,0,.5)!important}
 
 /* leaderboard neon podium — tiered auras: gold #1, silver #2, bronze #3.
    Each pod gets its own pulsing ambient glow behind it (not just a border tint) so the
@@ -1811,7 +1849,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
               <li>🎁 Tip &amp; Giveaways</li>
               <li>✨ Daily Promo Codes</li>
             </ul>
-            <button class="vp-btn" style="background:#0e7490;color:#fff;font-weight:800;box-shadow:0 0 20px rgba(14,116,144,.7),0 0 40px rgba(34,211,238,.4),0 8px 28px -8px rgba(14,116,144,.6);animation:neonPulseCyan 2s ease-in-out infinite;border:1px solid rgba(34,211,238,.5)" onclick="go('https://degencity.com')">Claim Bonus &rsaquo;</button>
+            <button class="vp-btn vp-btn-radium" onclick="go('https://degencity.com')">Claim Bonus &rsaquo;</button>
           </div>
         </div>
 
@@ -1830,7 +1868,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
               <li>⚡ Instant withdrawals</li>
               <li>🔒 Secure &amp; fair gaming</li>
             </ul>
-            <button class="vp-btn" style="background:#be185d;color:#fff;font-weight:800;box-shadow:0 0 20px rgba(190,24,93,.7),0 0 40px rgba(190,24,93,.4),0 8px 28px -8px rgba(190,24,93,.6);animation:neonPulsePink 2s ease-in-out infinite .3s;border:1px solid rgba(244,114,182,.5)" onclick="go('https://upgrader.com')">Claim Bonus &rsaquo;</button>
+            <button class="vp-btn vp-btn-radium" style="animation-delay:.3s" onclick="go('https://upgrader.com')">Claim Bonus &rsaquo;</button>
           </div>
         </div>
 
@@ -1848,7 +1886,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
               <li>🎯 Wager Challenges</li>
               <li>🏁 Bi-Weekly Wager Race</li>
             </ul>
-            <button class="vp-btn" style="background:#be185d;color:#fff;font-weight:800;box-shadow:0 0 20px rgba(190,24,93,.7),0 0 40px rgba(190,24,93,.4),0 8px 28px -8px rgba(190,24,93,.6);animation:neonPulsePink 2s ease-in-out infinite .6s;border:1px solid rgba(244,114,182,.5)" onclick="go('https://rustmagic.com')">Claim Bonus &rsaquo;</button>
+            <button class="vp-btn vp-btn-radium" style="animation-delay:.6s" onclick="go('https://rustmagic.com')">Claim Bonus &rsaquo;</button>
           </div>
         </div>
 
