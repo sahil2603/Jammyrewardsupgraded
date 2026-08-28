@@ -223,7 +223,7 @@ nav{position:sticky;top:0;z-index:62;backdrop-filter:blur(10px);transform:transl
    color feel. */
 .wordmark .jam,.wordmark .slots{
   background:linear-gradient(90deg,#a855f7,#5b8def,#22d3ee,#eafcff,#3ddc84,#eafcff,#ffd23d,#ff7a3d,#ff3db6,#a855f7);
-  background-size:800% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
+  background-size:340% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
   animation:rainbowShift 7s linear infinite;text-shadow:none;
   filter:saturate(1.4) brightness(1.15)
 }
@@ -1150,15 +1150,18 @@ body::before{
 
 /* --- hero wordmark extra glow ---
    Multi-color neon glow (purple + cyan + pink blurs stacked) instead of a single flat tint,
-   so it reads as a genuine neon-sign glow rather than a dull, muted shadow. A soft dark contact
-   shadow underneath keeps it grounded against the background at every phase of the gradient. */
+   so it reads as a genuine neon-sign glow rather than a dull, muted shadow. Previously also had
+   a dark drop-shadow(0 6px 14px...) here PLUS a separate text-shadow below — two stacked dark
+   shadows large enough that at mobile's much smaller font-size they visibly overlapped and
+   smudged across the letters themselves ("black shade all over it"). Removed the dark
+   drop-shadow layer entirely and shrank the remaining text-shadow to a tight, subtle
+   contact-shadow instead of two compounding ones. */
 .wordmark{filter:
   drop-shadow(0 0 20px rgba(255,61,182,.5))
   drop-shadow(0 0 36px rgba(168,85,247,.55))
   drop-shadow(0 0 52px rgba(34,211,238,.35))
-  drop-shadow(0 6px 14px rgba(0,0,0,.5))
   !important}
-.wordmark .jam,.wordmark .slots{text-shadow:0 2px 6px rgba(0,0,0,.55)!important}
+.wordmark .jam,.wordmark .slots{text-shadow:0 1px 2px rgba(0,0,0,.35)!important}
 
 /* --- animated pill border --- */
 .pill::before{animation:borderSpin 3s linear infinite!important}
