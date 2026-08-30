@@ -2034,6 +2034,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
       <div class="lb-casino-tabs">
         <button class="lbt active" onclick="lbTab(this,'upgrader')"><span style="display:inline-flex;align-items:center;gap:8px;white-space:nowrap"><img loading="lazy" src="upgrader.png" alt="Upgrader" style="height:24px;width:24px;border-radius:22%;object-fit:contain"> Upgrader</span></button>
         <button class="lbt" onclick="lbTab(this,'rustmagic')"><img src="rustmagic.png" alt="RustMagic" style="height:26px;width:auto;object-fit:contain"></button>
+        <button class="lbt" onclick="lbTab(this,'degencity')"><img src="degencity.png" alt="DegenCity" style="height:26px;width:auto;object-fit:contain"></button>
       </div>
       <div class="lb-updated">Last updated · <span id="lbUpdatedTime"></span></div>
 
@@ -2728,45 +2729,26 @@ lbcd2();setInterval(lbcd2,1000);
 
 /* ── Live leaderboard data ──────────────────────────────────
    Goes through a small Cloudflare Worker proxy (see /worker.js in the repo)
-   instead of calling Upgrader/RustMagic directly from the browser — direct
-   calls are blocked by CORS on both APIs (verified), and would also expose
-   the raw API keys in page source. The proxy holds the keys privately and
-   does the real API calls server-side, where neither problem applies. */
-var UPGRADER_API_KEY = '459e09e7-211b-4729-af55-14b0f38d97f4';
+   instead of calling Upgrader/RustMagic/DegenCity directly from the browser —
+   the proxy holds all three API keys privately server-side and does the real
+   API calls there, so nothing sensitive ever ends up in the page source. */
 var LB_PROXY_URL = 'https://jammy-lb-proxy.sahil-sah2603.workers.dev';
 
 async function loadLeaderboard(casino){
   var rowsEl = document.getElementById('lbFullRows');
   if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Connecting to live leaderboard&hellip;</div>';
   try{
-    var data, wagers;
-    if(casino === 'upgrader'){
-      /* Upgrader's API has CORS allowlist — only jammmyslots.com is allowlisted, not our domain yet.
-         Show clean holding state with direct link instead of a CORS error. */
-      if(rowsEl) rowsEl.innerHTML = '<div style="padding:34px;text-align:center">'
-        +'<div style="font-size:2rem;margin-bottom:12px">🏆</div>'
-        +'<div style="font-weight:700;font-size:1.1rem;margin-bottom:8px">Upgrader Leaderboard</div>'
-        +'<div style="color:var(--faint);font-size:.9rem;max-width:420px;margin:0 auto 20px">Live data coming soon — Upgrader needs to allowlist this domain. '
-        +'In the meantime, view the full leaderboard directly on Upgrader.</div>'
-        +'<a href="https://upgrader.com/leaderboard" target="_blank" rel="noopener" '
-        +'style="display:inline-block;background:#be185d;color:#fff;font-weight:700;padding:12px 24px;border-radius:10px;text-decoration:none;font-family:\'Lilita One\',sans-serif;letter-spacing:.02em">'
-        +'View on Upgrader ↗</a>'
-        +'</div>';
-      return;
-      /* RustMagic — server-side via Worker (x-api-key works fine there) */
-      var res2 = await fetch(LB_PROXY_URL + '?casino=rustmagic');
-      data = await res2.json();
-      if(data.error){
-        var msg = String(data.error);
-        if(msg.indexOf('429') !== -1 || msg.indexOf('rate') !== -1){
-          if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">⏳ RustMagic rate limit reached — data updates every 15 minutes. Check back shortly.</div>';
-          return;
-        }
-        throw new Error(data.error);
+    var res = await fetch(LB_PROXY_URL + '?casino=' + casino);
+    var data = await res.json();
+    if(data.error){
+      var msg = String(data.error);
+      if(msg.indexOf('429') !== -1 || msg.indexOf('rate') !== -1){
+        if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">⏳ Rate limit reached — data updates shortly. Check back in a bit.</div>';
+        return;
       }
-      wagers = data.wagers || [];
+      throw new Error(data.error);
     }
-    renderLeaderboardRows(wagers);
+    renderLeaderboardRows(data.wagers || []);
   }catch(e){
     if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Couldn\'t load live data right now — try refreshing.<div class="lb-error-detail">'+String(e).slice(0,120)+'</div></div>';
     console.error('Leaderboard fetch failed:', e);
