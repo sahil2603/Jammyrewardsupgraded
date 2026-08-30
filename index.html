@@ -786,6 +786,14 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 
   /* WRAP padding on very small */
   .wrap{width:min(1180px,95vw)}
+
+  /* Leaderboard full-list rows — the desktop grid (70px 1fr 120px 90px) leaves almost no
+     room for the player-name column on narrow screens, which was squashing the name and
+     wagered amount together with no visible gap. Narrower fixed columns + smaller text
+     fixes the crowding without needing to drop any column. */
+  .lb-full-row-head,.lb-full-row{grid-template-columns:34px 1fr 78px 62px!important;padding:12px 10px!important;gap:6px}
+  .lb-full-row-head{font-size:.6rem!important}
+  .lb-full-row{font-size:.78rem!important}
 }
 
 @media(max-width:480px){
@@ -846,7 +854,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .lb2-trophy{font-size:2rem;margin-bottom:8px}
 .lb2-rank{font-family:'Lilita One','Arial Black',sans-serif;font-size:1.5rem;color:rgba(255,255,255,.72);margin-bottom:8px}
 .lb2-name{font-weight:600;font-size:1rem;margin-bottom:12px}
-.lb2-avatar{width:48px;height:48px;border-radius:50%;margin:0 auto 16px}
+.lb2-avatar{width:48px;height:48px;border-radius:50%;margin:0 auto 16px;overflow:hidden}
 .lb2-prize-label{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:6px}
 .lb2-prize{font-family:'Lilita One','Arial Black',sans-serif;font-size:2rem;color:var(--muted)}
 .lb2-prize.gold{color:#d97706;text-shadow:0 0 24px rgba(217,119,6,.4)}
@@ -2748,19 +2756,24 @@ async function loadLeaderboard(casino){
       }
       throw new Error(data.error);
     }
-    renderLeaderboardRows(data.wagers || []);
+    renderLeaderboardRows(data.wagers || [], data.meta && data.meta.leaderboard && data.meta.leaderboard.leaderboardRewards);
   }catch(e){
     if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Couldn\'t load live data right now — try refreshing.<div class="lb-error-detail">'+String(e).slice(0,120)+'</div></div>';
     console.error('Leaderboard fetch failed:', e);
   }
 }
-function renderLeaderboardRows(wagers){
+function renderLeaderboardRows(wagers, rewards){
   var rowsEl = document.getElementById('lbFullRows');
   if(!rowsEl) return;
   if(!wagers || !wagers.length){
     rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">No wagers recorded for this period yet.</div>';
     return;
   }
+  /* rank -> prize lookup, built from the casino's real configured rewards when available
+     (Upgrader provides this; RustMagic/DegenCity don't expose a reward structure) */
+  var prizeByRank = {};
+  (rewards||[]).forEach(function(r){ prizeByRank[r.place] = r.winnings; });
+
   /* Populate podium (top 3) */
   var podOrder = [1,0,2]; /* visual order: 2nd, 1st, 3rd */
   var pods = document.querySelectorAll('.lb2-pod');
@@ -2773,30 +2786,55 @@ function renderLeaderboardRows(wagers){
       var wagerEl = pod.querySelector('.lb2-wager, .lb2-wagered');
       var avatarEl = pod.querySelector('.lb2-avatar');
       if(nameEl) nameEl.textContent = w.name || '—';
-      if(wagerEl) wagerEl.textContent = '$' + Number(w.wager||0).toLocaleString() + ' wagered';
+      if(wagerEl) wagerEl.textContent = '$' + Number(w.wager||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + ' wagered';
       if(avatarEl){
-        avatarEl.textContent = (w.name||'?').charAt(0).toUpperCase();
+        if(w.avatarUrl){
+          avatarEl.innerHTML = '<img src="'+w.avatarUrl+'" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
+        } else {
+          avatarEl.textContent = (w.name||'?').charAt(0).toUpperCase();
+        }
         avatarEl.title = w.name || '';
+      }
+      var prizeEl = pod.querySelector('.lb2-prize');
+      if(prizeEl){
+        var p = prizeByRank[w.rank];
+        prizeEl.textContent = p ? ('$'+Number(p).toLocaleString()) : '—';
       }
     });
   }
-  /* Full list (all players) */
+  /* Full list (all players) — top 3 get a subtle tier-colored left accent tying back to
+     the podium above (gold/silver/bronze), real player avatars are used when the casino
+     provides one (RustMagic's Steam avatars) instead of always falling back to a plain
+     initial circle, and wagers/prizes are formatted consistently to 2 decimal places. */
+  var tierAccent = {1:'rgba(251,191,36,.7)', 2:'rgba(203,213,225,.6)', 3:'rgba(205,127,79,.6)'};
+  var tierGlow   = {1:'rgba(251,191,36,.12)', 2:'rgba(203,213,225,.08)', 3:'rgba(205,127,79,.08)'};
   rowsEl.innerHTML = wagers.map(function(w){
     var initial = (w.name||'?').charAt(0).toUpperCase();
-    var hasWager = (wagers||[]).some(function(w){ return w.wager && w.wager > 0; });
-    var wagerAmt = (w.wager && w.wager > 0) ? '$'+Number(w.wager).toLocaleString() : (hasWager ? '—' : '');
-    return '<div class="lb-full-row">'
+    var wagerAmt = (w.wager && w.wager > 0)
+      ? '$'+Number(w.wager).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})
+      : '—';
+    var prize = prizeByRank[w.rank];
+    var prizeAmt = prize ? '$'+Number(prize).toLocaleString() : '—';
+    var accent = tierAccent[w.rank];
+    var rowStyle = accent
+      ? 'border-left:3px solid '+accent+';background:'+tierGlow[w.rank]+';padding-left:17px'
+      : '';
+    var avatarInner = w.avatarUrl
+      ? '<img src="'+w.avatarUrl+'" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">'
+      : initial;
+    return '<div class="lb-full-row" style="'+rowStyle+'">'
       +'<span style="color:var(--purple);font-weight:700">#'+w.rank+'</span>'
       +'<span style="display:flex;align-items:center;gap:8px">'
-        +'<span style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;flex:none">'+initial+'</span>'
+        +'<span style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;flex:none;overflow:hidden">'+avatarInner+'</span>'
         +(w.name||'—')
       +'</span>'
       +'<span>'+wagerAmt+'</span>'
-      +'<span>—</span>'
+      +'<span>'+prizeAmt+'</span>'
     +'</div>';
   }).join('');
 }
 loadLeaderboard('upgrader');
+
 
 /* ============================================================
    VAULT
