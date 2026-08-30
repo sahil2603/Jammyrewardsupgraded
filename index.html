@@ -2700,6 +2700,12 @@ document.addEventListener('touchstart', function(){}, {passive:true});
    LEADERBOARD
 ============================================================ */
 var CURRENT_LB_CASINO = 'upgrader';
+/* Snapshot each podium's originally-configured static prize text ($200/$100/$50 etc, set
+   directly in the HTML) once, before any live rendering touches it — so when switching to
+   a casino whose API doesn't provide its own reward data, we can reset back to that
+   baseline instead of either leaving a stale value from whatever casino was shown last, or
+   blanking it to "—". */
+document.querySelectorAll('.lb2-prize').forEach(function(el){ el.dataset.staticPrize = el.textContent; });
 function lbTab(btn,casino){
   document.querySelectorAll('.lbt').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
@@ -2742,12 +2748,19 @@ lbcd2();setInterval(lbcd2,1000);
    API calls there, so nothing sensitive ever ends up in the page source. */
 var LB_PROXY_URL = 'https://jammy-lb-proxy.sahil-sah2603.workers.dev';
 
+var lbRequestSeq = 0;
 async function loadLeaderboard(casino){
+  /* Guards against rapid tab-switching causing an older, slower request to resolve AFTER
+     a newer one and overwrite it with the wrong casino's data — which would look like lag
+     or a flickering/incorrect leaderboard. Each call gets its own sequence number; only the
+     most recent one is allowed to actually update the page. */
+  var myRequest = ++lbRequestSeq;
   var rowsEl = document.getElementById('lbFullRows');
   if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Connecting to live leaderboard&hellip;</div>';
   try{
     var res = await fetch(LB_PROXY_URL + '?casino=' + casino);
     var data = await res.json();
+    if(myRequest !== lbRequestSeq) return; /* a newer tab switch has already superseded this one */
     if(data.error){
       var msg = String(data.error);
       if(msg.indexOf('429') !== -1 || msg.indexOf('rate') !== -1){
@@ -2758,6 +2771,7 @@ async function loadLeaderboard(casino){
     }
     renderLeaderboardRows(data.wagers || [], data.meta && data.meta.leaderboard && data.meta.leaderboard.leaderboardRewards);
   }catch(e){
+    if(myRequest !== lbRequestSeq) return;
     if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Couldn\'t load live data right now — try refreshing.<div class="lb-error-detail">'+String(e).slice(0,120)+'</div></div>';
     console.error('Leaderboard fetch failed:', e);
   }
@@ -2773,6 +2787,21 @@ function renderLeaderboardRows(wagers, rewards){
      (Upgrader provides this; RustMagic/DegenCity don't expose a reward structure) */
   var prizeByRank = {};
   (rewards||[]).forEach(function(r){ prizeByRank[r.place] = r.winnings; });
+
+  /* Static baseline prizes ($200/$100/$50 etc, configured directly in the podium HTML) —
+     reused as the fallback for both the podium and the full list below when a casino's API
+     doesn't provide its own reward data, read once via the snapshot taken at page load so
+     there's a single source of truth rather than duplicating these numbers in JS. */
+  var staticPrizeByRank = {};
+  var podsForStatic = document.querySelectorAll('.lb2-pod');
+  if(podsForStatic.length >= 3){
+    var silverPrize = podsForStatic[0].querySelector('.lb2-prize');
+    var goldPrize = podsForStatic[1].querySelector('.lb2-prize');
+    var bronzePrize = podsForStatic[2].querySelector('.lb2-prize');
+    if(goldPrize) staticPrizeByRank[1] = goldPrize.dataset.staticPrize;
+    if(silverPrize) staticPrizeByRank[2] = silverPrize.dataset.staticPrize;
+    if(bronzePrize) staticPrizeByRank[3] = bronzePrize.dataset.staticPrize;
+  }
 
   /* Populate podium (top 3) */
   var podOrder = [1,0,2]; /* visual order: 2nd, 1st, 3rd */
@@ -2797,8 +2826,13 @@ function renderLeaderboardRows(wagers, rewards){
       }
       var prizeEl = pod.querySelector('.lb2-prize');
       if(prizeEl){
+        /* Only Upgrader's API actually provides reward data — RustMagic/DegenCity are
+           pure wager data with no concept of Jammy's promotional prize tiers. Reset to
+           the originally-configured static value (snapshotted at page load) rather than
+           either leaving a stale number from whichever casino was shown previously, or
+           blanking it to "—". */
         var p = prizeByRank[w.rank];
-        prizeEl.textContent = p ? ('$'+Number(p).toLocaleString()) : '—';
+        prizeEl.textContent = p ? ('$'+Number(p).toLocaleString()) : (staticPrizeByRank[w.rank] || '—');
       }
     });
   }
@@ -2814,7 +2848,7 @@ function renderLeaderboardRows(wagers, rewards){
       ? '$'+Number(w.wager).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})
       : '—';
     var prize = prizeByRank[w.rank];
-    var prizeAmt = prize ? '$'+Number(prize).toLocaleString() : '—';
+    var prizeAmt = prize ? '$'+Number(prize).toLocaleString() : (staticPrizeByRank[w.rank] || '—');
     var accent = tierAccent[w.rank];
     var rowStyle = accent
       ? 'border-left:3px solid '+accent+';background:'+tierGlow[w.rank]+';padding-left:17px'
