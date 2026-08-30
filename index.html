@@ -56,6 +56,34 @@ body{
 button{color:inherit}
 /* layered background */
 #stars{position:fixed;inset:0;z-index:-3;pointer-events:none}
+/* Ambient glowing moon, fixed in the background on the left — same visual layer as the
+   existing glow gradients below (z-index -2), built with layered radial-gradients rather
+   than an image so it stays crisp at any resolution and matches the site's existing
+   CSS-only approach to ambient background effects. */
+.moon{
+  position:fixed;left:-9%;top:16%;width:340px;height:340px;border-radius:50%;
+  z-index:-2;pointer-events:none;
+  background:radial-gradient(circle at 36% 32%,
+    rgba(255,255,255,.92) 0%,
+    rgba(226,232,240,.75) 18%,
+    rgba(191,201,220,.45) 38%,
+    rgba(148,163,184,.2) 58%,
+    rgba(148,163,184,.05) 74%,
+    transparent 82%);
+  box-shadow:0 0 90px 30px rgba(226,232,240,.14),0 0 200px 80px rgba(168,85,247,.1);
+}
+.moon::before{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  background:
+    radial-gradient(circle at 62% 68%,rgba(71,85,105,.22) 0%,transparent 11%),
+    radial-gradient(circle at 28% 52%,rgba(71,85,105,.16) 0%,transparent 8%),
+    radial-gradient(circle at 72% 28%,rgba(71,85,105,.14) 0%,transparent 9%),
+    radial-gradient(circle at 46% 78%,rgba(71,85,105,.12) 0%,transparent 7%),
+    radial-gradient(circle at 20% 25%,rgba(71,85,105,.1) 0%,transparent 6%);
+}
+@media(max-width:820px){
+  .moon{width:180px;height:180px;left:-14%;top:10%;opacity:.7}
+}
 body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
   background:
    radial-gradient(1000px 600px at 80% -10%,rgba(168,85,247,.22),transparent 60%),
@@ -1694,6 +1722,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 </style>
 </head>
 <body>
+<div class="moon"></div>
 <canvas id="bgCanvas"></canvas>
 
 
