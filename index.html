@@ -1333,7 +1333,15 @@ nav{border-bottom:1px solid transparent!important;
 .lb2-pod::after{content:"";position:absolute;left:50%;bottom:-10%;width:120%;height:60%;
   transform:translateX(-50%);border-radius:50%;filter:blur(28px);z-index:-1;pointer-events:none;
   animation:podiumAura 4.2s ease-in-out infinite}
-@keyframes podiumAura{0%,100%{opacity:.55;transform:translateX(-50%) scale(1)}50%{opacity:.95;transform:translateX(-50%) scale(1.12)}}
+@keyframes podiumAura{
+  /* Same fix as the mascot aura and the lightning bolts: this element has a static
+     filter:blur(28px), so animating its scale forced the blur to be recomputed every
+     frame. Opacity-only now -- same pulsing glow, no per-frame blur recalculation. Extra
+     relevant here since this runs 3 simultaneous instances (one per podium position) on
+     the Leaderboards page. */
+  0%,100%{opacity:.55}
+  50%{opacity:.95}
+}
 /* #2 — silver */
 .lb2-podium .lb2-pod:nth-child(1){border-color:rgba(203,213,225,.55)!important;
   background:linear-gradient(180deg,rgba(203,213,225,.12),rgba(12,8,24,.96))!important;
