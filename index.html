@@ -199,7 +199,6 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 @keyframes textFlicker{0%,95%,100%{opacity:1}96%,99%{opacity:.85}}
 @keyframes scanline{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}}
 @keyframes coinSpin{0%{transform:translate(-50%,0) scale(0) rotateY(0deg)}20%{transform:translate(-50%,-60px) scale(1.1) rotateY(180deg);opacity:1}80%{transform:translate(-50%,-60px) scale(1) rotateY(540deg);opacity:1}100%{transform:translate(-50%,0) scale(0) rotateY(720deg);opacity:0}}
-@keyframes gradientBorder{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 @keyframes neonPulseGreen{
   0%,100%{filter:brightness(1) drop-shadow(0 0 10px rgba(74,222,128,.55))}
   50%{filter:brightness(1.12) drop-shadow(0 0 18px rgba(74,222,128,.85))}
@@ -348,11 +347,34 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 .skew{transform:skewX(-11deg);border:0;cursor:pointer;padding:0;border-radius:7px;overflow:hidden;
   font-family:'Lilita One','Arial Black','Impact',system-ui,sans-serif;transition:.2s;min-width:230px}
 .skew>span{display:block;transform:skewX(11deg);padding:18px 30px;font-size:1.05rem;letter-spacing:1px}
-.skew.primary{background:linear-gradient(135deg,#9333ea,#a855f7,#7c3aed);background-size:200%;box-shadow:0 14px 36px -10px rgba(168,85,247,.7);animation:gradientBorder 4s ease infinite}
+/* CTA hierarchy — previously EXPLORE BONUSES and LEADERBOARDS both used the identical
+   .primary style, which defeats the point of a "primary" action (nothing to compare it
+   against). Bonuses is the actual conversion goal, so it stays the strongest; Leaderboards
+   gets a new, distinct-but-lighter .secondary tier instead of competing at equal weight;
+   Loyalty (.dark) remains the plainest/tertiary option. Also dropped .primary's looping
+   background-position animation (same expensive-repaint issue as the box-shadow loops
+   fixed earlier) in favor of a static gradient — still reads as rich/premium at rest. */
+.skew.primary{background:linear-gradient(135deg,#9333ea,#a855f7,#7c3aed);box-shadow:0 14px 36px -10px rgba(168,85,247,.7)}
 .skew.primary>span{color:#fff}
+.skew.secondary{background:rgba(34,211,238,.07);border:1.5px solid rgba(34,211,238,.55);box-shadow:0 8px 26px -12px rgba(34,211,238,.4)}
+.skew.secondary>span{color:#7dd3fc}
 .skew.dark{background:var(--panel);border:1px solid var(--line-2)}
 .skew.dark>span{color:var(--text)}
 .skew:hover{transform:skewX(-11deg) translateY(-5px);box-shadow:0 22px 44px -10px rgba(168,85,247,.8)}
+
+/* ---- Hero entrance animation ----
+   Previously every hero element just appeared instantly on load with no motion at all.
+   Staggered reveal (pill -> title -> subtitle -> mascot -> CTAs) instead, each offset
+   slightly later than the one before so it reads as one deliberate cascade rather than
+   everything popping in simultaneously. One-shot (not infinite), transform+opacity only,
+   automatically disabled by the existing prefers-reduced-motion rule (animation:none
+   there falls back to each element's normal, fully-visible state). */
+@keyframes heroReveal{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.hero .pill{animation:heroReveal .7s cubic-bezier(.22,1,.36,1) both}
+.hero .wordmark{animation:heroReveal .7s cubic-bezier(.22,1,.36,1) .1s both}
+.hero .sub{animation:heroReveal .7s cubic-bezier(.22,1,.36,1) .2s both}
+.hero .mascot-wrap{animation:heroReveal .7s cubic-bezier(.22,1,.36,1) .3s both}
+.hero .hero-cta{animation:heroReveal .7s cubic-bezier(.22,1,.36,1) .4s both}
 
 /* ===== SECTION SHELL ===== */
 .sec-head{text-align:center;padding:46px 0 8px}
@@ -1950,7 +1972,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
       <div class="hero-cta">
         <button class="skew primary" onclick="nav('bonuses')"><span>EXPLORE BONUSES</span></button>
         <button class="skew dark" onclick="nav('loyalty')"><span>JOIN LOYALTY</span></button>
-        <button class="skew primary" onclick="nav('leaderboards')"><span>LEADERBOARDS</span></button>
+        <button class="skew secondary" onclick="nav('leaderboards')"><span>LEADERBOARDS</span></button>
       </div>
     </div>
 
