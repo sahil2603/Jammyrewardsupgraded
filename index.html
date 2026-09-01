@@ -297,15 +297,20 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
     transparent 85%
   );
   filter:blur(22px);
-  animation:auraPulse 4.5s ease-in-out infinite;will-change:transform,opacity;transform:translateZ(0);
+  animation:auraPulse 4.5s ease-in-out infinite;will-change:opacity;transform:translateZ(0);
   pointer-events:none;
   z-index:-1;
 }
 @keyframes auraPulse{
-  0%,100%{transform:scaleX(1) scaleY(1);opacity:.7}
-  25%{transform:scaleX(1.08) scaleY(1.12);opacity:.9}
-  50%{transform:scaleX(1.15) scaleY(1.2);opacity:1}
-  75%{transform:scaleX(1.08) scaleY(1.12);opacity:.9}
+  /* Was also animating scaleX/scaleY here — combined with this element's static
+     filter:blur(22px), continuously resizing it forced the browser to recompute the
+     blur's sampling extent every single frame (blur filters are calculated relative to
+     the element's current rendered size), which is expensive for the same underlying
+     reason the lightning bolt's shadowBlur was. Opacity-only pulse instead: same
+     "breathing" glow feel, but the blurred element's size never changes, so its filter
+     output can be cached/composited cheaply instead of recomputed per frame. */
+  0%,100%{opacity:.7}
+  50%{opacity:1}
 }
 /* Floating sparkles around mascot */
 .mascot-sparkle{will-change:transform,opacity;transform:translateZ(0);
