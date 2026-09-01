@@ -3456,6 +3456,12 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   var lastTs=0;
   var FRAME_GAP = 33; /* ~30fps cap — half the CPU cost of 60fps, still looks smooth */
   function tick(ts){
+    /* Stop entirely while the browser tab itself isn't visible (switched to another tab,
+       window minimized) — same "don't animate what nobody can see" principle as the
+       per-page display:none toggling already does internally, just at the tab level. Simply
+       not rescheduling requestAnimationFrame breaks the loop with zero ongoing cost; the
+       visibilitychange listener below kicks it back off once the tab is visible again. */
+    if(document.hidden) return;
     if(ts - lastTs < FRAME_GAP){ requestAnimationFrame(tick); return; }
     var dt=Math.min(ts-lastTs,80); lastTs=ts;
     ctx.clearRect(0,0,W,H);
@@ -3507,6 +3513,9 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   }
   if(!window.matchMedia('(prefers-reduced-motion:reduce)').matches){
     requestAnimationFrame(tick);
+    document.addEventListener('visibilitychange', function(){
+      if(!document.hidden) requestAnimationFrame(tick);
+    });
   }
 })();
 </script>
