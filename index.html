@@ -119,7 +119,7 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
   width:34px;height:34px;border-radius:10px;align-items:center;justify-content:center;cursor:pointer;
   flex:none;transition:.2s}
 .mob-back:hover{background:rgba(255,255,255,.12)}
-.brand span{background:var(--rainbow);background-size:300% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:rainbowShift 7s linear infinite;filter:drop-shadow(0 0 10px rgba(168,85,247,.35))}
+.brand span{background:var(--rainbow);background-size:300% auto;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 10px rgba(168,85,247,.35))}
 .brand svg{width:34px;height:34px;filter:drop-shadow(0 3px 8px rgba(168,85,247,.45));animation:pulseGlow 3s ease-in-out infinite}
 .notlive{display:flex;align-items:center;gap:7px;font-size:.82rem;color:var(--muted);margin-left:6px}
 .notlive .d{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 0 4px rgba(255,77,94,.25)}
@@ -138,7 +138,7 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
    a continuous/looping animation), so the cost is negligible — a different situation from
    the always-running box-shadow loops removed earlier. */
 .nav-indicator{position:absolute;bottom:2px;height:2px;border-radius:2px;
-  background:var(--rainbow);background-size:200%;animation:rainbowShift 4s linear infinite;
+  background:var(--rainbow);background-size:200%;
   box-shadow:0 0 8px rgba(168,85,247,.6);pointer-events:none;
   transition:left .4s cubic-bezier(.22,1,.36,1),width .4s cubic-bezier(.22,1,.36,1);}
 .socials{display:flex;gap:13px;align-items:center;color:var(--muted)}
@@ -249,7 +249,7 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
   display:flex;flex-direction:column;align-items:center}
 .pill{display:inline-flex;align-items:center;gap:8px;font-size:.74rem;font-weight:600;letter-spacing:.22em;
   text-transform:uppercase;color:#d7c9ff;padding:9px 20px;border-radius:99px;position:relative;background:var(--bg2)}
-.pill::before{content:"";position:absolute;inset:0;border-radius:99px;padding:1.5px;background:var(--rainbow);background-size:200% auto;animation:rainbowShift 3s linear infinite;
+.pill::before{content:"";position:absolute;inset:0;border-radius:99px;padding:1.5px;background:var(--rainbow);background-size:200% auto;
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;box-shadow:0 0 20px rgba(168,85,247,.3)}
 /* Font-size deliberately conservative here (was 5.8rem/7.5vw). "Lilita One" is a wide bold
    display font and isn't reachable in this sandbox to measure directly (fonts.googleapis.com
@@ -358,7 +358,7 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 /* ===== SECTION SHELL ===== */
 .sec-head{text-align:center;padding:46px 0 8px}
 .sec-head h2{font-family:'Lilita One','Arial Black','Impact',system-ui,sans-serif;font-size:clamp(2.2rem,6vw,3.6rem);letter-spacing:1px}
-.sec-head h2 .g{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200%;animation:rainbowShift 4s linear infinite;filter:drop-shadow(0 0 12px rgba(168,85,247,.4))}
+.sec-head h2 .g{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200%;filter:drop-shadow(0 0 12px rgba(168,85,247,.4))}
 .sec-head p{color:var(--muted);max-width:640px;margin:14px auto 0;font-size:1.05rem}
 .inner{padding:30px 0 70px}
 .why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:34px}
@@ -386,7 +386,7 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
   transition:transform .35s ease,opacity .35s ease}
 .lstat:hover .lstat-icon{transform:scale(1.18) rotate(-6deg);opacity:1}
 .lstat-num{font-size:clamp(1.5rem,6.5vw,2.4rem);background:var(--rainbow);-webkit-background-clip:text;
-  background-clip:text;color:transparent;background-size:220%;animation:rainbowShift 6s linear infinite;
+  background-clip:text;color:transparent;background-size:220%;
   transition:filter .35s ease}
 .lstat:hover .lstat-num{filter:brightness(1.25) saturate(1.3)}
 /* Distinct two-tone identity per stat so the row reads with real visual variety instead of
@@ -453,12 +453,12 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 .rcard::after{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,#a855f7,#22d3ee,#f472b6);
-  background-size:200%;animation:rainbowShift 4s linear infinite;
+  background-size:200%;
   opacity:.6;transition:opacity .3s;
 }
-.rcard:nth-child(3n+1)::after{background:linear-gradient(90deg,#a855f7,#22d3ee);background-size:200%;animation:rainbowShift 4s linear infinite}
-.rcard:nth-child(3n+2)::after{background:linear-gradient(90deg,#f472b6,#fbbf24);background-size:200%;animation:rainbowShift 4s linear infinite}
-.rcard:nth-child(3n)::after{background:linear-gradient(90deg,#22d3ee,#4ade80);background-size:200%;animation:rainbowShift 4s linear infinite}
+.rcard:nth-child(3n+1)::after{background:linear-gradient(90deg,#a855f7,#22d3ee);background-size:200%;}
+.rcard:nth-child(3n+2)::after{background:linear-gradient(90deg,#f472b6,#fbbf24);background-size:200%;}
+.rcard:nth-child(3n)::after{background:linear-gradient(90deg,#22d3ee,#4ade80);background-size:200%;}
 .rcard:hover{
   transform:translateY(-10px);
   border-color:rgba(168,85,247,.45);
@@ -628,7 +628,7 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 .vault-goal-label{color:var(--muted);font-size:.8rem;margin:4px 0 10px}.vault-goal-label span{color:#22c55e;font-weight:700}
 .vault-bar-wrap{margin-bottom:12px}
 .vault-bar{height:11px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.3)}
-.vault-bar-fill{height:100%;width:0;background:var(--rainbow);background-size:200%;border-radius:99px;animation:rainbowShift 3s linear infinite;transition:width 1.4s ease;box-shadow:0 0 12px rgba(168,85,247,.5)}
+.vault-bar-fill{height:100%;width:0;background:var(--rainbow);background-size:200%;border-radius:99px;transition:width 1.4s ease;box-shadow:0 0 12px rgba(168,85,247,.5)}
 .vault-bar-meta{display:flex;justify-content:space-between;font-size:.76rem;color:var(--faint);margin-top:5px}
 .vault-pct{color:#22c55e;font-weight:600}
 .vault-stat-rows{display:flex;flex-direction:column;gap:0;border-top:1px solid rgba(255,255,255,.06);margin-top:4px}
@@ -675,7 +675,7 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 .vp-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:36px;flex-wrap:wrap}
 .vp-title{font-family:'Lilita One','Arial Black',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:1.5px;color:#fff}
 .vp-sub{color:var(--muted);font-size:.95rem}
-.vp-line{width:180px;height:4px;border-radius:4px;background:var(--rainbow);background-size:200%;animation:rainbowShift 4s linear infinite}
+.vp-line{width:180px;height:4px;border-radius:4px;background:var(--rainbow);background-size:200%;}
 .vp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 /* ── polished card ── */
 .vp-card{
@@ -697,7 +697,7 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
   border-color:rgba(168,85,247,.5);
   box-shadow:0 36px 70px -20px rgba(168,85,247,.5),0 0 0 1px rgba(168,85,247,.2),inset 0 1px 0 rgba(255,255,255,.1);
 }
-.vp-card:hover::before{opacity:1;background-size:200% auto;animation:rainbowShift 2s linear infinite}
+.vp-card:hover::before{opacity:1;background-size:200% auto;}
 /* Upgrader pink, RustMagic pink, DegenCity cyan */
 .vp-card:nth-child(1):hover{border-color:rgba(251,191,36,.4);box-shadow:0 36px 70px -20px rgba(251,191,36,.4),0 0 0 1px rgba(251,191,36,.15)}
 .vp-card:nth-child(2):hover{border-color:rgba(91,141,239,.4);box-shadow:0 36px 70px -20px rgba(91,141,239,.4),0 0 0 1px rgba(91,141,239,.15)}
@@ -964,7 +964,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .home-reviews-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:8px;flex-wrap:wrap}
 .hr-tag{font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);display:block;margin-bottom:8px}
 .hr-title{font-family:'Lilita One','Arial Black',sans-serif;font-size:clamp(2rem,5vw,3rem);letter-spacing:1px}
-.hr-rainbow{background:var(--rainbow);background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:rainbowShift 4s linear infinite}
+.hr-rainbow{background:var(--rainbow);background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;}
 .hr-sub{color:var(--muted);font-size:.95rem;margin-top:6px}
 .all-reviews-btn{background:transparent;border:1.5px solid rgba(255,255,255,.2);color:#fff;
   font-family:'Poppins',sans-serif;font-weight:600;padding:12px 22px;border-radius:99px;cursor:pointer;
@@ -1446,7 +1446,7 @@ nav{border-bottom:1px solid transparent!important;
 
 /* progress bar */
 .vp-bar{height:10px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;margin-bottom:8px}
-.vp-bar-fill{height:100%;width:80%;background:linear-gradient(90deg,#22d3ee,#4ade80,#fbbf24,#a855f7);background-size:200%;border-radius:99px;transition:width 1.4s ease;animation:rainbowShift 3s linear infinite;box-shadow:0 0 14px rgba(74,222,128,.4)}
+.vp-bar-fill{height:100%;width:80%;background:linear-gradient(90deg,#22d3ee,#4ade80,#fbbf24,#a855f7);background-size:200%;border-radius:99px;transition:width 1.4s ease;box-shadow:0 0 14px rgba(74,222,128,.4)}
 .vp-bar-meta{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-bottom:24px}
 .vp-bar-meta .vpct{color:var(--neon-green);font-weight:600}
 
@@ -1489,7 +1489,7 @@ nav{border-bottom:1px solid transparent!important;
 .vp-link-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;z-index:-1;
   background:linear-gradient(120deg,rgba(251,191,36,.5),rgba(168,85,247,.35),rgba(251,191,36,.5));background-size:220% auto;
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
-  opacity:0;transition:opacity .4s ease;animation:rainbowShift 6s linear infinite}
+  opacity:0;transition:opacity .4s ease;}
 .vp-link-card::after{content:"";position:absolute;top:-40%;left:-20%;width:60%;height:200%;
   background:linear-gradient(100deg,transparent,rgba(251,191,36,.06),transparent);transform:rotate(8deg);
   animation:vplSheen 7s ease-in-out infinite;pointer-events:none}
@@ -1523,7 +1523,7 @@ nav{border-bottom:1px solid transparent!important;
 }
 .vp-players::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;z-index:2;
   background:linear-gradient(90deg,transparent,#fbbf24,#a855f7,#22d3ee,transparent);background-size:220% auto;
-  animation:rainbowShift 5s linear infinite}
+  }
 .vpp-head{
   display:flex;align-items:center;gap:14px;
   padding:20px 26px;
@@ -1958,7 +1958,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
     <div class="inner">
 
       <!-- STATS BAR -->
-      <div class="lobby-stats reveal" style="position:relative;overflow:hidden"><div style="position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(90deg,rgba(168,85,247,.3),rgba(34,211,238,.2),rgba(244,114,182,.2),rgba(168,85,247,.3));background-size:200%;animation:rainbowShift 4s linear infinite;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none"></div>
+      <div class="lobby-stats reveal" style="position:relative;overflow:hidden"><div style="position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(90deg,rgba(168,85,247,.3),rgba(34,211,238,.2),rgba(244,114,182,.2),rgba(168,85,247,.3));background-size:200%;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none"></div>
         <div class="lstat">
           <svg class="lstat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8.4"/><path d="M12 7.2v9.6M9.3 9.3c0-1.1 1.2-1.9 2.7-1.9s2.7.8 2.7 1.9-1.2 1.5-2.7 1.9c-1.5.4-2.7.8-2.7 1.9s1.2 1.9 2.7 1.9 2.7-.8 2.7-1.9" stroke-linecap="round"/></svg>
           <div class="lstat-num display" data-count="134179" data-prefix="$">$0</div>
@@ -2027,7 +2027,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
       <div class="vault-left">
         <div>
           <span class="vault-tag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:none"><path d="M12 2 21 7v10l-9 5-9-5V7z" stroke-linejoin="round"/></svg> COMMUNITY VAULT</span>
-          <h2 class="vault-title"><span class="vj">JAMMMY</span> <span class="vv" style="background:var(--rainbow);background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:rainbowShift 4s linear infinite">VAULT</span></h2>
+          <h2 class="vault-title"><span class="vj">JAMMMY</span> <span class="vv" style="background:var(--rainbow);background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent">VAULT</span></h2>
           <p class="vault-sub">Watch the community jar fill up in real time. Every wager builds toward the next payout.</p>
         </div>
         <img src="logo.png" alt="Jammmy mascot" class="vault-mascot" onclick="openVaultModal()">
