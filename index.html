@@ -3419,18 +3419,23 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
 
   function drawBolt(lt){
     ctx.lineCap='round';
+    /* Was using ctx.shadowBlur (up to 55px) TWICE per segment to fake a glow -- shadowBlur
+       is one of the most expensive Canvas 2D operations there is (a real blur convolution
+       computed fresh on every single stroke call), and with 10-25+ segments per bolt this
+       ran up to ~50 shadowBlur passes, every frame, for the bolt's whole fade-out. That's a
+       sharp, real CPU spike exactly when lightning strikes -- confirmed by direct user
+       observation of the lag timing. Replaced with the standard cheap alternative: a wider,
+       softer, low-opacity stroke UNDERNEATH a thin bright one, no shadow/blur at all. Same
+       "glowing bolt" look, just plain strokes instead of blur convolutions. */
     lt.segs.forEach(function(seg){
       var a=lt.life*(seg.fork?.45:.85);
       ctx.beginPath(); ctx.moveTo(seg.x1,seg.y1); ctx.lineTo(seg.x2,seg.y2);
+      ctx.strokeStyle='rgba(30,150,255,'+Math.min(a*.28,.26)+')';
+      ctx.lineWidth=seg.fork?lt.life*5:lt.life*(lt.life>.6?12:6);
+      ctx.stroke();
       ctx.strokeStyle='rgba(215,242,255,'+Math.min(a,.9)+')';
-      ctx.lineWidth=seg.fork?lt.life*1.2:lt.life*(lt.life>.6?3.5:2);
-      ctx.shadowColor='#0088ff'; ctx.shadowBlur=lt.life>.7?38:16;
+      ctx.lineWidth=seg.fork?lt.life*1.2:lt.life*(lt.life>.6?3:1.8);
       ctx.stroke();
-      ctx.strokeStyle='rgba(30,150,255,'+Math.min(a*.32,.3)+')';
-      ctx.lineWidth=seg.fork?lt.life*5:lt.life*(lt.life>.6?14:7);
-      ctx.shadowBlur=lt.life>.7?55:25;
-      ctx.stroke();
-      ctx.shadowBlur=0;
     });
   }
 
