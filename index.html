@@ -229,6 +229,21 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
    Kept as a static glow instead — still looks intentional, no ongoing per-frame cost. Hover's
    existing (stronger, !important) glow still takes over on top of this when hovered. */
 .vp-card{box-shadow:0 4px 36px rgba(168,85,247,.16)}
+/* Shine sweep for vp-card/vault-card/pod — these three had no existing ::after (unlike
+   rcard/bcard/lobby-card/lb2-pod/loy2-card, each fixed or confirmed fine in place above),
+   so adding one here is safe rather than risking silently overriding something. Uses
+   transform, not left/background-position, so it's fully GPU-composited. */
+.vp-card,.vault-card,.pod{position:relative;overflow:hidden}
+.vp-card::after,.vault-card::after,.pod::after{
+  content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.07),transparent);
+  transform:skewX(-20deg) translateX(0);transition:transform .5s ease;pointer-events:none;
+}
+@media (hover:hover) and (pointer:fine){
+  .vp-card:hover::after,.vault-card:hover::after,.pod:hover::after{
+    transform:skewX(-20deg) translateX(417%);
+  }
+}
 
 
 /* ===== HERO ===== */
@@ -384,9 +399,9 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
   position:relative;overflow:hidden;transition:transform .3s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .3s}
 .lobby-card::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);
-  transform:skewX(-20deg);transition:left .5s ease;pointer-events:none}
+  transform:skewX(-20deg) translateX(0);transition:transform .5s ease;pointer-events:none}
 .lobby-card:hover{transform:translateY(-10px);box-shadow:0 28px 60px -18px rgba(168,85,247,.5)}
-.lobby-card:hover::after{left:150%}
+.lobby-card:hover::after{transform:skewX(-20deg) translateX(417%)}
 .lobby-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0}
 .lc-purple::before{background:linear-gradient(90deg,#a855f7,#5b8def)}.lc-purple:hover{border-color:rgba(168,85,247,.5)}
 .lc-gold::before{background:linear-gradient(90deg,#ffd23d,#ff7a3d)}.lc-gold:hover{border-color:rgba(255,210,61,.5)}
@@ -1178,16 +1193,21 @@ body::before{
 }
 .rcard:hover::before,.bcard:hover::before,.vp-card:hover::before,.vault-card:hover::before{opacity:1}
 
-/* shimmer sweep on all cards */
+/* shimmer sweep on all cards — was animating `left` (repaints every frame of the
+   sweep, ~0.7s of main-thread work each hover); converted to `transform:translateX`,
+   which the GPU compositor handles on its own without touching the main thread at
+   all. Same visual travel distance (element is 60% of parent width, so covering the
+   same -120%→160% of PARENT width works out to translateX(0)→translateX(467%) of
+   the element's OWN width). */
 .rcard::after,.bcard::after,.lb-chip::after{
   content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;
   background:linear-gradient(105deg,transparent,rgba(255,255,255,.08),transparent);
-  transform:skewX(-20deg);transition:none;pointer-events:none;
+  transform:skewX(-20deg) translateX(0);transition:none;pointer-events:none;
 }
 .rcard:hover::after,.bcard:hover::after{
-  animation:shimmer .7s ease forwards;
+  animation:shimmerX .7s ease forwards;
 }
-@keyframes shimmer{to{left:160%}}
+@keyframes shimmerX{to{transform:skewX(-20deg) translateX(467%)}}
 
 /* card hover lift — bigger and brighter */
 .rcard:hover,.bcard:hover,.vp-card:hover,.vault-card:hover{
@@ -1733,6 +1753,86 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
      of letting it sit right at the reserved edge and get partially covered — matches this
      same 64px reservation. */
   html{scroll-padding-bottom:64px}
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   UNIFIED CARD + BUTTON SYSTEM — premium polish pass
+   Applied as a late, additive layer on top of every existing card/button class
+   rather than rewriting their scattered original definitions — this file has a
+   long history of regressions from big rewrites (duplicate rules silently
+   overriding each other, cascade order bugs), so consolidating visual
+   consistency this way is much lower-risk: nothing existing gets removed,
+   this only adds/refines. All motion here uses ONLY transform/opacity (the
+   two properties the GPU compositor can animate without any main-thread
+   repaint) — no box-shadow or filter animation loops, consistent with the
+   performance pass already done. Hover transitions are a finite, few-hundred-
+   ms user-triggered event (not an infinite loop), so a transitioned
+   box-shadow *value change* on hover is fine — it's continuous animation of
+   box-shadow that's expensive, not a single transition between two states.
+
+   NOTE: the shine-sweep effect (::after) is NOT added here — every card type
+   already had its own ::after (a shimmer sweep animating `left`, itself
+   layered confusingly over an older, fully-overridden top-accent-bar rule).
+   Added a fresh ::after here would have silently wiped those out rather than
+   improving them, since an element can only have one ::after. Instead, each
+   card type's existing sweep was fixed in place (below, near its original
+   rule) to animate `transform` instead of `left` — same visual effect,
+   properly GPU-composited instead of repainting every frame of the sweep.
+   ══════════════════════════════════════════════════════════════════════════ */
+:root{
+  --card-radius:18px;
+  --ease-premium:cubic-bezier(.22,1,.36,1);
+  --dur-fast:180ms;
+  --dur-standard:320ms;
+}
+
+/* ---- Consistent corner radius across every card type ---- */
+.vp-card,.rcard,.bcard,.vault-card,.lb2-pod,.loy2-card,.lobby-card,.pod{
+  border-radius:var(--card-radius)!important;
+}
+
+/* ---- Consistent hover motion + timing across every card type ----
+   Lift + a very subtle scale (not just lift alone — the scale is what reads
+   as "tactile" rather than the card just sliding, but kept small enough
+   that it never feels bouncy) + a border/shadow response, all sharing the
+   same easing curve so every card on the site now moves identically. */
+.vp-card,.rcard,.bcard,.vault-card,.lb2-pod,.loy2-card,.lobby-card,.pod{
+  transition:transform var(--dur-standard) var(--ease-premium),
+             box-shadow var(--dur-standard) var(--ease-premium),
+             border-color var(--dur-standard) var(--ease-premium)!important;
+}
+@media (hover:hover) and (pointer:fine){
+  .vp-card:hover,.rcard:hover,.bcard:hover,.vault-card:hover,
+  .lb2-pod:hover,.loy2-card:hover,.lobby-card:hover,.pod:hover{
+    transform:translateY(-7px) scale(1.008)!important;
+  }
+  /* Desktop press feedback — previously only existed for touch devices.
+     Quick, snappy timing (fast, not standard) so a click feels immediate. */
+  .vp-card:active,.rcard:active,.bcard:active,.vault-card:active,
+  .lb2-pod:active,.loy2-card:active,.lobby-card:active,.pod:active{
+    transform:translateY(-3px) scale(.99)!important;
+    transition-duration:var(--dur-fast)!important;
+  }
+}
+
+/* ---- Consistent button motion + press feedback ----
+   Same easing/timing language as the cards, so buttons and cards feel like
+   one coherent system instead of separately-tuned components. */
+.vp-btn,.rbtn,.bbtn,.dark-btn,.green-btn,.outline-btn,.skew,.lbt,.mobbar-item{
+  transition:transform var(--dur-standard) var(--ease-premium),
+             filter var(--dur-standard) var(--ease-premium),
+             box-shadow var(--dur-standard) var(--ease-premium)!important;
+}
+@media (hover:hover) and (pointer:fine){
+  .vp-btn:hover,.rbtn:hover,.bbtn:hover,.dark-btn:hover,.green-btn:hover,
+  .outline-btn:hover,.skew:hover{
+    transform:translateY(-3px)!important;
+  }
+  .vp-btn:active,.rbtn:active,.bbtn:active,.dark-btn:active,.green-btn:active,
+  .outline-btn:active,.skew:active{
+    transform:translateY(-1px) scale(.97)!important;
+    transition-duration:var(--dur-fast)!important;
+  }
 }
 </style>
 </head>
