@@ -3268,10 +3268,53 @@ function renderAuthUI(user){
     + '<span class="up-name">'+user.username+'</span>'
     + '<span class="up-coins">🪙 '+user.coin_balance+'</span>'
     + '<div class="user-menu" id="userMenu">'
+      + '<button id="dailyClaimBtn" onclick="event.stopPropagation();claimDaily()">🎁 Checking claim…</button>'
       + '<button onclick="event.stopPropagation();nav(\'vault\')">My Vault Share</button>'
       + '<button onclick="event.stopPropagation();logoutUser()">Log out</button>'
     + '</div>'
   + '</div>';
+  refreshClaimStatus();
+}
+
+function formatCountdown(ms){
+  var h = Math.floor(ms/3600000), m = Math.floor((ms%3600000)/60000);
+  return h+'h '+m+'m';
+}
+
+async function refreshClaimStatus(){
+  var token = localStorage.getItem('jammy_session_token');
+  var btn = document.getElementById('dailyClaimBtn');
+  if(!token || !btn) return;
+  try{
+    var res = await fetch(AUTH_API + '/api/claim-status', { headers: { 'Authorization': 'Bearer ' + token } });
+    var data = await res.json();
+    if(!btn) return; /* menu may have re-rendered while this was in flight */
+    if(data.can_claim){
+      btn.textContent = '🎁 Claim Daily (+50)';
+      btn.disabled = false;
+    } else {
+      btn.textContent = '✓ Claimed — back in ' + formatCountdown(data.remaining_ms);
+      btn.disabled = true;
+    }
+  }catch(e){ btn.textContent = '🎁 Claim Daily (+50)'; }
+}
+
+async function claimDaily(){
+  var token = localStorage.getItem('jammy_session_token');
+  if(!token) return;
+  var btn = document.getElementById('dailyClaimBtn');
+  if(btn) btn.textContent = 'Claiming…';
+  try{
+    var res = await fetch(AUTH_API + '/api/claim-daily', { method:'POST', headers: { 'Authorization': 'Bearer ' + token } });
+    var data = await res.json();
+    if(res.ok && data.user){
+      localStorage.setItem('jammy_user', JSON.stringify(data.user));
+      renderAuthUI(data.user);
+      toggleUserMenu(); /* re-open, since renderAuthUI rebuilt the menu closed */
+    } else if(data.remaining_ms){
+      if(btn){ btn.textContent = '✓ Claimed — back in ' + formatCountdown(data.remaining_ms); btn.disabled = true; }
+    }
+  }catch(e){ if(btn) btn.textContent = '🎁 Claim Daily (+50)'; }
 }
 
 function toggleUserMenu(e){
