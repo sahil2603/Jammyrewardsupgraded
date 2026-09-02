@@ -3313,8 +3313,17 @@ async function claimDaily(){
       toggleUserMenu(); /* re-open, since renderAuthUI rebuilt the menu closed */
     } else if(data.remaining_ms){
       if(btn){ btn.textContent = '✓ Claimed — back in ' + formatCountdown(data.remaining_ms); btn.disabled = true; }
+    } else {
+      /* Previously silent here — any failure that wasn't the "already claimed" case
+         (a genuine server error, a missing binding, anything) left the button just
+         sitting on "Claiming…" forever with zero feedback. Now always shows something. */
+      console.error('Daily claim failed:', data.error || res.status);
+      if(btn) btn.textContent = '⚠ Error — try again (see console)';
     }
-  }catch(e){ if(btn) btn.textContent = '🎁 Claim Daily (+50)'; }
+  }catch(e){
+    console.error('Daily claim request failed:', e);
+    if(btn) btn.textContent = '⚠ Network error — try again';
+  }
 }
 
 function toggleUserMenu(e){
