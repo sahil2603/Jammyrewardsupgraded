@@ -1991,7 +1991,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div class="lstat-div"></div>
         <div class="lstat">
           <svg class="lstat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="6" width="17" height="13" rx="2.2"/><path d="M3.5 10.5h17" stroke-linecap="round"/><circle cx="12" cy="14.3" r="2.1"/><path d="M8 6V5a4 4 0 0 1 8 0v1" stroke-linecap="round"/></svg>
-          <div class="lstat-num display" data-count="800" data-prefix="$">$0</div>
+          <div class="lstat-num display" id="homeMiniVaultBalance" data-count="800" data-prefix="$">$0</div>
           <div class="lstat-label">Vault balance</div>
         </div>
         <div class="lstat-div"></div>
@@ -2060,18 +2060,18 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
       <!-- RIGHT: live balance + bar + mini cards + buttons — floating freely -->
       <div class="vault-right">
         <div class="vault-balance-label">CURRENT BALANCE</div>
-        <div class="vault-balance display" data-count="800" data-prefix="$" onclick="openVaultModal()" style="cursor:pointer">$0</div>
-        <div class="vault-goal-label">Goal: <span>$1,000</span></div>
+        <div class="vault-balance display" id="homeVaultBalance" data-count="800" data-prefix="$" onclick="openVaultModal()" style="cursor:pointer">$0</div>
+        <div class="vault-goal-label">Goal: <span id="homeVaultGoal">$1,000</span></div>
         <div class="vault-bar-wrap">
           <div class="vault-bar"><div class="vault-bar-fill" id="vaultBar"></div></div>
-          <div class="vault-bar-meta"><span class="vault-pct">80% complete</span><span>$200 remaining</span></div>
+          <div class="vault-bar-meta"><span class="vault-pct" id="homeVaultPct">80% complete</span><span id="homeVaultRemaining">$200 remaining</span></div>
         </div>
         <!-- mini cards row — LAST ADDED + STATUS -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0">
           <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 18px">
             <div style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:8px">LAST ADDED</div>
-            <div style="font-family:'Lilita One',sans-serif;font-size:1.5rem;color:var(--neon-green)">+$100</div>
-            <div style="font-size:.76rem;color:var(--faint);margin-top:3px">1st April</div>
+            <div id="homeLastAdded" style="font-family:'Lilita One',sans-serif;font-size:1.5rem;color:var(--neon-green)">+$100</div>
+            <div id="homeLastAddedDate" style="font-size:.76rem;color:var(--faint);margin-top:3px">1st April</div>
           </div>
           <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 18px">
             <div style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:8px">STATUS</div>
@@ -2495,22 +2495,22 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <!-- LEFT: all stats -->
         <div class="vp-main-card">
           <div class="vp-prog-label">VAULT PROGRESS</div>
-          <div class="vp-prog-val display" data-count="800" data-prefix="$">$0</div>
-          <div class="vp-prog-goal">Goal: <b>$1,000</b></div>
+          <div class="vp-prog-val display" id="vpProgVal" data-count="800" data-prefix="$">$0</div>
+          <div class="vp-prog-goal">Goal: <b id="vpProgGoal">$1,000</b></div>
 
           <div class="vp-bar"><div class="vp-bar-fill" id="vaultBar2"></div></div>
-          <div class="vp-bar-meta"><span class="vpct">80% complete</span><span>$200 remaining</span></div>
+          <div class="vp-bar-meta"><span class="vpct" id="vpPctText">80% complete</span><span id="vpRemainingText">$200 remaining</span></div>
 
           <!-- PROGRESS + LAST ADDED mini cards -->
           <div class="vp-mini-row">
             <div class="vp-mini">
               <div class="vp-mini-lbl">PROGRESS</div>
-              <div class="vp-mini-val" style="color:var(--neon-gold)">80%</div>
+              <div class="vp-mini-val" id="vpMiniPct" style="color:var(--neon-gold)">80%</div>
             </div>
             <div class="vp-mini">
               <div class="vp-mini-lbl">LAST ADDED</div>
-              <div class="vp-mini-val" style="color:var(--neon-green)">$100</div>
-              <div class="vp-mini-sub">April 1</div>
+              <div class="vp-mini-val" id="vpMiniLastAdded" style="color:var(--neon-green)">$100</div>
+              <div class="vp-mini-sub" id="vpMiniLastAddedDate">April 1</div>
             </div>
           </div>
 
@@ -3164,12 +3164,52 @@ loadLeaderboard('upgrader');
 /* ============================================================
    VAULT
 ============================================================ */
-function initVaultBars(){
-  setTimeout(function(){
-    var b=document.getElementById('vaultBar');if(b)b.style.width='80%';
-    var b2=document.getElementById('vaultBar2');if(b2)b2.style.width='80%';
-  },300);
+/* Was hardcoded to always show $800/$1,000/80% everywhere, no matter what the real vault
+   balance was -- fetches the real admin-controlled values from the Worker now and updates
+   every display of it across the site (home mini-stat, home preview panel, full Vault
+   page) in sync, instead of three separate copies that could never agree with each other. */
+async function loadVaultSettings(){
+  try{
+    var res = await fetch(AUTH_API + '/api/vault');
+    var data = await res.json();
+    var v = data.vault;
+    if(!v) return;
+    var current = v.current_amount || 0;
+    var target = v.target_amount || 1;
+    var pct = Math.min(100, Math.round((current/target)*100));
+    var remaining = Math.max(0, target - current);
+
+    [document.getElementById('homeMiniVaultBalance'), document.getElementById('homeVaultBalance'), document.getElementById('vpProgVal')].forEach(function(el){
+      if(!el) return;
+      el.dataset.count = current;
+      if(el.dataset.done){ el.textContent = '$' + Math.floor(current).toLocaleString(); }
+    });
+
+    var goalText = '$' + Math.floor(target).toLocaleString();
+    if(document.getElementById('homeVaultGoal')) document.getElementById('homeVaultGoal').textContent = goalText;
+    if(document.getElementById('vpProgGoal')) document.getElementById('vpProgGoal').textContent = goalText;
+
+    var b = document.getElementById('vaultBar'); if(b) b.style.width = pct+'%';
+    var b2 = document.getElementById('vaultBar2'); if(b2) b2.style.width = pct+'%';
+
+    if(document.getElementById('homeVaultPct')) document.getElementById('homeVaultPct').textContent = pct+'% complete';
+    if(document.getElementById('vpPctText')) document.getElementById('vpPctText').textContent = pct+'% complete';
+    if(document.getElementById('vpMiniPct')) document.getElementById('vpMiniPct').textContent = pct+'%';
+    if(document.getElementById('homeVaultRemaining')) document.getElementById('homeVaultRemaining').textContent = '$'+Math.floor(remaining).toLocaleString()+' remaining';
+    if(document.getElementById('vpRemainingText')) document.getElementById('vpRemainingText').textContent = '$'+Math.floor(remaining).toLocaleString()+' remaining';
+
+    if(v.last_added_amount != null){
+      var addedText = '+$'+Math.floor(v.last_added_amount).toLocaleString();
+      if(document.getElementById('homeLastAdded')) document.getElementById('homeLastAdded').textContent = addedText;
+      if(document.getElementById('vpMiniLastAdded')) document.getElementById('vpMiniLastAdded').textContent = '$'+Math.floor(v.last_added_amount).toLocaleString();
+    }
+    if(v.last_added_date){
+      if(document.getElementById('homeLastAddedDate')) document.getElementById('homeLastAddedDate').textContent = v.last_added_date;
+      if(document.getElementById('vpMiniLastAddedDate')) document.getElementById('vpMiniLastAddedDate').textContent = v.last_added_date;
+    }
+  }catch(e){ console.error('Failed to load vault settings:', e); }
 }
+function initVaultBars(){ loadVaultSettings(); }
 function refreshVaultPlayers(){
   var btn=document.querySelector('.vpp-refresh');
   if(btn){btn.textContent='↻ Refreshing...';setTimeout(function(){btn.textContent='↻ Refresh';},1200);}
@@ -3452,6 +3492,7 @@ async function initAuth(){
   }catch(e){ /* network hiccup — keep showing the cached state */ }
 }
 initAuth();
+loadVaultSettings(); /* covers the Home page's vault mini-stat/preview too, not just the dedicated Vault page */
 
 /* ══════════════════════════════════════════════════════════════════════════
    PROFILE PAGE
@@ -3605,7 +3646,6 @@ updateNavIndicator();
    could leave the indicator a few px off until the real font swaps in. Re-measure once
    fonts are confirmed ready (no-op re-measure if nothing shifted). */
 if(document.fonts && document.fonts.ready){document.fonts.ready.then(updateNavIndicator);}
-setTimeout(()=>{var b=document.getElementById('vaultBar');if(b)b.style.width='80%';},800);
 // Force reveal on any scroll so content never stays hidden.
 // Was re-running a full DOM query on every single scroll event, forever — scroll fires
 // dozens of times per second while actively scrolling, so this was doing real work on
