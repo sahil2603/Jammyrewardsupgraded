@@ -2722,13 +2722,14 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
               <div id="pfCoins" style="font-family:'Lilita One',sans-serif;font-size:2.4rem;color:#fbbf24">0</div>
               <div id="pfUsdEquiv" style="color:var(--muted);font-size:.9rem"></div>
             </div>
-            <button class="green-btn" id="pfClaimBtn" onclick="claimDaily()">🎁 Checking claim…</button>
+            <button class="green-btn claim-daily-btn" onclick="claimDaily()">🎁 Checking claim…</button>
           </div>
         </div>
 
         <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px">
           <h3 style="margin-top:0">Redeem Coins</h3>
           <p id="pfRedeemInfo" style="color:var(--muted);font-size:.9rem"></p>
+          <button id="pfRedeemLocked" class="dark-btn" style="width:100%;display:none;opacity:.6;cursor:not-allowed" disabled></button>
           <div id="pfRedeemForm" style="display:none">
             <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Choose crypto</label>
             <select id="pfCrypto" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:14px;font-family:'Poppins'">
@@ -3331,7 +3332,7 @@ function renderAuthUI(user){
     + '<span class="up-name">'+user.username+'</span>'
     + '<span class="up-coins">🪙 '+user.coin_balance+'</span>'
     + '<div class="user-menu" id="userMenu">'
-      + '<button id="dailyClaimBtn" onclick="event.stopPropagation();claimDaily()">🎁 Checking claim…</button>'
+      + '<button class="claim-daily-btn" onclick="event.stopPropagation();claimDaily()">🎁 Checking claim…</button>'
       + '<button onclick="event.stopPropagation();nav(\'profile\')">My Profile</button>'
       + '<button onclick="event.stopPropagation();nav(\'vault\')">My Vault Share</button>'
       + '<button onclick="event.stopPropagation();logoutUser()">Log out</button>'
@@ -3347,46 +3348,48 @@ function formatCountdown(ms){
 
 async function refreshClaimStatus(){
   var token = localStorage.getItem('jammy_session_token');
-  var btn = document.getElementById('dailyClaimBtn');
-  if(!token || !btn) return;
+  var btns = document.querySelectorAll('.claim-daily-btn');
+  if(!token || !btns.length) return;
   try{
     var res = await fetch(AUTH_API + '/api/claim-status', { headers: { 'Authorization': 'Bearer ' + token } });
     var data = await res.json();
-    if(!btn) return; /* menu may have re-rendered while this was in flight */
-    if(data.can_claim){
-      btn.textContent = '🎁 Claim Daily (+50)';
-      btn.disabled = false;
-    } else {
-      btn.textContent = '✓ Claimed — back in ' + formatCountdown(data.remaining_ms);
-      btn.disabled = true;
-    }
-  }catch(e){ btn.textContent = '🎁 Claim Daily (+50)'; }
+    btns = document.querySelectorAll('.claim-daily-btn'); /* re-query: DOM may have changed while this was in flight */
+    btns.forEach(function(btn){
+      if(data.can_claim){
+        btn.textContent = '🎁 Claim Daily (+50)';
+        btn.disabled = false;
+      } else {
+        btn.textContent = '✓ Claimed — back in ' + formatCountdown(data.remaining_ms);
+        btn.disabled = true;
+      }
+    });
+  }catch(e){ btns.forEach(function(btn){ btn.textContent = '🎁 Claim Daily (+50)'; }); }
 }
 
 async function claimDaily(){
   var token = localStorage.getItem('jammy_session_token');
   if(!token) return;
-  var btn = document.getElementById('dailyClaimBtn');
-  if(btn) btn.textContent = 'Claiming…';
+  var btns = document.querySelectorAll('.claim-daily-btn');
+  btns.forEach(function(btn){ btn.textContent = 'Claiming…'; });
   try{
     var res = await fetch(AUTH_API + '/api/claim-daily', { method:'POST', headers: { 'Authorization': 'Bearer ' + token } });
     var data = await res.json();
     if(res.ok && data.user){
       localStorage.setItem('jammy_user', JSON.stringify(data.user));
-      renderAuthUI(data.user);
+      renderAuthUI(data.user); /* also calls refreshClaimStatus(), which re-syncs every .claim-daily-btn on the page */
       toggleUserMenu(); /* re-open, since renderAuthUI rebuilt the menu closed */
     } else if(data.remaining_ms){
-      if(btn){ btn.textContent = '✓ Claimed — back in ' + formatCountdown(data.remaining_ms); btn.disabled = true; }
+      btns.forEach(function(btn){ btn.textContent = '✓ Claimed — back in ' + formatCountdown(data.remaining_ms); btn.disabled = true; });
     } else {
       /* Previously silent here — any failure that wasn't the "already claimed" case
          (a genuine server error, a missing binding, anything) left the button just
          sitting on "Claiming…" forever with zero feedback. Now always shows something. */
       console.error('Daily claim failed:', data.error || res.status);
-      if(btn) btn.textContent = '⚠ Error — try again (see console)';
+      btns.forEach(function(btn){ btn.textContent = '⚠ Error — try again (see console)'; });
     }
   }catch(e){
     console.error('Daily claim request failed:', e);
-    if(btn) btn.textContent = '⚠ Network error — try again';
+    btns.forEach(function(btn){ btn.textContent = '⚠ Network error — try again'; });
   }
 }
 
@@ -3490,13 +3493,17 @@ function renderProfile(data){
 
   var info = document.getElementById('pfRedeemInfo');
   var form = document.getElementById('pfRedeemForm');
+  var locked = document.getElementById('pfRedeemLocked');
   if(data.user.coin_balance >= data.min_redeem_coins){
     info.textContent = 'You can redeem your full balance of ' + data.user.coin_balance.toLocaleString() + ' coins (≈ $' + (data.user.coin_balance/data.coins_per_dollar).toFixed(2) + ').';
     form.style.display = 'block';
+    locked.style.display = 'none';
   } else {
     var needed = data.min_redeem_coins - data.user.coin_balance;
-    info.textContent = 'You need ' + needed.toLocaleString() + ' more coins to redeem (minimum ' + data.min_redeem_coins.toLocaleString() + ' coins).';
+    info.textContent = data.user.coin_balance.toLocaleString() + ' / ' + data.min_redeem_coins.toLocaleString() + ' coins collected';
     form.style.display = 'none';
+    locked.style.display = 'block';
+    locked.textContent = '🔒 Collect ' + needed.toLocaleString() + ' more coin' + (needed === 1 ? '' : 's') + ' to redeem';
   }
 
   var linksByName = {};
