@@ -2700,6 +2700,68 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
     </div>
   </section>
 
+  <section class="page" id="profile">
+    <div class="wrap" style="max-width:900px;margin:0 auto;padding:60px 20px 100px">
+      <div id="profileLoggedOut" style="display:none;text-align:center;padding:80px 20px">
+        <h2 style="font-family:'Lilita One',sans-serif">Log in to view your profile</h2>
+        <p style="color:var(--muted)">Use the Login with Discord button in the top right.</p>
+      </div>
+      <div id="profileContent" style="display:none">
+        <div class="reveal" style="display:flex;align-items:center;gap:18px;margin-bottom:40px">
+          <img id="pfAvatar" src="" alt="" style="width:72px;height:72px;border-radius:50%">
+          <div>
+            <h1 id="pfName" style="font-family:'Lilita One',sans-serif;font-size:1.8rem;margin:0"></h1>
+            <div style="color:var(--faint)">Your JammmyRewards profile</div>
+          </div>
+        </div>
+
+        <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
+            <div>
+              <div style="color:var(--faint);font-size:.8rem;text-transform:uppercase;letter-spacing:.08em">Jammmy Coins</div>
+              <div id="pfCoins" style="font-family:'Lilita One',sans-serif;font-size:2.4rem;color:#fbbf24">0</div>
+              <div id="pfUsdEquiv" style="color:var(--muted);font-size:.9rem"></div>
+            </div>
+            <button class="green-btn" id="pfClaimBtn" onclick="claimDaily()">🎁 Checking claim…</button>
+          </div>
+        </div>
+
+        <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px">
+          <h3 style="margin-top:0">Redeem Coins</h3>
+          <p id="pfRedeemInfo" style="color:var(--muted);font-size:.9rem"></p>
+          <div id="pfRedeemForm" style="display:none">
+            <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Choose crypto</label>
+            <select id="pfCrypto" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:14px;font-family:'Poppins'">
+              <option value="BSC">BSC (BNB Smart Chain)</option>
+              <option value="ETH">ETH (Ethereum)</option>
+              <option value="SOL">SOL (Solana)</option>
+            </select>
+            <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Your wallet address</label>
+            <input id="pfWallet" type="text" placeholder="Paste your wallet address" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:14px;font-family:monospace;box-sizing:border-box">
+            <button class="dark-btn" style="width:100%" onclick="submitRedeem()" id="pfRedeemBtn">Redeem Full Balance</button>
+          </div>
+          <div id="pfRedeemResult" style="display:none;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.3);border-radius:12px;padding:18px;margin-top:14px;line-height:1.7"></div>
+        </div>
+
+        <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px">
+          <h3 style="margin-top:0">Casino Usernames</h3>
+          <p style="color:var(--muted);font-size:.85rem">Link your username on each partner casino so your wagering counts toward the vault and leaderboards.</p>
+          <div id="pfCasinoLinks"></div>
+        </div>
+
+        <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px">
+          <h3 style="margin-top:0">Redemption History</h3>
+          <div id="pfRedemptions" style="color:var(--muted);font-size:.9rem">No redemptions yet.</div>
+        </div>
+
+        <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px">
+          <h3 style="margin-top:0">Recent Activity</h3>
+          <div id="pfTransactions" style="color:var(--muted);font-size:.9rem">No activity yet.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer>
@@ -2780,6 +2842,7 @@ function showPage(id){
   var pg=document.getElementById(id);
   if(!pg){id='home';pg=document.getElementById('home');}
   pg.classList.add('show');
+  if(id==='profile') loadProfile();
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('active',a.dataset.page===id));
   document.querySelectorAll('.mobbar-item').forEach(a=>a.classList.toggle('active',a.dataset.page===id));
   updateNavIndicator();
@@ -3269,6 +3332,7 @@ function renderAuthUI(user){
     + '<span class="up-coins">🪙 '+user.coin_balance+'</span>'
     + '<div class="user-menu" id="userMenu">'
       + '<button id="dailyClaimBtn" onclick="event.stopPropagation();claimDaily()">🎁 Checking claim…</button>'
+      + '<button onclick="event.stopPropagation();nav(\'profile\')">My Profile</button>'
       + '<button onclick="event.stopPropagation();nav(\'vault\')">My Vault Share</button>'
       + '<button onclick="event.stopPropagation();logoutUser()">Log out</button>'
     + '</div>'
@@ -3385,6 +3449,147 @@ async function initAuth(){
   }catch(e){ /* network hiccup — keep showing the cached state */ }
 }
 initAuth();
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PROFILE PAGE
+   ══════════════════════════════════════════════════════════════════════════ */
+var KNOWN_CASINOS_DISPLAY = {upgrader:'Upgrader', rustmagic:'RustMagic', degencity:'DegenCity', rustmafia:'RustMafia'};
+
+async function loadProfile(){
+  var token = localStorage.getItem('jammy_session_token');
+  var loggedOut = document.getElementById('profileLoggedOut');
+  var content = document.getElementById('profileContent');
+  if(!token){
+    if(loggedOut) loggedOut.style.display='block';
+    if(content) content.style.display='none';
+    return;
+  }
+  try{
+    var res = await fetch(AUTH_API + '/api/profile', { headers: { 'Authorization': 'Bearer ' + token } });
+    if(!res.ok){
+      if(loggedOut) loggedOut.style.display='block';
+      if(content) content.style.display='none';
+      return;
+    }
+    var data = await res.json();
+    renderProfile(data);
+  }catch(e){ console.error('Failed to load profile:', e); }
+}
+
+function renderProfile(data){
+  var loggedOut = document.getElementById('profileLoggedOut');
+  var content = document.getElementById('profileContent');
+  if(loggedOut) loggedOut.style.display='none';
+  if(content) content.style.display='block';
+
+  document.getElementById('pfAvatar').src = data.user.avatar;
+  document.getElementById('pfName').textContent = data.user.username;
+  document.getElementById('pfCoins').textContent = data.user.coin_balance.toLocaleString();
+  document.getElementById('pfUsdEquiv').textContent = '≈ $' + (data.user.coin_balance / data.coins_per_dollar).toFixed(2) + ' USD';
+  refreshClaimStatus();
+
+  var info = document.getElementById('pfRedeemInfo');
+  var form = document.getElementById('pfRedeemForm');
+  if(data.user.coin_balance >= data.min_redeem_coins){
+    info.textContent = 'You can redeem your full balance of ' + data.user.coin_balance.toLocaleString() + ' coins (≈ $' + (data.user.coin_balance/data.coins_per_dollar).toFixed(2) + ').';
+    form.style.display = 'block';
+  } else {
+    var needed = data.min_redeem_coins - data.user.coin_balance;
+    info.textContent = 'You need ' + needed.toLocaleString() + ' more coins to redeem (minimum ' + data.min_redeem_coins.toLocaleString() + ' coins).';
+    form.style.display = 'none';
+  }
+
+  var linksByName = {};
+  (data.casino_links||[]).forEach(function(l){ linksByName[l.casino] = l.casino_username; });
+  var html = '';
+  Object.keys(KNOWN_CASINOS_DISPLAY).forEach(function(key){
+    html += '<div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap">'
+      + '<label style="width:100px;font-size:.85rem;color:var(--faint)">'+KNOWN_CASINOS_DISPLAY[key]+'</label>'
+      + '<input type="text" id="casinoInput_'+key+'" value="'+(linksByName[key]||'')+'" placeholder="Your '+KNOWN_CASINOS_DISPLAY[key]+' username" style="flex:1;min-width:150px;padding:9px 12px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-family:\'Poppins\'">'
+      + '<button class="outline-btn" style="padding:9px 16px" onclick="saveCasinoLink(\''+key+'\')">Save</button>'
+    + '</div>';
+  });
+  document.getElementById('pfCasinoLinks').innerHTML = html;
+
+  var redEl = document.getElementById('pfRedemptions');
+  if(data.redemptions && data.redemptions.length){
+    redEl.innerHTML = data.redemptions.map(function(r){
+      var statusColor = r.status === 'paid' ? '#4ade80' : '#fbbf24';
+      return '<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);flex-wrap:wrap;gap:6px">'
+        + '<span>'+r.id+' · '+r.crypto_currency+' · $'+r.usd_value.toFixed(2)+'</span>'
+        + '<span style="color:'+statusColor+';text-transform:uppercase;font-size:.78rem;font-weight:700">'+r.status+'</span>'
+      + '</div>';
+    }).join('');
+  } else {
+    redEl.textContent = 'No redemptions yet.';
+  }
+
+  var txEl = document.getElementById('pfTransactions');
+  if(data.transactions && data.transactions.length){
+    txEl.innerHTML = data.transactions.slice(0,15).map(function(t){
+      var sign = t.amount >= 0 ? '+' : '';
+      var color = t.amount >= 0 ? '#4ade80' : '#f87171';
+      return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:.85rem;flex-wrap:wrap;gap:6px">'
+        + '<span>'+(t.note||t.type)+'</span>'
+        + '<span style="color:'+color+';font-weight:700">'+sign+t.amount+'</span>'
+      + '</div>';
+    }).join('');
+  } else {
+    txEl.textContent = 'No activity yet.';
+  }
+}
+
+async function saveCasinoLink(casino){
+  var token = localStorage.getItem('jammy_session_token');
+  if(!token) return;
+  var input = document.getElementById('casinoInput_'+casino);
+  var username = input.value.trim();
+  if(!username) return;
+  var btnText = event && event.target ? event.target.textContent : null;
+  try{
+    var res = await fetch(AUTH_API + '/api/link-casino', {
+      method:'POST',
+      headers: { 'Authorization':'Bearer '+token, 'Content-Type':'application/json' },
+      body: JSON.stringify({casino:casino, username:username})
+    });
+    if(res.ok && event && event.target){ event.target.textContent = 'Saved ✓'; setTimeout(function(){ event.target.textContent = btnText; }, 1500); }
+  }catch(e){ console.error('Failed to save casino link:', e); }
+}
+
+async function submitRedeem(){
+  var token = localStorage.getItem('jammy_session_token');
+  if(!token) return;
+  var cryptoCurrency = document.getElementById('pfCrypto').value;
+  var wallet = document.getElementById('pfWallet').value.trim();
+  var btn = document.getElementById('pfRedeemBtn');
+  if(!wallet){ alert('Please enter your wallet address.'); return; }
+  if(btn) btn.textContent = 'Submitting…';
+  try{
+    var res = await fetch(AUTH_API + '/api/redeem', {
+      method:'POST',
+      headers: { 'Authorization':'Bearer '+token, 'Content-Type':'application/json' },
+      body: JSON.stringify({crypto_currency:cryptoCurrency, wallet_address:wallet})
+    });
+    var data = await res.json();
+    if(res.ok && data.transaction_id){
+      localStorage.setItem('jammy_user', JSON.stringify(data.user));
+      renderAuthUI(data.user);
+      var resultEl = document.getElementById('pfRedeemResult');
+      resultEl.style.display='block';
+      resultEl.innerHTML = '<b>Redemption submitted!</b><br>Transaction ID: <code>'+data.transaction_id+'</code><br>'
+        + '$'+data.usd_value.toFixed(2)+' via '+data.crypto_currency+'<br>'
+        + '<span style="color:var(--muted)">Funds will be credited within 24-48 hours.</span>';
+      loadProfile();
+    } else {
+      alert(data.error || 'Something went wrong. Please try again.');
+      if(btn) btn.textContent = 'Redeem Full Balance';
+    }
+  }catch(e){
+    console.error('Redeem failed:', e);
+    alert('Network error. Please try again.');
+    if(btn) btn.textContent = 'Redeem Full Balance';
+  }
+}
 
 runReveals();runCounts();initKickStream();
 updateNavIndicator();
