@@ -4023,12 +4023,23 @@ function renderProfile(data){
   }
 
   var txEl = document.getElementById('pfTransactions');
+  /* Was showing the raw backend note verbatim ("Approved upgrader wagering ($1435.00) by
+     jammmy") -- that's audit-trail language written for admins, not something a user
+     should see about their own account. Clean, type-based labels instead; the amount is
+     already shown separately so there's no need to repeat the dollar figure here. */
+  var TX_LABELS = {
+    daily_claim: 'Daily claim',
+    wager_approved: 'Wager claim approved',
+    wager_revoked: 'Wager claim revoked',
+    redemption: 'Redeemed for crypto',
+    admin_add: 'Balance adjusted',
+  };
   if(data.transactions && data.transactions.length){
     txEl.innerHTML = data.transactions.slice(0,15).map(function(t){
       var sign = t.amount >= 0 ? '+' : '';
       var color = t.amount >= 0 ? '#4ade80' : '#f87171';
       return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:.85rem;flex-wrap:wrap;gap:6px">'
-        + '<span>'+(t.note||t.type)+'</span>'
+        + '<span>'+(TX_LABELS[t.type]||t.note||t.type)+'</span>'
         + '<span style="color:'+color+';font-weight:700">'+sign+t.amount+'</span>'
       + '</div>';
     }).join('');
