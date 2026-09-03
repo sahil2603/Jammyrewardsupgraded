@@ -2898,7 +2898,11 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
         <!-- VERIFY PLAYERS TAB -->
         <div id="adminVerifyTab" class="admin-tab-panel" style="display:none">
-          <p style="color:var(--muted);font-size:.9rem;margin-bottom:18px">Pending casino account claims. Check the claimant's Discord against the casino username before approving — approving credits coins immediately and deducts them from the vault.</p>
+          <p style="color:var(--muted);font-size:.9rem;margin-bottom:18px" id="adminVerifyDesc">Pending casino account claims. Check the claimant's Discord against the casino username before approving — approving credits coins immediately and deducts them from the vault.</p>
+          <div style="display:flex;gap:10px;margin-bottom:16px">
+            <button class="admin-btn-secondary active admin-verify-filter" data-status="pending" onclick="loadAdminVerifyList('pending')">Pending</button>
+            <button class="admin-btn-secondary admin-verify-filter" data-status="approved" onclick="loadAdminVerifyList('approved')">Approved (revoke)</button>
+          </div>
           <div id="adminVerifyList">Loading…</div>
         </div>
 
@@ -3896,6 +3900,13 @@ async function loadProfile(){
       return;
     }
     var data = await res.json();
+    /* Was only ever rendering the fresh balance into the Profile page itself -- the nav
+       pill (visible everywhere, including Home) kept showing whatever was cached in
+       localStorage from login time, since nothing here updated that cache or re-rendered
+       it. This is exactly why an admin approving a claim only showed up once you happened
+       to visit Profile. */
+    localStorage.setItem('jammy_user', JSON.stringify(data.user));
+    renderAuthUI(data.user);
     renderProfile(data);
   }catch(e){ console.error('Failed to load profile:', e); }
 }
@@ -4324,17 +4335,30 @@ function renderDailyChart(byDay){
 /* ══════════════════════════════════════════════════════════════════════════
    ADMIN: VERIFY PLAYERS
    ══════════════════════════════════════════════════════════════════════════ */
-async function loadAdminVerifyList(){
+async function loadAdminVerifyList(status){
+  status = status || 'pending';
   var token = localStorage.getItem('jammy_session_token');
   var listEl = document.getElementById('adminVerifyList');
+  var descEl = document.getElementById('adminVerifyDesc');
   if(!token || !listEl) return;
+  document.querySelectorAll('.admin-verify-filter').forEach(function(b){ b.classList.toggle('active', b.dataset.status === status); });
+  if(descEl) descEl.textContent = status === 'pending'
+    ? "Pending casino account claims. Check the claimant's Discord against the casino username before approving — approving credits coins immediately and deducts them from the vault."
+    : 'Already-approved claims. If one turns out to be the wrong person, revoke it — this claws back the coins that were awarded (as much as is still in their balance) and restores that amount to the vault.';
   listEl.innerHTML = 'Loading…';
   try{
-    var res = await fetch(AUTH_API + '/api/admin/pending-claims', { headers: { 'Authorization': 'Bearer ' + token } });
+    var res = await fetch(AUTH_API + '/api/admin/pending-claims?status=' + status, { headers: { 'Authorization': 'Bearer ' + token } });
     var data = await res.json();
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load.'; return; }
-    if(!data.claims.length){ listEl.innerHTML = '<div style="color:var(--muted)">No pending claims right now.</div>'; return; }
+    if(!data.claims.length){ listEl.innerHTML = '<div style="color:var(--muted)">No '+status+' claims right now.</div>'; return; }
     listEl.innerHTML = data.claims.map(function(c){
+      var actionsHtml = status === 'pending'
+        ? '<button class="admin-btn-row-action" onclick="adminApproveClaim(\''+c.user_id+'\',\''+c.casino+'\')">Approve</button>'
+          + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#6b7280,#4b5563)" onclick="adminRejectClaim(\''+c.user_id+'\',\''+c.casino+'\')">Reject</button>'
+        : '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminRevokeClaim(\''+c.user_id+'\',\''+c.casino+'\')">Revoke</button>';
+      var coinsLabel = status === 'pending'
+        ? '<div style="font-family:\'Lilita One\',sans-serif;color:#fbbf24;font-size:1.1rem">+'+c.would_award_coins.toLocaleString()+' Coins</div>'
+        : '<div style="font-family:\'Lilita One\',sans-serif;color:#4ade80;font-size:1.1rem">'+Math.round(c.already_credited_wager*0.1*100)/100+' Coins earned</div>';
       return '<div class="admin-row">'
         + '<div>'
           + '<b>'+c.username+'</b> <span style="color:var(--faint);font-size:.78rem">('+c.user_id+')</span><br>'
@@ -4342,18 +4366,36 @@ async function loadAdminVerifyList(){
           + '<span style="color:var(--faint);font-size:.78rem">Current wager: $'+c.current_wager.toLocaleString()+' · Already credited: $'+c.already_credited_wager.toLocaleString()+' · New: $'+c.new_wager_since_last.toLocaleString()+'</span>'
         + '</div>'
         + '<div style="text-align:right">'
-          + '<div style="font-family:\'Lilita One\',sans-serif;color:#fbbf24;font-size:1.1rem">+'+c.would_award_coins.toLocaleString()+' Coins</div>'
+          + coinsLabel
           + '<div style="margin-top:6px;display:flex;gap:6px;justify-content:flex-end">'
-            + '<button class="admin-btn-row-action" onclick="adminApproveClaim(\''+c.user_id+'\',\''+c.casino+'\')">Approve</button>'
-            + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#6b7280,#4b5563)" onclick="adminRejectClaim(\''+c.user_id+'\',\''+c.casino+'\')">Reject</button>'
+            + actionsHtml
           + '</div>'
         + '</div>'
       + '</div>';
     }).join('');
   }catch(e){
-    console.error('Failed to load pending claims:', e);
+    console.error('Failed to load claims:', e);
     listEl.innerHTML = 'Network error — try again.';
   }
+}
+
+async function adminRevokeClaim(userId, casino){
+  if(!confirm('Revoke this claim? This will claw back the coins that were awarded (as much as is still in their balance) and restore that amount to the vault.')) return;
+  var token = localStorage.getItem('jammy_session_token');
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/revoke-claim', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: userId, casino: casino })
+    });
+    var data = await res.json();
+    if(res.ok){
+      if(!data.fully_recovered) alert('Revoked — but this user had already spent some of it, so only '+data.coins_clawed_back.toLocaleString()+' coins could be clawed back.');
+      loadAdminVerifyList('approved');
+    } else {
+      alert(data.error || 'Failed to revoke.');
+    }
+  }catch(e){ console.error('Revoke failed:', e); alert('Network error — try again.'); }
 }
 
 async function adminApproveClaim(userId, casino){
@@ -4423,6 +4465,7 @@ async function loadAdminSlots(){
           + '</select>'
           + '<input type="number" id="slotProfitAmount_'+r.id+'" placeholder="Amount ($)" value="'+(r.profit_amount!=null?r.profit_amount:'')+'" style="width:110px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-size:.82rem">'
           + '<button class="admin-btn-secondary" style="padding:8px 14px" onclick="adminUpdateSlotRequest('+r.id+')">Save</button>'
+          + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b);padding:8px 14px" onclick="adminDeleteSlotRequest('+r.id+')">Delete</button>'
         + '</div>'
       + '</div>';
     }).join('');
@@ -4445,6 +4488,20 @@ async function adminUpdateSlotRequest(id){
     var data = await res.json();
     if(res.ok){ loadAdminSlots(); } else { alert(data.error || 'Failed to save.'); }
   }catch(e){ console.error('Update slot request failed:', e); alert('Network error — try again.'); }
+}
+
+async function adminDeleteSlotRequest(id){
+  if(!confirm('Delete this slot request? This can\'t be undone.')) return;
+  var token = localStorage.getItem('jammy_session_token');
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/delete-slot-request', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: id })
+    });
+    var data = await res.json();
+    if(res.ok){ loadAdminSlots(); } else { alert(data.error || 'Failed to delete.'); }
+  }catch(e){ console.error('Delete slot request failed:', e); alert('Network error — try again.'); }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
