@@ -155,6 +155,10 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 .user-pill img{width:30px;height:30px;border-radius:50%;display:block}
 .user-pill .up-name{color:#fff;font-weight:600;font-size:.88rem}
 .user-pill .up-coins{color:#fbbf24;font-weight:700;font-size:.82rem;display:flex;align-items:center;gap:3px}
+/* Jammmy Coin icon -- used everywhere a coin balance is shown, replacing the plain 🪙
+   emoji. Explicit size + !important since it sits inside several different contexts
+   (nav pill, admin rows, profile balance) that each have their own broader `img` rules. */
+.coin-icon{width:18px!important;height:18px!important;border-radius:0!important;vertical-align:-3px;display:inline-block!important;object-fit:contain}
 .user-menu{position:absolute;top:calc(100% + 8px);right:0;background:#0d0818;border:1px solid rgba(168,85,247,.3);
   border-radius:12px;padding:8px;min-width:170px;box-shadow:0 14px 34px -10px rgba(0,0,0,.6);z-index:120;display:none}
 .user-menu.open{display:block}
@@ -1193,6 +1197,15 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   color:rgba(251,191,36,.85);padding:14px;border-radius:11px;font-family:'Poppins';font-weight:700;font-size:.88rem;
   cursor:not-allowed}
 
+/* Redeem form's currency/network selects. The dropdown popup itself (the <option> list) is
+   rendered by the OS/browser, not by our page CSS -- only styling the <select> and letting
+   <option> inherit meant every option but the selected one rendered on the browser's default
+   WHITE popup background with our inherited white text on top of it, invisible. Explicit
+   background+color on the <option> elements themselves fixes this in every major browser. */
+.pf-select{width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);
+  border:1px solid var(--line);color:#fff;margin-bottom:14px;font-family:'Poppins';box-sizing:border-box}
+.pf-select option{background:#150a2e;color:#fff}
+
 .outline-btn:hover{
   border-color:#38bdf8;
   background:rgba(56,189,248,.1);
@@ -2065,7 +2078,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div class="lstat-div"></div>
         <div class="lstat">
           <svg class="lstat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="6" width="17" height="13" rx="2.2"/><path d="M3.5 10.5h17" stroke-linecap="round"/><circle cx="12" cy="14.3" r="2.1"/><path d="M8 6V5a4 4 0 0 1 8 0v1" stroke-linecap="round"/></svg>
-          <div class="lstat-num display" id="homeMiniVaultBalance" data-count="800" data-prefix="$">$0</div>
+          <div class="lstat-num display" id="homeMiniVaultBalance" data-count="800" data-suffix=" Coins">0</div>
           <div class="lstat-label">Vault balance</div>
         </div>
         <div class="lstat-div"></div>
@@ -2134,7 +2147,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
       <!-- RIGHT: live balance + bar + mini cards + buttons — floating freely -->
       <div class="vault-right">
         <div class="vault-balance-label">CURRENT BALANCE</div>
-        <div class="vault-balance display" id="homeVaultBalance" data-count="800" data-prefix="$" onclick="openVaultModal()" style="cursor:pointer">$0</div>
+        <div class="vault-balance display" id="homeVaultBalance" data-count="800" data-suffix=" Coins" onclick="openVaultModal()" style="cursor:pointer">0</div>
         <div class="vault-goal-label">Goal: <span id="homeVaultGoal">$1,000</span></div>
         <div class="vault-bar-wrap">
           <div class="vault-bar"><div class="vault-bar-fill" id="vaultBar"></div></div>
@@ -2569,7 +2582,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <!-- LEFT: all stats -->
         <div class="vp-main-card">
           <div class="vp-prog-label">VAULT PROGRESS</div>
-          <div class="vp-prog-val display" id="vpProgVal" data-count="800" data-prefix="$">$0</div>
+          <div class="vp-prog-val display" id="vpProgVal" data-count="800" data-suffix=" Coins">0</div>
           <div class="vp-prog-goal">Goal: <b id="vpProgGoal">$1,000</b></div>
 
           <div class="vp-bar"><div class="vp-bar-fill" id="vaultBar2"></div></div>
@@ -2793,7 +2806,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
             <div>
               <div style="color:var(--faint);font-size:.8rem;text-transform:uppercase;letter-spacing:.08em">Jammmy Coins</div>
-              <div id="pfCoins" style="font-family:'Lilita One',sans-serif;font-size:2.4rem;color:#fbbf24">0</div>
+              <div id="pfCoins" style="font-family:'Lilita One',sans-serif;font-size:2.4rem;color:#fbbf24;display:flex;align-items:center;gap:10px"><img src="jammmy-coin.png" alt="" style="width:34px;height:34px;object-fit:contain"><span id="pfCoinsNum">0</span></div>
               <div id="pfUsdEquiv" style="color:var(--muted);font-size:.9rem"></div>
             </div>
             <button class="pf-btn-claim claim-daily-btn" onclick="claimDaily()">🎁 Checking claim…</button>
@@ -2805,13 +2818,18 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <p id="pfRedeemInfo" style="color:var(--muted);font-size:.9rem"></p>
           <button id="pfRedeemLocked" class="pf-btn-locked" style="display:none" disabled></button>
           <div id="pfRedeemForm" style="display:none">
-            <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Choose crypto</label>
-            <select id="pfCrypto" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:14px;font-family:'Poppins'">
-              <option value="BSC">BSC (BNB Smart Chain)</option>
-              <option value="ETH">ETH (Ethereum)</option>
-              <option value="SOL">SOL (Solana)</option>
+            <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Choose crypto currency</label>
+            <select id="pfCryptoCurrency" class="pf-select" onchange="updateNetworkOptions()">
+              <option value="USDT">USDT</option>
+              <option value="USDC">USDC</option>
+              <option value="BTC">BTC</option>
+              <option value="ETH">ETH</option>
+              <option value="SOL">SOL</option>
+              <option value="BNB">BNB</option>
             </select>
-            <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Your wallet address</label>
+            <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Choose network</label>
+            <select id="pfCryptoNetwork" class="pf-select"></select>
+            <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Your wallet address</label>
             <input id="pfWallet" type="text" placeholder="Paste your wallet address" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:14px;font-family:monospace;box-sizing:border-box">
             <button class="admin-btn-primary" onclick="submitRedeem()" id="pfRedeemBtn">Redeem Full Balance</button>
           </div>
@@ -2857,11 +2875,11 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div id="adminVaultTab" class="admin-tab-panel">
           <div style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;max-width:500px">
             <h3 style="margin-top:0">Vault Management</h3>
-            <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Current Amount ($)</label>
+            <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Current Amount (Coins)</label>
             <input type="number" id="avCurrent" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;box-sizing:border-box">
-            <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Target Amount ($)</label>
+            <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Target Amount (Coins)</label>
             <input type="number" id="avTarget" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;box-sizing:border-box">
-            <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Last Added Amount ($, optional)</label>
+            <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Last Added Amount (Coins, optional)</label>
             <input type="number" id="avLastAmount" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;box-sizing:border-box">
             <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Last Added Date (optional)</label>
             <input type="text" id="avLastDate" placeholder="e.g. April 1" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;box-sizing:border-box">
@@ -3163,10 +3181,12 @@ function lbTab(btn,casino){
   CURRENT_LB_CASINO = casino;
   var lbl=document.getElementById('lb-cd-label');
   if(lbl)lbl.textContent=casino.toUpperCase();
+  lbcd2(); /* reflect the right period type (monthly vs bi-weekly) immediately, not after up to 1s of delay */
   loadLeaderboard(casino);
 }
 // Bi-weekly periods anchored to a fixed reference Sunday so it always shows a real,
-// future-or-current window instead of a stale hardcoded date.
+// future-or-current window instead of a stale hardcoded date. Used for every casino
+// except DegenCity, which runs on a real calendar-month cycle instead.
 function currentLbPeriod(){
   var anchor = Date.UTC(2026,0,4,12,0,0); // a known period-start Sunday, noon UTC
   var msPer14d = 14*24*60*60*1000;
@@ -3176,8 +3196,14 @@ function currentLbPeriod(){
   var end = start + msPer14d;
   return {start:new Date(start), end:new Date(end)};
 }
+function currentMonthlyPeriod(){
+  var now = new Date();
+  var start = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1, 0, 0, 0));
+  var end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth()+1, 1, 0, 0, 0));
+  return {start:start, end:end};
+}
 function lbcd2(){
-  var period = currentLbPeriod();
+  var period = (CURRENT_LB_CASINO === 'degencity') ? currentMonthlyPeriod() : currentLbPeriod();
   var n = new Date();
   var s = Math.max(0, Math.floor((period.end - n)/1000));
   var el = document.getElementById('lb-cd2');
@@ -3239,6 +3265,14 @@ function renderLeaderboardRows(wagers, rewards){
   var prizeByRank = {};
   (rewards||[]).forEach(function(r){ prizeByRank[r.place] = r.winnings; });
 
+  /* RustMafia's leaderboard has its own fixed prize structure ($125/$75/$45/$36/$34 for
+     ranks 1-5), separate from the generic podium-snapshot fallback used for casinos with
+     no reward data of their own. */
+  var RUSTMAFIA_PRIZES = {1:125, 2:75, 3:45, 4:36, 5:34};
+  if(CURRENT_LB_CASINO === 'rustmafia'){
+    prizeByRank = RUSTMAFIA_PRIZES;
+  }
+
   /* Static baseline prizes ($200/$100/$50 etc, configured directly in the podium HTML) —
      reused as the fallback for both the podium and the full list below when a casino's API
      doesn't provide its own reward data, read once via the snapshot taken at page load so
@@ -3260,11 +3294,27 @@ function renderLeaderboardRows(wagers, rewards){
   if(pods.length >= 3){
     podOrder.forEach(function(dataIdx, podIdx){
       var w = wagers[dataIdx];
-      if(!w) return;
       var pod = pods[podIdx];
       var nameEl = pod.querySelector('.lb2-name');
       var wagerEl = pod.querySelector('.lb2-wager, .lb2-wagered');
       var avatarEl = pod.querySelector('.lb2-avatar');
+      var prizeEl = pod.querySelector('.lb2-prize');
+      if(!w){
+        /* No player at this podium rank for the currently-selected casino (e.g. DegenCity
+           sometimes has only 1-2 wagers this period) -- reset to the original empty state
+           instead of silently leaving whichever casino was shown before this one, which is
+           exactly what was happening: switching TO a sparser leaderboard left stale rows
+           from the PREVIOUS casino's data sitting in the empty slots. */
+        if(nameEl) nameEl.textContent = 'Awaiting Player';
+        if(wagerEl) wagerEl.textContent = '$0 wagered';
+        if(avatarEl){ avatarEl.innerHTML = '?'; avatarEl.title = ''; }
+        if(prizeEl){
+          var emptyRank = dataIdx+1;
+          var ep = prizeByRank[emptyRank];
+          prizeEl.textContent = ep ? ('$'+Number(ep).toLocaleString()) : (staticPrizeByRank[emptyRank] || '—');
+        }
+        return;
+      }
       if(nameEl) nameEl.textContent = w.name || '—';
       if(wagerEl) wagerEl.textContent = '$' + Number(w.wager||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + ' wagered';
       if(avatarEl){
@@ -3342,10 +3392,10 @@ async function loadVaultSettings(){
     [document.getElementById('homeMiniVaultBalance'), document.getElementById('homeVaultBalance'), document.getElementById('vpProgVal')].forEach(function(el){
       if(!el) return;
       el.dataset.count = current;
-      if(el.dataset.done){ el.textContent = '$' + Math.floor(current).toLocaleString(); }
+      if(el.dataset.done){ el.textContent = Math.floor(current).toLocaleString() + ' Coins'; }
     });
 
-    var goalText = '$' + Math.floor(target).toLocaleString();
+    var goalText = Math.floor(target).toLocaleString() + ' Coins';
     if(document.getElementById('homeVaultGoal')) document.getElementById('homeVaultGoal').textContent = goalText;
     if(document.getElementById('vpProgGoal')) document.getElementById('vpProgGoal').textContent = goalText;
 
@@ -3355,18 +3405,29 @@ async function loadVaultSettings(){
     if(document.getElementById('homeVaultPct')) document.getElementById('homeVaultPct').textContent = pct+'% complete';
     if(document.getElementById('vpPctText')) document.getElementById('vpPctText').textContent = pct+'% complete';
     if(document.getElementById('vpMiniPct')) document.getElementById('vpMiniPct').textContent = pct+'%';
-    if(document.getElementById('homeVaultRemaining')) document.getElementById('homeVaultRemaining').textContent = '$'+Math.floor(remaining).toLocaleString()+' remaining';
-    if(document.getElementById('vpRemainingText')) document.getElementById('vpRemainingText').textContent = '$'+Math.floor(remaining).toLocaleString()+' remaining';
+    if(document.getElementById('homeVaultRemaining')) document.getElementById('homeVaultRemaining').textContent = Math.floor(remaining).toLocaleString()+' Coins remaining';
+    if(document.getElementById('vpRemainingText')) document.getElementById('vpRemainingText').textContent = Math.floor(remaining).toLocaleString()+' Coins remaining';
 
     if(v.last_added_amount != null){
-      var addedText = '+$'+Math.floor(v.last_added_amount).toLocaleString();
+      var addedText = '+'+Math.floor(v.last_added_amount).toLocaleString()+' Coins';
       if(document.getElementById('homeLastAdded')) document.getElementById('homeLastAdded').textContent = addedText;
-      if(document.getElementById('vpMiniLastAdded')) document.getElementById('vpMiniLastAdded').textContent = '$'+Math.floor(v.last_added_amount).toLocaleString();
+      if(document.getElementById('vpMiniLastAdded')) document.getElementById('vpMiniLastAdded').textContent = Math.floor(v.last_added_amount).toLocaleString()+' Coins';
     }
     if(v.last_added_date){
       if(document.getElementById('homeLastAddedDate')) document.getElementById('homeLastAddedDate').textContent = v.last_added_date;
       if(document.getElementById('vpMiniLastAddedDate')) document.getElementById('vpMiniLastAddedDate').textContent = v.last_added_date;
+      if(document.getElementById('vmLastAddedDate')) document.getElementById('vmLastAddedDate').textContent = v.last_added_date;
     }
+
+    /* Vault modal (the popup opened from clicking the home page vault balance) was a fully
+       static, hardcoded copy of the same $800/$1,000/80% numbers — never wired to real data
+       at all. Now driven by the same fetch as everywhere else. */
+    if(document.getElementById('vmBar')) document.getElementById('vmBar').style.width = pct+'%';
+    if(document.getElementById('vmPct')) document.getElementById('vmPct').textContent = pct+'% complete';
+    if(document.getElementById('vmGoalTop')) document.getElementById('vmGoalTop').textContent = Math.floor(target).toLocaleString()+' Coins goal';
+    if(document.getElementById('vmCurrent')) document.getElementById('vmCurrent').textContent = Math.floor(current).toLocaleString()+' Coins';
+    if(document.getElementById('vmGoal')) document.getElementById('vmGoal').textContent = Math.floor(target).toLocaleString()+' Coins';
+    if(v.last_added_amount != null && document.getElementById('vmLastAdded')) document.getElementById('vmLastAdded').textContent = Math.floor(v.last_added_amount).toLocaleString()+' Coins';
   }catch(e){ console.error('Failed to load vault settings:', e); }
 }
 function initVaultBars(){ loadVaultSettings(); }
@@ -3545,11 +3606,9 @@ function renderAuthUI(user){
   area.innerHTML = '<div class="user-pill" onclick="toggleUserMenu(event)">'
     + '<img src="'+user.avatar+'" alt="">'
     + '<span class="up-name">'+user.username+'</span>'
-    + '<span class="up-coins">🪙 '+user.coin_balance+'</span>'
+    + '<span class="up-coins"><img src="jammmy-coin.png" class="coin-icon" alt=""> '+user.coin_balance+'</span>'
     + '<div class="user-menu" id="userMenu">'
-      + '<button class="claim-daily-btn" onclick="event.stopPropagation();claimDaily()">🎁 Checking claim…</button>'
       + '<button onclick="event.stopPropagation();nav(\'profile\')">My Profile</button>'
-      + '<button onclick="event.stopPropagation();nav(\'vault\')">My Vault Share</button>'
       + (user.is_admin ? '<button onclick="event.stopPropagation();nav(\'admin\')" style="color:#fbbf24">⚙ Admin Dashboard</button>' : '')
       + '<button onclick="event.stopPropagation();logoutUser()">Log out</button>'
     + '</div>'
@@ -3575,7 +3634,7 @@ async function refreshClaimStatus(){
         btn.textContent = '🎁 Claim Daily (+50)';
         btn.disabled = false;
       } else {
-        btn.textContent = '✓ Claimed — back in ' + formatCountdown(data.remaining_ms);
+        btn.textContent = '🕒 Next claim in ' + formatCountdown(data.remaining_ms);
         btn.disabled = true;
       }
     });
@@ -3595,7 +3654,7 @@ async function claimDaily(){
       renderAuthUI(data.user); /* also calls refreshClaimStatus(), which re-syncs every .claim-daily-btn on the page */
       toggleUserMenu(); /* re-open, since renderAuthUI rebuilt the menu closed */
     } else if(data.remaining_ms){
-      btns.forEach(function(btn){ btn.textContent = '✓ Claimed — back in ' + formatCountdown(data.remaining_ms); btn.disabled = true; });
+      btns.forEach(function(btn){ btn.textContent = '🕒 Next claim in ' + formatCountdown(data.remaining_ms); btn.disabled = true; });
     } else {
       /* Previously silent here — any failure that wasn't the "already claimed" case
          (a genuine server error, a missing binding, anything) left the button just
@@ -3705,7 +3764,7 @@ function renderProfile(data){
 
   document.getElementById('pfAvatar').src = data.user.avatar;
   document.getElementById('pfName').textContent = data.user.username;
-  document.getElementById('pfCoins').textContent = data.user.coin_balance.toLocaleString();
+  document.getElementById('pfCoinsNum').textContent = data.user.coin_balance.toLocaleString();
   document.getElementById('pfUsdEquiv').textContent = '≈ $' + (data.user.coin_balance / data.coins_per_dollar).toFixed(2) + ' USD';
   refreshClaimStatus();
 
@@ -3715,6 +3774,7 @@ function renderProfile(data){
   if(data.user.coin_balance >= data.min_redeem_coins){
     info.textContent = 'You can redeem your full balance of ' + data.user.coin_balance.toLocaleString() + ' coins (≈ $' + (data.user.coin_balance/data.coins_per_dollar).toFixed(2) + ').';
     form.style.display = 'block';
+    updateNetworkOptions();
     locked.style.display = 'none';
   } else {
     var needed = data.min_redeem_coins - data.user.coin_balance;
@@ -3781,10 +3841,26 @@ async function saveCasinoLink(casino){
   }catch(e){ console.error('Failed to save casino link:', e); }
 }
 
+var CRYPTO_NETWORKS = {
+  USDT: ['ERC20 (Ethereum)', 'BEP20 (BNB Smart Chain)', 'TRC20 (Tron)', 'SOL (Solana)'],
+  USDC: ['ERC20 (Ethereum)', 'BEP20 (BNB Smart Chain)', 'SOL (Solana)'],
+  BTC: ['Bitcoin'],
+  ETH: ['ERC20 (Ethereum)'],
+  SOL: ['SOL (Solana)'],
+  BNB: ['BEP20 (BNB Smart Chain)'],
+};
+function updateNetworkOptions(){
+  var currency = document.getElementById('pfCryptoCurrency').value;
+  var networkSel = document.getElementById('pfCryptoNetwork');
+  var networks = CRYPTO_NETWORKS[currency] || [];
+  networkSel.innerHTML = networks.map(function(n){ return '<option value="'+n+'">'+n+'</option>'; }).join('');
+}
+
 async function submitRedeem(){
   var token = localStorage.getItem('jammy_session_token');
   if(!token) return;
-  var cryptoCurrency = document.getElementById('pfCrypto').value;
+  var currency = document.getElementById('pfCryptoCurrency').value;
+  var network = document.getElementById('pfCryptoNetwork').value;
   var wallet = document.getElementById('pfWallet').value.trim();
   var btn = document.getElementById('pfRedeemBtn');
   if(!wallet){ alert('Please enter your wallet address.'); return; }
@@ -3793,7 +3869,7 @@ async function submitRedeem(){
     var res = await fetch(AUTH_API + '/api/redeem', {
       method:'POST',
       headers: { 'Authorization':'Bearer '+token, 'Content-Type':'application/json' },
-      body: JSON.stringify({crypto_currency:cryptoCurrency, wallet_address:wallet})
+      body: JSON.stringify({crypto_currency:currency, crypto_network:network, wallet_address:wallet})
     });
     var data = await res.json();
     if(res.ok && data.transaction_id){
@@ -3913,8 +3989,9 @@ async function loadAdminUsers(){
           + '<span style="color:var(--muted);font-size:.8rem">'+linksStr+'</span>'
         + '</div>'
         + '<div style="text-align:right">'
-          + '<div style="font-family:\'Lilita One\',sans-serif;color:#fbbf24;font-size:1.2rem">🪙 '+u.coin_balance.toLocaleString()+'</div>'
+          + '<div style="font-family:\'Lilita One\',sans-serif;color:#fbbf24;font-size:1.2rem"><img src="jammmy-coin.png" class="coin-icon" alt=""> '+u.coin_balance.toLocaleString()+'</div>'
           + '<button class="admin-btn-row-action" style="margin-top:6px" onclick="adminAddCoinsPrompt(\''+u.discord_id+'\',\''+u.username.replace(/'/g,"\\\\'")+'\')">Adjust Coins</button>'
+          + '<button class="admin-btn-row-action" style="margin-top:6px;margin-left:6px;background:'+(u.is_admin?'linear-gradient(135deg,#6b7280,#4b5563)':'linear-gradient(135deg,#f59e0b,#d97706)')+'" onclick="adminToggleAdmin(\''+u.discord_id+'\',\''+u.username.replace(/'/g,"\\\\'")+'\','+(!u.is_admin)+')">'+(u.is_admin?'Remove Admin':'Make Admin')+'</button>'
         + '</div>'
       + '</div>';
     }).join('');
@@ -3940,6 +4017,21 @@ async function adminAddCoinsPrompt(discordId, username){
     var data = await res.json();
     if(res.ok){ loadAdminUsers(); } else { alert(data.error || 'Failed to adjust coins.'); }
   }catch(e){ console.error('Add coins failed:', e); alert('Network error — try again.'); }
+}
+
+async function adminToggleAdmin(discordId, username, makeAdmin){
+  var verb = makeAdmin ? 'make' : 'remove';
+  if(!confirm((makeAdmin?'Make ':'Remove ')+username+(makeAdmin?' an admin?':' as an admin?')+' They will '+(makeAdmin?'gain':'lose')+' access to this dashboard.')) return;
+  var token = localStorage.getItem('jammy_session_token');
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/set-admin', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ discord_id: discordId, is_admin: makeAdmin })
+    });
+    var data = await res.json();
+    if(res.ok){ loadAdminUsers(); } else { alert(data.error || ('Failed to '+verb+' admin.')); }
+  }catch(e){ console.error('Set admin failed:', e); alert('Network error — try again.'); }
 }
 
 async function loadAdminRedemptions(status){
@@ -4094,30 +4186,30 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
       <!-- progress bar -->
       <div style="margin-bottom:18px">
         <div style="height:8px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;margin-bottom:8px">
-          <div style="width:80%;height:100%;background:linear-gradient(90deg,#a855f7,#22d3ee,#4ade80,#fbbf24,#f472b6);border-radius:99px"></div>
+          <div id="vmBar" style="width:80%;height:100%;background:linear-gradient(90deg,#a855f7,#22d3ee,#4ade80,#fbbf24,#f472b6);border-radius:99px"></div>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:.8rem">
-          <span style="color:#4ade80;font-weight:700">80% complete</span>
-          <span style="color:rgba(255,255,255,.4)">$1,000 goal</span>
+          <span id="vmPct" style="color:#4ade80;font-weight:700">80% complete</span>
+          <span id="vmGoalTop" style="color:rgba(255,255,255,.4)">1,000 Coins goal</span>
         </div>
       </div>
       <!-- stats rows -->
       <div style="display:flex;flex-direction:column;gap:0;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden">
         <div style="display:flex;justify-content:space-between;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.06)">
           <span style="color:rgba(255,255,255,.82);font-size:.9rem">Current Amount</span>
-          <span style="color:#fff;font-weight:700">$800</span>
+          <span id="vmCurrent" style="color:#fff;font-weight:700">800 Coins</span>
         </div>
         <div style="display:flex;justify-content:space-between;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.06)">
           <span style="color:rgba(255,255,255,.82);font-size:.9rem">Goal</span>
-          <span style="color:#4ade80;font-weight:700">$1,000</span>
+          <span id="vmGoal" style="color:#4ade80;font-weight:700">1,000 Coins</span>
         </div>
         <div style="display:flex;justify-content:space-between;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.06)">
           <span style="color:rgba(255,255,255,.82);font-size:.9rem">Last Added</span>
-          <span style="color:#fbbf24;font-weight:700">$100</span>
+          <span id="vmLastAdded" style="color:#fbbf24;font-weight:700">100 Coins</span>
         </div>
         <div style="display:flex;justify-content:space-between;padding:14px 18px">
           <span style="color:rgba(255,255,255,.82);font-size:.9rem">Date</span>
-          <span style="color:#fff;font-weight:700">1st April</span>
+          <span id="vmLastAddedDate" style="color:#fff;font-weight:700">1st April</span>
         </div>
       </div>
       <button onclick="nav('vault');closeVaultModal()" style="width:100%;margin-top:16px;padding:15px;background:#4ade80;color:#0a2012;border:0;border-radius:11px;font-family:'Lilita One',sans-serif;font-size:1rem;cursor:pointer;letter-spacing:.5px;transition:.2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='none'">View Full Vault →</button>
