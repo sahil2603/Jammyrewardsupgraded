@@ -2783,6 +2783,8 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <button class="admin-tab" data-tab="adminUsersTab" onclick="switchAdminTab('adminUsersTab')">Users</button>
           <button class="admin-tab" data-tab="adminRedemptionsTab" onclick="switchAdminTab('adminRedemptionsTab')">Redemptions</button>
           <button class="admin-tab" data-tab="adminAnalyticsTab" onclick="switchAdminTab('adminAnalyticsTab')">Analytics</button>
+          <button class="admin-tab" data-tab="adminVerifyTab" onclick="switchAdminTab('adminVerifyTab')">Verify Players</button>
+          <button class="admin-tab" data-tab="adminSlotsTab" onclick="switchAdminTab('adminSlotsTab')">Slot Requests</button>
         </div>
 
         <!-- VAULT TAB -->
@@ -2848,6 +2850,17 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
           <h3 style="margin-top:28px">Daily Views (last 14 days)</h3>
           <div id="anByDay" style="color:var(--muted);font-size:.9rem">Loading…</div>
+        </div>
+
+        <!-- VERIFY PLAYERS TAB -->
+        <div id="adminVerifyTab" class="admin-tab-panel" style="display:none">
+          <p style="color:var(--muted);font-size:.9rem;margin-bottom:18px">Pending casino account claims. Check the claimant's Discord against the casino username before approving — approving credits coins immediately and deducts them from the vault.</p>
+          <div id="adminVerifyList">Loading…</div>
+        </div>
+
+        <!-- SLOT REQUESTS TAB -->
+        <div id="adminSlotsTab" class="admin-tab-panel" style="display:none">
+          <div id="adminSlotsList">Loading…</div>
         </div>
       </div>
     </div>
@@ -4014,6 +4027,8 @@ function switchAdminTab(tabId){
   if(tabId==='adminUsersTab') loadAdminUsers();
   if(tabId==='adminRedemptionsTab') loadAdminRedemptions('');
   if(tabId==='adminAnalyticsTab') loadAdminAnalytics();
+  if(tabId==='adminVerifyTab') loadAdminVerifyList();
+  if(tabId==='adminSlotsTab') loadAdminSlots();
 }
 
 async function loadAdminDashboard(){
@@ -4259,6 +4274,132 @@ function renderDailyChart(byDay){
       + gridLines
       + bars
     + '</svg>';
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ADMIN: VERIFY PLAYERS
+   ══════════════════════════════════════════════════════════════════════════ */
+async function loadAdminVerifyList(){
+  var token = localStorage.getItem('jammy_session_token');
+  var listEl = document.getElementById('adminVerifyList');
+  if(!token || !listEl) return;
+  listEl.innerHTML = 'Loading…';
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/pending-claims', { headers: { 'Authorization': 'Bearer ' + token } });
+    var data = await res.json();
+    if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load.'; return; }
+    if(!data.claims.length){ listEl.innerHTML = '<div style="color:var(--muted)">No pending claims right now.</div>'; return; }
+    listEl.innerHTML = data.claims.map(function(c){
+      return '<div class="admin-row">'
+        + '<div>'
+          + '<b>'+c.username+'</b> <span style="color:var(--faint);font-size:.78rem">('+c.user_id+')</span><br>'
+          + '<span style="color:var(--muted);font-size:.85rem">Claims: <b>'+c.casino_username+'</b> on '+(CASINO_DISPLAY_NAMES[c.casino]||c.casino)+'</span><br>'
+          + '<span style="color:var(--faint);font-size:.78rem">Current wager: $'+c.current_wager.toLocaleString()+' · Already credited: $'+c.already_credited_wager.toLocaleString()+' · New: $'+c.new_wager_since_last.toLocaleString()+'</span>'
+        + '</div>'
+        + '<div style="text-align:right">'
+          + '<div style="font-family:\'Lilita One\',sans-serif;color:#fbbf24;font-size:1.1rem">+'+c.would_award_coins.toLocaleString()+' Coins</div>'
+          + '<div style="margin-top:6px;display:flex;gap:6px;justify-content:flex-end">'
+            + '<button class="admin-btn-row-action" onclick="adminApproveClaim(\''+c.user_id+'\',\''+c.casino+'\')">Approve</button>'
+            + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#6b7280,#4b5563)" onclick="adminRejectClaim(\''+c.user_id+'\',\''+c.casino+'\')">Reject</button>'
+          + '</div>'
+        + '</div>'
+      + '</div>';
+    }).join('');
+  }catch(e){
+    console.error('Failed to load pending claims:', e);
+    listEl.innerHTML = 'Network error — try again.';
+  }
+}
+
+async function adminApproveClaim(userId, casino){
+  if(!confirm('Approve this claim? Coins will be credited immediately and deducted from the vault.')) return;
+  var token = localStorage.getItem('jammy_session_token');
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/approve-claim', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: userId, casino: casino })
+    });
+    var data = await res.json();
+    if(res.ok){
+      if(data.capped_by_vault) alert('Approved — but the vault didn\'t have enough left to pay the full amount, so this was capped at what remained.');
+      loadAdminVerifyList();
+    } else {
+      alert(data.error || 'Failed to approve.');
+    }
+  }catch(e){ console.error('Approve failed:', e); alert('Network error — try again.'); }
+}
+
+async function adminRejectClaim(userId, casino){
+  if(!confirm('Reject this claim? No coins will be awarded.')) return;
+  var token = localStorage.getItem('jammy_session_token');
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/reject-claim', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: userId, casino: casino })
+    });
+    var data = await res.json();
+    if(res.ok){ loadAdminVerifyList(); } else { alert(data.error || 'Failed to reject.'); }
+  }catch(e){ console.error('Reject failed:', e); alert('Network error — try again.'); }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ADMIN: SLOT REQUESTS
+   ══════════════════════════════════════════════════════════════════════════ */
+async function loadAdminSlots(){
+  var token = localStorage.getItem('jammy_session_token');
+  var listEl = document.getElementById('adminSlotsList');
+  if(!token || !listEl) return;
+  listEl.innerHTML = 'Loading…';
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/slot-requests', { headers: { 'Authorization': 'Bearer ' + token } });
+    var data = await res.json();
+    if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load.'; return; }
+    if(!data.requests.length){ listEl.innerHTML = '<div style="color:var(--muted)">No slot requests yet.</div>'; return; }
+    listEl.innerHTML = data.requests.map(function(r){
+      var profitColor = r.profit_status === 'profit' ? '#4ade80' : r.profit_status === 'loss' ? '#f87171' : 'var(--faint)';
+      var profitLabel = r.profit_status ? (r.profit_status.charAt(0).toUpperCase()+r.profit_status.slice(1).replace('_',' ')) + (r.profit_amount!=null ? ' ($'+r.profit_amount.toLocaleString()+')' : '') : 'Not recorded yet';
+      return '<div class="admin-row" style="flex-direction:column;align-items:stretch">'
+        + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">'
+          + '<div>'
+            + '<b>'+r.slot_name+'</b> — requested by '+r.username+'<br>'
+            + (r.note ? '<span style="color:var(--muted);font-size:.85rem">'+r.note+'</span><br>' : '')
+            + '<span style="color:var(--faint);font-size:.75rem">'+r.created_at+'</span>'
+          + '</div>'
+          + '<div style="color:'+profitColor+';font-weight:700;font-size:.85rem;white-space:nowrap">'+profitLabel+'</div>'
+        + '</div>'
+        + '<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center">'
+          + '<select id="slotProfitStatus_'+r.id+'" class="pf-select" style="width:auto;margin-bottom:0;padding:8px 10px;font-size:.82rem">'
+            + '<option value="">No result yet</option>'
+            + '<option value="profit"'+(r.profit_status==='profit'?' selected':'')+'>Profit</option>'
+            + '<option value="loss"'+(r.profit_status==='loss'?' selected':'')+'>Loss</option>'
+            + '<option value="no_play"'+(r.profit_status==='no_play'?' selected':'')+'>Didn\'t play it</option>'
+          + '</select>'
+          + '<input type="number" id="slotProfitAmount_'+r.id+'" placeholder="Amount ($)" value="'+(r.profit_amount!=null?r.profit_amount:'')+'" style="width:110px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-size:.82rem">'
+          + '<button class="admin-btn-secondary" style="padding:8px 14px" onclick="adminUpdateSlotRequest('+r.id+')">Save</button>'
+        + '</div>'
+      + '</div>';
+    }).join('');
+  }catch(e){
+    console.error('Failed to load slot requests:', e);
+    listEl.innerHTML = 'Network error — try again.';
+  }
+}
+
+async function adminUpdateSlotRequest(id){
+  var token = localStorage.getItem('jammy_session_token');
+  var statusEl = document.getElementById('slotProfitStatus_'+id);
+  var amountEl = document.getElementById('slotProfitAmount_'+id);
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/update-slot-request', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: id, profit_status: statusEl.value || null, profit_amount: amountEl.value || null })
+    });
+    var data = await res.json();
+    if(res.ok){ loadAdminSlots(); } else { alert(data.error || 'Failed to save.'); }
+  }catch(e){ console.error('Update slot request failed:', e); alert('Network error — try again.'); }
 }
 
 runReveals();runCounts();initKickStream();
