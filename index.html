@@ -2677,11 +2677,11 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
           <!-- clean stat rows -->
           <div class="vp-stat-rows">
-            <div class="vp-sr"><span class="vp-sr-lbl">All Leaderboards Wagered</span><span class="vp-sr-val display" data-count="134179" data-prefix="$">$0</span></div>
-            <div class="vp-sr"><span class="vp-sr-lbl">Claimed (Linked)</span><span class="vp-sr-val green display" data-count="17354" data-prefix="$">$0</span></div>
-            <div class="vp-sr"><span class="vp-sr-lbl">Unclaimed</span><span class="vp-sr-val gold display" data-count="116826" data-prefix="$">$0</span></div>
-            <div class="vp-sr"><span class="vp-sr-lbl">Active Players</span><span class="vp-sr-val">6</span></div>
-            <div class="vp-sr"><span class="vp-sr-lbl">Live Leaderboards</span><span class="vp-sr-val">1</span></div>
+            <div class="vp-sr"><span class="vp-sr-lbl">All Leaderboards Wagered</span><span class="vp-sr-val" id="vpAllWagered">$0</span></div>
+            <div class="vp-sr"><span class="vp-sr-lbl">Claimed (Approved)</span><span class="vp-sr-val green" id="vpClaimedWagered">$0</span></div>
+            <div class="vp-sr"><span class="vp-sr-lbl">Unclaimed</span><span class="vp-sr-val gold" id="vpUnclaimedWagered">$0</span></div>
+            <div class="vp-sr"><span class="vp-sr-lbl">Active Players</span><span class="vp-sr-val" id="vpActivePlayers">0</span></div>
+            <div class="vp-sr"><span class="vp-sr-lbl">Live Leaderboards</span><span class="vp-sr-val" id="vpLiveLeaderboards">0</span></div>
           </div>
         </div>
 
@@ -3500,10 +3500,35 @@ async function loadVaultPlayers(){
     _casinoWagersData = data.wagers || [];
     renderVaultPlayers();
     renderUnclaimedCard(data);
+    renderVaultSummaryStats();
   }catch(e){
     console.error('Failed to load vault players:', e);
     listEl.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--faint)">Couldn\'t load live players right now — try refreshing.</div>';
   }
+}
+
+/* "All Leaderboards Wagered / Claimed / Unclaimed" summary row -- was hardcoded to
+   $134,179/$17,354/$116,826 forever, which had drifted completely out of sync with the
+   real numbers shown just below it in the Unclaimed wagering card. Computed from the same
+   wager list already fetched for Live Players, so the two can never disagree again. */
+function renderVaultSummaryStats(){
+  var totalWagered = 0, claimedWagered = 0, unclaimedWagered = 0;
+  var casinosSeen = {};
+  _casinoWagersData.forEach(function(w){
+    totalWagered += w.wager;
+    if(w.status === 'approved') claimedWagered += w.wager; else unclaimedWagered += w.wager;
+    casinosSeen[w.casino] = true;
+  });
+  var allEl = document.getElementById('vpAllWagered');
+  var claimedEl = document.getElementById('vpClaimedWagered');
+  var unclaimedEl = document.getElementById('vpUnclaimedWagered');
+  var activeEl = document.getElementById('vpActivePlayers');
+  var liveEl = document.getElementById('vpLiveLeaderboards');
+  if(allEl) allEl.textContent = '$'+Math.round(totalWagered).toLocaleString();
+  if(claimedEl) claimedEl.textContent = '$'+Math.round(claimedWagered).toLocaleString();
+  if(unclaimedEl) unclaimedEl.textContent = '$'+Math.round(unclaimedWagered).toLocaleString();
+  if(activeEl) activeEl.textContent = _casinoWagersData.length;
+  if(liveEl) liveEl.textContent = Object.keys(casinosSeen).length;
 }
 
 /* "Unclaimed wagering" card — now reflects the real claim system: unclaimed + pending
