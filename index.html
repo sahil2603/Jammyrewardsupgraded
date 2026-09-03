@@ -170,8 +170,15 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
    to the site-wide slowdown (filter animations force a re-blur every frame, unlike cheap
    transform/opacity ones). Static glow instead -- still has real presence, zero repaint cost. */
 .brand svg{width:34px;height:34px;filter:drop-shadow(0 0 14px rgba(168,85,247,.6))}
-.notlive{display:flex;align-items:center;gap:7px;font-size:.82rem;color:var(--muted);margin-left:6px}
-.notlive .d{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 0 4px rgba(255,77,94,.25)}
+/* Was plain inline text next to the logo with no real container — wrapped onto two lines
+   ("Not" / "Live") in the cramped nav bar, which read as broken. Redesigned as a proper
+   pill badge matching the same style already used for the "LIVE STREAMS" tag elsewhere on
+   the site, with white-space:nowrap and flex:none so it can never wrap or get squeezed. */
+.notlive{display:inline-flex;align-items:center;gap:7px;border:1.5px solid rgba(255,77,94,.5);
+  border-radius:99px;padding:5px 12px;font-size:.72rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--red);margin-left:8px;white-space:nowrap;flex:none;background:rgba(255,77,94,.08)}
+.notlive .d{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 0 0 rgba(255,77,94,.6);animation:pulse 1.8s infinite;flex:none}
+@media(max-width:520px){.notlive{padding:4px 9px;font-size:.65rem;gap:5px}.notlive .d{width:6px;height:6px}}
 .nav-links{display:flex;gap:2px;margin:0 auto;flex-wrap:nowrap;position:relative}
 .nav-links a{position:relative;padding:8px 11px;border-radius:9px;font-weight:500;font-size:.88rem;color:var(--muted);cursor:pointer;transition:.2s;white-space:nowrap}
 .nav-links a:hover{color:var(--text);background:rgba(255,255,255,.04)}
@@ -240,6 +247,10 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 /* ── EXTRA GLOW KEYFRAMES ── */
 @keyframes floatUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @keyframes pulseGlow{0%,100%{filter:drop-shadow(0 0 8px rgba(168,85,247,.4))}50%{filter:drop-shadow(0 0 22px rgba(168,85,247,.8))}}
+/* Referenced by .wl-tag-dot and .notlive .d but never actually defined -- both "pulsing"
+   status dots have silently done nothing this whole time. Cheap opacity-only breathing
+   effect (not box-shadow/filter, consistent with the performance work done earlier). */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 @keyframes textFlicker{0%,95%,100%{opacity:1}96%,99%{opacity:.85}}
 @keyframes scanline{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}}
 @keyframes coinSpin{0%{transform:translate(-50%,0) scale(0) rotateY(0deg)}20%{transform:translate(-50%,-60px) scale(1.1) rotateY(180deg);opacity:1}80%{transform:translate(-50%,-60px) scale(1) rotateY(540deg);opacity:1}100%{transform:translate(-50%,0) scale(0) rotateY(720deg);opacity:0}}
@@ -4313,7 +4324,8 @@ async function loadAdminUsers(){
         + '</div>'
         + '<div style="text-align:right">'
           + '<div style="font-family:\'Lilita One\',sans-serif;color:#fbbf24;font-size:1.2rem"><img src="jammmy-coin.png" class="coin-icon" alt=""> '+u.coin_balance.toLocaleString()+'</div>'
-          + '<button class="admin-btn-row-action" style="margin-top:6px" onclick="adminAddCoinsPrompt(\''+u.discord_id+'\',\''+u.username.replace(/'/g,"\\\\'")+'\')">Adjust Coins</button>'
+          + '<button class="admin-btn-row-action" style="margin-top:6px" onclick="adminAddCoinsPrompt(\''+u.discord_id+'\',\''+u.username.replace(/'/g,"\\\\'")+'\',1)">+ Add Coins</button>'
+          + '<button class="admin-btn-row-action" style="margin-top:6px;margin-left:6px;background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminAddCoinsPrompt(\''+u.discord_id+'\',\''+u.username.replace(/'/g,"\\\\'")+'\',-1)">− Deduct Coins</button>'
           + '<button class="admin-btn-row-action" style="margin-top:6px;margin-left:6px;background:'+(u.is_admin?'linear-gradient(135deg,#6b7280,#4b5563)':'linear-gradient(135deg,#f59e0b,#d97706)')+'" onclick="adminToggleAdmin(\''+u.discord_id+'\',\''+u.username.replace(/'/g,"\\\\'")+'\','+(!u.is_admin)+')">'+(u.is_admin?'Remove Admin':'Make Admin')+'</button>'
         + '</div>'
       + '</div>';
@@ -4324,18 +4336,20 @@ async function loadAdminUsers(){
   }
 }
 
-async function adminAddCoinsPrompt(discordId, username){
-  var amountStr = prompt('Coins to add to ' + username + ' (use a negative number to deduct):');
+async function adminAddCoinsPrompt(discordId, username, direction){
+  var verb = direction > 0 ? 'add to' : 'deduct from';
+  var amountStr = prompt('How many coins to ' + verb + ' ' + username + '? (enter a positive number)');
   if(amountStr === null) return;
   var amount = parseInt(amountStr, 10);
-  if(!Number.isInteger(amount) || amount === 0){ alert('Please enter a non-zero whole number.'); return; }
+  if(!Number.isInteger(amount) || amount <= 0){ alert('Please enter a positive whole number.'); return; }
+  var signedAmount = amount * direction;
   var note = prompt('Note for this adjustment (optional):') || '';
   var token = localStorage.getItem('jammy_session_token');
   try{
     var res = await fetch(AUTH_API + '/api/admin/add-coins', {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ discord_id: discordId, amount: amount, note: note })
+      body: JSON.stringify({ discord_id: discordId, amount: signedAmount, note: note })
     });
     var data = await res.json();
     if(res.ok){ loadAdminUsers(); } else { alert(data.error || 'Failed to adjust coins.'); }
