@@ -2074,9 +2074,9 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 </nav>
 
 <div class="sidetabs">
-  <a class="sidetab slot" href="https://discord.gg/jammmy" target="_blank" rel="noopener" title="Request a Slot on Discord">
+  <button class="sidetab slot" onclick="nav('requestslot')" title="Request a Slot" style="border:0;background:none;padding:0;cursor:pointer;display:block">
     <img loading="lazy" src="https://www.jammmyslots.com/request-a-slot.png" alt="Request a Slot" style="width:100%;display:block;border-radius:6px;pointer-events:none;will-change:auto;transform:translateZ(0)">
-  </a>
+  </button>
   <a class="sidetab battle" href="https://discord.gg/jammmy" target="_blank" rel="noopener" title="Request a Battle on Discord">
     <img loading="lazy" src="https://www.jammmyslots.com/request-a-battle.png" alt="Request a Battle" style="width:100%;display:block;border-radius:6px;pointer-events:none;will-change:auto;transform:translateZ(0)">
   </a>
@@ -2769,6 +2769,36 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
     </div>
   </section>
 
+  <section class="page" id="requestslot">
+    <div class="wrap" style="max-width:900px;margin:0 auto;padding:60px 20px 100px">
+      <div class="reveal" style="text-align:center;margin-bottom:40px">
+        <div style="font-size:3rem;margin-bottom:10px">🎰</div>
+        <h1 style="font-family:'Lilita One',sans-serif;font-size:2.2rem;margin:0 0 12px">Request a Slot</h1>
+        <p style="color:var(--muted);max-width:520px;margin:0 auto">Suggest a slot for Jammmy to play on stream. If it pays, he can gift Jammmy Coins to whoever suggested it — so drop your best pick below.</p>
+      </div>
+
+      <div class="reveal" style="margin-bottom:36px">
+        <h3 style="margin-bottom:14px">🔥 Popular picks</h3>
+        <div id="rsFeatured" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px"></div>
+      </div>
+
+      <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px">
+        <div id="rsLoggedOut" style="display:none;text-align:center;padding:20px">
+          <p style="color:var(--muted)">Log in with Discord to suggest a slot.</p>
+          <button class="admin-btn-primary" style="max-width:240px;margin:10px auto 0" onclick="startDiscordLogin()">Login with Discord</button>
+        </div>
+        <div id="rsForm">
+          <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Slot name</label>
+          <input type="text" id="rsSlotName" placeholder="e.g. Gates of Olympus 1000" maxlength="150" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:14px;font-family:'Poppins';box-sizing:border-box">
+          <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Why this one? (optional)</label>
+          <textarea id="rsNote" placeholder="Heard it's been paying well, cool bonus feature, etc." maxlength="500" rows="3" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:16px;font-family:'Poppins';box-sizing:border-box;resize:vertical"></textarea>
+          <button class="admin-btn-primary" onclick="submitSlotRequest()" id="rsSubmitBtn">🎰 Suggest This Slot</button>
+          <div id="rsResult" style="margin-top:12px;font-size:.9rem"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="page" id="admin">
     <div class="wrap" style="max-width:1100px;margin:0 auto;padding:60px 20px 100px">
       <div id="adminDenied" style="display:none;text-align:center;padding:80px 20px">
@@ -2948,6 +2978,7 @@ function showPage(id){
   pg.classList.add('show');
   if(id==='profile') loadProfile();
   if(id==='admin') loadAdminDashboard();
+  if(id==='requestslot') loadRequestSlotPage();
   trackPageView(id);
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('active',a.dataset.page===id));
   document.querySelectorAll('.mobbar-item').forEach(a=>a.classList.toggle('active',a.dataset.page===id));
@@ -4400,6 +4431,77 @@ async function adminUpdateSlotRequest(id){
     var data = await res.json();
     if(res.ok){ loadAdminSlots(); } else { alert(data.error || 'Failed to save.'); }
   }catch(e){ console.error('Update slot request failed:', e); alert('Network error — try again.'); }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   REQUEST A SLOT
+   ══════════════════════════════════════════════════════════════════════════ */
+var FEATURED_SLOTS = [
+  {name:'Gates of Olympus', emoji:'⚡', colors:['#a855f7','#6366f1']},
+  {name:'Sweet Bonanza', emoji:'🍬', colors:['#f472b6','#ec4899']},
+  {name:'Sugar Rush', emoji:'🍭', colors:['#22d3ee','#0ea5e9']},
+  {name:'Wanted Dead or a Wild', emoji:'🤠', colors:['#f59e0b','#d97706']},
+  {name:'Big Bass Bonanza', emoji:'🎣', colors:['#4ade80','#16a34a']},
+  {name:'Zeus vs Hades', emoji:'⚔️', colors:['#818cf8','#4f46e5']},
+];
+function renderFeaturedSlots(){
+  var el = document.getElementById('rsFeatured');
+  if(!el) return;
+  el.innerHTML = FEATURED_SLOTS.map(function(s){
+    return '<div class="rs-slot-card" style="background:linear-gradient(135deg,'+s.colors[0]+'22,'+s.colors[1]+'22);border:1px solid '+s.colors[0]+'55;border-radius:14px;padding:18px 14px;text-align:center;cursor:pointer;transition:transform .22s cubic-bezier(.22,1,.36,1)" onclick="pickFeaturedSlot(\''+s.name.replace(/'/g,"\\\\'")+'\')" onmouseover="this.style.transform=\'translateY(-4px)\'" onmouseout="this.style.transform=\'none\'">'
+      + '<div style="font-size:1.8rem;margin-bottom:6px">'+s.emoji+'</div>'
+      + '<div style="font-weight:700;font-size:.85rem">'+s.name+'</div>'
+    + '</div>';
+  }).join('');
+}
+function pickFeaturedSlot(name){
+  var input = document.getElementById('rsSlotName');
+  if(input){ input.value = name; input.focus(); }
+}
+
+function loadRequestSlotPage(){
+  renderFeaturedSlots();
+  var token = localStorage.getItem('jammy_session_token');
+  var loggedOut = document.getElementById('rsLoggedOut');
+  var form = document.getElementById('rsForm');
+  if(!loggedOut || !form) return;
+  if(token){ loggedOut.style.display='none'; form.style.display='block'; }
+  else { loggedOut.style.display='block'; form.style.display='none'; }
+}
+
+async function submitSlotRequest(){
+  var token = localStorage.getItem('jammy_session_token');
+  if(!token){ startDiscordLogin(); return; }
+  var slotName = document.getElementById('rsSlotName').value.trim();
+  var note = document.getElementById('rsNote').value.trim();
+  var btn = document.getElementById('rsSubmitBtn');
+  var resultEl = document.getElementById('rsResult');
+  if(!slotName){ resultEl.style.color = '#f87171'; resultEl.textContent = 'Please enter a slot name.'; return; }
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
+  try{
+    var res = await fetch(AUTH_API + '/api/slot-request', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slot_name: slotName, note: note })
+    });
+    var data = await res.json();
+    if(res.ok){
+      resultEl.style.color = '#4ade80';
+      resultEl.textContent = '✓ Sent! Jammmy will see this in his requested slots.';
+      document.getElementById('rsSlotName').value = '';
+      document.getElementById('rsNote').value = '';
+    } else {
+      resultEl.style.color = '#f87171';
+      resultEl.textContent = data.error || 'Failed to send — please try again.';
+    }
+  }catch(e){
+    console.error('Slot request failed:', e);
+    resultEl.style.color = '#f87171';
+    resultEl.textContent = 'Network error — please try again.';
+  }
+  btn.textContent = '🎰 Suggest This Slot';
+  btn.disabled = false;
 }
 
 runReveals();runCounts();initKickStream();
