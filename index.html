@@ -2622,15 +2622,14 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div class="vpl-head">
           <div>
             <div class="vpl-title">Unclaimed wagering</div>
-            <div class="vpl-sub">$116,826 not linked yet. Wager on partner leaderboards only counts toward your vault share once you link your casino username.</div>
+            <div class="vpl-sub" id="vplSub">Loading unclaimed wagering&hellip;</div>
           </div>
-          <div class="vpl-est">Estimated unclaimed vault share: <b>$697</b></div>
+          <div class="vpl-est">Estimated unclaimed vault share: <b id="vplEst">—</b></div>
         </div>
-        <div class="vpl-casinos">
-          <div class="vpl-cas"><img src="rustmagic.png" alt="RustMagic" style="height:28px;width:auto;object-fit:contain"><div><b>RustMagic</b><span>$1,769 unclaimed · 4 players</span></div><button class="vpl-btn">Tap to add username</button></div>
-          <div class="vpl-cas"><img loading="lazy" src="upgrader.png" alt="Upgrader" style="height:32px;width:32px;border-radius:22%;object-fit:contain"><div><b>Upgrader</b><span>$115,056 unclaimed · 100 players</span></div><button class="vpl-btn">Tap to add username</button></div>
+        <div class="vpl-casinos" id="vplCasinos">
+          <div style="padding:14px;color:var(--faint);font-size:.85rem">Loading&hellip;</div>
         </div>
-        <button class="vpl-open-btn">Open Settings</button>
+        <button class="vpl-open-btn" onclick="nav('profile')">Open Settings</button>
       </div>
 
       <!-- Live players -->
@@ -3324,10 +3323,43 @@ async function loadVaultPlayers(){
     var data = await res.json();
     _vaultPlayersData = data.players || [];
     renderVaultPlayers();
+    renderUnclaimedCard(data);
   }catch(e){
     console.error('Failed to load vault players:', e);
     listEl.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--faint)">Couldn\'t load live players right now — try refreshing.</div>';
   }
+}
+
+/* "Unclaimed wagering" card — was hardcoded to only ever show RustMagic + Upgrader with
+   static numbers, and its "Tap to add username" buttons did nothing. Now shows all 4
+   current partners with real per-casino unclaimed totals from the same /api/vault-players
+   call already used for Live Players (no extra request), and every button actually takes
+   the person to Profile settings where they can link a username. */
+function renderUnclaimedCard(data){
+  var subEl = document.getElementById('vplSub');
+  var estEl = document.getElementById('vplEst');
+  var listEl = document.getElementById('vplCasinos');
+  if(!listEl) return;
+  var byCasino = data.unclaimed_by_casino || [];
+  var totalUnclaimed = data.total_unclaimed_wagered || 0;
+
+  if(subEl) subEl.textContent = '$'+Math.round(totalUnclaimed).toLocaleString()+' not linked yet. Wager on partner leaderboards only counts toward your vault share once you link your casino username.';
+  if(estEl) estEl.textContent = Math.round(data.estimated_unclaimed_coins || 0).toLocaleString()+' Coins';
+
+  var CASINO_LOGOS = {
+    upgrader: '<img loading="lazy" src="upgrader.png" alt="Upgrader" style="height:32px;width:32px;border-radius:22%;object-fit:contain">',
+    rustmagic: '<img src="rustmagic.png" alt="RustMagic" style="height:28px;width:auto;object-fit:contain">',
+    degencity: '<img src="degencity.png" alt="DegenCity" style="height:28px;width:auto;object-fit:contain">',
+    rustmafia: '<img src="rustmafia.png" alt="RustMafia" style="height:22px;width:auto;object-fit:contain">',
+  };
+
+  listEl.innerHTML = byCasino.map(function(c){
+    return '<div class="vpl-cas">'
+      + CASINO_LOGOS[c.casino]
+      + '<div><b>'+(CASINO_DISPLAY_NAMES[c.casino]||c.casino)+'</b><span>$'+Math.round(c.unclaimed_wagered).toLocaleString()+' unclaimed · '+c.unclaimed_players+' player'+(c.unclaimed_players===1?'':'s')+'</span></div>'
+      + '<button class="vpl-btn" onclick="nav(\'profile\')">Tap to add username</button>'
+    + '</div>';
+  }).join('');
 }
 
 function renderVaultPlayers(){
