@@ -1174,6 +1174,25 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   .admin-btn-row-action:active{transform:translateY(0) scale(.96)}
 }
 
+/* Profile page — Claim Daily gets its own gold/green gradient (distinct "reward" identity
+   from the purple used for account/admin actions elsewhere), same premium motion language.
+   Was plain flat .green-btn with a basic hover, no depth or glow. */
+.pf-btn-claim{background:linear-gradient(135deg,#facc15,#4ade80);color:#0a2012;border:0;
+  padding:12px 22px;border-radius:11px;cursor:pointer;font-family:'Poppins';font-weight:800;font-size:.88rem;
+  box-shadow:0 10px 24px -8px rgba(74,222,128,.55);
+  transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .22s,filter .22s}
+@media (hover:hover) and (pointer:fine){
+  .pf-btn-claim:hover{transform:translateY(-2px);box-shadow:0 14px 30px -8px rgba(74,222,128,.7);filter:brightness(1.05)}
+  .pf-btn-claim:active{transform:translateY(0) scale(.97)}
+}
+.pf-btn-claim:disabled{background:rgba(255,255,255,.06);color:var(--faint);box-shadow:none;cursor:default;transform:none!important}
+
+/* Locked redeem state — was a grayed-out .dark-btn that looked like a broken button.
+   Dashed border + a gentle static glow reads as "not yet available" rather than "error". */
+.pf-btn-locked{width:100%;background:rgba(255,255,255,.03);border:1.5px dashed rgba(251,191,36,.35);
+  color:rgba(251,191,36,.85);padding:14px;border-radius:11px;font-family:'Poppins';font-weight:700;font-size:.88rem;
+  cursor:not-allowed}
+
 .outline-btn:hover{
   border-color:#38bdf8;
   background:rgba(56,189,248,.1);
@@ -2777,14 +2796,14 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
               <div id="pfCoins" style="font-family:'Lilita One',sans-serif;font-size:2.4rem;color:#fbbf24">0</div>
               <div id="pfUsdEquiv" style="color:var(--muted);font-size:.9rem"></div>
             </div>
-            <button class="green-btn claim-daily-btn" onclick="claimDaily()">🎁 Checking claim…</button>
+            <button class="pf-btn-claim claim-daily-btn" onclick="claimDaily()">🎁 Checking claim…</button>
           </div>
         </div>
 
         <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px">
           <h3 style="margin-top:0">Redeem Coins</h3>
           <p id="pfRedeemInfo" style="color:var(--muted);font-size:.9rem"></p>
-          <button id="pfRedeemLocked" class="dark-btn" style="width:100%;display:none;opacity:.6;cursor:not-allowed" disabled></button>
+          <button id="pfRedeemLocked" class="pf-btn-locked" style="display:none" disabled></button>
           <div id="pfRedeemForm" style="display:none">
             <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Choose crypto</label>
             <select id="pfCrypto" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:14px;font-family:'Poppins'">
@@ -2794,7 +2813,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
             </select>
             <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Your wallet address</label>
             <input id="pfWallet" type="text" placeholder="Paste your wallet address" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:14px;font-family:monospace;box-sizing:border-box">
-            <button class="dark-btn" style="width:100%" onclick="submitRedeem()" id="pfRedeemBtn">Redeem Full Balance</button>
+            <button class="admin-btn-primary" onclick="submitRedeem()" id="pfRedeemBtn">Redeem Full Balance</button>
           </div>
           <div id="pfRedeemResult" style="display:none;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.3);border-radius:12px;padding:18px;margin-top:14px;line-height:1.7"></div>
         </div>
@@ -3712,7 +3731,7 @@ function renderProfile(data){
     html += '<div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap">'
       + '<label style="width:100px;font-size:.85rem;color:var(--faint)">'+KNOWN_CASINOS_DISPLAY[key]+'</label>'
       + '<input type="text" id="casinoInput_'+key+'" value="'+(linksByName[key]||'')+'" placeholder="Your '+KNOWN_CASINOS_DISPLAY[key]+' username" style="flex:1;min-width:150px;padding:9px 12px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-family:\'Poppins\'">'
-      + '<button class="outline-btn" style="padding:9px 16px" onclick="saveCasinoLink(\''+key+'\')">Save</button>'
+      + '<button class="admin-btn-secondary" style="padding:9px 16px" onclick="saveCasinoLink(\''+key+'\')">Save</button>'
     + '</div>';
   });
   document.getElementById('pfCasinoLinks').innerHTML = html;
