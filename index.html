@@ -134,7 +134,11 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
   flex:none;transition:.2s}
 .mob-back:hover{background:rgba(255,255,255,.12)}
 .brand span{background:var(--rainbow);background-size:300% auto;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 10px rgba(168,85,247,.35))}
-.brand svg{width:34px;height:34px;filter:drop-shadow(0 3px 8px rgba(168,85,247,.45));animation:pulseGlow 3s ease-in-out infinite}
+/* Was animating filter:drop-shadow() forever on the logo icon -- present on every single
+   page, so this ran everywhere, always. Confirmed via FPS profiling as a real contributor
+   to the site-wide slowdown (filter animations force a re-blur every frame, unlike cheap
+   transform/opacity ones). Static glow instead -- still has real presence, zero repaint cost. */
+.brand svg{width:34px;height:34px;filter:drop-shadow(0 0 14px rgba(168,85,247,.6))}
 .notlive{display:flex;align-items:center;gap:7px;font-size:.82rem;color:var(--muted);margin-left:6px}
 .notlive .d{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 0 4px rgba(255,77,94,.25)}
 .nav-links{display:flex;gap:2px;margin:0 auto;flex-wrap:nowrap;position:relative}
@@ -227,21 +231,24 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
    layered on top for a genuine "alive" neon-sign feel. */
 .vp-btn-radium{
   background:linear-gradient(135deg,#d4ff00,#8aff00 55%,#39ff6a);
-  background-size:220% auto;color:#0a1400;
+  color:#0a1400;
   border:1px solid rgba(212,255,0,.65);
   position:relative;overflow:hidden;
   box-shadow:0 0 22px rgba(163,230,53,.75),0 0 42px rgba(163,230,53,.4),0 8px 24px -8px rgba(0,0,0,.6);
 }
+/* Was animating background-position forever on all 4 "Claim Bonus" buttons simultaneously
+   -- confirmed via profiling as a real contributor to the site-wide FPS drop. Same visual
+   sweep, now driven by transform (GPU-composited, no repaint) instead. */
 .vp-btn-radium::after{
-  content:'';position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(100deg,transparent 35%,rgba(255,255,255,.65) 50%,transparent 65%);
-  background-size:220% 100%;background-position:170% 0;
+  content:'';position:absolute;top:0;left:0;width:60%;height:100%;pointer-events:none;
+  background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.65) 50%,transparent 80%);
+  transform:translateX(-180%);
   animation:radiumSheen 3.4s ease-in-out infinite;
 }
 .vp-btn-radium:hover{filter:brightness(1.1) !important}
 @keyframes radiumSheen{
-  0%{background-position:170% 0}
-  55%,100%{background-position:-70% 0}
+  0%{transform:translateX(-180%)}
+  55%,100%{transform:translateX(280%)}
 }
 /* Was an animated "breathing" glow on the partner cards, always-on even at rest — animating
    box-shadow forces a full repaint of the card every frame it's running, which combined with
@@ -301,13 +308,18 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
    lingering patch on the big hero title, which is what was reading as "dull" on real devices
    even after the glow-clipping fix. The flashes break that up without changing the overall
    color feel. */
+/* Was animating background-position forever (rainbowShift) -- confirmed via real FPS
+   profiling as one of several major contributors to a severe site-wide slowdown (the whole
+   site was measuring ~1-2 FPS). A repainting gradient-text element sitting inside a parent
+   with a permanent 3-layer drop-shadow filter (see .wordmark below) is a particularly
+   expensive combination -- every repaint has to be recomposited through that filter stack.
+   Static gradient at a fixed, good-looking stop instead -- still colorful, zero repaint cost. */
 .wordmark .jam,.wordmark .slots{
   background:linear-gradient(90deg,#a855f7,#5b8def,#22d3ee,#eafcff,#3ddc84,#eafcff,#ffd23d,#ff7a3d,#ff3db6,#a855f7);
-  background-size:800% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
-  animation:rainbowShift 7s linear infinite;text-shadow:none;
+  background-size:800% auto;background-position:32% 50%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:none;
   filter:saturate(1.4) brightness(1.15)
 }
-.wordmark .slots{animation-delay:-1.4s}
 .hero .sub{color:var(--muted);font-size:clamp(1rem,2.4vw,1.25rem);max-width:620px;margin:6px auto 0}
 .mascot{width:clamp(130px,14vw,180px);margin:22px auto 6px;display:block;animation:mascotBob 4.5s ease-in-out infinite;will-change:transform;transform:translateZ(0)}
 @keyframes mascotBob{
@@ -685,7 +697,9 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 .vault-sub{color:var(--muted);font-size:.84rem;line-height:1.5;max-width:260px;margin-bottom:0}
 .vault-mascot{width:clamp(90px,10vw,140px);display:block;animation:mascotBob 4.5s ease-in-out infinite;flex:none;will-change:transform;transform:translateZ(0)}
 .vault-balance-label{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:3px}
-.vault-balance{font-family:'Lilita One','Arial Black',sans-serif;font-size:clamp(2rem,4.5vw,3.2rem);letter-spacing:2px;color:#fff;line-height:1;cursor:pointer;text-shadow:0 0 30px rgba(74,222,128,.3);animation:pulseGlow 3s ease-in-out infinite}
+/* Was also animating filter:drop-shadow() forever (pulseGlow) -- the big Vault balance
+   number, shown on Home and the Vault page. Same fix: static glow, no per-frame re-blur. */
+.vault-balance{font-family:'Lilita One','Arial Black',sans-serif;font-size:clamp(2rem,4.5vw,3.2rem);letter-spacing:2px;color:#fff;line-height:1;cursor:pointer;text-shadow:0 0 30px rgba(74,222,128,.3)}
 .vault-goal-label{color:var(--muted);font-size:.8rem;margin:4px 0 10px}.vault-goal-label span{color:#22c55e;font-weight:700}
 .vault-bar-wrap{margin-bottom:12px}
 .vault-bar{height:11px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.3)}
@@ -1413,10 +1427,10 @@ body::before{
   !important}
 .wordmark .jam,.wordmark .slots{text-shadow:0 1px 2px rgba(0,0,0,.35)!important}
 
-/* --- animated pill border --- */
-.pill::before{animation:borderSpin 3s linear infinite!important}
-@keyframes borderSpin{to{background-position:200% center}}
-.pill::before{background-size:200% auto}
+/* Was an infinite background-position spin on every .pill badge across the site (however
+   many are on screen at once, all repainting every frame) -- one of several confirmed
+   contributors to the severe FPS drop found via profiling. Static border instead. */
+.pill::before{background-size:200% auto;background-position:30% center}
 
 /* --- hero button glow --- */
 .skew.primary{box-shadow:0 0 30px -5px var(--neon-purple),0 12px 30px -10px var(--purple)!important}
@@ -4659,6 +4673,45 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
 <div class="ambient-glow-blob b1"></div>
 <div class="ambient-glow-blob b2"></div>
 <div class="ambient-glow-blob b3"></div>
+<canvas id="skyParticles" style="position:fixed;inset:0;z-index:-2;pointer-events:none"></canvas>
+<script>
+/* Sky-blue floating particle ambient -- adapted from the High Roller Bounty card's
+   drifting-particle technique (jake-rewards' refer page), same simple/cheap approach
+   (plain canvas arc fills, no per-particle complexity) just scaled to cover the whole
+   viewport instead of one card, and in sky blue instead of gold. Capped at a modest count
+   and paused off-screen/tab-hidden, same discipline as everything else on this site. */
+(function(){
+  var cv = document.getElementById('skyParticles');
+  if(!cv) return;
+  var ctx = cv.getContext('2d'), W, H, pts = [];
+  var COUNT = window.innerWidth < 640 ? 14 : 26;
+  function resize(){ W = cv.width = window.innerWidth; H = cv.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  function mkPt(){
+    return { x: Math.random()*W, y: H + Math.random()*100,
+      vx: (Math.random()-.5)*.3, vy: -.2-Math.random()*.4,
+      r: .8+Math.random()*1.6, a: .25+Math.random()*.4, life: Math.random(),
+      col: Math.random() > .5 ? 'rgba(56,189,248,' : 'rgba(125,211,252,' };
+  }
+  for(var i=0; i<COUNT; i++) pts.push(mkPt());
+  var running = true;
+  document.addEventListener('visibilitychange', function(){ running = !document.hidden; if(running) requestAnimationFrame(draw); });
+  function draw(){
+    if(!running) return;
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(function(p){
+      p.x += p.vx; p.y += p.vy; p.life += .003;
+      if(p.life >= 1 || p.y < -20) Object.assign(p, mkPt());
+      var a = p.a * Math.sin(p.life*Math.PI);
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.28);
+      ctx.fillStyle = p.col + a.toFixed(2) + ')'; ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
 <script>
 (function(){
   var c = document.getElementById('neonBg');
