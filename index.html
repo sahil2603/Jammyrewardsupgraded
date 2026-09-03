@@ -1649,6 +1649,12 @@ video.vp-mascot-img{animation:none;border-radius:16px;object-fit:cover}
 .vpl-cas:hover{transform:translateX(4px);background:rgba(255,255,255,.07);border-color:rgba(251,191,36,.3)}
 .vpl-cas div{flex:1}.vpl-cas b{display:block;font-weight:600;font-size:.95rem}
 .vpl-cas span{color:var(--muted);font-size:.82rem}
+/* Every partner's logo is a different natural width (Upgrader is a compact square icon,
+   the rest are wide wordmark logos) -- without a fixed box, each row's text/button ended
+   up starting at a different horizontal position depending on how wide that particular
+   logo happened to be. Fixed-width box, logo centered and contained within it, so every
+   row's text column now starts at the exact same x position regardless of logo shape. */
+.vpl-logo-box{width:44px;flex:none!important;display:flex;align-items:center;justify-content:center}
 /* min-width:0 lets this flex item actually shrink to fit instead of forcing the row wider
    than its container based on its content's natural width — the cause of the button getting
    pushed off-screen on narrow rows like RustMagic's longer unclaimed-amount text. */
@@ -3393,14 +3399,14 @@ function renderUnclaimedCard(data){
 
   var CASINO_LOGOS = {
     upgrader: '<img loading="lazy" src="upgrader.png" alt="Upgrader" style="height:32px;width:32px;border-radius:22%;object-fit:contain">',
-    rustmagic: '<img src="rustmagic.png" alt="RustMagic" style="height:28px;width:auto;object-fit:contain">',
-    degencity: '<img src="degencity.png" alt="DegenCity" style="height:28px;width:auto;object-fit:contain">',
-    rustmafia: '<img src="rustmafia.png" alt="RustMafia" style="height:22px;width:auto;object-fit:contain">',
+    rustmagic: '<img src="rustmagic.png" alt="RustMagic" style="max-height:28px;max-width:100%;width:auto;object-fit:contain">',
+    degencity: '<img src="degencity.png" alt="DegenCity" style="max-height:28px;max-width:100%;width:auto;object-fit:contain">',
+    rustmafia: '<img src="rustmafia.png" alt="RustMafia" style="max-height:22px;max-width:100%;width:auto;object-fit:contain">',
   };
 
   listEl.innerHTML = byCasino.map(function(c){
     return '<div class="vpl-cas">'
-      + CASINO_LOGOS[c.casino]
+      + '<div class="vpl-logo-box">' + CASINO_LOGOS[c.casino] + '</div>'
       + '<div><b>'+(CASINO_DISPLAY_NAMES[c.casino]||c.casino)+'</b><span>$'+Math.round(c.unclaimed_wagered).toLocaleString()+' unclaimed · '+c.unclaimed_players+' player'+(c.unclaimed_players===1?'':'s')+'</span></div>'
       + '<button class="vpl-btn" onclick="nav(\'profile\')">Tap to add username</button>'
     + '</div>';
