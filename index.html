@@ -154,7 +154,7 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
   padding:6px 14px 6px 6px;border-radius:11px;cursor:pointer;position:relative;font-family:'Poppins'}
 .user-pill img{width:30px;height:30px;border-radius:50%;display:block}
 .user-pill .up-name{color:#fff;font-weight:600;font-size:.88rem}
-.user-pill .up-coins{color:#fbbf24;font-weight:700;font-size:.82rem;display:flex;align-items:center;gap:3px}
+.user-pill .up-coins{color:#fbbf24;font-weight:700;font-size:.82rem;display:flex;align-items:center;gap:3px;white-space:nowrap;flex-shrink:0}
 /* Jammmy Coin icon -- used everywhere a coin balance is shown, replacing the plain 🪙
    emoji. Explicit size + !important since it sits inside several different contexts
    (nav pill, admin rows, profile balance) that each have their own broader `img` rules. */
@@ -816,6 +816,15 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 @media(max-width:820px){
   /* NAV */
   .nav-links,.socials{display:none}.burger{display:block}
+  /* User pill: was cramming avatar + full username + coin balance into a fixed-width
+     header row alongside the logo and hamburger menu -- fine with a small balance, but a
+     6-figure coin count (which the site is explicitly meant to support) had nowhere left
+     to breathe and got visually squeezed. Dropping the username on mobile (avatar still
+     shows who's logged in visually) frees up enough room that the coin figure -- however
+     many digits -- always has real space, and never wraps or gets clipped. */
+  .user-pill .up-name{display:none}
+  .user-pill{padding:5px 10px 5px 5px}
+  .user-pill .up-coins{font-size:.85rem;white-space:nowrap}
   /* The horizontal sliding indicator makes no sense once the menu stacks vertically for
      mobile — hide it specifically in the open-dropdown state (it's already hidden the rest
      of the time along with .nav-links itself via display:none above). */
