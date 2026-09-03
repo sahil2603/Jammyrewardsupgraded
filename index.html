@@ -82,6 +82,20 @@ body{
 button{color:inherit}
 /* layered background */
 #stars{position:fixed;inset:0;z-index:-3;pointer-events:none}
+/* Simple sky-blue ambient background, replacing the snowflake particle animation --
+   3 large soft blurred circles that slowly drift, in sky blue instead of gold. The blur
+   filter is applied once and never animated (only transform moves), same "static filter +
+   cheap transform-only animation" pattern already established elsewhere on the site for
+   good reason -- animating a blurred element's size/position directly is expensive, moving
+   an already-blurred static shape via transform is cheap. */
+.ambient-glow-blob{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:-2}
+.ambient-glow-blob.b1{width:420px;height:420px;top:-10%;left:-8%;background:rgba(56,189,248,.18);animation:driftBlobA 22s ease-in-out infinite}
+.ambient-glow-blob.b2{width:360px;height:360px;bottom:-12%;right:-6%;background:rgba(14,165,233,.16);animation:driftBlobB 26s ease-in-out infinite}
+.ambient-glow-blob.b3{width:300px;height:300px;top:40%;left:60%;background:rgba(125,211,252,.14);animation:driftBlobC 20s ease-in-out infinite}
+@keyframes driftBlobA{0%,100%{transform:translate(0,0)}50%{transform:translate(60px,40px)}}
+@keyframes driftBlobB{0%,100%{transform:translate(0,0)}50%{transform:translate(-50px,-30px)}}
+@keyframes driftBlobC{0%,100%{transform:translate(0,0)}50%{transform:translate(-40px,50px)}}
+@media(max-width:640px){.ambient-glow-blob{display:none}}
 body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
   background:
    radial-gradient(1000px 600px at 80% -10%,rgba(168,85,247,.22),transparent 60%),
@@ -4585,13 +4599,19 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
 
 <!-- Crystalline snowflake + neon lightning background -->
 <canvas id="neonBg"></canvas>
+<div class="ambient-glow-blob b1"></div>
+<div class="ambient-glow-blob b2"></div>
+<div class="ambient-glow-blob b3"></div>
 <script>
 (function(){
   var c = document.getElementById('neonBg');
   var ctx = c.getContext('2d');
   var W, H, flakes = [], bolts = [], boltTimer = 0, stars = [];
-  /* Fewer flakes = smooth 60fps; offscreen cache = cheap drawImage each frame */
-  var COUNT = window.innerWidth < 640 ? 22 : 42;
+  /* Snowflakes removed per request -- replaced with a simpler, smoother sky-blue ambient
+     glow instead (see .ambient-glow-blob below). Left COUNT as a variable (rather than
+     deleting every reference to it) so the rest of this shared tick()/render loop, which
+     stars and lightning also run through, doesn't need touching. */
+  var COUNT = 0;
   var STAR_COUNT = window.innerWidth < 640 ? 16 : 30;
   var STAR_COLORS = [
     {glow:'rgba(56,189,248,0.95)',  core:'rgba(224,247,255,1)', mid:'rgba(125,211,252,0.9)'},  /* neon blue */
