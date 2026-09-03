@@ -82,6 +82,37 @@ body{
 button{color:inherit}
 /* layered background */
 #stars{position:fixed;inset:0;z-index:-3;pointer-events:none}
+/* Back to top button -- adapted from the same pattern used on jakerewards.com, recolored
+   to this site's purple/sky-blue palette instead of gold. */
+#back-to-top{
+  position:fixed;bottom:90px;right:22px;
+  width:48px;height:48px;border-radius:14px;
+  background:rgba(17,10,32,.85);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(168,85,247,.35);
+  color:#a855f7;font-size:0;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;z-index:998;
+  opacity:0;transform:translateY(14px) scale(.92);
+  transition:opacity .3s ease,transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease,border-color .25s ease;
+  box-shadow:0 4px 20px rgba(0,0,0,.5),0 0 0 0 rgba(168,85,247,0);
+  pointer-events:none;
+}
+#back-to-top::before{
+  content:"";display:block;width:14px;height:14px;
+  border-left:2.5px solid #a855f7;border-top:2.5px solid #a855f7;
+  transform:rotate(45deg) translate(2px,2px);border-radius:1px;
+}
+#back-to-top.visible{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+#back-to-top:hover{
+  border-color:rgba(168,85,247,.8);
+  box-shadow:0 6px 30px rgba(0,0,0,.6),0 0 22px rgba(168,85,247,.3);
+  transform:translateY(-3px) scale(1.04);
+  background:rgba(24,14,42,.92);
+}
+#back-to-top:active{transform:translateY(0) scale(.97)}
+@media(min-width:561px){#back-to-top{bottom:32px;right:28px}}
+@media(max-width:560px){#back-to-top{bottom:22px;right:14px;width:42px;height:42px}}
 /* Simple sky-blue ambient background, replacing the snowflake particle animation --
    3 large soft blurred circles that slowly drift, in sky blue instead of gold. The blur
    filter is applied once and never animated (only transform moves), same "static filter +
@@ -1198,6 +1229,14 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .22s,border-color .22s,background .22s,color .22s}
 .admin-tab.active{background:linear-gradient(135deg,rgba(168,85,247,.25),rgba(139,92,246,.15));
   border-color:rgba(168,85,247,.7);color:#fff;box-shadow:0 6px 20px -6px rgba(168,85,247,.5)}
+/* Jammmy likes color -- each tab gets its own identity when active instead of every one
+   using the same purple, echoing the color-coded pattern already used elsewhere on the
+   site (partner cards, feature cards, leaderboard accents). */
+.admin-tab[data-tab="adminUsersTab"].active{background:linear-gradient(135deg,rgba(34,211,238,.25),rgba(14,165,233,.15));border-color:rgba(34,211,238,.7);box-shadow:0 6px 20px -6px rgba(34,211,238,.5)}
+.admin-tab[data-tab="adminRedemptionsTab"].active{background:linear-gradient(135deg,rgba(74,222,128,.25),rgba(22,163,74,.15));border-color:rgba(74,222,128,.7);box-shadow:0 6px 20px -6px rgba(74,222,128,.5)}
+.admin-tab[data-tab="adminAnalyticsTab"].active{background:linear-gradient(135deg,rgba(251,191,36,.25),rgba(217,119,6,.15));border-color:rgba(251,191,36,.7);box-shadow:0 6px 20px -6px rgba(251,191,36,.5)}
+.admin-tab[data-tab="adminVerifyTab"].active{background:linear-gradient(135deg,rgba(244,114,182,.25),rgba(219,39,119,.15));border-color:rgba(244,114,182,.7);box-shadow:0 6px 20px -6px rgba(244,114,182,.5)}
+.admin-tab[data-tab="adminSlotsTab"].active{background:linear-gradient(135deg,rgba(251,146,60,.25),rgba(234,88,12,.15));border-color:rgba(251,146,60,.7);box-shadow:0 6px 20px -6px rgba(251,146,60,.5)}
 @media (hover:hover) and (pointer:fine){
   .admin-tab:hover{transform:translateY(-2px);border-color:rgba(168,85,247,.5);color:#fff}
   .admin-tab:active{transform:translateY(0) scale(.97)}
@@ -1206,6 +1245,12 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .admin-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;
   background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;flex-wrap:wrap}
+/* Colored left-border accent per tab, matching that tab's active color -- carries the same
+   color identity down into the actual content instead of stopping at the tab button. */
+#adminUsersTab .admin-row{border-left:3px solid #22d3ee}
+#adminRedemptionsTab .admin-row{border-left:3px solid #4ade80}
+#adminVerifyTab .admin-row{border-left:3px solid #f472b6}
+#adminSlotsList .admin-row{border-left:3px solid #fb923c}
 
 /* Admin primary action (Save Changes, Mark Paid) — solid gradient fill with real presence,
    replacing the plain outlined rectangle that had almost no visual weight. */
@@ -2151,7 +2196,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div class="lstat-div"></div>
         <div class="lstat">
           <svg class="lstat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8.5" cy="8.5" r="3"/><path d="M2.8 19c.5-3 2.7-4.9 5.7-4.9s5.2 1.9 5.7 4.9" stroke-linecap="round"/><circle cx="16.8" cy="9.2" r="2.4"/><path d="M15.2 14.4c2.4.2 4 1.9 4.4 4.4" stroke-linecap="round"/></svg>
-          <div class="lstat-num display" data-count="6">0</div>
+          <div class="lstat-num display" id="homeActivePlayers" data-count="6">0</div>
           <div class="lstat-label">Active players</div>
         </div>
         <div class="lstat-div"></div>
@@ -2857,7 +2902,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div id="adminVaultTab" class="admin-tab-panel">
           <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
             <div style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;max-width:500px;flex:1;min-width:320px">
-              <h3 style="margin-top:0">Vault Management</h3>
+              <h3 style="margin-top:0;color:#a855f7">Vault Management</h3>
               <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Current Amount (Coins)</label>
               <input type="number" id="avCurrent" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;box-sizing:border-box">
               <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Target Amount (Coins)</label>
@@ -2915,11 +2960,11 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;max-width:600px">
             <div style="background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px">
               <div style="color:var(--faint);font-size:.78rem;text-transform:uppercase">Page Views (30d)</div>
-              <div id="anTotalViews" style="font-family:'Lilita One',sans-serif;font-size:1.8rem">—</div>
+              <div id="anTotalViews" style="font-family:'Lilita One',sans-serif;font-size:1.8rem;color:#fbbf24">—</div>
             </div>
             <div style="background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px">
               <div style="color:var(--faint);font-size:.78rem;text-transform:uppercase">Unique Visitors (30d)</div>
-              <div id="anUniqueVisitors" style="font-family:'Lilita One',sans-serif;font-size:1.8rem">—</div>
+              <div id="anUniqueVisitors" style="font-family:'Lilita One',sans-serif;font-size:1.8rem;color:#f472b6">—</div>
             </div>
           </div>
 
@@ -2934,7 +2979,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
             </div>
           </div>
 
-          <h3 style="margin-top:28px">Daily Views (last 14 days)</h3>
+          <h3 style="margin-top:28px;color:#fbbf24">Daily Views (last 14 days)</h3>
           <div id="anByDay" style="color:var(--muted);font-size:.9rem">Loading…</div>
         </div>
 
@@ -3039,6 +3084,7 @@ function showPage(id){
   if(id==='profile') loadProfile();
   if(id==='admin') loadAdminDashboard();
   if(id==='requestslot') loadRequestSlotPage();
+  if(id==='home') loadHomeActivePlayers();
   trackPageView(id);
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('active',a.dataset.page===id));
   document.querySelectorAll('.mobbar-item').forEach(a=>a.classList.toggle('active',a.dataset.page===id));
@@ -4632,6 +4678,24 @@ function pickFeaturedSlot(name){
   if(input){ input.value = name; input.focus(); }
 }
 
+/* Home page's "Active players" stat was hardcoded to 6 forever -- wires it to the same
+   real wager data already used to compute this exact number on the Vault page (count of
+   distinct wager rows across all 4 casinos), so it's an honest, live figure instead of a
+   placeholder. Handles both cases: if the count-up animation already ran (data-done set)
+   updates the text directly, otherwise updates data-count so whenever it does run, it
+   animates to the real number rather than 6. */
+async function loadHomeActivePlayers(){
+  var el = document.getElementById('homeActivePlayers');
+  if(!el) return;
+  try{
+    var res = await fetch(AUTH_API + '/api/casino-wagers');
+    var data = await res.json();
+    var count = (data.wagers || []).length;
+    el.dataset.count = count;
+    if(el.dataset.done) el.textContent = count.toLocaleString();
+  }catch(e){ console.error('Failed to load active player count:', e); }
+}
+
 function loadRequestSlotPage(){
   renderFeaturedSlots();
   var token = localStorage.getItem('jammy_session_token');
@@ -4677,7 +4741,41 @@ async function submitSlotRequest(){
   btn.disabled = false;
 }
 
+/* Scroll progress bar + back-to-top button, adapted from the same pattern already used on
+   jakerewards.com. One shared scroll listener drives both. Uses window.scrollY rather than
+   document.documentElement.scrollTop/document.body.scrollTop -- confirmed via testing that
+   those two stay at 0 on this site's specific layout even while the page visibly scrolls
+   (window.scrollY tracks it correctly regardless). */
+/* Scroll progress bar + back-to-top button, adapted from the same pattern already used on
+   jakerewards.com. One shared scroll listener drives both. Uses window.scrollY rather than
+   document.documentElement.scrollTop/document.body.scrollTop -- confirmed via testing that
+   those two stay at 0 on this site's specific layout even while the page visibly scrolls
+   (window.scrollY tracks it correctly regardless). Queries for the elements fresh inside
+   onScroll rather than caching them once -- this script runs before the #scroll-bar/
+   #back-to-top HTML further down the page has been parsed yet, so caching them upfront
+   captured null references and the listener silently did nothing on every scroll. */
+(function(){
+  function onScroll(){
+    var bar = document.getElementById('scroll-bar');
+    var btn = document.getElementById('back-to-top');
+    var scrolled = window.scrollY || window.pageYOffset || 0;
+    if(bar){
+      var total = (document.documentElement.scrollHeight - window.innerHeight) || 1;
+      bar.style.width = Math.min(100,(scrolled/total)*100)+'%';
+    }
+    if(btn){
+      if(scrolled > 400) btn.classList.add('visible'); else btn.classList.remove('visible');
+    }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+})();
+
 runReveals();runCounts();initKickStream();
+/* Home is shown by default (class="page show" directly in the static HTML) without ever
+   going through nav()/showPage() on first load -- meaning the id==='home' hook that
+   normally triggers loadHomeActivePlayers() only fires if someone navigates away and back,
+   never for the very first visit most people actually land on. Call it directly here too. */
+if(document.getElementById('home') && document.getElementById('home').classList.contains('show')) loadHomeActivePlayers();
 updateNavIndicator();
 /* Nav link text uses a custom web font — if it hasn't finished loading yet when the
    indicator is first measured, the fallback font's slightly different letter widths
@@ -4757,6 +4855,8 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
 </defs></svg>
 
 <!-- Crystalline snowflake + neon lightning background -->
+<div id="scroll-bar" style="position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,#a855f7,#22d3ee,#5b8def);z-index:9999;transition:width .1s linear;box-shadow:0 0 10px rgba(168,85,247,.6);pointer-events:none"></div>
+<button id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">▲</button>
 <canvas id="neonBg"></canvas>
 <div class="ambient-glow-blob b1"></div>
 <div class="ambient-glow-blob b2"></div>
