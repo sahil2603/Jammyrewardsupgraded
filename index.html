@@ -344,9 +344,10 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 }
 .mascot-glow{filter:drop-shadow(0 20px 40px rgba(168,85,247,.35))}
 .hero-cta{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:30px}
-.skew{transform:skewX(-11deg);border:0;cursor:pointer;padding:0;border-radius:7px;overflow:hidden;
-  font-family:'Lilita One','Arial Black','Impact',system-ui,sans-serif;transition:.2s;min-width:230px}
-.skew>span{display:block;transform:skewX(11deg);padding:18px 30px;font-size:1.05rem;letter-spacing:1px}
+.skew{transform:skewX(-11deg);border:0;cursor:pointer;padding:0;border-radius:7px;overflow:hidden;position:relative;
+  font-family:'Lilita One','Arial Black','Impact',system-ui,sans-serif;
+  transition:transform .22s cubic-bezier(.22,1,.36,1);min-width:230px}
+.skew>span{display:block;transform:skewX(11deg);padding:18px 30px;font-size:1.05rem;letter-spacing:1px;position:relative;z-index:1}
 /* CTA hierarchy — previously EXPLORE BONUSES and LEADERBOARDS both used the identical
    .primary style, which defeats the point of a "primary" action (nothing to compare it
    against). Bonuses is the actual conversion goal, so it stays the strongest; Leaderboards
@@ -360,7 +361,21 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 .skew.secondary>span{color:#7dd3fc}
 .skew.dark{background:var(--panel);border:1px solid var(--line-2)}
 .skew.dark>span{color:var(--text)}
-.skew:hover{transform:skewX(-11deg) translateY(-5px);box-shadow:0 22px 44px -10px rgba(168,85,247,.8)}
+/* Was `transition:.2s` (shorthand for "all"), which meant box-shadow was smoothly
+   interpolated on every hover -- one of the most expensive properties to animate, since
+   the browser has to repaint rather than just recomposite a layer, and this ran on every
+   mouse-in/out across all 3 buttons. Now only transform (cheap, GPU-composited) actually
+   transitions; box-shadow/filter just snap to their hover value instantly, which reads
+   fine for a shadow change this subtle and removes the repeated-repaint cost entirely. */
+.skew:hover{transform:skewX(-11deg) translateY(-6px) scale(1.015);box-shadow:0 24px 48px -10px rgba(168,85,247,.85);filter:brightness(1.08)}
+.skew:active{transform:skewX(-11deg) translateY(-2px) scale(.98);transition-duration:.1s}
+/* Shine sweep on hover — a soft diagonal highlight that travels across the button, same
+   shine-sweep language already used on cards elsewhere on the site. Transform-only. */
+.skew::before{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.35),transparent);
+  transform:skewX(-20deg) translateX(0);pointer-events:none;z-index:0;opacity:0;
+  transition:transform .6s ease,opacity .6s ease}
+.skew:hover::before{transform:skewX(-20deg) translateX(430%);opacity:1}
 
 /* ---- Hero entrance animation ----
    Previously every hero element just appeared instantly on load with no motion at all.
@@ -615,6 +630,9 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 /* ===== MASCOT LIVE ANIMATIONS ===== */
 .mascot-wrap{position:relative;width:clamp(130px,14vw,180px);margin:22px auto 6px;display:block;filter:drop-shadow(0 0 0px transparent);transition:filter .4s}
 .mascot-wrap .mascot{width:100%;margin:0;display:block;animation:mascotBob 4.5s ease-in-out infinite;will-change:transform;transform:translateZ(0)}
+/* The jar-filling video already has its own motion baked in -- same reasoning as the Vault
+   page's version, stacking the bob float on top read as busier rather than lively. */
+.mascot-wrap video.mascot{animation:none;cursor:pointer}
 
 /* coins spill from the jar — created & animated in JS (Web Animations API) */
 
@@ -2051,16 +2069,9 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
       <p class="sub">Experience the next generation of online casino rewards, exclusive leaderboards, and community-driven gaming.</p>
       <!-- Mascot wrapper (coins spill from JS) -->
       <div class="mascot-wrap" style="position:relative;width:clamp(160px,16vw,210px);margin:22px auto 6px;display:block">
-          <div class="mascot-aura"></div>
-          <div class="mascot-sparkle"></div>
-          <div class="mascot-sparkle"></div>
-          <div class="mascot-sparkle"></div>
-          <div class="mascot-sparkle"></div>
-          <div class="mascot-sparkle"></div>
-        <div style="position:absolute;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(168,85,247,.3),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);animation:floatUp 3s ease-in-out infinite;pointer-events:none;z-index:0"></div>
-        <div style="position:absolute;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.25),transparent 70%);top:10%;left:90%;animation:floatUp 4s ease-in-out infinite .7s;pointer-events:none;z-index:0"></div>
-        <div style="position:absolute;width:50px;height:50px;border-radius:50%;background:radial-gradient(circle,rgba(244,114,182,.25),transparent 70%);top:75%;left:-10%;animation:floatUp 3.5s ease-in-out infinite 1.2s;pointer-events:none;z-index:0"></div>
-        <img class="mascot mascot-glow" src="jar-clean.png" alt="JammmyRewards mascot" style="position:relative;z-index:1">
+        <video class="mascot" autoplay loop muted playsinline style="position:relative;z-index:1;width:100%;display:block;border-radius:16px" onclick="openVaultModal()">
+          <source src="vault-jar-7.mp4.webm" type="video/webm">
+        </video>
       </div>
       <div class="hero-cta">
         <button class="skew primary" onclick="nav('bonuses')"><span>EXPLORE BONUSES</span></button>
