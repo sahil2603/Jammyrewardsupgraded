@@ -3365,6 +3365,7 @@ function updateVaultMascotVideo(pct){
   video.play().catch(function(){}); /* autoplay can be blocked before any user interaction on some browsers -- non-fatal, video still shows its first frame */
 }
 var CASINO_DISPLAY_NAMES = {upgrader:'Upgrader', rustmagic:'RustMagic', degencity:'DegenCity', rustmafia:'RustMafia'};
+var KNOWN_CASINOS_DISPLAY_LIST = ['upgrader', 'rustmagic', 'degencity', 'rustmafia'];
 var _vaultPlayersData = [];
 var _vaultPlayerCasinoFilter = '';
 
@@ -3374,14 +3375,17 @@ var _vaultPlayerCasinoFilter = '';
    confirmed formula: (their combined wagered across every casino they've linked / total
    wagered by every linked user) * the vault's current coin total. Recalculated fresh on
    every page view per spec -- not cached. */
+var _casinoWagersData = [];
 async function loadVaultPlayers(){
   var listEl = document.getElementById('vaultPlayers');
   if(!listEl) return;
   listEl.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--faint)">Loading live players&hellip;</div>';
   try{
-    var res = await fetch(AUTH_API + '/api/vault-players');
+    var token = localStorage.getItem('jammy_session_token');
+    var headers = token ? { 'Authorization': 'Bearer ' + token } : {};
+    var res = await fetch(AUTH_API + '/api/casino-wagers', { headers: headers });
     var data = await res.json();
-    _vaultPlayersData = data.players || [];
+    _casinoWagersData = data.wagers || [];
     renderVaultPlayers();
     renderUnclaimedCard(data);
   }catch(e){
@@ -3390,21 +3394,29 @@ async function loadVaultPlayers(){
   }
 }
 
-/* "Unclaimed wagering" card — was hardcoded to only ever show RustMagic + Upgrader with
-   static numbers, and its "Tap to add username" buttons did nothing. Now shows all 4
-   current partners with real per-casino unclaimed totals from the same /api/vault-players
-   call already used for Live Players (no extra request), and every button actually takes
-   the person to Profile settings where they can link a username. */
+/* "Unclaimed wagering" card — now reflects the real claim system: unclaimed + pending
+   wagering per casino (neither has resulted in coins being paid out yet), and the estimate
+   is real potential coins (wagered x 0.1) rather than a share of anything, capped at
+   whatever's actually left in the vault. */
 function renderUnclaimedCard(data){
   var subEl = document.getElementById('vplSub');
   var estEl = document.getElementById('vplEst');
   var listEl = document.getElementById('vplCasinos');
   if(!listEl) return;
-  var byCasino = data.unclaimed_by_casino || [];
-  var totalUnclaimed = data.total_unclaimed_wagered || 0;
 
-  if(subEl) subEl.textContent = '$'+Math.round(totalUnclaimed).toLocaleString()+' not linked yet. Wager on partner leaderboards only counts toward your vault share once you link your casino username.';
-  if(estEl) estEl.textContent = Math.round(data.estimated_unclaimed_coins || 0).toLocaleString()+' Coins';
+  var byCasino = {};
+  KNOWN_CASINOS_DISPLAY_LIST.forEach(function(c){ byCasino[c] = { wagered: 0, players: 0 }; });
+  (data.wagers || []).forEach(function(w){
+    if(w.status === 'approved') return;
+    if(!byCasino[w.casino]) byCasino[w.casino] = { wagered: 0, players: 0 };
+    byCasino[w.casino].wagered += w.wager;
+    byCasino[w.casino].players++;
+  });
+  var totalUnclaimed = Object.values(byCasino).reduce(function(s,c){ return s + c.wagered; }, 0);
+  var potentialCoins = Math.min((data.vault_remaining || 0), totalUnclaimed * 0.1);
+
+  if(subEl) subEl.textContent = '$'+Math.round(totalUnclaimed).toLocaleString()+' not claimed yet. Find your name in the list below and claim it — once approved, you earn 0.1 Jammmy Coins per dollar wagered.';
+  if(estEl) estEl.textContent = Math.round(potentialCoins).toLocaleString()+' Coins';
 
   var CASINO_LOGOS = {
     upgrader: '<img loading="lazy" src="upgrader.png" alt="Upgrader" style="height:32px;width:32px;border-radius:22%;object-fit:contain">',
@@ -3413,11 +3425,12 @@ function renderUnclaimedCard(data){
     rustmafia: '<img src="rustmafia.png" alt="RustMafia" style="max-height:22px;max-width:100%;width:auto;object-fit:contain">',
   };
 
-  listEl.innerHTML = byCasino.map(function(c){
+  listEl.innerHTML = KNOWN_CASINOS_DISPLAY_LIST.map(function(casino){
+    var c = byCasino[casino];
     return '<div class="vpl-cas">'
-      + '<div class="vpl-logo-box">' + CASINO_LOGOS[c.casino] + '</div>'
-      + '<div><b>'+(CASINO_DISPLAY_NAMES[c.casino]||c.casino)+'</b><span>$'+Math.round(c.unclaimed_wagered).toLocaleString()+' unclaimed · '+c.unclaimed_players+' player'+(c.unclaimed_players===1?'':'s')+'</span></div>'
-      + '<button class="vpl-btn" onclick="nav(\'profile\')">Tap to add username</button>'
+      + '<div class="vpl-logo-box">' + CASINO_LOGOS[casino] + '</div>'
+      + '<div><b>'+(CASINO_DISPLAY_NAMES[casino]||casino)+'</b><span>$'+Math.round(c.wagered).toLocaleString()+' unclaimed · '+c.players+' player'+(c.players===1?'':'s')+'</span></div>'
+      + '<button class="vpl-btn" onclick="nav(\'vault\')">Find your name below</button>'
     + '</div>';
   }).join('');
 }
@@ -3426,51 +3439,77 @@ function renderVaultPlayers(){
   var listEl = document.getElementById('vaultPlayers');
   if(!listEl) return;
   var filtered = _vaultPlayerCasinoFilter
-    ? _vaultPlayersData.filter(function(p){ return p.breakdown.some(function(b){ return b.casino === _vaultPlayerCasinoFilter; }); })
-    : _vaultPlayersData;
+    ? _casinoWagersData.filter(function(w){ return w.casino === _vaultPlayerCasinoFilter; })
+    : _casinoWagersData;
 
   var countEl = document.querySelector('.vp-players .vpp-count');
-  if(countEl) countEl.textContent = '● ' + _vaultPlayersData.length + ' Player' + (_vaultPlayersData.length===1?'':'s');
+  if(countEl) countEl.textContent = '● ' + _casinoWagersData.length + ' Player' + (_casinoWagersData.length===1?'':'s');
 
   if(!filtered.length){
-    listEl.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--faint)">'
-      + (_vaultPlayersData.length ? 'No linked players on this casino yet.' : 'No linked players with wagering yet. Link a casino username in your Profile to show up here.')
-      + '</div>';
+    listEl.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--faint)">No wagering found here yet.</div>';
     return;
   }
 
-  var badgeClasses = ['gold','silver','bronze'];
-  var avatarColors = [['#f59e0b','#ef4444'],['#a855f7','#5b8def'],['#22d3ee','#0ea5e9'],['#4ade80','#16a34a'],['#f472b6','#db2777'],['#64748b','#475569']];
+  var myUser = null;
+  try{ myUser = JSON.parse(localStorage.getItem('jammy_user') || 'null'); }catch(e){}
 
-  listEl.innerHTML = filtered.map(function(p, i){
-    var initial = (p.username||'?').charAt(0).toUpperCase();
-    var rankClass = i===0?'rank1':i===1?'rank2':i===2?'rank3':'';
-    var badgeClass = badgeClasses[i] || '';
-    var colors = avatarColors[i % avatarColors.length];
-    var avatarInner = p.avatar
-      ? '<img src="'+p.avatar+'" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">'
-      : initial;
-    var linksHtml = p.breakdown.map(function(b){
-      return '<span>'+(CASINO_DISPLAY_NAMES[b.casino]||b.casino)+': <span>'+b.casino_username+'</span> · $'+Number(b.wager).toLocaleString(undefined,{maximumFractionDigits:0})+'</span>';
-    }).join('');
-    return '<div class="vpp-row '+rankClass+'" style="--share:'+p.share_pct.toFixed(2)+'%">'
-      + '<div class="vpp-avatar" style="--av-a:'+colors[0]+';--av-b:'+colors[1]+'">'+avatarInner+'</div>'
+  listEl.innerHTML = filtered.slice(0, 60).map(function(w, i){
+    var initial = (w.name||'?').charAt(0).toUpperCase();
+    var coinsIfApproved = Math.round(w.wager * 0.1 * 100) / 100;
+    var rightSide;
+    if(w.status === 'approved'){
+      rightSide = '<div class="vpp-right-col">'
+        + '<div style="color:#4ade80;font-size:.78rem;font-weight:700">✓ Claimed'+(w.claimed_by?(' by '+w.claimed_by):'')+'</div>'
+        + '<div class="vpp-dollar">'+coinsIfApproved.toLocaleString()+' Coins</div>'
+      + '</div>';
+    } else if(w.status === 'pending'){
+      var mine = w.is_mine;
+      rightSide = '<div class="vpp-right-col">'
+        + '<div style="color:#fbbf24;font-size:.78rem;font-weight:700">⏳ '+(mine ? 'Pending your review' : 'Claim pending review')+'</div>'
+        + '<div class="vpp-dollar" style="opacity:.6">'+coinsIfApproved.toLocaleString()+' Coins</div>'
+      + '</div>';
+    } else {
+      rightSide = myUser
+        ? '<button class="admin-btn-row-action" onclick="claimCasinoAccount(\''+w.casino+'\',\''+w.name.replace(/'/g,"\\\\'")+'\')">Claim as mine</button>'
+        : '<button class="admin-btn-row-action" onclick="startDiscordLogin()">Log in to claim</button>';
+    }
+    return '<div class="vpp-row">'
+      + '<div class="vpp-avatar" style="--av-a:#a855f7;--av-b:#5b8def">'+initial+'</div>'
       + '<div class="vpp-info">'
-        + '<b>'+(p.username||'—')+'</b>'
+        + '<b>'+(w.name||'—')+'</b>'
         + '<div class="vpp-meta">'
-          + '<span class="vpp-rank-badge '+badgeClass+'">#'+(i+1)+'</span>'
+          + '<span>'+(CASINO_DISPLAY_NAMES[w.casino]||w.casino)+'</span>'
           + '<span class="vpp-dot">•</span>'
-          + '<span>$'+Number(p.total_wagered).toLocaleString(undefined,{maximumFractionDigits:0})+' wagered</span>'
+          + '<span>$'+Number(w.wager).toLocaleString(undefined,{maximumFractionDigits:0})+' wagered</span>'
         + '</div>'
-        + '<div class="vpp-links">'+linksHtml+'</div>'
       + '</div>'
-      + '<div class="vpp-wager">$'+Number(p.total_wagered).toLocaleString(undefined,{maximumFractionDigits:0})+'</div>'
-      + '<div class="vpp-right-col">'
-        + '<div class="vpp-pct-big">'+p.share_pct.toFixed(2)+'%</div>'
-        + '<div class="vpp-dollar">'+Math.round(p.coins).toLocaleString()+' Coins</div>'
-      + '</div>'
+      + '<div class="vpp-wager">$'+Number(w.wager).toLocaleString(undefined,{maximumFractionDigits:0})+'</div>'
+      + rightSide
     + '</div>';
   }).join('');
+}
+
+async function claimCasinoAccount(casino, username){
+  var token = localStorage.getItem('jammy_session_token');
+  if(!token){ startDiscordLogin(); return; }
+  if(!confirm('Claim "'+username+'" on '+(CASINO_DISPLAY_NAMES[casino]||casino)+' as your account? An admin will verify this before coins are awarded.')) return;
+  try{
+    var res = await fetch(AUTH_API + '/api/claim-casino-account', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ casino: casino, username: username })
+    });
+    var data = await res.json();
+    if(res.ok){
+      alert('Claim submitted! An admin will review it soon.');
+      loadVaultPlayers();
+    } else {
+      alert(data.error || 'Failed to submit claim.');
+    }
+  }catch(e){
+    console.error('Claim failed:', e);
+    alert('Network error — please try again.');
+  }
 }
 
 function refreshVaultPlayers(){
