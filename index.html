@@ -207,7 +207,12 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 .login svg{width:18px;height:18px}
 /* Logged-in user pill, replaces the login button once authenticated */
 .user-pill{display:flex;align-items:center;gap:9px;border:1px solid rgba(168,85,247,.4);background:rgba(168,85,247,.08);
-  padding:6px 14px 6px 6px;border-radius:11px;cursor:pointer;position:relative;font-family:'Poppins'}
+  padding:6px 14px 6px 6px;border-radius:11px;cursor:pointer;position:relative;font-family:'Poppins';flex-shrink:0}
+/* Was getting squeezed by the nav's flex layout when the pill's natural content width grew
+   (a long username + a 6-figure coin balance), clipping the coin figure -- confirmed via
+   direct scrollWidth/clientWidth measurement. Protects the whole pill and its wrapper from
+   ever shrinking below their content size regardless of how tight the rest of the nav is. */
+#authArea{flex-shrink:0}
 .user-pill img{width:30px;height:30px;border-radius:50%;display:block}
 .user-pill .up-name{color:#fff;font-weight:600;font-size:.88rem}
 .user-pill .up-coins{color:#fbbf24;font-weight:700;font-size:.82rem;display:flex;align-items:center;gap:3px;white-space:nowrap;flex-shrink:0}
@@ -3533,6 +3538,15 @@ function updateVaultMascotVideo(pct){
   video.load();
   video.play().catch(function(){}); /* autoplay can be blocked before any user interaction on some browsers -- non-fatal, video still shows its first frame */
 }
+/* Coin balances go through floating-point arithmetic (0.1 coins per dollar wagered, plus
+   repeated add/deduct operations) which can leave ugly artifacts like 0.4300000000000068
+   if displayed raw -- confirmed this actually happened live. Backend now rounds to 2
+   decimals at the database level too, but this is the display-side safety net regardless
+   of what's already stored. */
+function fmtCoins(n){
+  return (Math.round((+n||0) * 100) / 100).toLocaleString(undefined, {maximumFractionDigits: 2});
+}
+
 var CASINO_DISPLAY_NAMES = {upgrader:'Upgrader', rustmagic:'RustMagic', degencity:'DegenCity', rustmafia:'RustMafia'};
 var KNOWN_CASINOS_DISPLAY_LIST = ['upgrader', 'rustmagic', 'degencity', 'rustmafia'];
 var _vaultPlayersData = [];
@@ -3886,7 +3900,7 @@ function renderAuthUI(user){
   area.innerHTML = '<div class="user-pill" onclick="toggleUserMenu(event)">'
     + '<img src="'+user.avatar+'" alt="">'
     + '<span class="up-name">'+user.username+'</span>'
-    + '<span class="up-coins"><img src="jammmy-coin.png" class="coin-icon" alt=""> '+user.coin_balance+'</span>'
+    + '<span class="up-coins"><img src="jammmy-coin.png" class="coin-icon" alt=""> '+fmtCoins(user.coin_balance)+'</span>'
     + '<div class="user-menu" id="userMenu">'
       + '<button onclick="event.stopPropagation();nav(\'profile\')">My Profile</button>'
       + (user.is_admin ? '<button onclick="event.stopPropagation();nav(\'admin\')" style="color:#fbbf24">⚙ Admin Dashboard</button>' : '')
@@ -4051,7 +4065,7 @@ function renderProfile(data){
 
   document.getElementById('pfAvatar').src = data.user.avatar;
   document.getElementById('pfName').textContent = data.user.username;
-  document.getElementById('pfCoinsNum').textContent = data.user.coin_balance.toLocaleString();
+  document.getElementById('pfCoinsNum').textContent = fmtCoins(data.user.coin_balance);
   document.getElementById('pfUsdEquiv').textContent = '≈ $' + (data.user.coin_balance / data.coins_per_dollar).toFixed(2) + ' USD';
   refreshClaimStatus();
 
@@ -4059,13 +4073,13 @@ function renderProfile(data){
   var form = document.getElementById('pfRedeemForm');
   var locked = document.getElementById('pfRedeemLocked');
   if(data.user.coin_balance >= data.min_redeem_coins){
-    info.textContent = 'You can redeem your full balance of ' + data.user.coin_balance.toLocaleString() + ' coins (≈ $' + (data.user.coin_balance/data.coins_per_dollar).toFixed(2) + ').';
+    info.textContent = 'You can redeem your full balance of ' + fmtCoins(data.user.coin_balance) + ' coins (≈ $' + (data.user.coin_balance/data.coins_per_dollar).toFixed(2) + ').';
     form.style.display = 'block';
     updateNetworkOptions();
     locked.style.display = 'none';
   } else {
     var needed = data.min_redeem_coins - data.user.coin_balance;
-    info.textContent = data.user.coin_balance.toLocaleString() + ' / ' + data.min_redeem_coins.toLocaleString() + ' coins collected';
+    info.textContent = fmtCoins(data.user.coin_balance) + ' / ' + data.min_redeem_coins.toLocaleString() + ' coins collected';
     form.style.display = 'none';
     locked.style.display = 'block';
     locked.textContent = '🔒 Collect ' + needed.toLocaleString() + ' more coin' + (needed === 1 ? '' : 's') + ' to redeem';
@@ -4323,7 +4337,7 @@ async function loadAdminUsers(){
           + '<span style="color:var(--muted);font-size:.8rem">'+linksStr+'</span>'
         + '</div>'
         + '<div style="text-align:right">'
-          + '<div style="font-family:\'Lilita One\',sans-serif;color:#fbbf24;font-size:1.2rem"><img src="jammmy-coin.png" class="coin-icon" alt=""> '+u.coin_balance.toLocaleString()+'</div>'
+          + '<div style="font-family:\'Lilita One\',sans-serif;color:#fbbf24;font-size:1.2rem"><img src="jammmy-coin.png" class="coin-icon" alt=""> '+fmtCoins(u.coin_balance)+'</div>'
           + '<button class="admin-btn-row-action" style="margin-top:6px" onclick="adminAddCoinsPrompt(\''+u.discord_id+'\',\''+u.username.replace(/'/g,"\\\\'")+'\',1)">+ Add Coins</button>'
           + '<button class="admin-btn-row-action" style="margin-top:6px;margin-left:6px;background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminAddCoinsPrompt(\''+u.discord_id+'\',\''+u.username.replace(/'/g,"\\\\'")+'\',-1)">− Deduct Coins</button>'
           + '<button class="admin-btn-row-action" style="margin-top:6px;margin-left:6px;background:'+(u.is_admin?'linear-gradient(135deg,#6b7280,#4b5563)':'linear-gradient(135deg,#f59e0b,#d97706)')+'" onclick="adminToggleAdmin(\''+u.discord_id+'\',\''+u.username.replace(/'/g,"\\\\'")+'\','+(!u.is_admin)+')">'+(u.is_admin?'Remove Admin':'Make Admin')+'</button>'
