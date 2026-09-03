@@ -2752,7 +2752,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
         <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px">
           <h3 style="margin-top:0">Casino Usernames</h3>
-          <p style="color:var(--muted);font-size:.85rem">Link your username on each partner casino so your wagering counts toward the vault and leaderboards.</p>
+          <p style="color:var(--muted);font-size:.85rem">Link your username on each partner casino to earn Jammmy Coins (0.1 per dollar wagered). Every submission is reviewed by an admin before coins are awarded — you can also claim your name directly from the list on the Vault page.</p>
           <div id="pfCasinoLinks"></div>
         </div>
 
@@ -3717,14 +3717,14 @@ async function refreshClaimStatus(){
     btns = document.querySelectorAll('.claim-daily-btn'); /* re-query: DOM may have changed while this was in flight */
     btns.forEach(function(btn){
       if(data.can_claim){
-        btn.textContent = '🎁 Claim Daily (+50)';
+        btn.textContent = '🎁 Claim Daily (+5)';
         btn.disabled = false;
       } else {
         btn.textContent = '🕒 Next claim in ' + formatCountdown(data.remaining_ms);
         btn.disabled = true;
       }
     });
-  }catch(e){ btns.forEach(function(btn){ btn.textContent = '🎁 Claim Daily (+50)'; }); }
+  }catch(e){ btns.forEach(function(btn){ btn.textContent = '🎁 Claim Daily (+5)'; }); }
 }
 
 async function claimDaily(){
@@ -3871,13 +3871,21 @@ function renderProfile(data){
   }
 
   var linksByName = {};
-  (data.casino_links||[]).forEach(function(l){ linksByName[l.casino] = l.casino_username; });
+  var linksByStatus = {};
+  (data.casino_links||[]).forEach(function(l){ linksByName[l.casino] = l.casino_username; linksByStatus[l.casino] = l.status; });
+  var STATUS_BADGES = {
+    approved: '<span style="color:#4ade80;font-size:.75rem;font-weight:700;white-space:nowrap">✓ Approved</span>',
+    pending: '<span style="color:#fbbf24;font-size:.75rem;font-weight:700;white-space:nowrap">⏳ Pending review</span>',
+    rejected: '<span style="color:#f87171;font-size:.75rem;font-weight:700;white-space:nowrap">✕ Rejected — try again</span>',
+  };
   var html = '';
   Object.keys(KNOWN_CASINOS_DISPLAY).forEach(function(key){
+    var status = linksByStatus[key];
     html += '<div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap">'
       + '<label style="width:100px;font-size:.85rem;color:var(--faint)">'+KNOWN_CASINOS_DISPLAY[key]+'</label>'
       + '<input type="text" id="casinoInput_'+key+'" value="'+(linksByName[key]||'')+'" placeholder="Your '+KNOWN_CASINOS_DISPLAY[key]+' username" style="flex:1;min-width:150px;padding:9px 12px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-family:\'Poppins\'">'
       + '<button class="admin-btn-secondary" style="padding:9px 16px" onclick="saveCasinoLink(this,\''+key+'\')">Save</button>'
+      + (status ? (STATUS_BADGES[status] || '') : '')
     + '</div>';
   });
   document.getElementById('pfCasinoLinks').innerHTML = html;
