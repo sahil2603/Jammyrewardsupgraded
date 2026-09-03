@@ -2863,18 +2863,38 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
         <!-- VAULT TAB -->
         <div id="adminVaultTab" class="admin-tab-panel">
-          <div style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;max-width:500px">
-            <h3 style="margin-top:0">Vault Management</h3>
-            <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Current Amount (Coins)</label>
-            <input type="number" id="avCurrent" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;box-sizing:border-box">
-            <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Target Amount (Coins)</label>
-            <input type="number" id="avTarget" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;box-sizing:border-box">
-            <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Last Added Amount (Coins, optional)</label>
-            <input type="number" id="avLastAmount" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;box-sizing:border-box">
-            <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Last Added Date (optional)</label>
-            <input type="text" id="avLastDate" placeholder="e.g. April 1" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;box-sizing:border-box">
-            <button class="admin-btn-primary" style="margin-top:18px" onclick="saveVaultSettings()" id="avSaveBtn">Save Changes</button>
-            <div id="avSaveResult" style="margin-top:10px;font-size:.85rem"></div>
+          <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+            <div style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;max-width:500px;flex:1;min-width:320px">
+              <h3 style="margin-top:0">Vault Management</h3>
+              <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Current Amount (Coins)</label>
+              <input type="number" id="avCurrent" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;box-sizing:border-box">
+              <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Target Amount (Coins)</label>
+              <input type="number" id="avTarget" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;box-sizing:border-box">
+              <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Last Added Amount (Coins, optional)</label>
+              <input type="number" id="avLastAmount" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;box-sizing:border-box">
+              <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Last Added Date (optional)</label>
+              <input type="text" id="avLastDate" placeholder="e.g. April 1" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;box-sizing:border-box">
+              <button class="admin-btn-primary" style="margin-top:18px" onclick="saveVaultSettings()" id="avSaveBtn">Save Changes</button>
+              <div id="avSaveResult" style="margin-top:10px;font-size:.85rem"></div>
+            </div>
+            <!-- Live snapshot so admin has real context while editing, instead of an empty
+                 panel next to the form -- current remaining, total ever claimed, and % full,
+                 pulled from the same /api/vault call already used to populate the form. -->
+            <div style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px;min-width:220px">
+              <h3 style="margin-top:0;font-size:.95rem;color:var(--faint);text-transform:uppercase;letter-spacing:.05em">Live Snapshot</h3>
+              <div style="margin-top:16px">
+                <div style="font-size:.78rem;color:var(--faint)">Remaining (unclaimed)</div>
+                <div id="avStatRemaining" style="font-family:'Lilita One',sans-serif;font-size:1.6rem;color:#fbbf24">—</div>
+              </div>
+              <div style="margin-top:16px">
+                <div style="font-size:.78rem;color:var(--faint)">Total ever claimed</div>
+                <div id="avStatClaimed" style="font-family:'Lilita One',sans-serif;font-size:1.6rem;color:#4ade80">—</div>
+              </div>
+              <div style="margin-top:16px">
+                <div style="font-size:.78rem;color:var(--faint)">Progress to goal</div>
+                <div id="avStatPct" style="font-family:'Lilita One',sans-serif;font-size:1.6rem;color:#a855f7">—</div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -4151,6 +4171,13 @@ async function loadVaultForAdmin(){
     document.getElementById('avTarget').value = v.target_amount;
     document.getElementById('avLastAmount').value = v.last_added_amount != null ? v.last_added_amount : '';
     document.getElementById('avLastDate').value = v.last_added_date || '';
+
+    var remEl = document.getElementById('avStatRemaining');
+    var claimedEl = document.getElementById('avStatClaimed');
+    var pctEl = document.getElementById('avStatPct');
+    if(remEl) remEl.textContent = Math.floor(v.current_amount).toLocaleString() + ' Coins';
+    if(claimedEl) claimedEl.textContent = Math.floor(data.total_claimed || 0).toLocaleString() + ' Coins';
+    if(pctEl) pctEl.textContent = (v.target_amount > 0 ? Math.round((v.current_amount / v.target_amount) * 100) : 0) + '%';
   }catch(e){ console.error('Failed to load vault for admin:', e); }
 }
 
@@ -4472,6 +4499,15 @@ async function adminRejectClaim(userId, casino){
 /* ══════════════════════════════════════════════════════════════════════════
    ADMIN: SLOT REQUESTS
    ══════════════════════════════════════════════════════════════════════════ */
+/* SQLite's raw 'YYYY-MM-DD HH:MM:SS' timestamps aren't great to read at a glance --
+   formats them the way the rest of the admin dashboard already reads (e.g. "Sep 4, 8:00 AM"). */
+function formatAdminDate(raw){
+  if(!raw) return '';
+  var d = new Date(raw.replace(' ', 'T') + 'Z');
+  if(isNaN(d)) return raw;
+  return d.toLocaleDateString(undefined,{month:'short',day:'numeric'}) + ', ' + d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+}
+
 async function loadAdminSlots(){
   var token = localStorage.getItem('jammy_session_token');
   var listEl = document.getElementById('adminSlotsList');
@@ -4490,7 +4526,7 @@ async function loadAdminSlots(){
           + '<div>'
             + '<b>'+r.slot_name+'</b> — requested by '+r.username+'<br>'
             + (r.note ? '<span style="color:var(--muted);font-size:.85rem">'+r.note+'</span><br>' : '')
-            + '<span style="color:var(--faint);font-size:.75rem">'+r.created_at+'</span>'
+            + '<span style="color:var(--faint);font-size:.75rem">'+formatAdminDate(r.created_at)+'</span>'
           + '</div>'
           + '<div style="color:'+profitColor+';font-weight:700;font-size:.85rem;white-space:nowrap">'+profitLabel+'</div>'
         + '</div>'
