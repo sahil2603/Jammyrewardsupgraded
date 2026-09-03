@@ -2642,10 +2642,11 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <button class="vpp-refresh" onclick="refreshVaultPlayers()">↻ Refresh</button>
         </div>
         <div class="vpp-tabs">
-          <button class="vpp-tab active">All</button>
-          <button class="vpp-tab">DegenCity</button>
-          <button class="vpp-tab">Upgrader</button>
-          <button class="vpp-tab">RustMagic</button>
+          <button class="vpp-tab active" data-casino="">All</button>
+          <button class="vpp-tab" data-casino="degencity">DegenCity</button>
+          <button class="vpp-tab" data-casino="upgrader">Upgrader</button>
+          <button class="vpp-tab" data-casino="rustmagic">RustMagic</button>
+          <button class="vpp-tab" data-casino="rustmafia">RustMafia</button>
         </div>
         <div class="vpp-col-head">
           <div>Rank</div>
@@ -2654,133 +2655,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <div>Vault Share</div>
         </div>
         <div id="vaultPlayers" class="vpp-list">
-
-          <div class="vpp-row rank1" style="--share:82.42%">
-            <div class="vpp-avatar" style="--av-a:#f59e0b;--av-b:#ef4444">H</div>
-            <div class="vpp-info">
-              <b>hyerslp</b>
-              <div class="vpp-meta">
-                <span class="vpp-rank-badge gold">#1</span>
-                <span class="vpp-dot">•</span>
-                <span>$14,303 wagered</span>
-              </div>
-              <div class="vpp-links">
-                <span>Upgrader: <span>Hyers</span> · $14,303</span>
-                <span>Kick: <span>@Hyerslp</span></span>
-              </div>
-            </div>
-            <div class="vpp-wager">$14,303</div>
-            <div class="vpp-right-col">
-              <div class="vpp-pct-big">82.42%</div>
-              <div class="vpp-dollar">$659</div>
-            </div>
-          </div>
-
-          <div class="vpp-row rank2" style="--share:9.38%">
-            <div class="vpp-avatar" style="--av-a:#a855f7;--av-b:#5b8def">G</div>
-            <div class="vpp-info">
-              <b>goaties_boy</b>
-              <div class="vpp-meta">
-                <span class="vpp-rank-badge silver">#2</span>
-                <span class="vpp-dot">•</span>
-                <span>$1,620 wagered</span>
-              </div>
-              <div class="vpp-links">
-                <span>Upgrader: <span>Goaties</span> · $1,620</span>
-                <span>Kick: <span>@Goatie_Boy</span></span>
-              </div>
-            </div>
-            <div class="vpp-wager">$1,620</div>
-            <div class="vpp-right-col">
-              <div class="vpp-pct-big">9.38%</div>
-              <div class="vpp-dollar">$75</div>
-            </div>
-          </div>
-
-          <div class="vpp-row rank3" style="--share:3.67%">
-            <div class="vpp-avatar" style="--av-a:#22d3ee;--av-b:#3ddc84">L</div>
-            <div class="vpp-info">
-              <b>lexbra_</b>
-              <div class="vpp-meta">
-                <span class="vpp-rank-badge bronze">#3</span>
-                <span class="vpp-dot">•</span>
-                <span>$636 wagered</span>
-              </div>
-              <div class="vpp-links">
-                <span>Upgrader: <span>Nunoz</span> · $636</span>
-                <span>Kick: <span>@Pineapplexp</span></span>
-              </div>
-            </div>
-            <div class="vpp-wager">$636</div>
-            <div class="vpp-right-col">
-              <div class="vpp-pct-big">3.67%</div>
-              <div class="vpp-dollar">$29</div>
-            </div>
-          </div>
-
-          <div class="vpp-row" style="--share:3.37%">
-            <div class="vpp-avatar" style="--av-a:#f472b6;--av-b:#a855f7">F</div>
-            <div class="vpp-info">
-              <b>.frowenn</b>
-              <div class="vpp-meta">
-                <span class="vpp-rank-badge">#4</span>
-                <span class="vpp-dot">•</span>
-                <span>$586 wagered</span>
-              </div>
-              <div class="vpp-links">
-                <span>Upgrader: <span>Nunoz</span> · $586</span>
-                <span>Kick: <span>@baturky</span></span>
-              </div>
-            </div>
-            <div class="vpp-wager">$586</div>
-            <div class="vpp-right-col">
-              <div class="vpp-pct-big">3.37%</div>
-              <div class="vpp-dollar">$27</div>
-            </div>
-          </div>
-
-          <div class="vpp-row" style="--share:1.18%">
-            <div class="vpp-avatar" style="--av-a:#34d399;--av-b:#22d3ee">R</div>
-            <div class="vpp-info">
-              <b>ryuxformylove</b>
-              <div class="vpp-meta">
-                <span class="vpp-rank-badge">#5</span>
-                <span class="vpp-dot">•</span>
-                <span>$204 wagered</span>
-              </div>
-              <div class="vpp-links">
-                <span>Upgrader: <span>RYU</span> · $204</span>
-                <span>Kick: <span>@ryuxformylove</span></span>
-              </div>
-            </div>
-            <div class="vpp-wager">$204</div>
-            <div class="vpp-right-col">
-              <div class="vpp-pct-big">1.18%</div>
-              <div class="vpp-dollar">$9</div>
-            </div>
-          </div>
-
-          <div class="vpp-row" style="--share:0.03%">
-            <div class="vpp-avatar" style="--av-a:#64748b;--av-b:#475569">K</div>
-            <div class="vpp-info">
-              <b>kgblack.</b>
-              <div class="vpp-meta">
-                <span class="vpp-rank-badge">#6</span>
-                <span class="vpp-dot">•</span>
-                <span>$5 wagered</span>
-              </div>
-              <div class="vpp-links">
-                <span>Upgrader: <span>KGBLACK</span> · $5</span>
-                <span>Kick: <span>@kgblack</span></span>
-              </div>
-            </div>
-            <div class="vpp-wager">$5</div>
-            <div class="vpp-right-col">
-              <div class="vpp-pct-big">0.03%</div>
-              <div class="vpp-dollar">$0</div>
-            </div>
-          </div>
-
+          <div style="padding:40px 20px;text-align:center;color:var(--faint)">Loading live players&hellip;</div>
         </div>
       </div>
 
@@ -3430,15 +3305,96 @@ async function loadVaultSettings(){
     if(v.last_added_amount != null && document.getElementById('vmLastAdded')) document.getElementById('vmLastAdded').textContent = Math.floor(v.last_added_amount).toLocaleString()+' Coins';
   }catch(e){ console.error('Failed to load vault settings:', e); }
 }
-function initVaultBars(){ loadVaultSettings(); }
+function initVaultBars(){ loadVaultSettings(); loadVaultPlayers(); }
+var CASINO_DISPLAY_NAMES = {upgrader:'Upgrader', rustmagic:'RustMagic', degencity:'DegenCity', rustmafia:'RustMafia'};
+var _vaultPlayersData = [];
+var _vaultPlayerCasinoFilter = '';
+
+/* Live Players — was 100% static placeholder data (fake names, fake numbers) this whole
+   time. Now pulls real linked users, matches their linked casino usernames against that
+   casino's live wager data, and computes each person's actual vault share using the
+   confirmed formula: (their combined wagered across every casino they've linked / total
+   wagered by every linked user) * the vault's current coin total. Recalculated fresh on
+   every page view per spec -- not cached. */
+async function loadVaultPlayers(){
+  var listEl = document.getElementById('vaultPlayers');
+  if(!listEl) return;
+  listEl.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--faint)">Loading live players&hellip;</div>';
+  try{
+    var res = await fetch(AUTH_API + '/api/vault-players');
+    var data = await res.json();
+    _vaultPlayersData = data.players || [];
+    renderVaultPlayers();
+  }catch(e){
+    console.error('Failed to load vault players:', e);
+    listEl.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--faint)">Couldn\'t load live players right now — try refreshing.</div>';
+  }
+}
+
+function renderVaultPlayers(){
+  var listEl = document.getElementById('vaultPlayers');
+  if(!listEl) return;
+  var filtered = _vaultPlayerCasinoFilter
+    ? _vaultPlayersData.filter(function(p){ return p.breakdown.some(function(b){ return b.casino === _vaultPlayerCasinoFilter; }); })
+    : _vaultPlayersData;
+
+  var countEl = document.querySelector('.vp-players .vpp-count');
+  if(countEl) countEl.textContent = '● ' + _vaultPlayersData.length + ' Player' + (_vaultPlayersData.length===1?'':'s');
+
+  if(!filtered.length){
+    listEl.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--faint)">'
+      + (_vaultPlayersData.length ? 'No linked players on this casino yet.' : 'No linked players with wagering yet. Link a casino username in your Profile to show up here.')
+      + '</div>';
+    return;
+  }
+
+  var badgeClasses = ['gold','silver','bronze'];
+  var avatarColors = [['#f59e0b','#ef4444'],['#a855f7','#5b8def'],['#22d3ee','#0ea5e9'],['#4ade80','#16a34a'],['#f472b6','#db2777'],['#64748b','#475569']];
+
+  listEl.innerHTML = filtered.map(function(p, i){
+    var initial = (p.username||'?').charAt(0).toUpperCase();
+    var rankClass = i===0?'rank1':i===1?'rank2':i===2?'rank3':'';
+    var badgeClass = badgeClasses[i] || '';
+    var colors = avatarColors[i % avatarColors.length];
+    var avatarInner = p.avatar
+      ? '<img src="'+p.avatar+'" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">'
+      : initial;
+    var linksHtml = p.breakdown.map(function(b){
+      return '<span>'+(CASINO_DISPLAY_NAMES[b.casino]||b.casino)+': <span>'+b.casino_username+'</span> · $'+Number(b.wager).toLocaleString(undefined,{maximumFractionDigits:0})+'</span>';
+    }).join('');
+    return '<div class="vpp-row '+rankClass+'" style="--share:'+p.share_pct.toFixed(2)+'%">'
+      + '<div class="vpp-avatar" style="--av-a:'+colors[0]+';--av-b:'+colors[1]+'">'+avatarInner+'</div>'
+      + '<div class="vpp-info">'
+        + '<b>'+(p.username||'—')+'</b>'
+        + '<div class="vpp-meta">'
+          + '<span class="vpp-rank-badge '+badgeClass+'">#'+(i+1)+'</span>'
+          + '<span class="vpp-dot">•</span>'
+          + '<span>$'+Number(p.total_wagered).toLocaleString(undefined,{maximumFractionDigits:0})+' wagered</span>'
+        + '</div>'
+        + '<div class="vpp-links">'+linksHtml+'</div>'
+      + '</div>'
+      + '<div class="vpp-wager">$'+Number(p.total_wagered).toLocaleString(undefined,{maximumFractionDigits:0})+'</div>'
+      + '<div class="vpp-right-col">'
+        + '<div class="vpp-pct-big">'+p.share_pct.toFixed(2)+'%</div>'
+        + '<div class="vpp-dollar">'+Math.round(p.coins).toLocaleString()+' Coins</div>'
+      + '</div>'
+    + '</div>';
+  }).join('');
+}
+
 function refreshVaultPlayers(){
   var btn=document.querySelector('.vpp-refresh');
-  if(btn){btn.textContent='↻ Refreshing...';setTimeout(function(){btn.textContent='↻ Refresh';},1200);}
+  if(btn) btn.textContent='↻ Refreshing...';
+  loadVaultPlayers().then(function(){
+    if(btn) setTimeout(function(){btn.textContent='↻ Refresh';},400);
+  });
 }
 document.querySelectorAll('.vpp-tab').forEach(function(t){
   t.addEventListener('click',function(){
     document.querySelectorAll('.vpp-tab').forEach(x=>x.classList.remove('active'));
     t.classList.add('active');
+    _vaultPlayerCasinoFilter = t.dataset.casino || '';
+    renderVaultPlayers();
   });
 });
 
