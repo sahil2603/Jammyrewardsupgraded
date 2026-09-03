@@ -3778,7 +3778,7 @@ function renderProfile(data){
     html += '<div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap">'
       + '<label style="width:100px;font-size:.85rem;color:var(--faint)">'+KNOWN_CASINOS_DISPLAY[key]+'</label>'
       + '<input type="text" id="casinoInput_'+key+'" value="'+(linksByName[key]||'')+'" placeholder="Your '+KNOWN_CASINOS_DISPLAY[key]+' username" style="flex:1;min-width:150px;padding:9px 12px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-family:\'Poppins\'">'
-      + '<button class="admin-btn-secondary" style="padding:9px 16px" onclick="saveCasinoLink(\''+key+'\')">Save</button>'
+      + '<button class="admin-btn-secondary" style="padding:9px 16px" onclick="saveCasinoLink(this,\''+key+'\')">Save</button>'
     + '</div>';
   });
   document.getElementById('pfCasinoLinks').innerHTML = html;
@@ -3811,21 +3811,40 @@ function renderProfile(data){
   }
 }
 
-async function saveCasinoLink(casino){
+async function saveCasinoLink(btn, casino){
   var token = localStorage.getItem('jammy_session_token');
-  if(!token) return;
+  if(!token){ alert('Please log in with Discord first.'); return; }
   var input = document.getElementById('casinoInput_'+casino);
   var username = input.value.trim();
-  if(!username) return;
-  var btnText = event && event.target ? event.target.textContent : null;
+  if(!username){ alert('Please enter a username before saving.'); return; }
+  var originalText = btn.textContent;
+  btn.textContent = 'Saving…';
+  btn.disabled = true;
   try{
     var res = await fetch(AUTH_API + '/api/link-casino', {
       method:'POST',
       headers: { 'Authorization':'Bearer '+token, 'Content-Type':'application/json' },
       body: JSON.stringify({casino:casino, username:username})
     });
-    if(res.ok && event && event.target){ event.target.textContent = 'Saved ✓'; setTimeout(function(){ event.target.textContent = btnText; }, 1500); }
-  }catch(e){ console.error('Failed to save casino link:', e); }
+    var data = await res.json();
+    if(res.ok){
+      btn.textContent = 'Saved ✓';
+      setTimeout(function(){ btn.textContent = originalText; btn.disabled = false; }, 1500);
+    } else {
+      /* Previously silent here -- any failure (bad session, server error, whatever) left
+         the button showing "Save" with zero indication anything went wrong, which is
+         exactly why this looked broken with no visible cause. */
+      console.error('Failed to save casino link:', data.error);
+      alert(data.error || 'Failed to save — please try again.');
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
+  }catch(e){
+    console.error('Failed to save casino link:', e);
+    alert('Network error — please try again.');
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }
 }
 
 var CRYPTO_NETWORKS = {
