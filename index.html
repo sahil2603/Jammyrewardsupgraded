@@ -112,7 +112,7 @@ button{color:inherit}
 }
 #back-to-top:active{transform:translateY(0) scale(.97)}
 @media(min-width:561px){#back-to-top{bottom:32px;right:28px}}
-@media(max-width:560px){#back-to-top{bottom:22px;right:14px;width:42px;height:42px}}
+@media(max-width:560px){#back-to-top{bottom:calc(22px + env(safe-area-inset-bottom, 0px));right:14px;width:42px;height:42px}}
 /* Simple sky-blue ambient background, replacing the snowflake particle animation --
    3 large soft blurred circles that slowly drift, in sky blue instead of gold. The blur
    filter is applied once and never animated (only transform moves), same "static filter +
