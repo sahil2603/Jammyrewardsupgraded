@@ -4153,6 +4153,13 @@ async function initAuth(){
 }
 initAuth();
 loadVaultSettings(); /* covers the Home page's vault mini-stat/preview too, not just the dedicated Vault page */
+/* Was only ever fetched once on page load -- if an admin topped up the vault while someone
+   already had the site open, they'd see the old number until they manually reloaded.
+   Refreshes every 30s so it stays current without needing a reload. Safe to call
+   repeatedly: every element update inside loadVaultSettings() is a no-op when the value
+   hasn't actually changed, and the mascot video specifically only swaps when its 12.5%
+   bucket changes, so this doesn't cause any flicker or wasted work between refreshes. */
+setInterval(loadVaultSettings, 30000);
 trackPageView(location.hash ? location.hash.slice(1) : 'home'); /* showPage() only tracks on later nav clicks -- the very first page load needs its own call */
 
 /* ══════════════════════════════════════════════════════════════════════════
