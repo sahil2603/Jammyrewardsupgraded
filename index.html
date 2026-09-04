@@ -798,7 +798,14 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 .vp-title{font-family:'Lilita One','Arial Black',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:1.5px;color:#fff}
 .vp-sub{color:var(--muted);font-size:.95rem}
 .vp-line{width:180px;height:4px;border-radius:4px;background:var(--rainbow);background-size:200%;}
-.vp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+.vp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+@media(max-width:980px){.vp-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.vp-grid{grid-template-columns:1fr}}
+/* Leaderboard preview cards (below Verified Partners) had no hover feedback at all --
+   plain divs with inline styles only. Matching the same lift+brighten pattern used on
+   cards elsewhere on the site. */
+.lb-preview-card{transition:transform .22s cubic-bezier(.22,1,.36,1),border-color .22s,box-shadow .22s}
+.lb-preview-card:hover{transform:translateY(-6px);box-shadow:0 16px 34px -12px rgba(0,0,0,.5)}
 /* ── polished card ── */
 .vp-card{
   background:linear-gradient(180deg,rgba(168,85,247,.1),rgba(9,6,15,.98));
@@ -1481,12 +1488,23 @@ body::before{
    smudged across the letters themselves ("black shade all over it"). Removed the dark
    drop-shadow layer entirely and shrank the remaining text-shadow to a tight, subtle
    contact-shadow instead of two compounding ones. */
-.wordmark{filter:
-  drop-shadow(0 0 20px rgba(255,61,182,.5))
-  drop-shadow(0 0 36px rgba(168,85,247,.55))
-  drop-shadow(0 0 52px rgba(34,211,238,.35))
-  !important}
-.wordmark .jam,.wordmark .slots{text-shadow:0 1px 2px rgba(0,0,0,.35)!important}
+/* Was a static 3-layer drop-shadow filter (computed once, never animated) plus a small
+   black text-shadow for contrast. Replaced with a genuinely flowing multi-neon glow, but
+   built the safe way: separate blurred glow layers behind the text, each a solid neon
+   color with its blur computed once and never touched again, only their OPACITY animates
+   in a staggered cycle. This is the same category of fix as the site-wide performance pass
+   done earlier -- animating a gradient/filter directly on the text itself is exactly what
+   caused the site to measure 1-2 FPS before that was found and fixed, so the flow effect
+   lives entirely in cheap, compositor-only opacity crossfades instead. No black in it at all. */
+.wordmark{filter:none!important}
+.wordmark .jam,.wordmark .slots{text-shadow:none!important}
+.wordmark-glow{position:absolute;inset:-30px;pointer-events:none;z-index:-1}
+.wordmark-glow span{position:absolute;inset:0;filter:blur(38px);opacity:0;animation:wordmarkFlow 6s ease-in-out infinite}
+.wordmark-glow span:nth-child(1){background:radial-gradient(ellipse 70% 60% at 30% 50%,rgba(168,85,247,.65),transparent 70%);animation-delay:0s}
+.wordmark-glow span:nth-child(2){background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(34,211,238,.6),transparent 70%);animation-delay:1.5s}
+.wordmark-glow span:nth-child(3){background:radial-gradient(ellipse 70% 60% at 70% 50%,rgba(244,114,182,.6),transparent 70%);animation-delay:3s}
+.wordmark-glow span:nth-child(4){background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(74,222,128,.55),transparent 70%);animation-delay:4.5s}
+@keyframes wordmarkFlow{0%,100%{opacity:0}25%{opacity:1}50%{opacity:.3}}
 
 /* Was an infinite background-position spin on every .pill badge across the site (however
    many are on screen at once, all repainting every frame) -- one of several confirmed
@@ -2178,7 +2196,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
     <div class="hero">
       
       <span class="pill">The future of community rewards</span>
-      <h1 class="wordmark"><span class="jam">JAMMMY</span><span class="slots">REWARDS</span></h1>
+      <h1 class="wordmark"><div class="wordmark-glow"><span></span><span></span><span></span><span></span></div><span class="jam">JAMMMY</span><span class="slots">REWARDS</span></h1>
       <p class="sub">Experience the next generation of online casino rewards, exclusive leaderboards, and community-driven gaming.</p>
       <!-- Mascot wrapper (coins spill from JS) -->
       <div class="mascot-wrap" style="position:relative;width:clamp(160px,16vw,210px);margin:22px auto 6px;display:block;filter:none;perspective:none">
@@ -2389,44 +2407,43 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
       <h2 class="vp-title" style="font-size:clamp(1.8rem,4vw,2.6rem)">Competitive <span class="g">Leaderboards</span></h2>
       <p class="vp-sub" style="max-width:520px;margin:10px auto 34px">Wager on partner sites and climb the ranks for cash prizes, coins, and vault share.</p>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;text-align:left" class="lb-preview-grid">
-        <div style="background:rgba(20,20,30,.6);border:1px solid rgba(168,85,247,.25);border-top:3px solid #a855f7;border-radius:16px;padding:28px">
+        <div class="lb-preview-card" style="background:rgba(20,20,30,.6);border:1px solid rgba(168,85,247,.25);border-top:3px solid #a855f7;border-radius:16px;padding:28px">
           <div style="width:56px;height:56px;border-radius:14px;background:rgba(168,85,247,.12);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
             <img loading="lazy" src="degencity.png" alt="DegenCity" style="width:40px;height:40px;object-fit:contain">
           </div>
           <h3 style="font-family:'Lilita One',sans-serif;font-size:1.2rem;margin-bottom:8px">DegenCity Leaderboard</h3>
           <p style="color:var(--faint);font-size:.9rem;margin-bottom:20px">Compete for prizes and climb the ranks in the DegenCity leaderboard.</p>
-          <button onclick="nav('leaderboards');lbTab(document.querySelector('.lbt'),'degencity')" style="background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#fff;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer">View Leaderboard &rarr;</button>
+          <button onclick="goToLeaderboard('degencity')" style="background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#fff;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer">View Leaderboard &rarr;</button>
         </div>
-        <div style="background:rgba(20,20,30,.6);border:1px solid rgba(96,165,250,.25);border-top:3px solid #60a5fa;border-radius:16px;padding:28px">
+        <div class="lb-preview-card" style="background:rgba(20,20,30,.6);border:1px solid rgba(96,165,250,.25);border-top:3px solid #60a5fa;border-radius:16px;padding:28px">
           <div style="width:56px;height:56px;border-radius:14px;background:rgba(96,165,250,.12);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
             <img loading="lazy" src="upgrader.png" alt="Upgrader" style="width:40px;height:40px;object-fit:contain;border-radius:22%">
           </div>
           <h3 style="font-family:'Lilita One',sans-serif;font-size:1.2rem;margin-bottom:8px">Upgrader Leaderboard</h3>
           <p style="color:var(--faint);font-size:.9rem;margin-bottom:20px">Compete for prizes and climb the ranks in the Upgrader leaderboard.</p>
-          <button onclick="nav('leaderboards');lbTab(document.querySelector('.lbt'),'upgrader')" style="background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#fff;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer">View Leaderboard &rarr;</button>
+          <button onclick="goToLeaderboard('upgrader')" style="background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#fff;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer">View Leaderboard &rarr;</button>
         </div>
-        <div style="background:rgba(20,20,30,.6);border:1px solid rgba(244,114,182,.25);border-top:3px solid #f472b6;border-radius:16px;padding:28px">
+        <div class="lb-preview-card" style="background:rgba(20,20,30,.6);border:1px solid rgba(244,114,182,.25);border-top:3px solid #f472b6;border-radius:16px;padding:28px">
           <div style="width:110px;height:44px;border-radius:10px;background:rgba(244,114,182,.12);display:flex;align-items:center;justify-content:center;margin-bottom:16px;padding:6px 10px">
             <img src="rustmagic.png" alt="RustMagic" style="width:100%;height:100%;object-fit:contain">
           </div>
           <h3 style="font-family:'Lilita One',sans-serif;font-size:1.2rem;margin-bottom:8px">RustMagic Leaderboard</h3>
           <p style="color:var(--faint);font-size:.9rem;margin-bottom:20px">Compete for prizes and climb the ranks in the RustMagic leaderboard.</p>
-          <button onclick="nav('leaderboards');lbTab(document.querySelector('.lbt'),'rustmagic')" style="background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#fff;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer">View Leaderboard &rarr;</button>
+          <button onclick="goToLeaderboard('rustmagic')" style="background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#fff;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer">View Leaderboard &rarr;</button>
         </div>
-        <div style="background:rgba(20,20,30,.6);border:1px solid rgba(139,92,246,.25);border-top:3px solid #8b5cf6;border-radius:16px;padding:28px">
+        <div class="lb-preview-card" style="background:rgba(20,20,30,.6);border:1px solid rgba(139,92,246,.25);border-top:3px solid #8b5cf6;border-radius:16px;padding:28px">
           <div style="width:110px;height:44px;border-radius:10px;background:rgba(139,92,246,.12);display:flex;align-items:center;justify-content:center;margin-bottom:16px;padding:6px 10px">
             <img src="rustmafia.png" alt="RustMafia" style="width:100%;height:100%;object-fit:contain">
           </div>
           <h3 style="font-family:'Lilita One',sans-serif;font-size:1.2rem;margin-bottom:8px">RustMafia Leaderboard</h3>
           <p style="color:var(--faint);font-size:.9rem;margin-bottom:20px">Compete for prizes and climb the ranks in the RustMafia leaderboard.</p>
-          <button onclick="nav('leaderboards');lbTab(document.querySelector('.lbt'),'rustmafia')" style="background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#fff;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer">View Leaderboard &rarr;</button>
+          <button onclick="goToLeaderboard('rustmafia')" style="background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#fff;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer">View Leaderboard &rarr;</button>
         </div>
       </div>
       <div style="margin-top:24px;display:flex;gap:10px;align-items:flex-start;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:14px;padding:18px 22px;text-align:left">
         <span style="font-size:1.1rem">⚠️</span>
         <span style="color:var(--faint);font-size:.88rem"><b style="color:#f59e0b">Note:</b> Users must deposit more than the placement prize. If the deposit is less than the prize, the prize will be voided.</span>
       </div>
-      <button onclick="nav('leaderboards')" style="margin-top:26px;background:transparent;border:1.5px solid rgba(255,255,255,.3);color:#fff;font-weight:700;padding:13px 28px;border-radius:12px;cursor:pointer;font-family:'Lilita One',sans-serif;letter-spacing:.02em">All Leaderboards &rarr;</button>
     </div>
     <style>@media(max-width:700px){.lb-preview-grid{grid-template-columns:1fr !important}}</style>
 
@@ -3267,6 +3284,18 @@ var CURRENT_LB_CASINO = 'upgrader';
    baseline instead of either leaving a stale value from whatever casino was shown last, or
    blanking it to "—". */
 document.querySelectorAll('.lb2-prize').forEach(function(el){ el.dataset.staticPrize = el.textContent; });
+/* Used by the leaderboard preview cards on Home -- was trying to find the matching tab
+   button via a CSS attribute selector embedded directly inside the onclick HTML attribute
+   string, which needed nested quotes that the HTML entity-escaping approach actually
+   mangled (confirmed: the attribute was silently truncated mid-string, and every card
+   fell back to whatever showed as CURRENT_LB_CASINO already, which is why they all landed
+   on the same leaderboard regardless of which was clicked). Plain named function instead,
+   no attribute-string quote gymnastics needed. */
+function goToLeaderboard(casino){
+  nav('leaderboards');
+  var btn = document.querySelector('.lbt[onclick*="\'' + casino + '\'"]');
+  lbTab(btn, casino);
+}
 function lbTab(btn,casino){
   document.querySelectorAll('.lbt').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
