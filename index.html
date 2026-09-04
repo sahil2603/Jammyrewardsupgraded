@@ -3405,10 +3405,22 @@ function goToLeaderboard(casino){
    regenerated; what actually needs to be real and current is the caption text, built here
    from the top 3 of whatever's currently loaded in _lastLbWagers. X's own share intent has
    no way to attach an image automatically (a real platform restriction, not something any
-   site can work around), so this downloads the matching image and opens the compose window
-   with the caption ready -- dragging the already-downloaded image in is the one extra step.
-   Usernames are partially masked before posting publicly, matching the masking already used
-   in the reference examples this was built from. */
+   site can work around). Usernames are partially masked before posting publicly, matching
+   the masking already used in the reference examples this was built from.
+
+   Was auto-triggering the image download via a JS-clicked <a download> link -- confirmed
+   as the real bug: the download attribute on a cross-origin image link isn't reliably
+   respected by every browser (this is a genuine, well-known cross-browser inconsistency,
+   not something specific to any one person or region). On several mobile browsers,
+   Safari especially, it just navigates the current tab to the raw image instead of
+   downloading it -- with the site's own header/nav now replaced by a bare image and no
+   obvious way back except the browser's own back button, exactly matching what was
+   reported. Replaced with an explicit modal: a real "Download Image" link the user clicks
+   themselves (opens in a new tab via target="_blank", so the leaderboard page is never
+   replaced -- and opening the image directly is the one universally reliable way to save
+   it on any device, via long-press or right-click, regardless of whether the download
+   attribute itself is honored), plus a clear close button and a separate step to continue
+   to X once the image is saved. */
 function maskUsername(name){
   if(!name || name.length <= 3) return name || 'Player';
   return name.slice(0,3) + 'XXX' + (name.length > 6 ? name.slice(-2) : '');
@@ -3436,16 +3448,26 @@ function shareLeaderboardOnX(){
     + (countdown && countdown !== 'ENDED' ? '\u23f0 Ends in ' + countdown + '\n' : '')
     + '\n' + leaderboardUrl;
 
-  /* Trigger the image download first -- a same-tab navigation to the X compose window
-     right after doesn't interrupt a download already in flight. */
-  var a = document.createElement('a');
-  a.href = 'https://www.jammmyrewards.com/share-' + casino + '.png';
-  a.download = 'jammmy-' + casino + '-leaderboard.png';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  var imageUrl = 'https://www.jammmyrewards.com/share-' + casino + '.png';
+  var xUrl = 'https://x.com/intent/post?text=' + encodeURIComponent(caption);
 
-  window.open('https://x.com/intent/post?text=' + encodeURIComponent(caption), '_blank');
+  var overlay = document.createElement('div');
+  overlay.id = 'shareXModal';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9998;display:flex;align-items:center;justify-content:center;padding:20px';
+  overlay.onclick = function(e){ if(e.target === overlay) closeShareXModal(); };
+  overlay.innerHTML =
+    '<div style="background:var(--panel,#150826);border:1px solid var(--line,rgba(255,255,255,.15));border-radius:18px;padding:28px;max-width:420px;width:100%;position:relative;text-align:center">'
+      + '<button onclick="closeShareXModal()" aria-label="Close" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.08);border:0;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1.1rem;line-height:1">✕</button>'
+      + '<img src="' + imageUrl + '" alt="' + casinoLabel + ' leaderboard" style="width:100%;border-radius:12px;margin-bottom:18px">'
+      + '<p style="color:var(--faint,#9ca3af);font-size:.85rem;margin-bottom:18px">Step 1: save this image (opens in a new tab — long-press or right-click to save it there). Step 2: continue to X and attach it to your post.</p>'
+      + '<a href="' + imageUrl + '" target="_blank" rel="noopener" download="jammmy-' + casino + '-leaderboard.png" class="admin-btn-primary" style="display:block;margin-bottom:10px;text-decoration:none">⬇ Download Image</a>'
+      + '<a href="' + xUrl + '" target="_blank" rel="noopener" style="display:block;background:#000;border:1.5px solid rgba(255,255,255,.35);color:#fff;font-weight:800;padding:13px 20px;border-radius:12px;text-decoration:none;font-family:\'Lilita One\',sans-serif;letter-spacing:.02em">Continue to X →</a>'
+    + '</div>';
+  document.body.appendChild(overlay);
+}
+function closeShareXModal(){
+  var el = document.getElementById('shareXModal');
+  if(el) el.remove();
 }
 
 function lbTab(btn,casino){
