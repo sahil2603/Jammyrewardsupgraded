@@ -1260,6 +1260,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .admin-tab[data-tab="adminAnalyticsTab"].active{background:linear-gradient(135deg,rgba(251,191,36,.25),rgba(217,119,6,.15));border-color:rgba(251,191,36,.7);box-shadow:0 6px 20px -6px rgba(251,191,36,.5)}
 .admin-tab[data-tab="adminVerifyTab"].active{background:linear-gradient(135deg,rgba(244,114,182,.25),rgba(219,39,119,.15));border-color:rgba(244,114,182,.7);box-shadow:0 6px 20px -6px rgba(244,114,182,.5)}
 .admin-tab[data-tab="adminSlotsTab"].active{background:linear-gradient(135deg,rgba(251,146,60,.25),rgba(234,88,12,.15));border-color:rgba(251,146,60,.7);box-shadow:0 6px 20px -6px rgba(251,146,60,.5)}
+.admin-tab[data-tab="adminBattlesTab"].active{background:linear-gradient(135deg,rgba(96,165,250,.25),rgba(37,99,235,.15));border-color:rgba(96,165,250,.7);box-shadow:0 6px 20px -6px rgba(96,165,250,.5)}
 @media (hover:hover) and (pointer:fine){
   .admin-tab:hover{transform:translateY(-2px);border-color:rgba(168,85,247,.5);color:#fff}
   .admin-tab:active{transform:translateY(0) scale(.97)}
@@ -1334,6 +1335,33 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
    <option> inherit meant every option but the selected one rendered on the browser's default
    WHITE popup background with our inherited white text on top of it, invisible. Explicit
    background+color on the <option> elements themselves fixes this in every major browser. */
+/* Battle request form's multi-choice fields -- colorful selectable chips instead of plain
+   dropdowns, each option with its own accent color so the form doesn't read as a wall of
+   identical gray buttons. One selected at a time per group (radio behavior), toggled via
+   JS adding/removing .selected. */
+.rb-chip-group{display:flex;flex-wrap:wrap;gap:10px}
+.rb-chip{padding:10px 18px;border-radius:99px;font-family:'Poppins';font-weight:700;font-size:.85rem;
+  cursor:pointer;background:rgba(255,255,255,.04);color:var(--muted);
+  transition:transform .2s cubic-bezier(.22,1,.36,1),background .2s,border-color .2s,color .2s,box-shadow .2s}
+.rb-chip:hover{transform:translateY(-2px)}
+.rb-chip:active{transform:translateY(0) scale(.96)}
+.rb-chip-1{border:1.5px solid rgba(168,85,247,.4)}
+.rb-chip-1.selected{background:rgba(168,85,247,.22);border-color:#a855f7;color:#e9d5ff;box-shadow:0 0 16px -4px rgba(168,85,247,.6)}
+.rb-chip-2{border:1.5px solid rgba(34,211,238,.4)}
+.rb-chip-2.selected{background:rgba(34,211,238,.22);border-color:#22d3ee;color:#cffafe;box-shadow:0 0 16px -4px rgba(34,211,238,.6)}
+.rb-chip-3{border:1.5px solid rgba(251,191,36,.4)}
+.rb-chip-3.selected{background:rgba(251,191,36,.22);border-color:#fbbf24;color:#fef3c7;box-shadow:0 0 16px -4px rgba(251,191,36,.6)}
+.rb-chip-4{border:1.5px solid rgba(244,114,182,.4)}
+.rb-chip-4.selected{background:rgba(244,114,182,.22);border-color:#f472b6;color:#fce7f3;box-shadow:0 0 16px -4px rgba(244,114,182,.6)}
+.rb-chip-5{border:1.5px solid rgba(74,222,128,.4)}
+.rb-chip-5.selected{background:rgba(74,222,128,.22);border-color:#4ade80;color:#dcfce7;box-shadow:0 0 16px -4px rgba(74,222,128,.6)}
+.rb-chip-6{border:1.5px solid rgba(251,146,60,.4)}
+.rb-chip-6.selected{background:rgba(251,146,60,.22);border-color:#fb923c;color:#ffedd5;box-shadow:0 0 16px -4px rgba(251,146,60,.6)}
+.rb-chip-yes{border:1.5px solid rgba(74,222,128,.4)}
+.rb-chip-yes.selected{background:rgba(74,222,128,.22);border-color:#4ade80;color:#dcfce7;box-shadow:0 0 16px -4px rgba(74,222,128,.6)}
+.rb-chip-no{border:1.5px solid rgba(248,113,113,.4)}
+.rb-chip-no.selected{background:rgba(248,113,113,.22);border-color:#f87171;color:#fee2e2;box-shadow:0 0 16px -4px rgba(248,113,113,.6)}
+
 .pf-select{width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);
   border:1px solid var(--line);color:#fff;margin-bottom:14px;font-family:'Poppins';box-sizing:border-box}
 .pf-select option{background:#150a2e;color:#fff}
@@ -2184,9 +2212,9 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
   <button class="sidetab slot" onclick="nav('requestslot')" title="Request a Slot" style="border:0;background:none;padding:0;cursor:pointer;display:block">
     <img loading="lazy" src="https://www.jammmyslots.com/request-a-slot.png" alt="Request a Slot" style="width:100%;display:block;border-radius:6px;pointer-events:none;will-change:auto;transform:translateZ(0)">
   </button>
-  <a class="sidetab battle" href="https://discord.gg/jammmy" target="_blank" rel="noopener" title="Request a Battle on Discord">
+  <button class="sidetab battle" onclick="nav('requestbattle')" title="Request a Battle" style="border:0;background:none;padding:0;cursor:pointer;display:block">
     <img loading="lazy" src="https://www.jammmyslots.com/request-a-battle.png" alt="Request a Battle" style="width:100%;display:block;border-radius:6px;pointer-events:none;will-change:auto;transform:translateZ(0)">
-  </a>
+  </button>
 </div>
 
 <main class="wrap">
@@ -2917,6 +2945,69 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
     </div>
   </section>
 
+  <section class="page" id="requestbattle">
+    <div class="wrap" style="max-width:900px;margin:0 auto;padding:60px 20px 100px">
+      <div class="reveal" style="text-align:center;margin-bottom:40px">
+        <div style="font-size:3rem;margin-bottom:10px">⚔️</div>
+        <h1 style="font-family:'Lilita One',sans-serif;font-size:2.2rem;margin:0 0 12px">Request a Battle</h1>
+        <p style="color:var(--muted);max-width:520px;margin:0 auto">Challenge Jammmy to a slot battle on stream. Fill in the details below and submit your request.</p>
+      </div>
+
+      <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px">
+        <div id="rbLoggedOut" style="display:none;text-align:center;padding:20px">
+          <p style="color:var(--muted)">Log in with Discord to request a battle.</p>
+          <button class="admin-btn-primary" style="max-width:240px;margin:10px auto 0" onclick="startDiscordLogin()">Login with Discord</button>
+        </div>
+        <div id="rbForm">
+          <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Kick name & Discord</label>
+          <input type="text" id="rbKickDiscord" placeholder="e.g. yourkickname / yourdiscord#0001" maxlength="150" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:20px;font-family:'Poppins';box-sizing:border-box">
+
+          <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:8px">Game mode</label>
+          <div class="rb-chip-group" id="rbGameMode" style="margin-bottom:20px">
+            <button type="button" class="rb-chip rb-chip-1" data-val="Normal">Normal</button>
+            <button type="button" class="rb-chip rb-chip-2" data-val="Shared">Shared</button>
+            <button type="button" class="rb-chip rb-chip-3" data-val="Point Rush">Point Rush</button>
+            <button type="button" class="rb-chip rb-chip-4" data-val="Jackpot">Jackpot</button>
+            <button type="button" class="rb-chip rb-chip-5" data-val="Terminal">Terminal</button>
+          </div>
+
+          <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:8px">Match type</label>
+          <div class="rb-chip-group" id="rbMatchType" style="margin-bottom:20px">
+            <button type="button" class="rb-chip rb-chip-1" data-val="1v1">1v1</button>
+            <button type="button" class="rb-chip rb-chip-2" data-val="3-way">3-way</button>
+            <button type="button" class="rb-chip rb-chip-3" data-val="4-way">4-way</button>
+            <button type="button" class="rb-chip rb-chip-4" data-val="6-way">6-way</button>
+            <button type="button" class="rb-chip rb-chip-5" data-val="2v2">2v2</button>
+            <button type="button" class="rb-chip rb-chip-6" data-val="2v2v2">2v2v2</button>
+            <button type="button" class="rb-chip rb-chip-1" data-val="3v3">3v3</button>
+          </div>
+
+          <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Position</label>
+          <input type="text" id="rbPosition" placeholder="e.g. 1st position" maxlength="150" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:20px;font-family:'Poppins';box-sizing:border-box">
+
+          <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Cases</label>
+          <textarea id="rbCases" placeholder="e.g. AK case, Gold case, Mystery case" maxlength="500" rows="4" style="width:100%;padding:14px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:6px;font-family:'Poppins';box-sizing:border-box;resize:vertical"></textarea>
+          <p style="color:var(--faint);font-size:.78rem;margin:0 0 20px">Example: AK case, Gold case, Mystery case</p>
+
+          <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:8px">Crazy mode</label>
+          <div class="rb-chip-group" id="rbCrazyMode" style="margin-bottom:20px">
+            <button type="button" class="rb-chip rb-chip-yes" data-val="yes">Yes</button>
+            <button type="button" class="rb-chip rb-chip-no" data-val="no">No</button>
+          </div>
+
+          <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:8px">Borrow</label>
+          <div class="rb-chip-group" id="rbBorrow" style="margin-bottom:24px">
+            <button type="button" class="rb-chip rb-chip-yes" data-val="yes">Yes</button>
+            <button type="button" class="rb-chip rb-chip-no" data-val="no">No</button>
+          </div>
+
+          <button class="admin-btn-primary" onclick="submitBattleRequest()" id="rbSubmitBtn">⚔️ Submit Battle Request</button>
+          <div id="rbResult" style="margin-top:12px;font-size:.9rem"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="page" id="admin">
     <div class="wrap" style="max-width:1100px;margin:0 auto;padding:60px 20px 100px">
       <div id="adminDenied" style="display:none;text-align:center;padding:80px 20px">
@@ -2933,6 +3024,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <button class="admin-tab" data-tab="adminAnalyticsTab" onclick="switchAdminTab('adminAnalyticsTab')">Analytics</button>
           <button class="admin-tab" data-tab="adminVerifyTab" onclick="switchAdminTab('adminVerifyTab')">Verify Players</button>
           <button class="admin-tab" data-tab="adminSlotsTab" onclick="switchAdminTab('adminSlotsTab')">Slot Requests</button>
+          <button class="admin-tab" data-tab="adminBattlesTab" onclick="switchAdminTab('adminBattlesTab')">Battle Requests</button>
         </div>
 
         <!-- VAULT TAB -->
@@ -3034,6 +3126,11 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div id="adminSlotsTab" class="admin-tab-panel" style="display:none">
           <div id="adminSlotsList">Loading…</div>
         </div>
+
+        <!-- BATTLE REQUESTS TAB -->
+        <div id="adminBattlesTab" class="admin-tab-panel" style="display:none">
+          <div id="adminBattlesList">Loading…</div>
+        </div>
       </div>
     </div>
   </section>
@@ -3121,6 +3218,7 @@ function showPage(id){
   if(id==='profile') loadProfile();
   if(id==='admin') loadAdminDashboard();
   if(id==='requestslot') loadRequestSlotPage();
+  if(id==='requestbattle') loadRequestBattlePage();
   if(id==='home') loadHomeActivePlayers();
   trackPageView(id);
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('active',a.dataset.page===id));
@@ -4275,6 +4373,7 @@ function switchAdminTab(tabId){
   if(tabId==='adminAnalyticsTab') loadAdminAnalytics();
   if(tabId==='adminVerifyTab') loadAdminVerifyList();
   if(tabId==='adminSlotsTab') loadAdminSlots();
+  if(tabId==='adminBattlesTab') loadAdminBattles();
 }
 
 async function loadAdminDashboard(){
@@ -4713,6 +4812,78 @@ async function adminDeleteSlotRequest(id){
   }catch(e){ console.error('Delete slot request failed:', e); alert('Network error — try again.'); }
 }
 
+async function loadAdminBattles(){
+  var token = localStorage.getItem('jammy_session_token');
+  var listEl = document.getElementById('adminBattlesList');
+  if(!token || !listEl) return;
+  listEl.innerHTML = 'Loading…';
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/battle-requests', { headers: { 'Authorization': 'Bearer ' + token } });
+    var data = await res.json();
+    if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load.'; return; }
+    if(!data.requests.length){ listEl.innerHTML = '<div style="color:var(--muted)">No battle requests yet.</div>'; return; }
+    listEl.innerHTML = data.requests.map(function(r){
+      var profitColor = r.profit_status === 'profit' ? '#4ade80' : r.profit_status === 'loss' ? '#f87171' : 'var(--faint)';
+      var profitLabel = r.profit_status ? (r.profit_status.charAt(0).toUpperCase()+r.profit_status.slice(1).replace('_',' ')) + (r.profit_amount!=null ? ' ($'+r.profit_amount.toLocaleString()+')' : '') : 'Not recorded yet';
+      return '<div class="admin-row" style="flex-direction:column;align-items:stretch">'
+        + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">'
+          + '<div>'
+            + '<b>'+r.kick_discord_name+'</b> — requested by '+r.username+'<br>'
+            + '<span style="color:var(--muted);font-size:.85rem">'+r.game_mode+' · '+r.match_type+(r.position ? ' · Position: '+r.position : '')+'</span><br>'
+            + '<span style="color:var(--muted);font-size:.85rem">Cases: '+r.cases+'</span><br>'
+            + '<span style="color:var(--muted);font-size:.85rem">Crazy mode: '+(r.crazy_mode ? 'Yes' : 'No')+' · Borrow: '+(r.borrow ? 'Yes' : 'No')+'</span><br>'
+            + '<span style="color:var(--faint);font-size:.75rem">'+formatAdminDate(r.created_at)+'</span>'
+          + '</div>'
+          + '<div style="color:'+profitColor+';font-weight:700;font-size:.85rem;white-space:nowrap">'+profitLabel+'</div>'
+        + '</div>'
+        + '<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center">'
+          + '<select id="battleProfitStatus_'+r.id+'" class="pf-select" style="width:auto;margin-bottom:0;padding:8px 10px;font-size:.82rem">'
+            + '<option value="">No result yet</option>'
+            + '<option value="profit"'+(r.profit_status==='profit'?' selected':'')+'>Profit</option>'
+            + '<option value="loss"'+(r.profit_status==='loss'?' selected':'')+'>Loss</option>'
+            + '<option value="no_play"'+(r.profit_status==='no_play'?' selected':'')+'>Didn\'t play it</option>'
+          + '</select>'
+          + '<input type="number" id="battleProfitAmount_'+r.id+'" placeholder="Amount ($)" value="'+(r.profit_amount!=null?r.profit_amount:'')+'" style="width:110px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-size:.82rem">'
+          + '<button class="admin-btn-secondary" style="padding:8px 14px" onclick="adminUpdateBattleRequest('+r.id+')">Save</button>'
+          + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b);padding:8px 14px" onclick="adminDeleteBattleRequest('+r.id+')">Delete</button>'
+        + '</div>'
+      + '</div>';
+    }).join('');
+  }catch(e){
+    console.error('Failed to load battle requests:', e);
+    listEl.innerHTML = 'Network error — try again.';
+  }
+}
+
+async function adminUpdateBattleRequest(id){
+  var token = localStorage.getItem('jammy_session_token');
+  var statusEl = document.getElementById('battleProfitStatus_'+id);
+  var amountEl = document.getElementById('battleProfitAmount_'+id);
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/update-battle-request', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: id, profit_status: statusEl.value || null, profit_amount: amountEl.value || null })
+    });
+    var data = await res.json();
+    if(res.ok){ loadAdminBattles(); } else { alert(data.error || 'Failed to save.'); }
+  }catch(e){ console.error('Update battle request failed:', e); alert('Network error — try again.'); }
+}
+
+async function adminDeleteBattleRequest(id){
+  if(!confirm('Delete this battle request? This can\'t be undone.')) return;
+  var token = localStorage.getItem('jammy_session_token');
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/delete-battle-request', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: id })
+    });
+    var data = await res.json();
+    if(res.ok){ loadAdminBattles(); } else { alert(data.error || 'Failed to delete.'); }
+  }catch(e){ console.error('Delete battle request failed:', e); alert('Network error — try again.'); }
+}
+
 /* ══════════════════════════════════════════════════════════════════════════
    REQUEST A SLOT
    ══════════════════════════════════════════════════════════════════════════ */
@@ -4799,6 +4970,85 @@ async function submitSlotRequest(){
     resultEl.textContent = 'Network error — please try again.';
   }
   btn.textContent = '🎰 Suggest This Slot';
+  btn.disabled = false;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   REQUEST A BATTLE
+   ══════════════════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.rb-chip-group').forEach(function(group){
+  group.addEventListener('click', function(e){
+    var chip = e.target.closest('.rb-chip');
+    if(!chip) return;
+    group.querySelectorAll('.rb-chip').forEach(function(c){ c.classList.remove('selected'); });
+    chip.classList.add('selected');
+  });
+});
+
+function loadRequestBattlePage(){
+  var token = localStorage.getItem('jammy_session_token');
+  var loggedOut = document.getElementById('rbLoggedOut');
+  var form = document.getElementById('rbForm');
+  if(!loggedOut || !form) return;
+  if(token){ loggedOut.style.display='none'; form.style.display='block'; }
+  else { loggedOut.style.display='block'; form.style.display='none'; }
+}
+
+async function submitBattleRequest(){
+  var token = localStorage.getItem('jammy_session_token');
+  if(!token){ startDiscordLogin(); return; }
+  var btn = document.getElementById('rbSubmitBtn');
+  var resultEl = document.getElementById('rbResult');
+
+  var kickDiscord = document.getElementById('rbKickDiscord').value.trim();
+  var gameModeEl = document.querySelector('#rbGameMode .rb-chip.selected');
+  var matchTypeEl = document.querySelector('#rbMatchType .rb-chip.selected');
+  var position = document.getElementById('rbPosition').value.trim();
+  var cases = document.getElementById('rbCases').value.trim();
+  var crazyModeEl = document.querySelector('#rbCrazyMode .rb-chip.selected');
+  var borrowEl = document.querySelector('#rbBorrow .rb-chip.selected');
+
+  if(!kickDiscord){ resultEl.style.color = '#f87171'; resultEl.textContent = 'Please enter your Kick name & Discord.'; return; }
+  if(!gameModeEl){ resultEl.style.color = '#f87171'; resultEl.textContent = 'Please select a game mode.'; return; }
+  if(!matchTypeEl){ resultEl.style.color = '#f87171'; resultEl.textContent = 'Please select a match type.'; return; }
+  if(!cases){ resultEl.style.color = '#f87171'; resultEl.textContent = 'Please enter the cases (e.g. AK case, Gold case, Mystery case).'; return; }
+  if(!crazyModeEl){ resultEl.style.color = '#f87171'; resultEl.textContent = 'Please select Crazy mode: Yes or No.'; return; }
+  if(!borrowEl){ resultEl.style.color = '#f87171'; resultEl.textContent = 'Please select Borrow: Yes or No.'; return; }
+
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
+  try{
+    var res = await fetch(AUTH_API + '/api/battle-request', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        kick_discord_name: kickDiscord,
+        game_mode: gameModeEl.dataset.val,
+        match_type: matchTypeEl.dataset.val,
+        position: position,
+        cases: cases,
+        crazy_mode: crazyModeEl.dataset.val === 'yes',
+        borrow: borrowEl.dataset.val === 'yes',
+      })
+    });
+    var data = await res.json();
+    if(res.ok){
+      resultEl.style.color = '#4ade80';
+      resultEl.textContent = '✓ Sent! Jammmy will see this in his requested battles.';
+      document.getElementById('rbKickDiscord').value = '';
+      document.getElementById('rbPosition').value = '';
+      document.getElementById('rbCases').value = '';
+      document.querySelectorAll('.rb-chip.selected').forEach(function(c){ c.classList.remove('selected'); });
+    } else {
+      resultEl.style.color = '#f87171';
+      resultEl.textContent = data.error || 'Failed to send — please try again.';
+    }
+  }catch(e){
+    console.error('Battle request failed:', e);
+    resultEl.style.color = '#f87171';
+    resultEl.textContent = 'Network error — please try again.';
+  }
+  btn.textContent = '⚔️ Submit Battle Request';
   btn.disabled = false;
 }
 
