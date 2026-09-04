@@ -176,7 +176,7 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
    the site, with white-space:nowrap and flex:none so it can never wrap or get squeezed. */
 .notlive{display:inline-flex;align-items:center;gap:7px;border:1.5px solid rgba(255,77,94,.5);
   border-radius:99px;padding:5px 12px;font-size:.72rem;font-weight:700;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--red);margin-left:8px;white-space:nowrap;flex:none;background:rgba(255,77,94,.08)}
+  text-transform:uppercase;color:var(--red);margin-left:16px;white-space:nowrap;flex:none;background:rgba(255,77,94,.08)}
 .notlive .d{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 0 0 rgba(255,77,94,.6);animation:pulse 1.8s infinite;flex:none}
 @media(max-width:520px){.notlive{padding:4px 9px;font-size:.65rem;gap:5px}.notlive .d{width:6px;height:6px}}
 .nav-links{display:flex;gap:2px;margin:0 auto;flex-wrap:nowrap;position:relative}
@@ -3292,14 +3292,25 @@ function runReveals(){
 ============================================================ */
 function countEl(el){
   if(el.dataset.done)return;el.dataset.done=1;
-  var target=+el.dataset.count,pre=el.dataset.prefix||'',suf=el.dataset.suffix||'',t0=null;
+  var pre=el.dataset.prefix||'',suf=el.dataset.suffix||'',t0=null;
   /* Word suffixes ("Coins", "partners") were inheriting the same huge font-size as the
      number itself, which either overflowed the stat's narrow column or wrapped the whole
      word onto its own giant-text line -- clunky next to the two stats with no suffix at
      all. Rendered at a much smaller size via a nested span (only when a suffix is actually
      present, so plain numeric stats are untouched) so it reads as a unit label, not a
      second number. */
-  function step(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/1400,1),e=1-Math.pow(1-p,3),v=Math.floor(target*e);
+  /* Was reading el.dataset.count once at the start and caching it as "target" for the
+     whole animation -- if a real value arrived (e.g. loadHomeActivePlayers' fetch) after
+     the count-up had already begun but before it finished, the animation kept counting
+     toward the stale number it started with and just stopped there, permanently wrong, no
+     matter what dataset.count was updated to. Confirmed as the cause of "sometimes shows
+     wrong numbers" -- it's a timing race, not a display bug, so it wouldn't happen every
+     time. Re-reads dataset.count on every frame instead, so a mid-flight update is simply
+     the new target from that frame on. Also fixes a separate off-by-one: the final frame's
+     progress can land just under 1.0 (e.g. .999), which combined with Math.floor() meant
+     the animation could stop one short of the real number instead of landing on it exactly
+     -- forces the exact target once progress reaches 1. */
+  function step(ts){if(!t0)t0=ts;var target=+el.dataset.count;var p=Math.min((ts-t0)/1400,1),e=1-Math.pow(1-p,3),v=p>=1?target:Math.floor(target*e);
     if(suf){ el.innerHTML=pre+v.toLocaleString()+'<span style="font-size:.38em;font-weight:600;opacity:.85;margin-left:.15em">'+suf.trim()+'</span>'; }
     else{ el.textContent=pre+v.toLocaleString(); }
     if(p<1)requestAnimationFrame(step);}
@@ -3433,8 +3444,8 @@ function shareLeaderboardOnX(){
 
   var medals = ['1\u20e3','2\u20e3','3\u20e3'];
   var lines = top3.map(function(w, i){
-    var coins = (Math.round((w.wager||0) * 0.1 * 100) / 100).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
-    return medals[i] + ' ' + maskUsername(w.name) + ' - ' + coins + ' COINS';
+    var wagered = (Math.round((w.wager||0) * 100) / 100).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+    return medals[i] + ' ' + maskUsername(w.name) + ' - $' + wagered;
   }).join('\n');
 
   var dates = document.getElementById('lb2-dates') ? document.getElementById('lb2-dates').textContent : '';
@@ -4630,7 +4641,9 @@ async function loadAdminRedemptions(status){
         + '</div>'
         + '<div style="text-align:right">'
           + '<div style="color:'+statusColor+';text-transform:uppercase;font-size:.78rem;font-weight:700">'+r.status+'</div>'
-          + (r.status==='pending' ? '<button class="admin-btn-row-action" style="margin-top:6px" onclick="adminMarkPaid(\''+r.id+'\')">Mark Paid</button>' : '<span style="color:var(--faint);font-size:.75rem">'+(r.paid_at||'')+'</span>')
+          + (r.status==='pending' ? '<button class="admin-btn-row-action" style="margin-top:6px" onclick="adminMarkPaid(\''+r.id+'\')">Mark Paid</button>'
+              + '<button class="admin-btn-row-action" style="margin-top:6px;margin-left:6px;background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminRejectRedemption(\''+r.id+'\')">Reject</button>'
+            : '<span style="color:var(--faint);font-size:.75rem">'+(r.paid_at||'')+'</span>')
         + '</div>'
       + '</div>';
     }).join('');
@@ -4652,6 +4665,20 @@ async function adminMarkPaid(txId){
     var data = await res.json();
     if(res.ok){ loadAdminRedemptions(''); } else { alert(data.error || 'Failed to mark as paid.'); }
   }catch(e){ console.error('Mark paid failed:', e); alert('Network error — try again.'); }
+}
+
+async function adminRejectRedemption(txId){
+  if(!confirm('Reject ' + txId + '? This refunds the coins back to the user\'s balance — nothing gets paid out.')) return;
+  var token = localStorage.getItem('jammy_session_token');
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/reject-redemption', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ transaction_id: txId })
+    });
+    var data = await res.json();
+    if(res.ok){ loadAdminRedemptions(''); } else { alert(data.error || 'Failed to reject.'); }
+  }catch(e){ console.error('Reject redemption failed:', e); alert('Network error — try again.'); }
 }
 
 async function loadAdminAnalytics(){
