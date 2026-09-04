@@ -3599,7 +3599,12 @@ loadLeaderboard('upgrader');
    page) in sync, instead of three separate copies that could never agree with each other. */
 async function loadVaultSettings(){
   try{
-    var res = await fetch(AUTH_API + '/api/vault');
+    /* fetch() otherwise leaves cache behavior up to the browser's own heuristics for a
+       plain GET with no explicit Cache-Control from the Worker -- confirmed as the likely
+       reason the vault balance could still show stale even with the 30s auto-refresh now
+       in place (the refresh was firing, but potentially being served from HTTP cache
+       instead of hitting the network). Forces a real network round-trip every time. */
+    var res = await fetch(AUTH_API + '/api/vault', { cache: 'no-store' });
     var data = await res.json();
     var v = data.vault;
     if(!v) return;
@@ -4401,7 +4406,7 @@ async function loadAdminDashboard(){
 
 async function loadVaultForAdmin(){
   try{
-    var res = await fetch(AUTH_API + '/api/vault');
+    var res = await fetch(AUTH_API + '/api/vault', { cache: 'no-store' });
     var data = await res.json();
     var v = data.vault;
     if(!v) return;
