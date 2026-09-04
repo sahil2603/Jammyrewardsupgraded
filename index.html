@@ -2556,8 +2556,12 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div class="lb2-countdown">&#x23F0; <span id="lb-cd-label">UPGRADER</span> COMPETITION ENDS IN &nbsp;<b id="lb-cd2">--</b></div>
       </div>
 
-      <div style="text-align:center;margin-top:26px">
+      <div style="text-align:center;margin-top:26px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
         <button onclick="document.getElementById('lb-full-list').classList.toggle('lb-full-open');this.textContent=document.getElementById('lb-full-list').classList.contains('lb-full-open')?'Hide Full Leaderboard ↑':'Full Leaderboard ↗'" style="background:transparent;border:1.5px solid rgba(74,222,128,.5);color:#4ade80;font-weight:800;padding:13px 30px;border-radius:12px;cursor:pointer;font-family:'Lilita One',sans-serif;letter-spacing:.02em;box-shadow:0 0 16px rgba(74,222,128,.15)">Full Leaderboard &#x2197;</button>
+        <button onclick="shareLeaderboardOnX()" style="background:#000;border:1.5px solid rgba(255,255,255,.35);color:#fff;font-weight:800;padding:13px 26px;border-radius:12px;cursor:pointer;font-family:'Lilita One',sans-serif;letter-spacing:.02em;display:inline-flex;align-items:center;gap:9px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          Share on X
+        </button>
       </div>
 
       <!-- Full ranked list (ranks 4+), hidden until "Full Leaderboard" is clicked -->
@@ -3377,6 +3381,7 @@ document.addEventListener('touchstart', function(){}, {passive:true});
    LEADERBOARD
 ============================================================ */
 var CURRENT_LB_CASINO = 'upgrader';
+var _lastLbWagers = []; /* raw wager data for the currently-displayed leaderboard, used by the Share on X button for real top-3 names + amounts */
 /* Snapshot each podium's originally-configured static prize text ($200/$100/$50 etc, set
    directly in the HTML) once, before any live rendering touches it — so when switching to
    a casino whose API doesn't provide its own reward data, we can reset back to that
@@ -3395,6 +3400,54 @@ function goToLeaderboard(casino){
   var btn = document.querySelector('.lbt[onclick*="\'' + casino + '\'"]');
   lbTab(btn, casino);
 }
+/* Share on X -- the promotional image (share-<casino>.png) is a static, evergreen branded
+   template already designed with placeholder standings, so it never needs to be
+   regenerated; what actually needs to be real and current is the caption text, built here
+   from the top 3 of whatever's currently loaded in _lastLbWagers. X's own share intent has
+   no way to attach an image automatically (a real platform restriction, not something any
+   site can work around), so this downloads the matching image and opens the compose window
+   with the caption ready -- dragging the already-downloaded image in is the one extra step.
+   Usernames are partially masked before posting publicly, matching the masking already used
+   in the reference examples this was built from. */
+function maskUsername(name){
+  if(!name || name.length <= 3) return name || 'Player';
+  return name.slice(0,3) + 'XXX' + (name.length > 6 ? name.slice(-2) : '');
+}
+function shareLeaderboardOnX(){
+  var casino = CURRENT_LB_CASINO;
+  var casinoLabel = (CASINO_DISPLAY_NAMES[casino] || casino).toUpperCase();
+  var top3 = (_lastLbWagers || []).slice(0, 3);
+  if(!top3.length){ alert('Leaderboard data is still loading — try again in a moment.'); return; }
+
+  var medals = ['1\u20e3','2\u20e3','3\u20e3'];
+  var lines = top3.map(function(w, i){
+    var coins = (Math.round((w.wager||0) * 0.1 * 100) / 100).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+    return medals[i] + ' ' + maskUsername(w.name) + ' - ' + coins + ' COINS';
+  }).join('\n');
+
+  var dates = document.getElementById('lb2-dates') ? document.getElementById('lb2-dates').textContent : '';
+  var countdown = document.getElementById('lb-cd2') ? document.getElementById('lb-cd2').textContent : '';
+  var leaderboardUrl = 'https://jammmyrewards.com/#leaderboards';
+
+  var caption = casinoLabel + ' LEADERBOARD \ud83c\udfc6\n\n'
+    + 'CODE: JAMMMY\n'
+    + lines + '\n\n'
+    + (dates ? '\ud83d\udcc5 ' + dates + '\n' : '')
+    + (countdown && countdown !== 'ENDED' ? '\u23f0 Ends in ' + countdown + '\n' : '')
+    + '\n' + leaderboardUrl;
+
+  /* Trigger the image download first -- a same-tab navigation to the X compose window
+     right after doesn't interrupt a download already in flight. */
+  var a = document.createElement('a');
+  a.href = 'https://www.jammmyrewards.com/share-' + casino + '.png';
+  a.download = 'jammmy-' + casino + '-leaderboard.png';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  window.open('https://x.com/intent/post?text=' + encodeURIComponent(caption), '_blank');
+}
+
 function lbTab(btn,casino){
   document.querySelectorAll('.lbt').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
@@ -3467,6 +3520,7 @@ async function loadLeaderboard(casino){
       throw new Error(data.error);
     }
     renderLeaderboardRows(data.wagers || [], data.meta && data.meta.leaderboard && data.meta.leaderboard.leaderboardRewards);
+    _lastLbWagers = data.wagers || []; /* kept for the Share on X button -- real top-3 names + wagered amounts */
   }catch(e){
     if(myRequest !== lbRequestSeq) return;
     if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Couldn\'t load live data right now — try refreshing.<div class="lb-error-detail">'+String(e).slice(0,120)+'</div></div>';
