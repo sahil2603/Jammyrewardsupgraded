@@ -3033,8 +3033,9 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
             <div style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;max-width:500px;flex:1;min-width:320px">
               <h3 style="margin-top:0;color:#a855f7">Vault Management</h3>
               <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Current Amount (Coins)</label>
-              <input type="number" id="avCurrent" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;box-sizing:border-box">
-              <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Target Amount (Coins)</label>
+              <div id="avCurrentDisplay" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid var(--line);color:var(--faint);box-sizing:border-box">Loading…</div>
+              <p style="color:var(--faint);font-size:.75rem;margin:6px 0 0">Live, computed from unclaimed community wagering — grows automatically as people wager, shrinks when a claim is approved. Not editable here.</p>
+              <label style="display:block;font-size:.82rem;color:var(--faint);margin:18px 0 6px">Target Amount (Coins)</label>
               <input type="number" id="avTarget" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;box-sizing:border-box">
               <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Last Added Amount (Coins, optional)</label>
               <input type="number" id="avLastAmount" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;box-sizing:border-box">
@@ -4410,7 +4411,8 @@ async function loadVaultForAdmin(){
     var data = await res.json();
     var v = data.vault;
     if(!v) return;
-    document.getElementById('avCurrent').value = v.current_amount;
+    var currentDisplay = document.getElementById('avCurrentDisplay');
+    if(currentDisplay) currentDisplay.textContent = Math.floor(v.current_amount).toLocaleString() + ' Coins';
     document.getElementById('avTarget').value = v.target_amount;
     document.getElementById('avLastAmount').value = v.last_added_amount != null ? v.last_added_amount : '';
     document.getElementById('avLastDate').value = v.last_added_date || '';
@@ -4429,14 +4431,15 @@ async function saveVaultSettings(){
   if(!token) return;
   var btn = document.getElementById('avSaveBtn');
   var result = document.getElementById('avSaveResult');
+  /* current_amount is no longer part of this form -- it's a live computed value now
+     (see the backend's computeUnclaimedVaultCoins), not something admin sets directly. */
   var payload = {
-    current_amount: parseFloat(document.getElementById('avCurrent').value),
     target_amount: parseFloat(document.getElementById('avTarget').value),
     last_added_amount: document.getElementById('avLastAmount').value ? parseFloat(document.getElementById('avLastAmount').value) : null,
     last_added_date: document.getElementById('avLastDate').value || null,
   };
-  if(!isFinite(payload.current_amount) || !isFinite(payload.target_amount)){
-    result.textContent = 'Current and target amounts must be numbers.'; result.style.color = '#f87171'; return;
+  if(!isFinite(payload.target_amount)){
+    result.textContent = 'Target amount must be a number.'; result.style.color = '#f87171'; return;
   }
   if(btn) btn.textContent = 'Saving…';
   try{
