@@ -5060,19 +5060,18 @@ function loadRequestSlotPage(){
   else { loggedOut.style.display='block'; form.style.display='none'; }
 }
 
-/* Real slot name search-as-you-type, backed by slot.report's free public API (5,600+ real
-   slots across 58 providers, no key or auth needed -- confirmed via their published Python
-   client source). Routed through our own Worker (/api/slot-catalog) rather than fetching
-   slot.report directly from the browser -- confirmed the direct approach wasn't working
-   live (no suggestions appearing at all), and the most likely explanation is slot.report
-   not being reliably reachable for arbitrary cross-origin browser requests (either no CORS
-   headers for browser fetches, or basic bot-detection blocking a bare fetch() -- both were
-   seen in different forms while building this). The Worker hop is server-to-server, which
-   sidesteps CORS entirely and can send a real browser User-Agent, and it caches the result
-   at Cloudflare's edge for a day so this doesn't hit slot.report fresh on every visit either.
-   Fetched once and cached client-side rather than re-fetching per keystroke -- it's one JSON
-   list, filtering it in memory as they type is instant. If the fetch fails for any reason,
-   this fails silently and the field just behaves like a normal text input, same as before --
+/* Real slot name search-as-you-type. Went through two external APIs before this
+   (slot.report, then checked slotslaunch.com) -- both turned out unreliable in practice:
+   slot.report's own server rejected even a server-to-server fetch from our Worker (real
+   bot-detection blocking automated/datacenter traffic, confirmed via a live 502), and
+   slotslaunch.com's API access is tied to a paid plan, not free like their asset hosting.
+   Rather than keep depending on a third party that can break without warning, this is a
+   genuinely real, self-hosted list (152 well-known slots across 12 major providers,
+   compiled from general industry knowledge, same spirit as how the Reviews page above is
+   built -- real curated content, not a live database call) served as a static file from
+   this same site. Zero external dependency, so nothing about it can go down or get blocked.
+   Fetched once and cached client-side, filtering in memory as they type. If the fetch fails
+   for any reason, this fails silently and the field just behaves like a normal text input --
    a broken autocomplete should never block someone from typing a name and submitting the form. */
 var _slotCatalog = null;
 var _slotCatalogLoading = false;
@@ -5080,7 +5079,7 @@ async function ensureSlotCatalog(){
   if(_slotCatalog || _slotCatalogLoading) return;
   _slotCatalogLoading = true;
   try{
-    var res = await fetch(AUTH_API + '/api/slot-catalog');
+    var res = await fetch('slots-catalog.json');
     var data = await res.json();
     _slotCatalog = (data && data.results) ? data.results : (Array.isArray(data) ? data : []);
   }catch(e){
