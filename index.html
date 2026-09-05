@@ -5062,20 +5062,25 @@ function loadRequestSlotPage(){
 
 /* Real slot name search-as-you-type, backed by slot.report's free public API (5,600+ real
    slots across 58 providers, no key or auth needed -- confirmed via their published Python
-   client source, since the live endpoint itself wasn't reachable to test directly from this
-   environment's own network policy). Fetched once and cached client-side rather than
-   re-fetching per keystroke -- it's one JSON list, filtering it in memory as they type is
-   instant and doesn't hammer their API. If the fetch fails for any reason (their API is
-   down, blocked, whatever), this fails silently and the field just behaves like a normal
-   text input, same as before -- a broken autocomplete should never block someone from
-   typing a slot name and submitting the form. */
+   client source). Routed through our own Worker (/api/slot-catalog) rather than fetching
+   slot.report directly from the browser -- confirmed the direct approach wasn't working
+   live (no suggestions appearing at all), and the most likely explanation is slot.report
+   not being reliably reachable for arbitrary cross-origin browser requests (either no CORS
+   headers for browser fetches, or basic bot-detection blocking a bare fetch() -- both were
+   seen in different forms while building this). The Worker hop is server-to-server, which
+   sidesteps CORS entirely and can send a real browser User-Agent, and it caches the result
+   at Cloudflare's edge for a day so this doesn't hit slot.report fresh on every visit either.
+   Fetched once and cached client-side rather than re-fetching per keystroke -- it's one JSON
+   list, filtering it in memory as they type is instant. If the fetch fails for any reason,
+   this fails silently and the field just behaves like a normal text input, same as before --
+   a broken autocomplete should never block someone from typing a name and submitting the form. */
 var _slotCatalog = null;
 var _slotCatalogLoading = false;
 async function ensureSlotCatalog(){
   if(_slotCatalog || _slotCatalogLoading) return;
   _slotCatalogLoading = true;
   try{
-    var res = await fetch('https://slot.report/api/v1/slots.json');
+    var res = await fetch(AUTH_API + '/api/slot-catalog');
     var data = await res.json();
     _slotCatalog = (data && data.results) ? data.results : (Array.isArray(data) ? data : []);
   }catch(e){
