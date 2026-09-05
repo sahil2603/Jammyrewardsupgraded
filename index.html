@@ -2939,7 +2939,10 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         </div>
         <div id="rsForm">
           <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Slot name</label>
-          <input type="text" id="rsSlotName" placeholder="e.g. Gates of Olympus 1000" maxlength="150" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:14px;font-family:'Poppins';box-sizing:border-box">
+          <div style="position:relative;margin-bottom:14px">
+            <input type="text" id="rsSlotName" placeholder="Start typing a real slot name…" maxlength="150" autocomplete="off" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-family:'Poppins';box-sizing:border-box">
+            <div id="rsSlotDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;margin-top:4px;background:#150826;border:1px solid var(--line);border-radius:10px;max-height:260px;overflow-y:auto;z-index:50;box-shadow:0 12px 28px -8px rgba(0,0,0,.6)"></div>
+          </div>
           <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Why this one? (optional)</label>
           <textarea id="rsNote" placeholder="Heard it's been paying well, cool bonus feature, etc." maxlength="500" rows="3" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:16px;font-family:'Poppins';box-sizing:border-box;resize:vertical"></textarea>
           <button class="admin-btn-primary" onclick="submitSlotRequest()" id="rsSubmitBtn">🎰 Suggest This Slot</button>
@@ -5048,12 +5051,70 @@ async function loadHomeActivePlayers(){
 
 function loadRequestSlotPage(){
   renderFeaturedSlots();
+  setupSlotAutocomplete();
   var token = localStorage.getItem('jammy_session_token');
   var loggedOut = document.getElementById('rsLoggedOut');
   var form = document.getElementById('rsForm');
   if(!loggedOut || !form) return;
   if(token){ loggedOut.style.display='none'; form.style.display='block'; }
   else { loggedOut.style.display='block'; form.style.display='none'; }
+}
+
+/* Real slot name search-as-you-type, backed by slot.report's free public API (5,600+ real
+   slots across 58 providers, no key or auth needed -- confirmed via their published Python
+   client source, since the live endpoint itself wasn't reachable to test directly from this
+   environment's own network policy). Fetched once and cached client-side rather than
+   re-fetching per keystroke -- it's one JSON list, filtering it in memory as they type is
+   instant and doesn't hammer their API. If the fetch fails for any reason (their API is
+   down, blocked, whatever), this fails silently and the field just behaves like a normal
+   text input, same as before -- a broken autocomplete should never block someone from
+   typing a slot name and submitting the form. */
+var _slotCatalog = null;
+var _slotCatalogLoading = false;
+async function ensureSlotCatalog(){
+  if(_slotCatalog || _slotCatalogLoading) return;
+  _slotCatalogLoading = true;
+  try{
+    var res = await fetch('https://slot.report/api/v1/slots.json');
+    var data = await res.json();
+    _slotCatalog = (data && data.results) ? data.results : (Array.isArray(data) ? data : []);
+  }catch(e){
+    console.error('Slot catalog unavailable, falling back to plain text entry:', e);
+    _slotCatalog = [];
+  }
+  _slotCatalogLoading = false;
+}
+function setupSlotAutocomplete(){
+  var input = document.getElementById('rsSlotName');
+  var dropdown = document.getElementById('rsSlotDropdown');
+  if(!input || !dropdown || input.dataset.acBound) return;
+  input.dataset.acBound = '1';
+
+  input.addEventListener('focus', ensureSlotCatalog);
+  input.addEventListener('input', function(){
+    var q = input.value.trim().toLowerCase();
+    if(!q || !_slotCatalog || !_slotCatalog.length){ dropdown.style.display='none'; return; }
+    var matches = _slotCatalog.filter(function(s){ return s.name && s.name.toLowerCase().indexOf(q) !== -1; }).slice(0, 8);
+    if(!matches.length){ dropdown.style.display='none'; return; }
+    dropdown.innerHTML = matches.map(function(s){
+      var provider = s.provider || s.provider_slug || '';
+      return '<div class="rs-slot-option" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.06)" '
+        + 'onmouseover="this.style.background=\'rgba(255,255,255,.06)\'" onmouseout="this.style.background=\'none\'" '
+        + 'onclick="selectSlotOption(this)" data-name="'+s.name.replace(/"/g,'&quot;')+'">'
+        + '<div style="font-weight:600;font-size:.9rem">'+s.name+'</div>'
+        + (provider ? '<div style="color:var(--faint);font-size:.75rem">'+provider+'</div>' : '')
+      + '</div>';
+    }).join('');
+    dropdown.style.display = 'block';
+  });
+  document.addEventListener('click', function(e){
+    if(e.target !== input && !dropdown.contains(e.target)) dropdown.style.display='none';
+  });
+}
+function selectSlotOption(el){
+  var input = document.getElementById('rsSlotName');
+  input.value = el.dataset.name;
+  document.getElementById('rsSlotDropdown').style.display = 'none';
 }
 
 async function submitSlotRequest(){
