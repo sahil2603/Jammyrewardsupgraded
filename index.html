@@ -5093,6 +5093,26 @@ function setupSlotAutocomplete(){
   var dropdown = document.getElementById('rsSlotDropdown');
   if(!input || !dropdown || input.dataset.acBound) return;
   input.dataset.acBound = '1';
+  /* Same handful of gradient combos used as the Reviews page's fallback thumbnails (real
+     screenshots aren't something to hotlink from third-party sites without rights) --
+     picked per-slot by a simple hash of the name so the same slot always gets the same
+     color, not randomly different each time it's searched. */
+  var RS_GRADIENTS = [
+    'linear-gradient(135deg,#1f7a3d,#0c3d1e)','linear-gradient(135deg,#2aa6d6,#123a6b)',
+    'linear-gradient(135deg,#c9962e,#5a3210)','linear-gradient(135deg,#e0913a,#7a3d12)',
+    'linear-gradient(135deg,#7a3d9e,#2a1340)','linear-gradient(135deg,#a855f7,#3d1a6b)',
+    'linear-gradient(135deg,#dc2626,#4a0e0e)','linear-gradient(135deg,#0891b2,#083344)'
+  ];
+  function gradientFor(name){
+    var h = 0; for(var i=0;i<name.length;i++) h = (h*31 + name.charCodeAt(i)) >>> 0;
+    return RS_GRADIENTS[h % RS_GRADIENTS.length];
+  }
+  function volColor(v){
+    v = (v||'').toLowerCase();
+    if(v==='low') return '#4ade80'; if(v==='medium') return '#fbbf24';
+    if(v==='high') return '#fb923c'; if(v==='extreme') return '#f87171';
+    return 'var(--faint)';
+  }
 
   input.addEventListener('focus', ensureSlotCatalog);
   input.addEventListener('input', function(){
@@ -5102,11 +5122,20 @@ function setupSlotAutocomplete(){
     if(!matches.length){ dropdown.style.display='none'; return; }
     dropdown.innerHTML = matches.map(function(s){
       var provider = s.provider || s.provider_slug || '';
-      return '<div class="rs-slot-option" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.06)" '
+      var vol = s.volatility ? s.volatility.charAt(0).toUpperCase()+s.volatility.slice(1) : '';
+      var maxWin = s.max_win ? s.max_win.toLocaleString()+'x' : '';
+      return '<div class="rs-slot-option" style="display:flex;gap:12px;align-items:center;padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.06)" '
         + 'onmouseover="this.style.background=\'rgba(255,255,255,.06)\'" onmouseout="this.style.background=\'none\'" '
         + 'onclick="selectSlotOption(this)" data-name="'+s.name.replace(/"/g,'&quot;')+'">'
-        + '<div style="font-weight:600;font-size:.9rem">'+s.name+'</div>'
-        + (provider ? '<div style="color:var(--faint);font-size:.75rem">'+provider+'</div>' : '')
+        + '<div style="flex:none;width:46px;height:46px;border-radius:8px;background:'+gradientFor(s.name)+';display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;text-align:center;line-height:1.1;color:rgba(255,255,255,.9);overflow:hidden;padding:2px">'+s.name.split(' ').slice(0,2).join(' ')+'</div>'
+        + '<div style="min-width:0;flex:1">'
+          + '<div style="font-weight:600;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+s.name+'</div>'
+          + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:2px;font-size:.72rem">'
+            + (provider ? '<span style="color:var(--faint)">'+provider+'</span>' : '')
+            + (vol ? '<span style="color:'+volColor(s.volatility)+'">● '+vol+'</span>' : '')
+            + (maxWin ? '<span style="color:#fbbf24">Max '+maxWin+'</span>' : '')
+          + '</div>'
+        + '</div>'
       + '</div>';
     }).join('');
     dropdown.style.display = 'block';
