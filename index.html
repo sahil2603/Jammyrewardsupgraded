@@ -2806,6 +2806,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
       <!-- Link section -->
       <div class="vp-link-card reveal">
+        <div id="vplWarning" style="display:none;margin-bottom:14px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.35);border-radius:10px;padding:10px 14px;font-size:.82rem;color:#fbbf24"></div>
         <div class="vpl-head">
           <div>
             <div class="vpl-title">Unclaimed wagering</div>
@@ -3851,6 +3852,21 @@ function renderUnclaimedCard(data){
   var estEl = document.getElementById('vplEst');
   var listEl = document.getElementById('vplCasinos');
   if(!listEl) return;
+
+  /* Was silently showing a lower total with zero explanation whenever a casino's own API
+     had a bad moment (timeout, rate limit, brief outage) -- looked exactly like a bug (e.g.
+     "the Upgrader wager isn't being counted") when it's really that casino's data being
+     temporarily unavailable. Now shown plainly instead of hidden. */
+  var warnEl = document.getElementById('vplWarning');
+  if(warnEl){
+    if(data.failed_casinos && data.failed_casinos.length){
+      var names = data.failed_casinos.map(function(c){ return CASINO_DISPLAY_NAMES[c] || c; }).join(', ');
+      warnEl.textContent = '⚠️ Couldn\'t reach ' + names + ' right now — totals below may be temporarily incomplete until it responds again.';
+      warnEl.style.display = 'block';
+    } else {
+      warnEl.style.display = 'none';
+    }
+  }
 
   var byCasino = {};
   KNOWN_CASINOS_DISPLAY_LIST.forEach(function(c){ byCasino[c] = { wagered: 0, players: 0 }; });
