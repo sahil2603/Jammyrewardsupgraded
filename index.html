@@ -3490,6 +3490,7 @@ function lbTab(btn,casino){
   CURRENT_LB_CASINO = casino;
   var lbl=document.getElementById('lb-cd-label');
   if(lbl)lbl.textContent=casino.toUpperCase();
+  _realPeriodOverride = null; /* clear whatever the previous casino's real dates were (if any) -- otherwise the immediate lbcd2() call below could briefly show RustMafia's dates while switching to Upgrader, before loadLeaderboard's fetch resolves and corrects it */
   lbcd2(); /* reflect the right period type (monthly vs bi-weekly) immediately, not after up to 1s of delay */
   loadLeaderboard(casino);
 }
@@ -3512,7 +3513,7 @@ function currentMonthlyPeriod(){
   return {start:start, end:end};
 }
 function lbcd2(){
-  var period = (CURRENT_LB_CASINO === 'degencity') ? currentMonthlyPeriod() : currentLbPeriod();
+  var period = _realPeriodOverride || ((CURRENT_LB_CASINO === 'degencity') ? currentMonthlyPeriod() : currentLbPeriod());
   var n = new Date();
   var s = Math.max(0, Math.floor((period.end - n)/1000));
   var el = document.getElementById('lb-cd2');
@@ -3535,6 +3536,7 @@ lbcd2();setInterval(lbcd2,1000);
 var LB_PROXY_URL = 'https://jammy-lb-proxy.sahil-sah2603.workers.dev';
 
 var lbRequestSeq = 0;
+var _realPeriodOverride = null; /* set when the casino's own API returns real start/end dates (currently only RustMafia does) -- used instead of the generic assumed bi-weekly formula so the countdown reflects their actual schedule, not a guess */
 async function loadLeaderboard(casino){
   /* Guards against rapid tab-switching causing an older, slower request to resolve AFTER
      a newer one and overwrite it with the wrong casino's data — which would look like lag
@@ -3555,6 +3557,17 @@ async function loadLeaderboard(casino){
       }
       throw new Error(data.error);
     }
+    /* Was silently discarding this -- fetchRustMafia() has always returned its leaderboard's
+       real startDate/endDate from RustMafia's own API, but nothing ever read it, so the
+       displayed countdown and date range used the same generic assumed 14-day-from-Jan-4
+       formula for every casino except DegenCity, RustMafia included. If their actual cycle
+       ever drifts from that assumption even slightly, the dates and countdown shown would
+       just be wrong. Use the real dates when the API actually provides them; only fall back
+       to the generic formula for casinos whose API doesn't return real ones. */
+    _realPeriodOverride = (data.meta && data.meta.startDate && data.meta.endDate)
+      ? { start: new Date(data.meta.startDate), end: new Date(data.meta.endDate) }
+      : null;
+    lbcd2();
     renderLeaderboardRows(data.wagers || [], data.meta && data.meta.leaderboard && data.meta.leaderboard.leaderboardRewards);
     _lastLbWagers = data.wagers || []; /* kept for the Share on X button -- real top-3 names + wagered amounts */
   }catch(e){
