@@ -2816,7 +2816,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div id="vplWarning" style="display:none;margin-bottom:14px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.35);border-radius:10px;padding:10px 14px;font-size:.82rem;color:#fbbf24"></div>
         <div class="vpl-head">
           <div>
-            <div class="vpl-title">Unclaimed wagering</div>
+            <div class="vpl-title">Unclaimed wagering <button id="vplRefreshBtn" onclick="loadVaultPlayers()" title="Refresh live wagering data" style="background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--faint);width:26px;height:26px;border-radius:8px;cursor:pointer;font-size:.85rem;vertical-align:middle;margin-left:4px;line-height:1">↻</button></div>
             <div class="vpl-sub" id="vplSub">Loading unclaimed wagering&hellip;</div>
           </div>
           <div class="vpl-est">Estimated unclaimed vault share: <b id="vplEst">—</b></div>
@@ -3810,11 +3810,13 @@ var _casinoWagersData = [];
 async function loadVaultPlayers(){
   var listEl = document.getElementById('vaultPlayers');
   if(!listEl) return;
+  var refreshBtn = document.getElementById('vplRefreshBtn');
+  if(refreshBtn){ refreshBtn.disabled = true; refreshBtn.style.opacity = '.5'; refreshBtn.textContent = '…'; }
   listEl.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--faint)">Loading live players&hellip;</div>';
   try{
     var token = localStorage.getItem('jammy_session_token');
     var headers = token ? { 'Authorization': 'Bearer ' + token } : {};
-    var res = await fetch(AUTH_API + '/api/casino-wagers', { headers: headers });
+    var res = await fetch(AUTH_API + '/api/casino-wagers', { headers: headers, cache: 'no-store' });
     var data = await res.json();
     _casinoWagersData = data.wagers || [];
     renderVaultPlayers();
@@ -3824,6 +3826,7 @@ async function loadVaultPlayers(){
     console.error('Failed to load vault players:', e);
     listEl.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--faint)">Couldn\'t load live players right now — try refreshing.</div>';
   }
+  if(refreshBtn){ refreshBtn.disabled = false; refreshBtn.style.opacity = '1'; refreshBtn.textContent = '↻'; }
 }
 
 /* "All Leaderboards Wagered / Claimed / Unclaimed" summary row -- was hardcoded to
