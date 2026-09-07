@@ -179,6 +179,13 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
   text-transform:uppercase;color:var(--red);margin-left:16px;white-space:nowrap;flex:none;background:rgba(255,77,94,.08)}
 .notlive .d{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 0 0 rgba(255,77,94,.6);animation:pulse 1.8s infinite;flex:none}
 @media(max-width:520px){.notlive{padding:4px 9px;font-size:.65rem;gap:5px}.notlive .d{width:6px;height:6px}}
+/* Was permanently hardcoded to "Not Live" in the HTML with zero JS ever touching it --
+   completely disconnected from initKickStream()'s real Kick API check, which only ever
+   updated the separate Kick card elsewhere on the page. The two could disagree indefinitely
+   since neither knew the other existed. This is the live-state look; .notlive itself stays
+   the not-live look, and initKickStream() now toggles between them from one shared check. */
+.notlive.is-live{border-color:rgba(74,222,128,.5);color:#4ade80;background:rgba(74,222,128,.08)}
+.notlive.is-live .d{background:#4ade80;box-shadow:0 0 8px rgba(74,222,128,.6);animation:none}
 .nav-links{display:flex;gap:2px;margin:0 auto;flex-wrap:nowrap;position:relative}
 .nav-links a{position:relative;padding:8px 11px;border-radius:9px;font-weight:500;font-size:.88rem;color:var(--muted);cursor:pointer;transition:.2s;white-space:nowrap}
 .nav-links a:hover{color:var(--text);background:rgba(255,255,255,.04)}
@@ -2168,7 +2175,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
       <span>JammmyRewards</span>
     </div>
     <button class="mob-back" onclick="nav('home')" aria-label="Back to home"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-    <span class="notlive"><span class="d"></span> Not Live</span>
+    <span class="notlive" id="navLiveTag"><span class="d"></span> Checking&hellip;</span>
     <div class="nav-links">
       <span class="nav-indicator" aria-hidden="true"></span>
       <a data-page="home" class="active">Home</a>
@@ -4009,6 +4016,7 @@ async function initKickStream(){
   var statusDot=document.getElementById('kickStatusDot');
   var statusText=document.getElementById('kickStatusText');
   var kickBtn=document.querySelector('.wl-kick-btn');
+  var navTag=document.getElementById('navLiveTag');
 
   try{
     var r=await fetch('https://kick.com/api/v2/channels/jammmyslots',{
@@ -4023,9 +4031,18 @@ async function initKickStream(){
       }
       if(statusText)statusText.textContent=live?('Live · '+d.livestream.viewer_count+' watching'):'Offline';
       if(kickBtn&&live){kickBtn.textContent='JOIN LIVE ↗';kickBtn.style.background='#4ade80';kickBtn.style.color='#0a2012';}
+      /* The nav pill used to be permanently hardcoded to "Not Live" with nothing ever
+         touching it -- now driven from this same real check, the only place live status
+         actually gets determined, so the pill and the Kick card can never disagree again. */
+      if(navTag){
+        navTag.classList.toggle('is-live', !!live);
+        navTag.innerHTML = '<span class="d"></span> ' + (live ? 'Live' : 'Not Live');
+      }
     }
   }catch(e){}
 }
+initKickStream();
+setInterval(initKickStream, 60000); /* the nav pill is visible on every page, not just Home/Bonuses where the call below already fires on nav -- keeps it correct even if someone stays on another page for a while */
 
 /* ============================================================
    PARTNER SLIDER
