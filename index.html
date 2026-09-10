@@ -919,6 +919,16 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
      of the time along with .nav-links itself via display:none above). */
   nav.nav-open .nav-indicator{display:none}
   nav.not-home .mob-back{display:flex}
+  /* Genuine overflow bug found during a full site audit: adding .mob-back (34px, flex:none)
+     for non-Home pages pushed the nav's total content past the 390px viewport (measured
+     426px, the burger button ending up cut off past the right edge) -- nothing was removed
+     to make room for it when it was added. The "JammmyRewards" wordmark text is by far the
+     single biggest element in the row (184px including the logo), so it's the one place
+     with enough width to reclaim without losing real functionality: the logo icon stays
+     (keeps the brand visible and still taps through to Home), and .mob-back already covers
+     the "go back" action explicitly, so the text becomes redundant exactly on the pages
+     where it would otherwise cause this. Confirmed this resolves the overflow. */
+  nav.not-home .brand span{display:none}
   nav.nav-open .nav-links{display:flex;flex-direction:column;gap:4px;
     position:absolute;top:100%;left:0;right:0;z-index:100;
     background:rgba(9,6,15,.97);backdrop-filter:blur(16px);
