@@ -1296,6 +1296,29 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
    color identity down into the actual content instead of stopping at the tab button. */
 #adminUsersTab .admin-row{border-left:3px solid #22d3ee}
 #adminRedemptionsTab .admin-row{border-left:3px solid #4ade80}
+/* Polished card row style for Slot/Battle Requests -- an icon badge instead of plain text,
+   colored tags for the at-a-glance details (game mode, match type, crazy/borrow flags) that
+   used to be a wall of "X · Y · Z" plain text, and a real pill for profit status instead of
+   just colored text. Built as its own class rather than folding into .admin-row since the
+   icon + flex layout is a meaningfully different shape from the simple two-column rows used
+   elsewhere. */
+.admin-card-row{display:flex;gap:14px;padding:16px 18px;background:var(--panel);
+  border:1px solid var(--line);border-radius:14px;margin-bottom:12px;
+  transition:transform .2s cubic-bezier(.22,1,.36,1),border-color .2s}
+.admin-card-row:hover{transform:translateY(-2px)}
+.admin-card-row-orange{border-left:3px solid #fb923c}
+.admin-card-row-blue{border-left:3px solid #60a5fa}
+.admin-card-icon{flex:none;width:44px;height:44px;border-radius:12px;display:flex;
+  align-items:center;justify-content:center;font-size:1.3rem;
+  box-shadow:0 4px 14px -4px rgba(0,0,0,.5)}
+.admin-tag{background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--muted);
+  font-size:.74rem;font-weight:600;padding:3px 10px;border-radius:99px}
+.admin-tag-warn{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.4);color:#fbbf24}
+.admin-pill{font-size:.76rem;font-weight:800;padding:4px 12px;border-radius:99px;white-space:nowrap}
+.admin-pill-none{background:rgba(255,255,255,.05);color:var(--faint);border:1px solid var(--line)}
+.admin-pill-profit{background:rgba(74,222,128,.14);color:#4ade80;border:1px solid rgba(74,222,128,.35)}
+.admin-pill-loss{background:rgba(248,113,113,.14);color:#f87171;border:1px solid rgba(248,113,113,.35)}
+.admin-pill-no_play{background:rgba(148,163,184,.14);color:#94a3b8;border:1px solid rgba(148,163,184,.35)}
 #adminVerifyTab .admin-row{border-left:3px solid #f472b6}
 #adminSlotsList .admin-row{border-left:3px solid #fb923c}
 
@@ -2945,10 +2968,10 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
   <section class="page" id="requestslot">
     <div class="wrap" style="max-width:900px;margin:0 auto;padding:60px 20px 100px">
-      <div class="reveal" style="text-align:center;margin-bottom:40px">
-        <div style="font-size:3rem;margin-bottom:10px">🎰</div>
-        <h1 style="font-family:'Lilita One',sans-serif;font-size:2.2rem;margin:0 0 12px">Request a Slot</h1>
-        <p style="color:var(--muted);max-width:520px;margin:0 auto">Suggest a slot for Jammmy to play on stream. If it pays, he can gift Jammmy Coins to whoever suggested it — so drop your best pick below.</p>
+      <div class="sec-head reveal" style="padding-top:10px">
+        <div style="font-size:3rem;margin-bottom:6px">🎰</div>
+        <h2>Request a <span class="g">Slot</span></h2>
+        <p>Suggest a slot for Jammmy to play on stream. If it pays, he can gift Jammmy Coins to whoever suggested it — so drop your best pick below.</p>
       </div>
 
       <div class="reveal" style="margin-bottom:36px">
@@ -2956,7 +2979,8 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div id="rsFeatured" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px"></div>
       </div>
 
-      <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px">
+      <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#fb923c,#fbbf24,#f59e0b)"></div>
         <div id="rsLoggedOut" style="display:none;text-align:center;padding:20px">
           <p style="color:var(--muted)">Log in with Discord to suggest a slot.</p>
           <button class="admin-btn-primary" style="max-width:240px;margin:10px auto 0" onclick="startDiscordLogin()">Login with Discord</button>
@@ -2978,13 +3002,14 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
   <section class="page" id="requestbattle">
     <div class="wrap" style="max-width:900px;margin:0 auto;padding:60px 20px 100px">
-      <div class="reveal" style="text-align:center;margin-bottom:40px">
-        <div style="font-size:3rem;margin-bottom:10px">⚔️</div>
-        <h1 style="font-family:'Lilita One',sans-serif;font-size:2.2rem;margin:0 0 12px">Request a Battle</h1>
-        <p style="color:var(--muted);max-width:520px;margin:0 auto">Challenge Jammmy to a slot battle on stream. Fill in the details below and submit your request.</p>
+      <div class="sec-head reveal" style="padding-top:10px">
+        <div style="font-size:3rem;margin-bottom:6px">⚔️</div>
+        <h2>Request a <span class="g">Battle</span></h2>
+        <p>Challenge Jammmy to a slot battle on stream. Fill in the details below and submit your request.</p>
       </div>
 
-      <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px">
+      <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#60a5fa,#a855f7,#f472b6)"></div>
         <div id="rbLoggedOut" style="display:none;text-align:center;padding:20px">
           <p style="color:var(--muted)">Log in with Discord to request a battle.</p>
           <button class="admin-btn-primary" style="max-width:240px;margin:10px auto 0" onclick="startDiscordLogin()">Login with Discord</button>
@@ -5119,27 +5144,30 @@ async function loadAdminSlots(){
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load.'; return; }
     if(!data.requests.length){ listEl.innerHTML = '<div style="color:var(--muted)">No slot requests yet.</div>'; return; }
     listEl.innerHTML = data.requests.map(function(r){
-      var profitColor = r.profit_status === 'profit' ? '#4ade80' : r.profit_status === 'loss' ? '#f87171' : 'var(--faint)';
-      var profitLabel = r.profit_status ? (r.profit_status.charAt(0).toUpperCase()+r.profit_status.slice(1).replace('_',' ')) + (r.profit_amount!=null ? ' ($'+r.profit_amount.toLocaleString()+')' : '') : 'Not recorded yet';
-      return '<div class="admin-row" style="flex-direction:column;align-items:stretch">'
-        + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">'
-          + '<div>'
-            + '<b>'+r.slot_name+'</b> — requested by '+r.username+'<br>'
-            + (r.note ? '<span style="color:var(--muted);font-size:.85rem">'+r.note+'</span><br>' : '')
-            + '<span style="color:var(--faint);font-size:.75rem">'+formatAdminDate(r.created_at)+'</span>'
+      var profitBadge = r.profit_status
+        ? '<span class="admin-pill admin-pill-'+r.profit_status+'">'+(r.profit_status.charAt(0).toUpperCase()+r.profit_status.slice(1).replace('_',' '))+(r.profit_amount!=null ? ' · $'+r.profit_amount.toLocaleString() : '')+'</span>'
+        : '<span class="admin-pill admin-pill-none">Not recorded yet</span>';
+      return '<div class="admin-card-row admin-card-row-orange">'
+        + '<div class="admin-card-icon" style="background:linear-gradient(135deg,#fb923c,#c2410c)">🎰</div>'
+        + '<div style="flex:1;min-width:0">'
+          + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-start">'
+            + '<div><b style="font-size:1.02rem">'+r.slot_name+'</b><br>'
+            + '<span style="color:var(--muted);font-size:.85rem">requested by '+r.username+'</span></div>'
+            + profitBadge
           + '</div>'
-          + '<div style="color:'+profitColor+';font-weight:700;font-size:.85rem;white-space:nowrap">'+profitLabel+'</div>'
-        + '</div>'
-        + '<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center">'
-          + '<select id="slotProfitStatus_'+r.id+'" class="pf-select" style="width:auto;margin-bottom:0;padding:8px 10px;font-size:.82rem">'
-            + '<option value="">No result yet</option>'
-            + '<option value="profit"'+(r.profit_status==='profit'?' selected':'')+'>Profit</option>'
-            + '<option value="loss"'+(r.profit_status==='loss'?' selected':'')+'>Loss</option>'
-            + '<option value="no_play"'+(r.profit_status==='no_play'?' selected':'')+'>Didn\'t play it</option>'
-          + '</select>'
-          + '<input type="number" id="slotProfitAmount_'+r.id+'" placeholder="Amount ($)" value="'+(r.profit_amount!=null?r.profit_amount:'')+'" style="width:110px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-size:.82rem">'
-          + '<button class="admin-btn-secondary" style="padding:8px 14px" onclick="adminUpdateSlotRequest('+r.id+')">Save</button>'
-          + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b);padding:8px 14px" onclick="adminDeleteSlotRequest('+r.id+')">Delete</button>'
+          + (r.note ? '<div style="color:var(--muted);font-size:.85rem;margin-top:6px;font-style:italic">"'+r.note+'"</div>' : '')
+          + '<div style="color:var(--faint);font-size:.75rem;margin-top:4px">'+formatAdminDate(r.created_at)+'</div>'
+          + '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center">'
+            + '<select id="slotProfitStatus_'+r.id+'" class="pf-select" style="width:auto;margin-bottom:0;padding:8px 10px;font-size:.82rem">'
+              + '<option value="">No result yet</option>'
+              + '<option value="profit"'+(r.profit_status==='profit'?' selected':'')+'>Profit</option>'
+              + '<option value="loss"'+(r.profit_status==='loss'?' selected':'')+'>Loss</option>'
+              + '<option value="no_play"'+(r.profit_status==='no_play'?' selected':'')+'>Didn\'t play it</option>'
+            + '</select>'
+            + '<input type="number" id="slotProfitAmount_'+r.id+'" placeholder="Amount ($)" value="'+(r.profit_amount!=null?r.profit_amount:'')+'" style="width:110px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-size:.82rem">'
+            + '<button class="admin-btn-secondary" style="padding:8px 14px" onclick="adminUpdateSlotRequest('+r.id+')">Save</button>'
+            + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b);padding:8px 14px" onclick="adminDeleteSlotRequest('+r.id+')">Delete</button>'
+          + '</div>'
         + '</div>'
       + '</div>';
     }).join('');
@@ -5189,29 +5217,37 @@ async function loadAdminBattles(){
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load.'; return; }
     if(!data.requests.length){ listEl.innerHTML = '<div style="color:var(--muted)">No battle requests yet.</div>'; return; }
     listEl.innerHTML = data.requests.map(function(r){
-      var profitColor = r.profit_status === 'profit' ? '#4ade80' : r.profit_status === 'loss' ? '#f87171' : 'var(--faint)';
-      var profitLabel = r.profit_status ? (r.profit_status.charAt(0).toUpperCase()+r.profit_status.slice(1).replace('_',' ')) + (r.profit_amount!=null ? ' ($'+r.profit_amount.toLocaleString()+')' : '') : 'Not recorded yet';
-      return '<div class="admin-row" style="flex-direction:column;align-items:stretch">'
-        + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">'
-          + '<div>'
-            + '<b>'+r.kick_discord_name+'</b> — requested by '+r.username+'<br>'
-            + '<span style="color:var(--muted);font-size:.85rem">'+r.game_mode+' · '+r.match_type+(r.position ? ' · Position: '+r.position : '')+'</span><br>'
-            + '<span style="color:var(--muted);font-size:.85rem">Cases: '+r.cases+'</span><br>'
-            + '<span style="color:var(--muted);font-size:.85rem">Crazy mode: '+(r.crazy_mode ? 'Yes' : 'No')+' · Borrow: '+(r.borrow ? 'Yes' : 'No')+'</span><br>'
-            + '<span style="color:var(--faint);font-size:.75rem">'+formatAdminDate(r.created_at)+'</span>'
+      var profitBadge = r.profit_status
+        ? '<span class="admin-pill admin-pill-'+r.profit_status+'">'+(r.profit_status.charAt(0).toUpperCase()+r.profit_status.slice(1).replace('_',' '))+(r.profit_amount!=null ? ' · $'+r.profit_amount.toLocaleString() : '')+'</span>'
+        : '<span class="admin-pill admin-pill-none">Not recorded yet</span>';
+      return '<div class="admin-card-row admin-card-row-blue">'
+        + '<div class="admin-card-icon" style="background:linear-gradient(135deg,#60a5fa,#1d4ed8)">⚔️</div>'
+        + '<div style="flex:1;min-width:0">'
+          + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-start">'
+            + '<div><b style="font-size:1.02rem">'+r.kick_discord_name+'</b><br>'
+            + '<span style="color:var(--muted);font-size:.85rem">requested by '+r.username+'</span></div>'
+            + profitBadge
           + '</div>'
-          + '<div style="color:'+profitColor+';font-weight:700;font-size:.85rem;white-space:nowrap">'+profitLabel+'</div>'
-        + '</div>'
-        + '<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center">'
-          + '<select id="battleProfitStatus_'+r.id+'" class="pf-select" style="width:auto;margin-bottom:0;padding:8px 10px;font-size:.82rem">'
-            + '<option value="">No result yet</option>'
-            + '<option value="profit"'+(r.profit_status==='profit'?' selected':'')+'>Profit</option>'
-            + '<option value="loss"'+(r.profit_status==='loss'?' selected':'')+'>Loss</option>'
-            + '<option value="no_play"'+(r.profit_status==='no_play'?' selected':'')+'>Didn\'t play it</option>'
-          + '</select>'
-          + '<input type="number" id="battleProfitAmount_'+r.id+'" placeholder="Amount ($)" value="'+(r.profit_amount!=null?r.profit_amount:'')+'" style="width:110px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-size:.82rem">'
-          + '<button class="admin-btn-secondary" style="padding:8px 14px" onclick="adminUpdateBattleRequest('+r.id+')">Save</button>'
-          + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b);padding:8px 14px" onclick="adminDeleteBattleRequest('+r.id+')">Delete</button>'
+          + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">'
+            + '<span class="admin-tag">'+r.game_mode+'</span>'
+            + '<span class="admin-tag">'+r.match_type+'</span>'
+            + (r.position ? '<span class="admin-tag">Position: '+r.position+'</span>' : '')
+            + (r.crazy_mode ? '<span class="admin-tag admin-tag-warn">Crazy mode</span>' : '')
+            + (r.borrow ? '<span class="admin-tag admin-tag-warn">Borrow</span>' : '')
+          + '</div>'
+          + '<div style="color:var(--muted);font-size:.85rem;margin-top:6px">Cases: '+r.cases+'</div>'
+          + '<div style="color:var(--faint);font-size:.75rem;margin-top:4px">'+formatAdminDate(r.created_at)+'</div>'
+          + '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center">'
+            + '<select id="battleProfitStatus_'+r.id+'" class="pf-select" style="width:auto;margin-bottom:0;padding:8px 10px;font-size:.82rem">'
+              + '<option value="">No result yet</option>'
+              + '<option value="profit"'+(r.profit_status==='profit'?' selected':'')+'>Profit</option>'
+              + '<option value="loss"'+(r.profit_status==='loss'?' selected':'')+'>Loss</option>'
+              + '<option value="no_play"'+(r.profit_status==='no_play'?' selected':'')+'>Didn\'t play it</option>'
+            + '</select>'
+            + '<input type="number" id="battleProfitAmount_'+r.id+'" placeholder="Amount ($)" value="'+(r.profit_amount!=null?r.profit_amount:'')+'" style="width:110px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-size:.82rem">'
+            + '<button class="admin-btn-secondary" style="padding:8px 14px" onclick="adminUpdateBattleRequest('+r.id+')">Save</button>'
+            + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b);padding:8px 14px" onclick="adminDeleteBattleRequest('+r.id+')">Delete</button>'
+          + '</div>'
         + '</div>'
       + '</div>';
     }).join('');
