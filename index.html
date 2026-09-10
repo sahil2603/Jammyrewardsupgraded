@@ -5381,15 +5381,38 @@ var FEATURED_SLOTS = [
   {name:'Big Bass Bonanza', emoji:'🎣', colors:['#4ade80','#16a34a']},
   {name:'Zeus vs Hades', emoji:'⚔️', colors:['#818cf8','#4f46e5']},
 ];
-function renderFeaturedSlots(){
+/* Was a plain emoji + name in a flat tinted box -- pulls each slot's real provider,
+   volatility, and max win from the same catalog the search dropdown uses (awaiting it
+   first so the data is actually there, rather than racing it), so "Popular picks" reads
+   as real information instead of just six labeled buttons. Cards fade/slide in with a
+   stagger, matching the same entrance pattern already used for the admin request cards. */
+async function renderFeaturedSlots(){
   var el = document.getElementById('rsFeatured');
   if(!el) return;
-  el.innerHTML = FEATURED_SLOTS.map(function(s){
-    return '<div class="rs-slot-card" style="background:linear-gradient(135deg,'+s.colors[0]+'22,'+s.colors[1]+'22);border:1px solid '+s.colors[0]+'55;border-radius:14px;padding:18px 14px;text-align:center;cursor:pointer;transition:transform .22s cubic-bezier(.22,1,.36,1)" onclick="pickFeaturedSlot(\''+s.name.replace(/'/g,"\\\\'")+'\')" onmouseover="this.style.transform=\'translateY(-4px)\'" onmouseout="this.style.transform=\'none\'">'
-      + '<div style="font-size:1.8rem;margin-bottom:6px">'+s.emoji+'</div>'
-      + '<div style="font-weight:700;font-size:.85rem">'+s.name+'</div>'
+  await ensureSlotCatalog();
+  el.innerHTML = FEATURED_SLOTS.map(function(s, i){
+    var match = (_slotCatalog || []).find(function(x){ return x.name && x.name.toLowerCase() === s.name.toLowerCase(); });
+    var provider = match ? match.provider : null;
+    var vol = match && match.volatility ? match.volatility.charAt(0).toUpperCase()+match.volatility.slice(1) : null;
+    var maxWin = match && match.max_win ? match.max_win.toLocaleString()+'x' : null;
+    return '<div class="rs-slot-card battle-card" style="animation-delay:'+(i*0.06)+'s;--glow:'+hexToRgb(s.colors[0])+';cursor:pointer;margin-bottom:0" onclick="pickFeaturedSlot(\''+s.name.replace(/'/g,"\\\\'")+'\')">'
+      + '<div class="battle-card-topbar" style="background:linear-gradient(90deg,'+s.colors[0]+','+s.colors[1]+')"></div>'
+      + '<div style="padding:18px 14px;text-align:center">'
+        + '<div class="battle-icon-shimmer" style="width:48px;height:48px;border-radius:14px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;background:linear-gradient(135deg,'+s.colors[0]+','+s.colors[1]+');box-shadow:0 4px 14px -4px rgba(0,0,0,.5)">'+s.emoji+'</div>'
+        + '<div style="font-weight:700;font-size:.88rem">'+s.name+'</div>'
+        + (provider ? '<div style="color:var(--faint);font-size:.72rem;margin-top:4px">'+provider+'</div>' : '')
+        + (vol || maxWin ? '<div style="display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-top:8px">'
+            + (vol ? '<span class="admin-tag" style="font-size:.68rem">'+vol+'</span>' : '')
+            + (maxWin ? '<span class="admin-tag" style="font-size:.68rem;color:#fbbf24;border-color:rgba(251,191,36,.3)">Max '+maxWin+'</span>' : '')
+          + '</div>' : '')
+      + '</div>'
     + '</div>';
   }).join('');
+}
+function hexToRgb(hex){
+  hex = hex.replace('#','');
+  var r = parseInt(hex.substring(0,2),16), g = parseInt(hex.substring(2,4),16), b = parseInt(hex.substring(4,6),16);
+  return r+','+g+','+b;
 }
 function pickFeaturedSlot(name){
   var input = document.getElementById('rsSlotName');
