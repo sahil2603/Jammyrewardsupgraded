@@ -1269,6 +1269,12 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .22s,border-color .22s,background .22s,color .22s}
 .admin-tab.active{background:linear-gradient(135deg,rgba(168,85,247,.25),rgba(139,92,246,.15));
   border-color:rgba(168,85,247,.7);color:#fff;box-shadow:0 6px 20px -6px rgba(168,85,247,.5)}
+/* Pending-count badge on tab buttons -- lets admin see at a glance what needs attention
+   without clicking into each tab first. Hidden entirely (not just showing "0") when there's
+   nothing pending, so a clean slate doesn't clutter the tab bar with empty badges. */
+.admin-badge{display:none;background:#ef4444;color:#fff;font-size:.68rem;font-weight:800;
+  padding:1px 7px;border-radius:99px;margin-left:5px;vertical-align:middle}
+.admin-badge.show{display:inline-block}
 /* Jammmy likes color -- each tab gets its own identity when active instead of every one
    using the same purple, echoing the color-coded pattern already used elsewhere on the
    site (partner cards, feature cards, leaderboard accents). */
@@ -3043,17 +3049,24 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <h1 style="font-family:'Lilita One',sans-serif;font-size:1.8rem;margin-bottom:24px">⚙ Admin Dashboard</h1>
 
         <div style="display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap">
-          <button class="admin-tab active" data-tab="adminVaultTab" onclick="switchAdminTab('adminVaultTab')">Vault</button>
+          <button class="admin-tab active" data-tab="adminOverviewTab" onclick="switchAdminTab('adminOverviewTab')">Overview</button>
+          <button class="admin-tab" data-tab="adminVaultTab" onclick="switchAdminTab('adminVaultTab')">Vault</button>
           <button class="admin-tab" data-tab="adminUsersTab" onclick="switchAdminTab('adminUsersTab')">Users</button>
-          <button class="admin-tab" data-tab="adminRedemptionsTab" onclick="switchAdminTab('adminRedemptionsTab')">Redemptions</button>
+          <button class="admin-tab" data-tab="adminRedemptionsTab" onclick="switchAdminTab('adminRedemptionsTab')">Redemptions <span class="admin-badge" id="badgeRedemptions"></span></button>
           <button class="admin-tab" data-tab="adminAnalyticsTab" onclick="switchAdminTab('adminAnalyticsTab')">Analytics</button>
-          <button class="admin-tab" data-tab="adminVerifyTab" onclick="switchAdminTab('adminVerifyTab')">Verify Players</button>
-          <button class="admin-tab" data-tab="adminSlotsTab" onclick="switchAdminTab('adminSlotsTab')">Slot Requests</button>
-          <button class="admin-tab" data-tab="adminBattlesTab" onclick="switchAdminTab('adminBattlesTab')">Battle Requests</button>
+          <button class="admin-tab" data-tab="adminVerifyTab" onclick="switchAdminTab('adminVerifyTab')">Verify Players <span class="admin-badge" id="badgeVerify"></span></button>
+          <button class="admin-tab" data-tab="adminSlotsTab" onclick="switchAdminTab('adminSlotsTab')">Slot Requests <span class="admin-badge" id="badgeSlots"></span></button>
+          <button class="admin-tab" data-tab="adminBattlesTab" onclick="switchAdminTab('adminBattlesTab')">Battle Requests <span class="admin-badge" id="badgeBattles"></span></button>
         </div>
 
         <!-- VAULT TAB -->
-        <div id="adminVaultTab" class="admin-tab-panel">
+        <div id="adminOverviewTab" class="admin-tab-panel">
+          <div id="adminOverviewGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:28px">Loading&hellip;</div>
+          <h3 style="color:#f87171;margin-bottom:6px">⚠️ Possible Duplicate Accounts</h3>
+          <p style="color:var(--faint);font-size:.85rem;margin-bottom:16px">Flagged for a human look — not decided automatically. A shared wallet or casino username across two Discord accounts is worth checking, not necessarily wrongdoing on its own.</p>
+          <div id="adminDuplicatesList">Loading&hellip;</div>
+        </div>
+        <div id="adminVaultTab" class="admin-tab-panel" style="display:none">
           <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
             <div style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;max-width:500px;flex:1;min-width:320px">
               <h3 style="margin-top:0;color:#a855f7">Vault Management</h3>
@@ -3144,6 +3157,13 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <div style="display:flex;gap:10px;margin-bottom:16px">
             <button class="admin-btn-secondary active admin-verify-filter" data-status="pending" onclick="loadAdminVerifyList('pending')">Pending</button>
             <button class="admin-btn-secondary admin-verify-filter" data-status="approved" onclick="loadAdminVerifyList('approved')">Approved (revoke)</button>
+          </div>
+          <div id="adminVerifyBulkBar" style="display:flex;align-items:center;gap:12px;margin-bottom:14px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;padding:10px 14px">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--muted);font-size:.85rem">
+              <input type="checkbox" onchange="toggleSelectAllClaims(this)" style="width:18px;height:18px;accent-color:#a855f7"> Select all
+            </label>
+            <button class="admin-btn-row-action" onclick="adminBulkApproveSelected()">Approve Selected</button>
+            <button class="admin-btn-row-action" style="background:linear-gradient(135deg,#6b7280,#4b5563)" onclick="adminBulkRejectSelected()">Reject Selected</button>
           </div>
           <div id="adminVerifyList">Loading…</div>
         </div>
@@ -4557,12 +4577,89 @@ async function submitRedeem(){
 function switchAdminTab(tabId){
   document.querySelectorAll('.admin-tab').forEach(function(b){ b.classList.toggle('active', b.dataset.tab === tabId); });
   document.querySelectorAll('.admin-tab-panel').forEach(function(p){ p.style.display = (p.id === tabId) ? 'block' : 'none'; });
+  if(tabId==='adminOverviewTab') loadAdminOverview();
   if(tabId==='adminUsersTab') loadAdminUsers();
   if(tabId==='adminRedemptionsTab') loadAdminRedemptions('');
   if(tabId==='adminAnalyticsTab') loadAdminAnalytics();
   if(tabId==='adminVerifyTab') loadAdminVerifyList();
   if(tabId==='adminSlotsTab') loadAdminSlots();
   if(tabId==='adminBattlesTab') loadAdminBattles();
+}
+
+/* Backs both the Overview tab and the pending-count badges on every other tab button, so
+   admin can see what needs attention without clicking into each one first. Called once on
+   dashboard load (for the badges) and again whenever the Overview tab itself is opened. */
+async function loadAdminOverview(){
+  var token = localStorage.getItem('jammy_session_token');
+  if(!token) return;
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/overview', { headers: { 'Authorization': 'Bearer ' + token }, cache: 'no-store' });
+    var data = await res.json();
+    if(!res.ok) return;
+
+    function setBadge(id, count){
+      var el = document.getElementById(id);
+      if(!el) return;
+      if(count > 0){ el.textContent = count; el.classList.add('show'); }
+      else { el.classList.remove('show'); }
+    }
+    setBadge('badgeVerify', data.pending_claims);
+    setBadge('badgeRedemptions', data.pending_redemptions);
+    setBadge('badgeSlots', data.pending_slot_requests);
+    setBadge('badgeBattles', data.pending_battle_requests);
+
+    var grid = document.getElementById('adminOverviewGrid');
+    if(grid){
+      var stats = [
+        {label:'Pending Claims', value: data.pending_claims, color:'#f472b6'},
+        {label:'Pending Redemptions', value: data.pending_redemptions, color:'#fbbf24'},
+        {label:'Pending Slot Requests', value: data.pending_slot_requests, color:'#fb923c'},
+        {label:'Pending Battle Requests', value: data.pending_battle_requests, color:'#60a5fa'},
+        {label:'New Signups Today', value: data.new_signups_today, color:'#4ade80'},
+        {label:'Total Users', value: data.total_users, color:'#a855f7'},
+        {label:'Coins in Circulation', value: Math.floor(data.total_coins_in_circulation).toLocaleString(), color:'#fbbf24'},
+        {label:'Unclaimed Vault (Coins)', value: Math.floor(data.unclaimed_vault_coins).toLocaleString(), color:'#22d3ee'},
+      ];
+      grid.innerHTML = stats.map(function(s){
+        return '<div style="background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px">'
+          + '<div style="color:var(--faint);font-size:.78rem;margin-bottom:6px">'+s.label+'</div>'
+          + '<div style="font-family:\'Lilita One\',sans-serif;font-size:1.6rem;color:'+s.color+'">'+s.value+'</div>'
+        + '</div>';
+      }).join('');
+    }
+  }catch(e){ console.error('Failed to load admin overview:', e); }
+
+  loadAdminDuplicates();
+}
+
+async function loadAdminDuplicates(){
+  var listEl = document.getElementById('adminDuplicatesList');
+  if(!listEl) return;
+  var token = localStorage.getItem('jammy_session_token');
+  if(!token) return;
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/duplicate-accounts', { headers: { 'Authorization': 'Bearer ' + token }, cache: 'no-store' });
+    var data = await res.json();
+    if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load.'; return; }
+
+    var rows = [];
+    (data.shared_wallets || []).forEach(function(d){
+      rows.push('<div class="admin-row" style="border-left:3px solid #f87171">'
+        + '<div><b>Shared wallet:</b> <span style="font-family:monospace;font-size:.85rem">'+d.wallet_address+'</span><br>'
+        + '<span style="color:var(--muted);font-size:.85rem">Used by: '+d.usernames.join(', ')+'</span></div>'
+      + '</div>');
+    });
+    (data.shared_casino_usernames || []).forEach(function(d){
+      rows.push('<div class="admin-row" style="border-left:3px solid #fbbf24">'
+        + '<div><b>Shared '+d.casino+' username:</b> '+d.casino_username+'<br>'
+        + '<span style="color:var(--muted);font-size:.85rem">Linked by: '+d.usernames.join(', ')+'</span></div>'
+      + '</div>');
+    });
+    listEl.innerHTML = rows.length ? rows.join('') : '<div style="color:var(--faint)">Nothing flagged right now.</div>';
+  }catch(e){
+    console.error('Failed to load duplicate accounts:', e);
+    listEl.innerHTML = 'Network error — try again.';
+  }
 }
 
 async function loadAdminDashboard(){
@@ -4578,6 +4675,7 @@ async function loadAdminDashboard(){
   }
   denied.style.display = 'none';
   content.style.display = 'block';
+  loadAdminOverview(); /* also populates the pending-count badges on every other tab */
   loadVaultForAdmin();
 }
 
@@ -4846,11 +4944,13 @@ async function loadAdminVerifyList(status){
   var token = localStorage.getItem('jammy_session_token');
   var listEl = document.getElementById('adminVerifyList');
   var descEl = document.getElementById('adminVerifyDesc');
+  var bulkBar = document.getElementById('adminVerifyBulkBar');
   if(!token || !listEl) return;
   document.querySelectorAll('.admin-verify-filter').forEach(function(b){ b.classList.toggle('active', b.dataset.status === status); });
   if(descEl) descEl.textContent = status === 'pending'
     ? "Pending casino account claims. Check the claimant's Discord against the casino username before approving — approving credits coins immediately and deducts them from the vault."
     : 'Already-approved claims. If one turns out to be the wrong person, revoke it — this claws back the coins that were awarded (as much as is still in their balance) and restores that amount to the vault.';
+  if(bulkBar) bulkBar.style.display = status === 'pending' ? 'flex' : 'none';
   listEl.innerHTML = 'Loading…';
   try{
     var res = await fetch(AUTH_API + '/api/admin/pending-claims?status=' + status, { headers: { 'Authorization': 'Bearer ' + token } });
@@ -4865,13 +4965,17 @@ async function loadAdminVerifyList(status){
       var coinsLabel = status === 'pending'
         ? '<div style="font-family:\'Lilita One\',sans-serif;color:#fbbf24;font-size:1.1rem">+'+c.would_award_coins.toLocaleString()+' Coins</div>'
         : '<div style="font-family:\'Lilita One\',sans-serif;color:#4ade80;font-size:1.1rem">'+Math.round(c.already_credited_wager*0.1*100)/100+' Coins earned</div>';
-      return '<div class="admin-row">'
+      var checkboxHtml = status === 'pending'
+        ? '<input type="checkbox" class="verify-claim-check" data-user-id="'+c.user_id+'" data-casino="'+c.casino+'" style="width:18px;height:18px;margin-right:12px;flex:none;accent-color:#a855f7">'
+        : '';
+      return '<div class="admin-row" style="align-items:flex-start">'
+        + checkboxHtml
         + '<div>'
           + '<b>'+c.username+'</b> <span style="color:var(--faint);font-size:.78rem">('+c.user_id+')</span><br>'
           + '<span style="color:var(--muted);font-size:.85rem">Claims: <b>'+c.casino_username+'</b> on '+(CASINO_DISPLAY_NAMES[c.casino]||c.casino)+'</span><br>'
           + '<span style="color:var(--faint);font-size:.78rem">Current wager: $'+c.current_wager.toLocaleString()+' · Already credited: $'+c.already_credited_wager.toLocaleString()+' · New: $'+c.new_wager_since_last.toLocaleString()+'</span>'
         + '</div>'
-        + '<div style="text-align:right">'
+        + '<div style="text-align:right;margin-left:auto">'
           + coinsLabel
           + '<div style="margin-top:6px;display:flex;gap:6px;justify-content:flex-end">'
             + actionsHtml
@@ -4883,6 +4987,61 @@ async function loadAdminVerifyList(status){
     console.error('Failed to load claims:', e);
     listEl.innerHTML = 'Network error — try again.';
   }
+}
+
+function toggleSelectAllClaims(checkbox){
+  document.querySelectorAll('.verify-claim-check').forEach(function(cb){ cb.checked = checkbox.checked; });
+}
+
+function getSelectedClaims(){
+  return Array.from(document.querySelectorAll('.verify-claim-check:checked')).map(function(cb){
+    return { user_id: cb.dataset.userId, casino: cb.dataset.casino };
+  });
+}
+
+async function adminBulkApproveSelected(){
+  var claims = getSelectedClaims();
+  if(!claims.length){ alert('Select at least one claim first.'); return; }
+  if(!confirm('Approve '+claims.length+' selected claim(s)? This credits coins immediately for each one.')) return;
+  var token = localStorage.getItem('jammy_session_token');
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/bulk-approve-claims', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ claims: claims })
+    });
+    var data = await res.json();
+    if(res.ok){
+      alert('Approved '+data.succeeded+' of '+claims.length+' claim(s).' + (data.failed ? ' '+data.failed+' failed — see console for details.' : ''));
+      if(data.failed) console.log('Bulk approve results:', data.results);
+      loadAdminVerifyList('pending');
+      loadAdminOverview();
+    } else {
+      alert(data.error || 'Bulk approve failed.');
+    }
+  }catch(e){ console.error('Bulk approve failed:', e); alert('Network error — try again.'); }
+}
+
+async function adminBulkRejectSelected(){
+  var claims = getSelectedClaims();
+  if(!claims.length){ alert('Select at least one claim first.'); return; }
+  if(!confirm('Reject '+claims.length+' selected claim(s)? No coins are awarded for these.')) return;
+  var token = localStorage.getItem('jammy_session_token');
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/bulk-reject-claims', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ claims: claims })
+    });
+    var data = await res.json();
+    if(res.ok){
+      alert('Rejected '+data.rejected+' claim(s).');
+      loadAdminVerifyList('pending');
+      loadAdminOverview();
+    } else {
+      alert(data.error || 'Bulk reject failed.');
+    }
+  }catch(e){ console.error('Bulk reject failed:', e); alert('Network error — try again.'); }
 }
 
 async function adminRevokeClaim(userId, casino){
