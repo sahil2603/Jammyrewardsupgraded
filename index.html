@@ -3524,6 +3524,19 @@ function currentLbPeriod(){
   var end = start + msPer14d;
   return {start:new Date(start), end:new Date(end)};
 }
+/* Upgrader's real cycle drifted from the shared Jan-4-2026 anchor (confirmed: the generic
+   formula was computing Sep 13 -> Sep 27 for the period Upgrader confirmed is actually
+   Sep 9 -> Sep 23, a real 4-day mismatch) -- gets its own anchor instead of sharing
+   currentLbPeriod() with RustMagic, whose schedule hasn't been reported as drifted. */
+function currentUpgraderPeriod(){
+  var anchor = Date.UTC(2026,8,9,0,0,0); // confirmed real period start: Sep 9, 2026
+  var msPer14d = 14*24*60*60*1000;
+  var now = Date.now();
+  var periodsElapsed = Math.floor((now-anchor)/msPer14d);
+  var start = anchor + periodsElapsed*msPer14d;
+  var end = start + msPer14d;
+  return {start:new Date(start), end:new Date(end)};
+}
 function currentMonthlyPeriod(){
   var now = new Date();
   var start = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1, 0, 0, 0));
@@ -3531,7 +3544,10 @@ function currentMonthlyPeriod(){
   return {start:start, end:end};
 }
 function lbcd2(){
-  var period = _realPeriodOverride || ((CURRENT_LB_CASINO === 'degencity') ? currentMonthlyPeriod() : currentLbPeriod());
+  var period = _realPeriodOverride
+    || (CURRENT_LB_CASINO === 'degencity' ? currentMonthlyPeriod()
+      : CURRENT_LB_CASINO === 'upgrader' ? currentUpgraderPeriod()
+      : currentLbPeriod());
   var n = new Date();
   var s = Math.max(0, Math.floor((period.end - n)/1000));
   var el = document.getElementById('lb-cd2');
@@ -3604,6 +3620,18 @@ function renderLeaderboardRows(wagers, rewards){
   /* rank -> prize lookup, built from the casino's real configured rewards when available
      (Upgrader provides this; RustMagic/DegenCity don't expose a reward structure) */
   var prizeByRank = {};
+
+  /* Upgrader's confirmed current payout structure ($150/$100/$75/$45/$20/$10 for ranks 1-6,
+     effective for the Sep 9 -> Sep 23 period) -- set as the baseline first so it shows
+     immediately even if Upgrader's own API doesn't happen to return reward data for a given
+     rank, but the live rewards loop right after this still overrides per-rank whenever the
+     API actually does provide it, so a real API-provided prize is never silently replaced
+     by a possibly-stale hardcoded one. */
+  var UPGRADER_PRIZES = {1:150, 2:100, 3:75, 4:45, 5:20, 6:10};
+  if(CURRENT_LB_CASINO === 'upgrader'){
+    prizeByRank = Object.assign({}, UPGRADER_PRIZES);
+  }
+
   (rewards||[]).forEach(function(r){ prizeByRank[r.place] = r.winnings; });
 
   /* RustMafia's leaderboard has its own fixed prize structure ($125/$75/$45/$36/$34 for
