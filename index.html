@@ -3618,21 +3618,20 @@ function renderLeaderboardRows(wagers, rewards){
     return;
   }
   /* rank -> prize lookup, built from the casino's real configured rewards when available
-     (Upgrader provides this; RustMagic/DegenCity don't expose a reward structure) */
+     (RustMagic/DegenCity don't expose a reward structure) */
   var prizeByRank = {};
+  (rewards||[]).forEach(function(r){ prizeByRank[r.place] = r.winnings; });
 
   /* Upgrader's confirmed current payout structure ($150/$100/$75/$45/$20/$10 for ranks 1-6,
-     effective for the Sep 9 -> Sep 23 period) -- set as the baseline first so it shows
-     immediately even if Upgrader's own API doesn't happen to return reward data for a given
-     rank, but the live rewards loop right after this still overrides per-rank whenever the
-     API actually does provide it, so a real API-provided prize is never silently replaced
-     by a possibly-stale hardcoded one. */
+     effective for the Sep 9 -> Sep 23 period). This used to defer to whatever Upgrader's own
+     API returned per-rank, on the assumption their live reward data was accurate -- turned
+     out to still be reflecting the old numbers, so the confirmed update was silently getting
+     overridden and never actually showing. Applied unconditionally now, same as RustMafia's
+     fixed prize table below: no deference to live data that's turned out to be unreliable. */
   var UPGRADER_PRIZES = {1:150, 2:100, 3:75, 4:45, 5:20, 6:10};
   if(CURRENT_LB_CASINO === 'upgrader'){
     prizeByRank = Object.assign({}, UPGRADER_PRIZES);
   }
-
-  (rewards||[]).forEach(function(r){ prizeByRank[r.place] = r.winnings; });
 
   /* RustMafia's leaderboard has its own fixed prize structure ($125/$75/$45/$36/$34 for
      ranks 1-5), separate from the generic podium-snapshot fallback used for casinos with
