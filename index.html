@@ -1328,6 +1328,33 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .admin-pill-profit{background:rgba(74,222,128,.14);color:#4ade80;border:1px solid rgba(74,222,128,.35)}
 .admin-pill-loss{background:rgba(248,113,113,.14);color:#f87171;border:1px solid rgba(248,113,113,.35)}
 .admin-pill-no_play{background:rgba(148,163,184,.14);color:#94a3b8;border:1px solid rgba(148,163,184,.35)}
+/* Battle Requests card redesign -- was flagged as "too basic". Real entrance animation
+   (fade + slide up, staggered per card via the animation-delay set inline per row) instead
+   of everything just appearing at once, a colored top bar + hover lift/glow tied to that
+   request's game mode (set via the --glow custom property, since the color itself is only
+   known per-row in JS), and a gentle shimmer sweep across the icon badge to give the card
+   some life at rest, not just on interaction. */
+@keyframes battleCardIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.battle-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;
+  margin-bottom:14px;overflow:hidden;opacity:0;animation:battleCardIn .5s cubic-bezier(.22,1,.36,1) forwards;
+  transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s,border-color .25s}
+.battle-card:hover{transform:translateY(-3px);border-color:rgba(var(--glow),.5);
+  box-shadow:0 14px 30px -10px rgba(var(--glow),.35)}
+.battle-card-topbar{height:4px;width:100%}
+/* Shimmer sweep implemented via transform (translateX) rather than animating
+   background-position -- background-position animation is expensive per-element and this
+   runs on every visible card's icon simultaneously (could be a dozen+ pending battle
+   requests at once), which is exactly the pattern that caused a real site-wide FPS crisis
+   earlier (1-2 FPS from several background-position/filter animations running at once).
+   transform is GPU-composited and stays cheap regardless of how many cards are on screen. */
+@keyframes iconShimmer{0%{transform:translateX(-130%) rotate(20deg)}100%{transform:translateX(230%) rotate(20deg)}}
+.battle-icon-shimmer{position:relative;overflow:hidden}
+.battle-icon-shimmer::after{content:'';position:absolute;top:-50%;left:0;width:40%;height:200%;
+  background:rgba(255,255,255,.35);filter:blur(4px);
+  animation:iconShimmer 3.2s ease-in-out infinite}
+@keyframes flagPulse{0%,100%{box-shadow:0 0 0 0 rgba(251,146,60,.5)}50%{box-shadow:0 0 0 5px rgba(251,146,60,0)}}
+.admin-flag-pulse{background:rgba(251,146,60,.14);border:1px solid rgba(251,146,60,.4);color:#fb923c;
+  font-size:.76rem;font-weight:800;padding:4px 11px;border-radius:99px;animation:flagPulse 2s ease-in-out infinite}
 #adminVerifyTab .admin-row{border-left:3px solid #f472b6}
 #adminSlotsList .admin-row{border-left:3px solid #fb923c}
 
@@ -5227,40 +5254,60 @@ async function loadAdminBattles(){
     var data = await res.json();
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load.'; return; }
     if(!data.requests.length){ listEl.innerHTML = '<div style="color:var(--muted)">No battle requests yet.</div>'; return; }
-    listEl.innerHTML = data.requests.map(function(r){
+    /* Was one flat blue color for every request regardless of game mode -- each mode now
+       gets its own accent (glow, icon-badge gradient, and top border), so a Jackpot request
+       reads differently from a Terminal one at a glance instead of everything looking the
+       same shade of "battle". Cards fade/slide in with a small stagger on load, and lift
+       with a matching-color glow on hover -- was completely static before. */
+    var MODE_THEME = {
+      'Normal':   { grad:'#94a3b8,#475569', glow:'148,163,184' },
+      'Shared':   { grad:'#a855f7,#6d28d9', glow:'168,85,247' },
+      'Point Rush': { grad:'#fb923c,#c2410c', glow:'251,146,60' },
+      'Jackpot':  { grad:'#fbbf24,#b45309', glow:'251,191,36' },
+      'Terminal': { grad:'#f87171,#b91c1c', glow:'248,113,113' },
+    };
+    listEl.innerHTML = data.requests.map(function(r, i){
+      var theme = MODE_THEME[r.game_mode] || MODE_THEME['Normal'];
       var profitBadge = r.profit_status
         ? '<span class="admin-pill admin-pill-'+r.profit_status+'">'+(r.profit_status.charAt(0).toUpperCase()+r.profit_status.slice(1).replace('_',' '))+(r.profit_amount!=null ? ' · $'+r.profit_amount.toLocaleString() : '')+'</span>'
         : '<span class="admin-pill admin-pill-none">Not recorded yet</span>';
-      return '<div class="admin-card-row admin-card-row-blue">'
-        + '<div class="admin-card-icon" style="background:linear-gradient(135deg,#60a5fa,#1d4ed8)">⚔️</div>'
-        + '<div style="flex:1;min-width:0">'
-          + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-start">'
-            + '<div><b style="font-size:1.02rem">'+r.kick_discord_name+'</b><br>'
-            + '<span style="color:var(--muted);font-size:.85rem">requested by '+r.username+'</span></div>'
-            + profitBadge
-          + '</div>'
-          + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">'
-            + '<span class="admin-tag">'+r.game_mode+'</span>'
-            + '<span class="admin-tag">'+r.match_type+'</span>'
-            + (r.position ? '<span class="admin-tag">Position: '+r.position+'</span>' : '')
-            + (r.crazy_mode ? '<span class="admin-tag admin-tag-warn">Crazy mode</span>' : '')
-            + (r.borrow ? '<span class="admin-tag admin-tag-warn">Borrow</span>' : '')
-          + '</div>'
-          + '<div style="color:var(--muted);font-size:.85rem;margin-top:6px">Cases: '+r.cases+'</div>'
-          + '<div style="color:var(--faint);font-size:.75rem;margin-top:4px">'+formatAdminDate(r.created_at)+'</div>'
-          + '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center">'
-            + '<select id="battleProfitStatus_'+r.id+'" class="pf-select" style="width:auto;margin-bottom:0;padding:8px 10px;font-size:.82rem">'
-              + '<option value="">No result yet</option>'
-              + '<option value="profit"'+(r.profit_status==='profit'?' selected':'')+'>Profit</option>'
-              + '<option value="loss"'+(r.profit_status==='loss'?' selected':'')+'>Loss</option>'
-              + '<option value="no_play"'+(r.profit_status==='no_play'?' selected':'')+'>Didn\'t play it</option>'
-            + '</select>'
-            + '<input type="number" id="battleProfitAmount_'+r.id+'" placeholder="Amount ($)" value="'+(r.profit_amount!=null?r.profit_amount:'')+'" style="width:110px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-size:.82rem">'
-            + '<button class="admin-btn-secondary" style="padding:8px 14px" onclick="adminUpdateBattleRequest('+r.id+')">Save</button>'
-            + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b);padding:8px 14px" onclick="adminDeleteBattleRequest('+r.id+')">Delete</button>'
+      var specialFlags = (r.crazy_mode || r.borrow)
+        ? '<div style="display:flex;gap:6px;margin-top:8px">'
+          + (r.crazy_mode ? '<span class="admin-flag-pulse">🔥 Crazy Mode</span>' : '')
+          + (r.borrow ? '<span class="admin-flag-pulse" style="background:rgba(96,165,250,.14);border-color:rgba(96,165,250,.4);color:#60a5fa">🤝 Borrow</span>' : '')
+        + '</div>' : '';
+      return '<div class="battle-card" style="animation-delay:'+(i*0.06)+'s;--glow:'+theme.glow+'">'
+        + '<div class="battle-card-topbar" style="background:linear-gradient(90deg,'+theme.grad+')"></div>'
+        + '<div style="display:flex;gap:14px;padding:16px 18px">'
+          + '<div class="admin-card-icon battle-icon-shimmer" style="background:linear-gradient(135deg,'+theme.grad+')">⚔️</div>'
+          + '<div style="flex:1;min-width:0">'
+            + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-start">'
+              + '<div><b style="font-size:1.05rem">'+r.kick_discord_name+'</b><br>'
+              + '<span style="color:var(--muted);font-size:.85rem">requested by '+r.username+'</span></div>'
+              + profitBadge
+            + '</div>'
+            + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">'
+              + '<span class="admin-tag" style="border-color:rgba('+theme.glow+',.4);color:#fff;background:rgba('+theme.glow+',.14)">'+r.game_mode+'</span>'
+              + '<span class="admin-tag">'+r.match_type+'</span>'
+              + (r.position ? '<span class="admin-tag">📍 '+r.position+'</span>' : '')
+            + '</div>'
+            + specialFlags
+            + '<div style="color:var(--muted);font-size:.85rem;margin-top:10px">🎁 <b>Cases:</b> '+r.cases+'</div>'
+            + '<div style="color:var(--faint);font-size:.75rem;margin-top:6px">'+formatAdminDate(r.created_at)+'</div>'
+            + '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center">'
+              + '<select id="battleProfitStatus_'+r.id+'" class="pf-select" style="width:auto;margin-bottom:0;padding:8px 10px;font-size:.82rem">'
+                + '<option value="">No result yet</option>'
+                + '<option value="profit"'+(r.profit_status==='profit'?' selected':'')+'>Profit</option>'
+                + '<option value="loss"'+(r.profit_status==='loss'?' selected':'')+'>Loss</option>'
+                + '<option value="no_play"'+(r.profit_status==='no_play'?' selected':'')+'>Didn\'t play it</option>'
+              + '</select>'
+              + '<input type="number" id="battleProfitAmount_'+r.id+'" placeholder="Amount ($)" value="'+(r.profit_amount!=null?r.profit_amount:'')+'" style="width:110px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-size:.82rem">'
+              + '<button class="admin-btn-secondary" style="padding:8px 14px" onclick="adminUpdateBattleRequest('+r.id+')">Save</button>'
+              + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b);padding:8px 14px" onclick="adminDeleteBattleRequest('+r.id+')">Delete</button>'
           + '</div>'
         + '</div>'
-      + '</div>';
+      + '</div>'
+    + '</div>';
     }).join('');
   }catch(e){
     console.error('Failed to load battle requests:', e);
