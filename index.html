@@ -5398,7 +5398,7 @@ async function renderFeaturedSlots(){
     return '<div class="rs-slot-card battle-card" style="animation-delay:'+(i*0.06)+'s;--glow:'+hexToRgb(s.colors[0])+';cursor:pointer;margin-bottom:0" onclick="pickFeaturedSlot(\''+s.name.replace(/'/g,"\\\\'")+'\')">'
       + '<div class="battle-card-topbar" style="background:linear-gradient(90deg,'+s.colors[0]+','+s.colors[1]+')"></div>'
       + '<div style="padding:18px 14px;text-align:center">'
-        + '<div class="battle-icon-shimmer" style="width:48px;height:48px;border-radius:14px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;background:linear-gradient(135deg,'+s.colors[0]+','+s.colors[1]+');box-shadow:0 4px 14px -4px rgba(0,0,0,.5)">'+s.emoji+'</div>'
+        + '<div class="battle-icon-shimmer" style="width:48px;height:48px;border-radius:14px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;background:linear-gradient(135deg,'+s.colors[0]+','+s.colors[1]+');box-shadow:0 4px 14px -4px rgba(0,0,0,.5);overflow:hidden">'+(match && match.image ? '<img src="'+match.image+'" loading="lazy" style="width:100%;height:100%;object-fit:cover" onerror="this.remove()">' : s.emoji)+'</div>'
         + '<div style="font-weight:700;font-size:.88rem">'+s.name+'</div>'
         + (provider ? '<div style="color:var(--faint);font-size:.72rem;margin-top:4px">'+provider+'</div>' : '')
         + (vol || maxWin ? '<div style="display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-top:8px">'
@@ -5515,7 +5515,7 @@ function setupSlotAutocomplete(){
       return '<div class="rs-slot-option" style="display:flex;gap:12px;align-items:center;padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.06)" '
         + 'onmouseover="this.style.background=\'rgba(255,255,255,.06)\'" onmouseout="this.style.background=\'none\'" '
         + 'onclick="selectSlotOption(this)" data-name="'+s.name.replace(/"/g,'&quot;')+'">'
-        + '<div style="flex:none;width:46px;height:46px;border-radius:8px;background:'+gradientFor(s.name)+';display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;text-align:center;line-height:1.1;color:rgba(255,255,255,.9);overflow:hidden;padding:2px">'+s.name.split(' ').slice(0,2).join(' ')+'</div>'
+        + '<div style="flex:none;width:46px;height:46px;border-radius:8px;background:'+gradientFor(s.name)+';display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;text-align:center;line-height:1.1;color:rgba(255,255,255,.9);overflow:hidden;padding:2px">'+(s.image ? '<img src="'+s.image+'" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:8px" onerror="this.remove()">' : s.name.split(' ').slice(0,2).join(' '))+'</div>'
         + '<div style="min-width:0;flex:1">'
           + '<div style="font-weight:600;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+s.name+'</div>'
           + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:2px;font-size:.72rem">'
