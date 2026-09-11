@@ -5395,16 +5395,24 @@ async function renderFeaturedSlots(){
     var provider = match ? match.provider : null;
     var vol = match && match.volatility ? match.volatility.charAt(0).toUpperCase()+match.volatility.slice(1) : null;
     var maxWin = match && match.max_win ? match.max_win.toLocaleString()+'x' : null;
-    return '<div class="rs-slot-card battle-card" style="animation-delay:'+(i*0.06)+'s;--glow:'+hexToRgb(s.colors[0])+';cursor:pointer;margin-bottom:0" onclick="pickFeaturedSlot(\''+s.name.replace(/'/g,"\\\\'")+'\')">'
-      + '<div class="battle-card-topbar" style="background:linear-gradient(90deg,'+s.colors[0]+','+s.colors[1]+')"></div>'
-      + '<div style="padding:18px 14px;text-align:center">'
-        + '<div class="battle-icon-shimmer" style="width:48px;height:48px;border-radius:14px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;background:linear-gradient(135deg,'+s.colors[0]+','+s.colors[1]+');box-shadow:0 4px 14px -4px rgba(0,0,0,.5);overflow:hidden">'+(match && match.image ? '<img src="'+match.image+'" loading="lazy" style="width:100%;height:100%;object-fit:cover" onerror="this.remove()">' : s.emoji)+'</div>'
-        + '<div style="font-weight:700;font-size:.88rem">'+s.name+'</div>'
-        + (provider ? '<div style="color:var(--faint);font-size:.72rem;margin-top:4px">'+provider+'</div>' : '')
-        + (vol || maxWin ? '<div style="display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-top:8px">'
-            + (vol ? '<span class="admin-tag" style="font-size:.68rem">'+vol+'</span>' : '')
-            + (maxWin ? '<span class="admin-tag" style="font-size:.68rem;color:#fbbf24;border-color:rgba(251,191,36,.3)">Max '+maxWin+'</span>' : '')
-          + '</div>' : '')
+    /* Was a small 48px icon buried under three separate lines of text -- the poster is now
+       the card: a full-width, tall image area up top (real photo where the catalog has one,
+       the same gradient + emoji as a large centered fallback otherwise), with just the name
+       overlaid at the bottom of the poster itself and the provider/stats condensed into one
+       compact line below, instead of stacked separately. */
+    return '<div class="rs-slot-card battle-card" style="animation-delay:'+(i*0.06)+'s;--glow:'+hexToRgb(s.colors[0])+';cursor:pointer;margin-bottom:0;padding:0" onclick="pickFeaturedSlot(\''+s.name.replace(/'/g,"\\\\'")+'\')">'
+      + '<div class="battle-icon-shimmer" style="position:relative;height:130px;background:linear-gradient(135deg,'+s.colors[0]+','+s.colors[1]+');display:flex;align-items:center;justify-content:center;overflow:hidden">'
+        + (match && match.image
+          ? '<img src="'+match.image+'" loading="lazy" style="width:100%;height:100%;object-fit:cover" onerror="this.remove()">'
+          : '<span style="font-size:2.6rem">'+s.emoji+'</span>')
+        + '<div style="position:absolute;left:0;right:0;bottom:0;padding:20px 12px 8px;background:linear-gradient(0deg,rgba(0,0,0,.85),transparent);font-weight:800;font-size:.92rem;color:#fff;text-align:left">'+s.name+'</div>'
+      + '</div>'
+      + '<div style="padding:10px 12px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">'
+        + '<span style="color:var(--faint);font-size:.72rem">'+(provider||'')+'</span>'
+        + '<div style="display:flex;gap:5px;flex-wrap:wrap">'
+          + (vol ? '<span class="admin-tag" style="font-size:.66rem">'+vol+'</span>' : '')
+          + (maxWin ? '<span class="admin-tag" style="font-size:.66rem;color:#fbbf24;border-color:rgba(251,191,36,.3)">'+maxWin+'</span>' : '')
+        + '</div>'
       + '</div>'
     + '</div>';
   }).join('');
