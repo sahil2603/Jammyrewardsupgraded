@@ -5208,6 +5208,7 @@ async function loadAdminSlots(){
       var profitBadge = r.profit_status
         ? '<span class="admin-pill admin-pill-'+r.profit_status+'">'+(r.profit_status.charAt(0).toUpperCase()+r.profit_status.slice(1).replace('_',' '))+(r.profit_amount!=null ? ' · $'+r.profit_amount.toLocaleString() : '')+'</span>'
         : '<span class="admin-pill admin-pill-none">Not recorded yet</span>';
+      var awardedBadge = r.coins_awarded ? '<span class="admin-pill admin-pill-profit" style="margin-left:6px">🪙 Awarded '+r.coins_awarded.toLocaleString()+' Coins</span>' : '';
       return '<div class="battle-card" style="animation-delay:'+(i*0.06)+'s;--glow:'+glow+'">'
         + '<div class="battle-card-topbar" style="background:linear-gradient(90deg,rgb('+glow+'),rgba('+glow+',.4))"></div>'
         + '<div style="display:flex;gap:14px;padding:16px 18px">'
@@ -5216,7 +5217,7 @@ async function loadAdminSlots(){
             + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-start">'
               + '<div><b style="font-size:1.05rem">'+r.slot_name+'</b><br>'
               + '<span style="color:var(--muted);font-size:.85rem">requested by '+r.username+(provider ? ' · '+provider : '')+'</span></div>'
-              + profitBadge
+              + '<div>'+profitBadge+awardedBadge+'</div>'
             + '</div>'
             + (r.note ? '<div style="color:var(--muted);font-size:.85rem;margin-top:8px;font-style:italic">"'+r.note+'"</div>' : '')
             + '<div style="color:var(--faint);font-size:.75rem;margin-top:6px">'+formatAdminDate(r.created_at)+'</div>'
@@ -5228,6 +5229,7 @@ async function loadAdminSlots(){
                 + '<option value="no_play"'+(r.profit_status==='no_play'?' selected':'')+'>Didn\'t play it</option>'
               + '</select>'
               + '<input type="number" id="slotProfitAmount_'+r.id+'" placeholder="Amount ($)" value="'+(r.profit_amount!=null?r.profit_amount:'')+'" style="width:110px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-size:.82rem">'
+              + '<input type="number" id="slotCoinsAward_'+r.id+'" placeholder="🪙 Award coins" value="'+(r.coins_awarded!=null?r.coins_awarded:'')+'" style="width:130px;padding:8px 10px;border-radius:8px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.35);color:#fbbf24;font-size:.82rem">'
               + '<button class="admin-btn-secondary" style="padding:8px 14px" onclick="adminUpdateSlotRequest('+r.id+')">Save</button>'
               + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b);padding:8px 14px" onclick="adminDeleteSlotRequest('+r.id+')">Delete</button>'
             + '</div>'
@@ -5245,11 +5247,12 @@ async function adminUpdateSlotRequest(id){
   var token = localStorage.getItem('jammy_session_token');
   var statusEl = document.getElementById('slotProfitStatus_'+id);
   var amountEl = document.getElementById('slotProfitAmount_'+id);
+  var coinsEl = document.getElementById('slotCoinsAward_'+id);
   try{
     var res = await fetch(AUTH_API + '/api/admin/update-slot-request', {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: id, profit_status: statusEl.value || null, profit_amount: amountEl.value || null })
+      body: JSON.stringify({ id: id, profit_status: statusEl.value || null, profit_amount: amountEl.value || null, coins_to_award: coinsEl.value || null })
     });
     var data = await res.json();
     if(res.ok){ loadAdminSlots(); } else { alert(data.error || 'Failed to save.'); }
@@ -5566,9 +5569,10 @@ async function loadMySlotRequests(){
       var badge = info
         ? '<span class="admin-pill '+info.cls+'">'+info.icon+' '+info.label+(r.profit_amount!=null ? ' · $'+r.profit_amount.toLocaleString() : '')+'</span>'
         : '<span class="admin-pill admin-pill-none">⏳ Waiting on Jammmy</span>';
+      var awardedBadge = r.coins_awarded ? '<span class="admin-pill admin-pill-profit" style="margin-left:6px">🪙 Awarded '+r.coins_awarded.toLocaleString()+' Coins</span>' : '';
       return '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px">'
         + '<div><b>'+r.slot_name+'</b><br><span style="color:var(--faint);font-size:.78rem">'+formatAdminDate(r.created_at)+'</span></div>'
-        + badge
+        + '<div>'+badge+awardedBadge+'</div>'
       + '</div>';
     }).join('');
   }catch(e){ console.error('Failed to load my slot requests:', e); }
