@@ -3221,10 +3221,11 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
         <!-- VERIFY PLAYERS TAB -->
         <div id="adminVerifyTab" class="admin-tab-panel" style="display:none">
-          <p style="color:var(--muted);font-size:.9rem;margin-bottom:18px" id="adminVerifyDesc">Pending casino account claims. Check the claimant's Discord against the casino username before approving — approving credits coins immediately and deducts them from the vault.</p>
-          <div style="display:flex;gap:10px;margin-bottom:16px">
+          <p style="color:var(--muted);font-size:.9rem;margin-bottom:18px" id="adminVerifyDesc">Pending casino account claims. Check the claimant's Discord against the casino username before approving — approving credits coins immediately and deducts them from the vault. Approved accounts are also synced automatically on a schedule, so new wagering keeps earning coins without needing to be re-approved.</p>
+          <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
             <button class="admin-btn-secondary active admin-verify-filter" data-status="pending" onclick="loadAdminVerifyList('pending')">Pending</button>
             <button class="admin-btn-secondary admin-verify-filter" data-status="approved" onclick="loadAdminVerifyList('approved')">Approved (revoke)</button>
+            <button class="admin-btn-secondary" style="margin-left:auto;border-color:rgba(74,222,128,.4);color:#4ade80" onclick="adminSyncWagersNow()" id="adminSyncWagersBtn">🔄 Sync New Wagers Now</button>
           </div>
           <div id="adminVerifyBulkBar" style="display:flex;align-items:center;gap:12px;margin-bottom:14px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;padding:10px 14px">
             <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--muted);font-size:.85rem">
@@ -5129,6 +5130,26 @@ async function adminRevokeClaim(userId, casino){
       alert(data.error || 'Failed to revoke.');
     }
   }catch(e){ console.error('Revoke failed:', e); alert('Network error — try again.'); }
+}
+
+async function adminSyncWagersNow(){
+  var btn = document.getElementById('adminSyncWagersBtn');
+  var token = localStorage.getItem('jammy_session_token');
+  if(btn){ btn.disabled = true; btn.textContent = '🔄 Syncing…'; }
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/sync-wagers-now', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    var data = await res.json();
+    if(res.ok){
+      alert(data.synced_links > 0 ? 'Synced new wagering for '+data.synced_links+' account(s).' : 'Everyone is already up to date — no new wagering to sync.');
+      loadAdminVerifyList('approved');
+    } else {
+      alert(data.error || 'Sync failed.');
+    }
+  }catch(e){ console.error('Sync wagers failed:', e); alert('Network error — try again.'); }
+  finally{ if(btn){ btn.disabled = false; btn.textContent = '🔄 Sync New Wagers Now'; } }
 }
 
 async function adminApproveClaim(userId, casino){
