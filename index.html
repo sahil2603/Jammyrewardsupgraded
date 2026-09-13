@@ -3626,6 +3626,20 @@ function currentUpgraderPeriod(){
   var end = start + msPer14d;
   return {start:new Date(start), end:new Date(end)};
 }
+/* RustMagic's API returns no period metadata at all (confirmed directly against the live
+   response -- no startDate/endDate/fromTime/toTime fields), and was previously being called
+   with no date filter whatsoever, which is why the leaderboard never reset at the real
+   bi-weekly boundary. Anchor confirmed against RustMagic's own affiliate dashboard: current
+   period Sep 9 -> Sep 23, 2026. */
+function currentRustMagicPeriod(){
+  var anchor = Date.UTC(2026,8,9,0,0,0); // confirmed real period start: Sep 9, 2026
+  var msPer14d = 14*24*60*60*1000;
+  var now = Date.now();
+  var periodsElapsed = Math.floor((now-anchor)/msPer14d);
+  var start = anchor + periodsElapsed*msPer14d;
+  var end = start + msPer14d;
+  return {start:new Date(start), end:new Date(end)};
+}
 function currentMonthlyPeriod(){
   var now = new Date();
   var start = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1, 0, 0, 0));
@@ -3636,6 +3650,7 @@ function lbcd2(){
   var period = _realPeriodOverride
     || (CURRENT_LB_CASINO === 'degencity' ? currentMonthlyPeriod()
       : CURRENT_LB_CASINO === 'upgrader' ? currentUpgraderPeriod()
+      : CURRENT_LB_CASINO === 'rustmagic' ? currentRustMagicPeriod()
       : currentLbPeriod());
   var n = new Date();
   var s = Math.max(0, Math.floor((period.end - n)/1000));
@@ -3669,7 +3684,14 @@ async function loadLeaderboard(casino){
   var rowsEl = document.getElementById('lbFullRows');
   if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Connecting to live leaderboard&hellip;</div>';
   try{
-    var res = await fetch(LB_PROXY_URL + '?casino=' + casino);
+    var apiUrl = LB_PROXY_URL + '?casino=' + casino;
+    if(casino === 'rustmagic'){
+      /* RustMagic's API applies no date filter unless explicitly told to -- confirmed by
+         checking the raw response directly, which never resets between periods otherwise. */
+      var rmPeriod = currentRustMagicPeriod();
+      apiUrl += '&fromTime=' + Math.floor(rmPeriod.start.getTime()/1000) + '&toTime=' + Math.floor(rmPeriod.end.getTime()/1000);
+    }
+    var res = await fetch(apiUrl);
     var data = await res.json();
     if(myRequest !== lbRequestSeq) return; /* a newer tab switch has already superseded this one */
     if(data.error){
