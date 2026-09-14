@@ -2551,6 +2551,15 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <p style="color:var(--faint);font-size:.9rem;margin-bottom:20px">Compete for prizes and climb the ranks in the RustMafia leaderboard.</p>
           <button onclick="goToLeaderboard('rustmafia')" style="background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#fff;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer">View Leaderboard &rarr;</button>
         </div>
+        <div class="lb-preview-card" style="background:rgba(20,20,30,.6);border:1px solid rgba(192,132,252,.25);border-top:3px solid #c084fc;border-radius:16px;padding:28px;position:relative">
+          <span style="position:absolute;top:14px;right:14px;background:rgba(192,132,252,.15);border:1px solid rgba(192,132,252,.4);color:#c084fc;font-size:.68rem;font-weight:800;padding:3px 10px;border-radius:99px">COMING SOON</span>
+          <div style="width:110px;height:44px;border-radius:10px;background:rgba(192,132,252,.12);display:flex;align-items:center;justify-content:center;margin-bottom:16px;padding:6px 10px">
+            <img src="powerwin.png" alt="Power.win" style="width:100%;height:100%;object-fit:contain">
+          </div>
+          <h3 style="font-family:'Lilita One',sans-serif;font-size:1.2rem;margin-bottom:8px">Power.win Leaderboard</h3>
+          <p style="color:var(--faint);font-size:.9rem;margin-bottom:20px">Our newest partner is on the way — leaderboard and prizes launching soon.</p>
+          <button disabled style="background:transparent;border:1.5px solid rgba(255,255,255,.12);color:var(--faint);font-weight:700;padding:10px 18px;border-radius:10px;cursor:not-allowed">Coming Soon</button>
+        </div>
       </div>
       <div style="margin-top:24px;display:flex;gap:10px;align-items:flex-start;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:14px;padding:18px 22px;text-align:left">
         <span style="font-size:1.1rem">⚠️</span>
@@ -2605,6 +2614,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <button class="lbt" onclick="lbTab(this,'rustmagic')"><img src="rustmagic.png" alt="RustMagic" style="height:26px;width:auto;object-fit:contain"></button>
         <button class="lbt" onclick="lbTab(this,'degencity')"><img src="degencity.png" alt="DegenCity" style="height:26px;width:auto;object-fit:contain"></button>
         <button class="lbt" onclick="lbTab(this,'rustmafia')"><img src="rustmafia.png" alt="RustMafia" style="height:26px;width:auto;object-fit:contain"></button>
+        <button class="lbt" onclick="lbTab(this,'powerwin')"><span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap"><img src="powerwin.png" alt="Power.win" style="height:22px;width:auto;object-fit:contain"> <span style="font-size:.62rem;font-weight:800;color:#c084fc;background:rgba(192,132,252,.15);padding:2px 6px;border-radius:99px">SOON</span></span></button>
       </div>
       <div class="lb-updated">Last updated · <span id="lbUpdatedTime"></span></div>
 
@@ -2640,7 +2650,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div class="lb2-countdown">&#x23F0; <span id="lb-cd-label">UPGRADER</span> COMPETITION ENDS IN &nbsp;<b id="lb-cd2">--</b></div>
       </div>
 
-      <div style="text-align:center;margin-top:26px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <div style="text-align:center;margin-top:26px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap" id="lbActionButtons">
         <button onclick="document.getElementById('lb-full-list').classList.toggle('lb-full-open');this.textContent=document.getElementById('lb-full-list').classList.contains('lb-full-open')?'Hide Full Leaderboard ↑':'Full Leaderboard ↗'" style="background:transparent;border:1.5px solid rgba(74,222,128,.5);color:#4ade80;font-weight:800;padding:13px 30px;border-radius:12px;cursor:pointer;font-family:'Lilita One',sans-serif;letter-spacing:.02em;box-shadow:0 0 16px rgba(74,222,128,.15)">Full Leaderboard &#x2197;</button>
         <button onclick="shareLeaderboardOnX()" style="background:#000;border:1.5px solid rgba(255,255,255,.35);color:#fff;font-weight:800;padding:13px 26px;border-radius:12px;cursor:pointer;font-family:'Lilita One',sans-serif;letter-spacing:.02em;display:inline-flex;align-items:center;gap:9px">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -3295,6 +3305,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <a class="foot-partner-row" onclick="go('https://upgrader.com')" style="gap:8px"><img loading="lazy" src="upgrader.png" alt="Upgrader" style="height:26px;width:26px;border-radius:22%;object-fit:contain"><span style="font-family:'Poppins',sans-serif;font-weight:800;font-size:.82rem;letter-spacing:.02em;text-transform:uppercase;color:#fff">Upgrader</span></a>
         <a class="foot-partner-row" onclick="go('https://rustmagic.com')"><img loading="lazy" class="foot-partner-logo" src="rustmagic.png" alt="RustMagic"></a>
         <a class="foot-partner-row" onclick="go('https://rustmafia.com/leaderboards/JAMMMY')"><img loading="lazy" class="foot-partner-logo" src="rustmafia.png" alt="RustMafia"></a>
+        <a class="foot-partner-row" title="Coming soon" style="cursor:default;opacity:.75"><img loading="lazy" class="foot-partner-logo" src="powerwin.png" alt="Power.win"></a>
       </div>
     </div>
 
@@ -3647,6 +3658,13 @@ function currentMonthlyPeriod(){
   return {start:start, end:end};
 }
 function lbcd2(){
+  if(CURRENT_LB_CASINO === 'powerwin'){
+    var elPw = document.getElementById('lb-cd2');
+    if(elPw) elPw.textContent = 'TBA';
+    var datesElPw = document.getElementById('lb2-dates');
+    if(datesElPw) datesElPw.textContent = 'Coming soon';
+    return;
+  }
   var period = _realPeriodOverride
     || (CURRENT_LB_CASINO === 'degencity' ? currentMonthlyPeriod()
       : CURRENT_LB_CASINO === 'upgrader' ? currentUpgraderPeriod()
@@ -3682,6 +3700,36 @@ async function loadLeaderboard(casino){
      most recent one is allowed to actually update the page. */
   var myRequest = ++lbRequestSeq;
   var rowsEl = document.getElementById('lbFullRows');
+  var podiumEl = document.querySelector('.lb2-podium');
+  var actionBtnsEl = document.getElementById('lbActionButtons');
+  var fullListEl = document.getElementById('lb-full-list');
+  var countdownEl = document.querySelector('.lb2-countdown');
+  var tableHeadEl = document.querySelector('.lb-full-row-head');
+  if(casino === 'powerwin'){
+    /* No API exists yet -- Power.win is a partner still in talks, not a live integration.
+       Skip the fetch entirely rather than hitting an endpoint that doesn't exist, and hide
+       every piece of UI that implies a real, running competition (countdown, share/full-list
+       buttons, the empty rank/player/wagered/prize table header) rather than just leaving
+       them showing stale/meaningless placeholder text. */
+    if(podiumEl) podiumEl.style.display = 'none';
+    if(actionBtnsEl) actionBtnsEl.style.display = 'none';
+    if(countdownEl) countdownEl.style.display = 'none';
+    if(tableHeadEl) tableHeadEl.style.display = 'none';
+    if(fullListEl) fullListEl.classList.add('lb-full-open');
+    if(rowsEl) rowsEl.innerHTML = '<div style="padding:60px 30px;text-align:center">'
+      + '<img src="powerwin.png" alt="Power.win" style="height:56px;width:auto;object-fit:contain;margin-bottom:18px;opacity:.9">'
+      + '<div style="font-family:\'Lilita One\',sans-serif;font-size:1.3rem;margin-bottom:8px">Leaderboard Coming Soon</div>'
+      + '<div style="color:var(--faint);max-width:420px;margin:0 auto">Power.win is joining the JammmyRewards family — the leaderboard and prizes will go live here once the partnership is finalized.</div>'
+      + '</div>';
+    var updatedEl = document.getElementById('lbUpdatedTime');
+    if(updatedEl) updatedEl.textContent = '—';
+    return;
+  }
+  if(podiumEl) podiumEl.style.display = '';
+  if(actionBtnsEl) actionBtnsEl.style.display = '';
+  if(countdownEl) countdownEl.style.display = '';
+  if(tableHeadEl) tableHeadEl.style.display = '';
+  if(fullListEl) fullListEl.classList.remove('lb-full-open');
   if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Connecting to live leaderboard&hellip;</div>';
   try{
     var apiUrl = LB_PROXY_URL + '?casino=' + casino;
