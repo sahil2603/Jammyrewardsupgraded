@@ -3246,11 +3246,17 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
         <!-- SLOT REQUESTS TAB -->
         <div id="adminSlotsTab" class="admin-tab-panel" style="display:none">
+          <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+            <button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminDeleteAllSlotRequests()">🗑️ Delete All</button>
+          </div>
           <div id="adminSlotsList">Loading…</div>
         </div>
 
         <!-- BATTLE REQUESTS TAB -->
         <div id="adminBattlesTab" class="admin-tab-panel" style="display:none">
+          <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+            <button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminDeleteAllBattleRequests()">🗑️ Delete All</button>
+          </div>
           <div id="adminBattlesList">Loading…</div>
         </div>
       </div>
@@ -5353,6 +5359,20 @@ async function adminDeleteSlotRequest(id){
   }catch(e){ console.error('Delete slot request failed:', e); alert('Network error — try again.'); }
 }
 
+async function adminDeleteAllSlotRequests(){
+  if(!confirm('Delete ALL slot requests? This permanently removes every request, including their history and outcomes. This cannot be undone.')) return;
+  if(!confirm('Really sure? This deletes every slot request for every user, right now.')) return;
+  var token = localStorage.getItem('jammy_session_token');
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/delete-all-slot-requests', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    var data = await res.json();
+    if(res.ok){ alert('Deleted '+data.deleted_count+' slot request(s).'); loadAdminSlots(); } else { alert(data.error || 'Failed to delete.'); }
+  }catch(e){ console.error('Delete all slot requests failed:', e); alert('Network error — try again.'); }
+}
+
 async function loadAdminBattles(){
   var token = localStorage.getItem('jammy_session_token');
   var listEl = document.getElementById('adminBattlesList');
@@ -5451,6 +5471,20 @@ async function adminDeleteBattleRequest(id){
     var data = await res.json();
     if(res.ok){ loadAdminBattles(); } else { alert(data.error || 'Failed to delete.'); }
   }catch(e){ console.error('Delete battle request failed:', e); alert('Network error — try again.'); }
+}
+
+async function adminDeleteAllBattleRequests(){
+  if(!confirm('Delete ALL battle requests? This permanently removes every request, including their history and outcomes. This cannot be undone.')) return;
+  if(!confirm('Really sure? This deletes every battle request for every user, right now.')) return;
+  var token = localStorage.getItem('jammy_session_token');
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/delete-all-battle-requests', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    var data = await res.json();
+    if(res.ok){ alert('Deleted '+data.deleted_count+' battle request(s).'); loadAdminBattles(); } else { alert(data.error || 'Failed to delete.'); }
+  }catch(e){ console.error('Delete all battle requests failed:', e); alert('Network error — try again.'); }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
