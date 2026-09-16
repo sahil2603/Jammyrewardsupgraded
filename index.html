@@ -2661,6 +2661,10 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <span style="font-size:1.1rem">⚠️</span>
         <span style="color:var(--faint);font-size:.88rem"><b style="color:#f59e0b">Note:</b> Users must deposit more than the placement prize. If the deposit is less than the prize, the prize will be voided.</span>
       </div>
+      <div id="lbDegenCityNote" class="lb-note reveal" style="display:none;max-width:760px;margin:14px auto 0;display:flex;gap:10px;align-items:flex-start;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.3);border-radius:14px;padding:18px 22px;text-align:left">
+        <span style="font-size:1.1rem">🎰</span>
+        <span style="color:var(--faint);font-size:.88rem"><b style="color:#22d3ee">Note:</b> On DegenCity, only slot wagers count toward the leaderboard.</span>
+      </div>
     </div>
   </section>
   <style>
@@ -3682,6 +3686,8 @@ async function loadLeaderboard(casino){
   var fullListEl = document.getElementById('lb-full-list');
   var countdownEl = document.querySelector('.lb2-countdown');
   var tableHeadEl = document.querySelector('.lb-full-row-head');
+  var degenCityNoteEl = document.getElementById('lbDegenCityNote');
+  if(degenCityNoteEl) degenCityNoteEl.style.display = (casino === 'degencity') ? 'flex' : 'none';
   if(casino === 'powerwin'){
     /* No API exists yet -- Power.win is a partner still in talks, not a live integration.
        Skip the fetch entirely rather than hitting an endpoint that doesn't exist, and hide
