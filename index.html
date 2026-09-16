@@ -2411,10 +2411,10 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <div class="vault-bar"><div class="vault-bar-fill" id="vaultBar"></div></div>
           <div class="vault-bar-meta"><span class="vault-pct" id="homeVaultPct">80% complete</span><span id="homeVaultRemaining">200 Coins remaining</span></div>
         </div>
-        <!-- mini cards row — LAST ADDED + STATUS -->
+        <!-- mini cards row — LAST DISTRIBUTED + STATUS -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0">
           <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 18px">
-            <div style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:8px">LAST ADDED</div>
+            <div style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:8px">LAST DISTRIBUTED</div>
             <div id="homeLastAdded" style="font-family:'Lilita One',sans-serif;font-size:1.5rem;color:var(--neon-green)">+100 Coins</div>
             <div id="homeLastAddedDate" style="font-size:.76rem;color:var(--faint);margin-top:3px">1st April</div>
           </div>
@@ -2852,24 +2852,25 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
       </div>
 
       <!-- MAIN: big card + mascot panel exactly like his site -->
+      <div id="vaultDistributedNotice" class="reveal" style="display:none;max-width:900px;margin:0 auto 20px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.35);border-radius:14px;padding:14px 20px;text-align:center;color:#4ade80;font-size:.92rem"></div>
       <div class="vp-main-grid reveal">
         <!-- LEFT: all stats -->
         <div class="vp-main-card">
           <div class="vp-prog-label">VAULT PROGRESS</div>
           <div class="vp-prog-val display" id="vpProgVal" data-count="800" data-suffix=" Coins">0</div>
-          <div class="vp-prog-goal">Goal: <b id="vpProgGoal">1,000 Coins</b></div>
+          <div class="vp-prog-goal">Goal: <b id="vpProgGoal">10,000 Coins</b></div>
 
           <div class="vp-bar"><div class="vp-bar-fill" id="vaultBar2"></div></div>
           <div class="vp-bar-meta"><span class="vpct" id="vpPctText">80% complete</span><span id="vpRemainingText">200 Coins remaining</span></div>
 
-          <!-- PROGRESS + LAST ADDED mini cards -->
+          <!-- PROGRESS + LAST DISTRIBUTED mini cards -->
           <div class="vp-mini-row">
             <div class="vp-mini">
               <div class="vp-mini-lbl">PROGRESS</div>
               <div class="vp-mini-val" id="vpMiniPct" style="color:var(--neon-gold)">80%</div>
             </div>
             <div class="vp-mini">
-              <div class="vp-mini-lbl">LAST ADDED</div>
+              <div class="vp-mini-lbl">LAST DISTRIBUTED</div>
               <div class="vp-mini-val" id="vpMiniLastAdded" style="color:var(--neon-green)">100 Coins</div>
               <div class="vp-mini-sub" id="vpMiniLastAddedDate">April 1</div>
             </div>
@@ -3892,9 +3893,15 @@ async function loadVaultSettings(){
     var res = await fetch(AUTH_API + '/api/vault', { cache: 'no-store' });
     var data = await res.json();
     var v = data.vault;
+    var pool = data.pool || {};
     if(!v) return;
-    var current = v.current_amount || 0;
-    var target = v.target_amount || 1;
+    /* Vault progress now tracks the shared distribution pool (approved users' earned coins,
+       held back until the pool collectively reaches the threshold) rather than the old
+       admin-set target -- unclaimed wagering (people who haven't verified their username
+       yet) is a completely separate number, shown elsewhere on the page, and never affects
+       this bar. */
+    var current = pool.total || 0;
+    var target = pool.threshold || 10000;
     var pct = Math.min(100, Math.round((current/target)*100));
     var remaining = Math.max(0, target - current);
 
@@ -3919,15 +3926,21 @@ async function loadVaultSettings(){
     if(document.getElementById('homeVaultRemaining')) document.getElementById('homeVaultRemaining').textContent = Math.floor(remaining).toLocaleString()+' Coins remaining';
     if(document.getElementById('vpRemainingText')) document.getElementById('vpRemainingText').textContent = Math.floor(remaining).toLocaleString()+' Coins remaining';
 
-    if(v.last_added_amount != null){
-      var addedText = '+'+Math.floor(v.last_added_amount).toLocaleString()+' Coins';
+    if(pool.last_distributed_amount != null){
+      var addedText = '+'+Math.floor(pool.last_distributed_amount).toLocaleString()+' Coins';
       if(document.getElementById('homeLastAdded')) document.getElementById('homeLastAdded').textContent = addedText;
-      if(document.getElementById('vpMiniLastAdded')) document.getElementById('vpMiniLastAdded').textContent = Math.floor(v.last_added_amount).toLocaleString()+' Coins';
+      if(document.getElementById('vpMiniLastAdded')) document.getElementById('vpMiniLastAdded').textContent = Math.floor(pool.last_distributed_amount).toLocaleString()+' Coins';
     }
-    if(v.last_added_date){
-      if(document.getElementById('homeLastAddedDate')) document.getElementById('homeLastAddedDate').textContent = v.last_added_date;
-      if(document.getElementById('vpMiniLastAddedDate')) document.getElementById('vpMiniLastAddedDate').textContent = v.last_added_date;
-      if(document.getElementById('vmLastAddedDate')) document.getElementById('vmLastAddedDate').textContent = v.last_added_date;
+    if(pool.last_distributed_at){
+      var distDate = new Date(pool.last_distributed_at).toLocaleString();
+      if(document.getElementById('homeLastAddedDate')) document.getElementById('homeLastAddedDate').textContent = distDate;
+      if(document.getElementById('vpMiniLastAddedDate')) document.getElementById('vpMiniLastAddedDate').textContent = distDate;
+      if(document.getElementById('vmLastAddedDate')) document.getElementById('vmLastAddedDate').textContent = distDate;
+      var noteEl = document.getElementById('vaultDistributedNotice');
+      if(noteEl){
+        noteEl.style.display = 'block';
+        noteEl.innerHTML = '🎉 Last vault coins distributed on <b>'+distDate+'</b>'+(pool.last_distributed_amount != null ? ' — '+Math.floor(pool.last_distributed_amount).toLocaleString()+' Coins shared out' : '');
+      }
     }
 
     /* Vault modal (the popup opened from clicking the home page vault balance) was a fully
