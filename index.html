@@ -3039,12 +3039,6 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         </div>
 
         <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px">
-          <h3 style="margin-top:0">Casino Usernames</h3>
-          <p style="color:var(--muted);font-size:.85rem">Link your username on each partner casino to earn Jammmy Coins (0.1 per dollar wagered). Every submission is reviewed by an admin before coins are awarded — you can also claim your name directly from the list on the Vault page.</p>
-          <div id="pfCasinoLinks"></div>
-        </div>
-
-        <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px">
           <h3 style="margin-top:0">Redemption History</h3>
           <div id="pfRedemptions" style="color:var(--muted);font-size:.9rem">No redemptions yet.</div>
         </div>
@@ -4623,7 +4617,8 @@ function renderProfile(data){
       + (status ? (STATUS_BADGES[status] || '') : '')
     + '</div>';
   });
-  document.getElementById('pfCasinoLinks').innerHTML = html;
+  var pfCasinoLinksEl = document.getElementById('pfCasinoLinks');
+  if(pfCasinoLinksEl) pfCasinoLinksEl.innerHTML = html;
 
   var redEl = document.getElementById('pfRedemptions');
   if(data.redemptions && data.redemptions.length){
@@ -4647,21 +4642,69 @@ function renderProfile(data){
     daily_claim: 'Daily claim',
     wager_approved: 'Wager claim approved',
     wager_revoked: 'Wager claim revoked',
+    wager_pending: 'Wager earnings (pending vault)',
+    vault_distribution: 'Vault distribution',
+    wager_auto_synced: 'Wager earnings (pending vault)',
+    slot_request_reward: 'Slot request reward',
     redemption: 'Redeemed for crypto',
     admin_add: 'Balance adjusted',
   };
-  if(data.transactions && data.transactions.length){
-    txEl.innerHTML = data.transactions.slice(0,15).map(function(t){
-      var sign = t.amount >= 0 ? '+' : '';
-      var color = t.amount >= 0 ? '#4ade80' : '#f87171';
-      return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:.85rem;flex-wrap:wrap;gap:6px">'
-        + '<span>'+(TX_LABELS[t.type]||t.note||t.type)+'</span>'
-        + '<span style="color:'+color+';font-weight:700">'+sign+t.amount+'</span>'
-      + '</div>';
-    }).join('');
-  } else {
-    txEl.textContent = 'No activity yet.';
-  }
+  /* Shows 10 at a time instead of dumping up to 15-50 transactions in one long list, with
+     Previous/Next paging through whatever the backend already returned (up to 50) rather
+     than re-fetching per page. */
+  var PAGE_SIZE = 10;
+  window._pfAllTransactions = data.transactions || [];
+  window._pfTxPage = 0;
+  renderTransactionsPage();
+}
+
+function renderTransactionsPage(){
+  var txEl = document.getElementById('pfTransactions');
+  if(!txEl) return;
+  var all = window._pfAllTransactions || [];
+  var TX_LABELS = {
+    daily_claim: 'Daily claim',
+    wager_approved: 'Wager claim approved',
+    wager_revoked: 'Wager claim revoked',
+    wager_pending: 'Wager earnings (pending vault)',
+    vault_distribution: 'Vault distribution',
+    wager_auto_synced: 'Wager earnings (pending vault)',
+    slot_request_reward: 'Slot request reward',
+    redemption: 'Redeemed for crypto',
+    admin_add: 'Balance adjusted',
+  };
+  var PAGE_SIZE = 10;
+  if(!all.length){ txEl.textContent = 'No activity yet.'; return; }
+
+  var page = window._pfTxPage || 0;
+  var totalPages = Math.ceil(all.length / PAGE_SIZE);
+  var pageItems = all.slice(page*PAGE_SIZE, (page+1)*PAGE_SIZE);
+
+  var rowsHtml = pageItems.map(function(t){
+    var sign = t.amount >= 0 ? '+' : '';
+    var color = t.amount >= 0 ? '#4ade80' : '#f87171';
+    return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:.85rem;flex-wrap:wrap;gap:6px">'
+      + '<span>'+(TX_LABELS[t.type]||t.note||t.type)+'</span>'
+      + '<span style="color:'+color+';font-weight:700">'+sign+t.amount+'</span>'
+    + '</div>';
+  }).join('');
+
+  var pagerHtml = totalPages > 1
+    ? '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px">'
+      + '<button class="admin-btn-secondary" style="padding:7px 14px;font-size:.82rem" '+(page<=0?'disabled':'')+' onclick="pfTxPage(-1)">&larr; Newer</button>'
+      + '<span style="color:var(--faint);font-size:.78rem">Page '+(page+1)+' of '+totalPages+'</span>'
+      + '<button class="admin-btn-secondary" style="padding:7px 14px;font-size:.82rem" '+(page>=totalPages-1?'disabled':'')+' onclick="pfTxPage(1)">Older &rarr;</button>'
+    + '</div>'
+    : '';
+
+  txEl.innerHTML = rowsHtml + pagerHtml;
+}
+
+function pfTxPage(delta){
+  var all = window._pfAllTransactions || [];
+  var totalPages = Math.ceil(all.length / 10);
+  window._pfTxPage = Math.max(0, Math.min(totalPages-1, (window._pfTxPage||0) + delta));
+  renderTransactionsPage();
 }
 
 async function saveCasinoLink(btn, casino){
