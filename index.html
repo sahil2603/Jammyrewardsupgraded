@@ -1444,6 +1444,9 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .rb-chip-no{border:1.5px solid rgba(248,113,113,.4)}
 .rb-chip-no.selected{background:rgba(248,113,113,.22);border-color:#f87171;color:#fee2e2;box-shadow:0 0 16px -4px rgba(248,113,113,.6)}
 
+.pf-redeem-method{background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--muted);
+  padding:9px 16px;border-radius:10px;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .18s}
+.pf-redeem-method.active{background:linear-gradient(135deg,#a855f7,#6366f1);border-color:transparent;color:#fff}
 .pf-select{width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);
   border:1px solid var(--line);color:#fff;margin-bottom:14px;font-family:'Poppins';box-sizing:border-box}
 .pf-select option{background:#150a2e;color:#fff}
@@ -3016,19 +3019,38 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <p id="pfRedeemInfo" style="color:var(--muted);font-size:.9rem"></p>
           <button id="pfRedeemLocked" class="pf-btn-locked" style="display:none" disabled></button>
           <div id="pfRedeemForm" style="display:none">
-            <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Choose crypto currency</label>
-            <select id="pfCryptoCurrency" class="pf-select" onchange="updateNetworkOptions()">
-              <option value="USDT">USDT</option>
-              <option value="USDC">USDC</option>
-              <option value="BTC">BTC</option>
-              <option value="ETH">ETH</option>
-              <option value="SOL">SOL</option>
-              <option value="BNB">BNB</option>
-            </select>
-            <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Choose network</label>
-            <select id="pfCryptoNetwork" class="pf-select"></select>
-            <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Your wallet address</label>
-            <input id="pfWallet" type="text" placeholder="Paste your wallet address" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:14px;font-family:monospace;box-sizing:border-box">
+            <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:8px">Redeem via</label>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+              <button type="button" class="pf-redeem-method active" data-method="crypto" onclick="setRedeemMethod('crypto')">Crypto</button>
+              <button type="button" class="pf-redeem-method" data-method="degencity" onclick="setRedeemMethod('degencity')">DegenCity</button>
+              <button type="button" class="pf-redeem-method" data-method="upgrader" onclick="setRedeemMethod('upgrader')">Upgrader</button>
+              <button type="button" class="pf-redeem-method" data-method="rustmafia" onclick="setRedeemMethod('rustmafia')">RustMafia</button>
+              <button type="button" class="pf-redeem-method" data-method="powerwin" onclick="setRedeemMethod('powerwin')">Power.win</button>
+            </div>
+
+            <div id="pfRedeemCryptoFields">
+              <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Choose crypto currency</label>
+              <select id="pfCryptoCurrency" class="pf-select" onchange="updateNetworkOptions()">
+                <option value="USDT">USDT</option>
+                <option value="USDC">USDC</option>
+                <option value="BTC">BTC</option>
+                <option value="ETH">ETH</option>
+                <option value="SOL">SOL</option>
+                <option value="BNB">BNB</option>
+              </select>
+              <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Choose network</label>
+              <select id="pfCryptoNetwork" class="pf-select"></select>
+              <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Your wallet address</label>
+              <input id="pfWallet" type="text" placeholder="Paste your wallet address" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:6px;font-family:monospace;box-sizing:border-box">
+              <p style="color:var(--faint);font-size:.8rem;margin:0 0 14px">Funds will be credited within 48-72 hours.</p>
+            </div>
+
+            <div id="pfRedeemPlatformFields" style="display:none">
+              <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px" id="pfPlatformUsernameLabel">Your username</label>
+              <input id="pfPlatformUsername" type="text" placeholder="Your username on that platform" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:6px;box-sizing:border-box">
+              <p style="color:var(--faint);font-size:.8rem;margin:0 0 14px">Funds will be credited within 24 hours.</p>
+            </div>
+
             <button class="admin-btn-primary" onclick="submitRedeem()" id="pfRedeemBtn">Redeem Full Balance</button>
           </div>
           <div id="pfRedeemResult" style="display:none;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.3);border-radius:12px;padding:18px;margin-top:14px;line-height:1.7"></div>
@@ -4601,11 +4623,18 @@ function renderProfile(data){
 
   var linksByName = {};
   var linksByStatus = {};
-  (data.casino_links||[]).forEach(function(l){ linksByName[l.casino] = l.casino_username; linksByStatus[l.casino] = l.status; });
+  (data.casino_links||[]).forEach(function(l){
+    /* A rejected claim showing "Save / ✕ Rejected — try again" next to an editable input was
+       confusing UX (looks like a broken save, not an invitation to re-submit). Simplest fix
+       for now: treat a rejected claim exactly like an unclaimed one -- don't prefill the old
+       (rejected) username, and don't show any status badge, so it just reads as a normal,
+       fresh row ready for a new attempt. */
+    if(l.status === 'rejected') return;
+    linksByName[l.casino] = l.casino_username; linksByStatus[l.casino] = l.status;
+  });
   var STATUS_BADGES = {
     approved: '<span style="color:#4ade80;font-size:.75rem;font-weight:700;white-space:nowrap">✓ Approved</span>',
     pending: '<span style="color:#fbbf24;font-size:.75rem;font-weight:700;white-space:nowrap">⏳ Pending review</span>',
-    rejected: '<span style="color:#f87171;font-size:.75rem;font-weight:700;white-space:nowrap">✕ Rejected — try again</span>',
   };
   var html = '';
   Object.keys(KNOWN_CASINOS_DISPLAY).forEach(function(key){
@@ -4758,20 +4787,47 @@ function updateNetworkOptions(){
   networkSel.innerHTML = networks.map(function(n){ return '<option value="'+n+'">'+n+'</option>'; }).join('');
 }
 
+var _pfRedeemMethod = 'crypto';
+var PLATFORM_LABELS = {degencity:'DegenCity', upgrader:'Upgrader', rustmafia:'RustMafia', powerwin:'Power.win'};
+function setRedeemMethod(method){
+  _pfRedeemMethod = method;
+  document.querySelectorAll('.pf-redeem-method').forEach(function(b){ b.classList.toggle('active', b.dataset.method === method); });
+  var isCrypto = method === 'crypto';
+  document.getElementById('pfRedeemCryptoFields').style.display = isCrypto ? 'block' : 'none';
+  document.getElementById('pfRedeemPlatformFields').style.display = isCrypto ? 'none' : 'block';
+  if(!isCrypto){
+    document.getElementById('pfPlatformUsernameLabel').textContent = 'Your '+PLATFORM_LABELS[method]+' username';
+    document.getElementById('pfPlatformUsername').placeholder = 'Your '+PLATFORM_LABELS[method]+' username';
+  }
+}
+
 async function submitRedeem(){
   var token = localStorage.getItem('jammy_session_token');
   if(!token) return;
-  var currency = document.getElementById('pfCryptoCurrency').value;
-  var network = document.getElementById('pfCryptoNetwork').value;
-  var wallet = document.getElementById('pfWallet').value.trim();
   var btn = document.getElementById('pfRedeemBtn');
-  if(!wallet){ alert('Please enter your wallet address.'); return; }
+  var payload = { redeem_method: _pfRedeemMethod };
+  var timingNote;
+  if(_pfRedeemMethod === 'crypto'){
+    var currency = document.getElementById('pfCryptoCurrency').value;
+    var network = document.getElementById('pfCryptoNetwork').value;
+    var wallet = document.getElementById('pfWallet').value.trim();
+    if(!wallet){ alert('Please enter your wallet address.'); return; }
+    payload.crypto_currency = currency;
+    payload.crypto_network = network;
+    payload.wallet_address = wallet;
+    timingNote = 'Funds will be credited within 48-72 hours.';
+  } else {
+    var platformUsername = document.getElementById('pfPlatformUsername').value.trim();
+    if(!platformUsername){ alert('Please enter your '+PLATFORM_LABELS[_pfRedeemMethod]+' username.'); return; }
+    payload.platform_username = platformUsername;
+    timingNote = 'Funds will be credited on '+PLATFORM_LABELS[_pfRedeemMethod]+' within 24 hours.';
+  }
   if(btn) btn.textContent = 'Submitting…';
   try{
     var res = await fetch(AUTH_API + '/api/redeem', {
       method:'POST',
       headers: { 'Authorization':'Bearer '+token, 'Content-Type':'application/json' },
-      body: JSON.stringify({crypto_currency:currency, crypto_network:network, wallet_address:wallet})
+      body: JSON.stringify(payload)
     });
     var data = await res.json();
     if(res.ok && data.transaction_id){
@@ -4780,8 +4836,8 @@ async function submitRedeem(){
       var resultEl = document.getElementById('pfRedeemResult');
       resultEl.style.display='block';
       resultEl.innerHTML = '<b>Redemption submitted!</b><br>Transaction ID: <code>'+data.transaction_id+'</code><br>'
-        + '$'+data.usd_value.toFixed(2)+' via '+data.crypto_currency+'<br>'
-        + '<span style="color:var(--muted)">Funds will be credited within 24-48 hours.</span>';
+        + '$'+data.usd_value.toFixed(2)+' via '+(_pfRedeemMethod === 'crypto' ? payload.crypto_currency : PLATFORM_LABELS[_pfRedeemMethod])+'<br>'
+        + '<span style="color:var(--muted)">'+timingNote+'</span>';
       loadProfile();
     } else {
       alert(data.error || 'Something went wrong. Please try again.');
