@@ -3186,14 +3186,14 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <h1 style="font-family:'Lilita One',sans-serif;font-size:1.8rem;margin-bottom:24px">⚙ Admin Dashboard</h1>
 
         <div style="display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap">
-          <button class="admin-tab active" data-tab="adminOverviewTab" onclick="switchAdminTab('adminOverviewTab')">Overview</button>
-          <button class="admin-tab" data-tab="adminVaultTab" onclick="switchAdminTab('adminVaultTab')">Vault</button>
-          <button class="admin-tab" data-tab="adminUsersTab" onclick="switchAdminTab('adminUsersTab')">Users</button>
-          <button class="admin-tab" data-tab="adminRedemptionsTab" onclick="switchAdminTab('adminRedemptionsTab')">Redemptions <span class="admin-badge" id="badgeRedemptions"></span></button>
-          <button class="admin-tab" data-tab="adminAnalyticsTab" onclick="switchAdminTab('adminAnalyticsTab')">Analytics</button>
-          <button class="admin-tab" data-tab="adminVerifyTab" onclick="switchAdminTab('adminVerifyTab')">Verify Players <span class="admin-badge" id="badgeVerify"></span></button>
-          <button class="admin-tab" data-tab="adminSlotsTab" onclick="switchAdminTab('adminSlotsTab')">Slot Requests <span class="admin-badge" id="badgeSlots"></span></button>
-          <button class="admin-tab" data-tab="adminBattlesTab" onclick="switchAdminTab('adminBattlesTab')">Battle Requests <span class="admin-badge" id="badgeBattles"></span></button>
+          <button class="admin-tab active" data-tab="adminOverviewTab" onclick="switchAdminTab('adminOverviewTab')">📊 Overview</button>
+          <button class="admin-tab" data-tab="adminVaultTab" onclick="switchAdminTab('adminVaultTab')">🏦 Vault</button>
+          <button class="admin-tab" data-tab="adminUsersTab" onclick="switchAdminTab('adminUsersTab')">👥 Users</button>
+          <button class="admin-tab" data-tab="adminRedemptionsTab" onclick="switchAdminTab('adminRedemptionsTab')">💸 Redemptions <span class="admin-badge" id="badgeRedemptions"></span></button>
+          <button class="admin-tab" data-tab="adminAnalyticsTab" onclick="switchAdminTab('adminAnalyticsTab')">📈 Analytics</button>
+          <button class="admin-tab" data-tab="adminVerifyTab" onclick="switchAdminTab('adminVerifyTab')">✅ Verify Players <span class="admin-badge" id="badgeVerify"></span></button>
+          <button class="admin-tab" data-tab="adminSlotsTab" onclick="switchAdminTab('adminSlotsTab')">🎰 Slot Requests <span class="admin-badge" id="badgeSlots"></span></button>
+          <button class="admin-tab" data-tab="adminBattlesTab" onclick="switchAdminTab('adminBattlesTab')">⚔️ Battle Requests <span class="admin-badge" id="badgeBattles"></span></button>
         </div>
 
         <!-- VAULT TAB -->
@@ -5028,19 +5028,29 @@ async function loadAdminUsers(){
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load users.'; return; }
     document.getElementById('adminUsersTotal').textContent = data.total_users + ' total users' + (q ? ' (showing filtered results)' : '');
     if(!data.users.length){ listEl.innerHTML = '<div style="color:var(--muted)">No users found.</div>'; return; }
-    listEl.innerHTML = data.users.map(function(u){
-      var linksStr = u.casino_links.length ? u.casino_links.map(function(l){ return l.casino+': '+l.username; }).join(' · ') : 'No casino usernames linked';
-      return '<div class="admin-row">'
-        + '<div>'
-          + '<b>'+u.username+'</b>' + (u.is_admin ? ' <span style="color:#fbbf24;font-size:.75rem">ADMIN</span>' : '') + '<br>'
-          + '<span style="color:var(--faint);font-size:.78rem">'+u.discord_id+'</span><br>'
-          + '<span style="color:var(--muted);font-size:.8rem">'+linksStr+'</span>'
-        + '</div>'
-        + '<div style="text-align:right">'
-          + '<div style="font-family:\'Lilita One\',sans-serif;color:#fbbf24;font-size:1.2rem"><img src="jammmy-coin.png" class="coin-icon" alt=""> '+fmtCoins(u.coin_balance)+'</div>'
-          + '<button class="admin-btn-row-action" style="margin-top:6px" onclick="adminAddCoinsPrompt(\''+u.discord_id+'\',\''+u.username.replace(/'/g,"\\\\'")+'\',1)">+ Add Coins</button>'
-          + '<button class="admin-btn-row-action" style="margin-top:6px;margin-left:6px;background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminAddCoinsPrompt(\''+u.discord_id+'\',\''+u.username.replace(/'/g,"\\\\'")+'\',-1)">− Deduct Coins</button>'
-          + '<button class="admin-btn-row-action" style="margin-top:6px;margin-left:6px;background:'+(u.is_admin?'linear-gradient(135deg,#6b7280,#4b5563)':'linear-gradient(135deg,#f59e0b,#d97706)')+'" onclick="adminToggleAdmin(\''+u.discord_id+'\',\''+u.username.replace(/'/g,"\\\\'")+'\','+(!u.is_admin)+')">'+(u.is_admin?'Remove Admin':'Make Admin')+'</button>'
+    listEl.innerHTML = data.users.map(function(u, i){
+      var linksHtml = u.casino_links.length
+        ? u.casino_links.map(function(l){ return '<span class="admin-tag">'+l.casino+': '+l.username+'</span>'; }).join(' ')
+        : '<span style="color:var(--faint);font-size:.8rem">No casino usernames linked</span>';
+      var initial = u.username.charAt(0).toUpperCase();
+      var glow = u.is_admin ? '251,191,36' : '129,140,248';
+      return '<div class="battle-card" style="animation-delay:'+(Math.min(i,10)*0.04)+'s;--glow:'+glow+'">'
+        + '<div class="battle-card-topbar" style="background:linear-gradient(90deg,rgb('+glow+'),rgba('+glow+',.4))"></div>'
+        + '<div style="display:flex;gap:14px;padding:16px 18px;flex-wrap:wrap">'
+          + '<div class="admin-card-icon" style="background:linear-gradient(135deg,rgb('+glow+'),rgba('+glow+',.6));font-family:\'Lilita One\',sans-serif;font-size:1.1rem;color:#0a0a0f">'+initial+'</div>'
+          + '<div style="flex:1;min-width:200px">'
+            + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-start">'
+              + '<div><b style="font-size:1.02rem">'+u.username+'</b>' + (u.is_admin ? ' <span class="admin-pill admin-pill-profit" style="background:rgba(251,191,36,.14);color:#fbbf24;border-color:rgba(251,191,36,.35)">ADMIN</span>' : '') + '<br>'
+              + '<span style="color:var(--faint);font-size:.75rem;font-family:monospace">'+u.discord_id+'</span></div>'
+              + '<div style="font-family:\'Lilita One\',sans-serif;color:#fbbf24;font-size:1.3rem;white-space:nowrap"><img src="jammmy-coin.png" class="coin-icon" alt=""> '+fmtCoins(u.coin_balance)+'</div>'
+            + '</div>'
+            + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">'+linksHtml+'</div>'
+            + '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">'
+              + '<button class="admin-btn-row-action" onclick="adminAddCoinsPrompt(\''+u.discord_id+'\',\''+u.username.replace(/'/g,"\\\\'")+'\',1)">+ Add Coins</button>'
+              + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminAddCoinsPrompt(\''+u.discord_id+'\',\''+u.username.replace(/'/g,"\\\\'")+'\',-1)">− Deduct Coins</button>'
+              + '<button class="admin-btn-row-action" style="background:'+(u.is_admin?'linear-gradient(135deg,#6b7280,#4b5563)':'linear-gradient(135deg,#f59e0b,#d97706)')+'" onclick="adminToggleAdmin(\''+u.discord_id+'\',\''+u.username.replace(/'/g,"\\\\'")+'\','+(!u.is_admin)+')">'+(u.is_admin?'Remove Admin':'Make Admin')+'</button>'
+            + '</div>'
+          + '</div>'
         + '</div>'
       + '</div>';
     }).join('');
@@ -5097,24 +5107,34 @@ async function loadAdminRedemptions(status){
     var data = await res.json();
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load redemptions.'; return; }
     if(!data.redemptions.length){ listEl.innerHTML = '<div style="color:var(--muted)">No redemptions found.</div>'; return; }
-    listEl.innerHTML = data.redemptions.map(function(r){
-      var statusColor = r.status === 'paid' ? '#4ade80' : '#fbbf24';
+    listEl.innerHTML = data.redemptions.map(function(r, i){
+      var isPending = r.status === 'pending';
+      var glow = isPending ? '251,191,36' : '74,222,128';
       var isPlatform = r.redeem_method && r.redeem_method !== 'crypto';
-      var methodLine = isPlatform
-        ? '<span style="color:var(--muted);font-size:.85rem">'+r.coin_amount.toLocaleString()+' coins · $'+r.usd_value.toFixed(2)+' · <b style="color:#c084fc">'+(CASINO_DISPLAY_NAMES[r.redeem_method]||r.redeem_method)+'</b></span><br>'
-          + '<span style="color:#fff;font-size:.85rem">Username: <b>'+r.platform_username+'</b></span>'
-        : '<span style="color:var(--muted);font-size:.85rem">'+r.coin_amount.toLocaleString()+' coins · $'+r.usd_value.toFixed(2)+' · '+r.crypto_currency+'</span><br>'
-          + '<span style="color:var(--faint);font-size:.78rem;font-family:monospace">'+r.wallet_address+'</span>';
-      return '<div class="admin-row">'
-        + '<div>'
-          + '<b>'+r.id+'</b> — '+r.username+'<br>'
-          + methodLine
-        + '</div>'
-        + '<div style="text-align:right">'
-          + '<div style="color:'+statusColor+';text-transform:uppercase;font-size:.78rem;font-weight:700">'+r.status+'</div>'
-          + (r.status==='pending' ? '<button class="admin-btn-row-action" style="margin-top:6px" onclick="adminMarkPaid(\''+r.id+'\')">Mark Paid</button>'
-              + '<button class="admin-btn-row-action" style="margin-top:6px;margin-left:6px;background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminRejectRedemption(\''+r.id+'\')">Reject</button>'
-            : '<span style="color:var(--faint);font-size:.75rem">'+(r.paid_at||'')+'</span>')
+      var methodHtml = isPlatform
+        ? '<span class="admin-tag" style="border-color:rgba(192,132,252,.4);color:#c084fc;background:rgba(192,132,252,.14)">'+(CASINO_DISPLAY_NAMES[r.redeem_method]||r.redeem_method)+'</span>'
+          + '<span class="admin-tag">Username: '+r.platform_username+'</span>'
+        : '<span class="admin-tag">'+r.crypto_currency+'</span>'
+          + '<span class="admin-tag" style="font-family:monospace">'+r.wallet_address+'</span>';
+      var statusPill = isPending
+        ? '<span class="admin-pill" style="background:rgba(251,191,36,.14);color:#fbbf24;border:1px solid rgba(251,191,36,.35)">⏳ Pending</span>'
+        : '<span class="admin-pill admin-pill-profit">✓ Paid'+(r.paid_at ? ' · '+r.paid_at : '')+'</span>';
+      return '<div class="battle-card" style="animation-delay:'+(Math.min(i,10)*0.04)+'s;--glow:'+glow+'">'
+        + '<div class="battle-card-topbar" style="background:linear-gradient(90deg,rgb('+glow+'),rgba('+glow+',.4))"></div>'
+        + '<div style="display:flex;gap:14px;padding:16px 18px">'
+          + '<div class="admin-card-icon" style="background:linear-gradient(135deg,rgb('+glow+'),rgba('+glow+',.6))">💸</div>'
+          + '<div style="flex:1;min-width:0">'
+            + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-start">'
+              + '<div><b style="font-size:1.02rem;font-family:monospace">'+r.id+'</b><br>'
+              + '<span style="color:var(--muted);font-size:.85rem">'+r.username+' · '+r.coin_amount.toLocaleString()+' coins · $'+r.usd_value.toFixed(2)+'</span></div>'
+              + statusPill
+            + '</div>'
+            + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">'+methodHtml+'</div>'
+            + (isPending ? '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">'
+                + '<button class="admin-btn-row-action" onclick="adminMarkPaid(\''+r.id+'\')">Mark Paid</button>'
+                + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminRejectRedemption(\''+r.id+'\')">Reject</button>'
+              + '</div>' : '')
+          + '</div>'
         + '</div>'
       + '</div>';
     }).join('');
