@@ -1345,12 +1345,20 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .pw-card{background:var(--panel);border:1px solid rgba(var(--pw-glow),.25);border-radius:16px;
   margin-bottom:24px;overflow:hidden;opacity:0;animation:pwFadeUp .6s cubic-bezier(.22,1,.36,1) forwards;
   transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s,border-color .25s}
-.pw-card:hover{transform:translateY(-4px);border-color:rgba(var(--pw-glow),.5);
+.pw-card:hover{transform:translateY(-4px) !important;border-color:rgba(var(--pw-glow),.5);
   box-shadow:0 16px 34px -12px rgba(var(--pw-glow),.35)}
 .pw-card-topbar{height:3px;width:100%;background:linear-gradient(90deg,rgb(var(--pw-glow)),rgba(var(--pw-glow),.3))}
 .pw-icon-badge{flex:none;width:52px;height:52px;border-radius:14px;display:flex;align-items:center;
   justify-content:center;font-size:1.5rem;background:linear-gradient(135deg,#c084fc,#7c3aed);
-  box-shadow:0 6px 18px -6px rgba(0,0,0,.5)}
+  box-shadow:0 6px 18px -6px rgba(0,0,0,.5);position:relative;overflow:hidden;
+  transition:transform .25s cubic-bezier(.22,1,.36,1)}
+.pw-card:hover .pw-icon-badge,.pw-mini-card:hover .pw-mini-icon{transform:scale(1.12) rotate(-4deg)}
+/* Ongoing shimmer sweep across each icon badge, always running (not just on hover) --
+   transform-only, matching the safe pattern used for the battle-card icons rather than
+   background-position/filter, which is what caused a real site-wide FPS crisis earlier. */
+@keyframes pwIconShimmer{0%{transform:translateX(-130%) rotate(20deg)}100%{transform:translateX(230%) rotate(20deg)}}
+.pw-icon-badge::after{content:'';position:absolute;top:-50%;left:0;width:35%;height:200%;
+  background:rgba(255,255,255,.3);filter:blur(3px);animation:pwIconShimmer 3.4s ease-in-out infinite}
 @keyframes pwBountyPulse{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.4)}50%{box-shadow:0 0 0 10px rgba(74,222,128,0)}}
 .pw-bounty-card{animation:pwFadeUp .6s cubic-bezier(.22,1,.36,1) forwards,pwBountyPulse 2.6s ease-in-out infinite}
 .pw-bounty-cta{display:inline-block;background:linear-gradient(135deg,#4ade80,#15803d);color:#0a0a0f;
@@ -1360,7 +1368,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .pw-mini-card{background:var(--panel);border:1px solid rgba(var(--pw-glow),.25);border-radius:14px;
   padding:20px 16px;text-align:center;opacity:0;animation:pwFadeUp .55s cubic-bezier(.22,1,.36,1) forwards;
   transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .22s,border-color .22s}
-.pw-mini-card:hover{transform:translateY(-5px);border-color:rgba(var(--pw-glow),.55);
+.pw-mini-card:hover{transform:translateY(-5px) !important;border-color:rgba(var(--pw-glow),.55);
   box-shadow:0 14px 28px -10px rgba(var(--pw-glow),.4)}
 .pw-mini-icon{font-size:1.6rem;margin-bottom:10px}
 .pw-mini-title{font-weight:800;font-size:.95rem;margin-bottom:6px;color:rgb(var(--pw-glow))}
@@ -2788,11 +2796,12 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
       </div>
 
       <!-- Live Races -->
-      <h3 class="reveal" style="font-family:'Lilita One',sans-serif;font-size:1.15rem;text-align:center;margin:44px 0 20px;color:var(--muted);letter-spacing:.02em">🏁 Live Races</h3>
+      <h3 class="reveal" style="font-family:'Lilita One',sans-serif;font-size:1.15rem;text-align:center;margin:44px 0 20px;color:var(--muted);letter-spacing:.02em">🏁 Weekly Live Races</h3>
       <div class="pw-race-grid">
         <div class="pw-card" style="--pw-glow:124,58,237;animation-delay:.1s;margin-bottom:0">
           <div class="pw-card-topbar"></div>
           <div style="padding:24px">
+            <span style="display:inline-block;font-size:.65rem;font-weight:800;letter-spacing:.06em;color:#c084fc;background:rgba(124,58,237,.14);border:1px solid rgba(124,58,237,.4);padding:2px 9px;border-radius:99px;margin-bottom:10px">WEEKLY</span>
             <h4 style="font-family:'Lilita One',sans-serif;font-size:1.1rem;margin:0 0 4px">Highest Wagering on Originals</h4>
             <p style="color:var(--faint);font-size:.82rem;margin:0 0 16px">Ranked by total wagered on Power.win Originals</p>
             <div style="display:flex;flex-direction:column;gap:8px">
@@ -2806,6 +2815,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div class="pw-card" style="--pw-glow:236,72,153;animation-delay:.2s;margin-bottom:0">
           <div class="pw-card-topbar"></div>
           <div style="padding:24px">
+            <span style="display:inline-block;font-size:.65rem;font-weight:800;letter-spacing:.06em;color:#f472b6;background:rgba(236,72,153,.14);border:1px solid rgba(236,72,153,.4);padding:2px 9px;border-radius:99px;margin-bottom:10px">WEEKLY</span>
             <h4 style="font-family:'Lilita One',sans-serif;font-size:1.1rem;margin:0 0 4px">Highest Win Multiplier</h4>
             <p style="color:var(--faint);font-size:.82rem;margin:0 0 16px">Ranked by the biggest single-spin win multiplier</p>
             <div style="display:flex;flex-direction:column;gap:8px">
@@ -2817,7 +2827,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           </div>
         </div>
       </div>
-      <p class="reveal" style="color:var(--faint);font-size:.78rem;text-align:center;margin-top:14px">Races run continuously — check power.win for current standings and time remaining.</p>
+      <p class="reveal" style="color:var(--faint);font-size:.78rem;text-align:center;margin-top:14px">New races every week — check power.win for current standings and time remaining.</p>
 
       <div style="margin-top:44px"></div>
 
@@ -2863,8 +2873,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div class="bcard">
           <div class="top"><span class="cas"><img src="powerwin.png" alt="Power.win" style="height:42px">Power.win</span><span class="ribbon" style="background:#7e22ce">Coming Soon</span></div>
           <div class="codebox"><div class="code"><span style="color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em">Code</span><span class="cv">JAMMMY</span></div><button class="copybtn" onclick="copy(this,'JAMMMY')">Copy</button></div>
-          <div style="padding:16px 0;color:var(--faint);font-size:.9rem">Our newest partner is finalizing their bonus and leaderboard details — check back soon.</div>
-          <div class="feats"><span>🤝 New partnership in progress</span></div>
+          <div class="feats"><span>💰 100% First Deposit Cash Match</span><span>💵 Rakeback Activated</span><span>📉 High Roller Lossback</span><span>🏁 Weekly Live Races</span></div>
           <button class="claim" disabled style="opacity:.5;cursor:not-allowed">Coming Soon</button>
         </div>
       </div>
