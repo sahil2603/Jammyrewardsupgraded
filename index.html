@@ -1335,6 +1335,27 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
    known per-row in JS), and a gentle shimmer sweep across the icon badge to give the card
    some life at rest, not just on interaction. */
 @keyframes battleCardIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+/* Power.win showcase page ("New" tab) -- cards fade/slide in on load (staggered via
+   animation-delay set inline per card) and lift with a colored glow on hover, matching the
+   same battle-card visual language used elsewhere. Built with transform/opacity only (never
+   background-position or filter animations) since those are what caused a real site-wide
+   FPS crisis earlier when several ran at once -- this page only has 3 cards, but the habit
+   of doing it the cheap way from the start is the right default regardless of count. */
+@keyframes pwFadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.pw-card{background:var(--panel);border:1px solid rgba(var(--pw-glow),.25);border-radius:16px;
+  margin-bottom:24px;overflow:hidden;opacity:0;animation:pwFadeUp .6s cubic-bezier(.22,1,.36,1) forwards;
+  transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s,border-color .25s}
+.pw-card:hover{transform:translateY(-4px);border-color:rgba(var(--pw-glow),.5);
+  box-shadow:0 16px 34px -12px rgba(var(--pw-glow),.35)}
+.pw-card-topbar{height:3px;width:100%;background:linear-gradient(90deg,rgb(var(--pw-glow)),rgba(var(--pw-glow),.3))}
+.pw-icon-badge{flex:none;width:52px;height:52px;border-radius:14px;display:flex;align-items:center;
+  justify-content:center;font-size:1.5rem;background:linear-gradient(135deg,#c084fc,#7c3aed);
+  box-shadow:0 6px 18px -6px rgba(0,0,0,.5)}
+@keyframes pwBountyPulse{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.4)}50%{box-shadow:0 0 0 10px rgba(74,222,128,0)}}
+.pw-bounty-card{animation:pwFadeUp .6s cubic-bezier(.22,1,.36,1) forwards,pwBountyPulse 2.6s ease-in-out infinite}
+.pw-bounty-cta{display:inline-block;background:linear-gradient(135deg,#4ade80,#15803d);color:#0a0a0f;
+  font-weight:800;padding:13px 28px;border-radius:10px;text-decoration:none;transition:transform .2s}
+.pw-bounty-cta:hover{transform:scale(1.05)}
 .battle-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;
   margin-bottom:14px;overflow:hidden;opacity:0;animation:battleCardIn .5s cubic-bezier(.22,1,.36,1) forwards;
   transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s,border-color .25s}
@@ -2683,43 +2704,59 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
   <section class="page" id="new">
     <div class="wrap" style="max-width:900px;margin:0 auto;padding:60px 20px 100px">
 
-      <div class="reveal" style="text-align:center;margin-bottom:36px">
-        <span style="display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:.1em;color:#c084fc;background:rgba(192,132,252,.12);border:1px solid rgba(192,132,252,.35);padding:5px 14px;border-radius:99px;margin-bottom:18px">NEW PARTNER</span><br>
-        <img src="powerwin.png" alt="Power.win" style="height:70px;width:auto;object-fit:contain;margin-bottom:20px">
-        <h1 style="font-family:'Lilita One',sans-serif;font-size:clamp(1.8rem,5vw,2.8rem);line-height:1.15;margin:0 0 24px">The most rewarding<br>gambling site ever</h1>
-        <div style="display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.3);border-radius:14px;padding:14px 22px">
+      <div class="reveal" style="text-align:center;margin-bottom:40px">
+        <span style="display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:.1em;color:#c084fc;background:rgba(192,132,252,.12);border:1px solid rgba(192,132,252,.35);padding:5px 14px;border-radius:99px;margin-bottom:18px;animation:pwFadeUp .6s ease both">NEW PARTNER</span><br>
+        <img src="powerwin.png" alt="Power.win" style="height:70px;width:auto;object-fit:contain;margin-bottom:20px;animation:pwFadeUp .6s .1s ease both">
+        <h1 style="font-family:'Lilita One',sans-serif;font-size:clamp(1.8rem,5vw,2.8rem);line-height:1.15;margin:0 0 24px;animation:pwFadeUp .6s .2s ease both">The most rewarding<br>gambling site</h1>
+        <div style="display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.3);border-radius:14px;padding:14px 22px;animation:pwFadeUp .6s .3s ease both">
           <span style="color:var(--muted);font-size:.9rem">Use Code</span>
           <b style="color:#f472b6;font-size:1.15rem;letter-spacing:.03em">JAMMMY</b>
-          <a href="https://power.win?ref=jammmy" target="_blank" rel="noopener" style="background:linear-gradient(135deg,#c084fc,#f472b6);color:#0a0a0f;font-weight:800;padding:8px 18px;border-radius:10px;text-decoration:none;font-size:.9rem">power.win?ref=jammmy &rarr;</a>
+          <a href="https://power.win?ref=jammmy" target="_blank" rel="noopener" style="background:linear-gradient(135deg,#c084fc,#f472b6);color:#0a0a0f;font-weight:800;padding:8px 18px;border-radius:10px;text-decoration:none;font-size:.9rem;transition:transform .2s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='none'">power.win?ref=jammmy &rarr;</a>
         </div>
       </div>
 
       <!-- Offer 1 -->
-      <div class="reveal" style="background:var(--panel);border:1px solid rgba(192,132,252,.25);border-top:3px solid #c084fc;border-radius:16px;padding:30px;margin-bottom:24px">
-        <h2 style="font-family:'Lilita One',sans-serif;font-size:1.35rem;margin:0 0 6px">100% First Deposit Cash Match</h2>
-        <p style="color:#4ade80;font-weight:700;font-size:.95rem;margin:0 0 14px">Real cash. Not bonus money.</p>
-        <p style="color:var(--muted);line-height:1.6;margin:0 0 16px">Get 100% of your first deposit matched as cash, unlocked progressively as you play.</p>
-        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px">
-          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:#c084fc">•</span> <span>Every 1.5&times; wagered unlocks 5% of your bonus.</span></li>
-          <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:#c084fc">•</span> <span>30&times; wagered = 100% unlocked.</span></li>
-        </ul>
+      <div class="pw-card" style="--pw-glow:192,132,252;animation-delay:.1s">
+        <div class="pw-card-topbar"></div>
+        <div style="display:flex;gap:16px;padding:30px">
+          <div class="pw-icon-badge">💰</div>
+          <div style="flex:1">
+            <h2 style="font-family:'Lilita One',sans-serif;font-size:1.35rem;margin:0 0 6px">100% First Deposit Cash Match</h2>
+            <p style="color:#4ade80;font-weight:700;font-size:.95rem;margin:0 0 14px">Real cash. Not bonus money.</p>
+            <p style="color:var(--muted);line-height:1.6;margin:0 0 16px">Get 100% of your first deposit matched as cash, unlocked progressively as you play.</p>
+            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px">
+              <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:#c084fc">•</span> <span>Every 1.5&times; wagered unlocks 5% of your bonus.</span></li>
+              <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:#c084fc">•</span> <span>30&times; wagered = 100% unlocked.</span></li>
+            </ul>
+          </div>
+        </div>
       </div>
 
       <!-- Offer 2 -->
-      <div class="reveal" style="background:var(--panel);border:1px solid rgba(244,114,182,.25);border-top:3px solid #f472b6;border-radius:16px;padding:30px;margin-bottom:24px">
-        <span style="display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.06em;color:#f472b6;background:rgba(244,114,182,.12);border:1px solid rgba(244,114,182,.35);padding:3px 10px;border-radius:99px;margin-bottom:12px">CODE JAMMMY HIGH ROLLERS ONLY</span>
-        <h2 style="font-family:'Lilita One',sans-serif;font-size:1.35rem;margin:0 0 12px">25% Session Lossback</h2>
-        <p style="color:var(--muted);line-height:1.6;margin:0">If you make a deposit of $1,000, we can offer you 25% Lossback for that session, exclusively arranged for you.</p>
+      <div class="pw-card" style="--pw-glow:244,114,182;animation-delay:.2s">
+        <div class="pw-card-topbar"></div>
+        <div style="display:flex;gap:16px;padding:30px">
+          <div class="pw-icon-badge" style="background:linear-gradient(135deg,#f472b6,#be185d)">🎯</div>
+          <div style="flex:1">
+            <span style="display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.06em;color:#f472b6;background:rgba(244,114,182,.12);border:1px solid rgba(244,114,182,.35);padding:3px 10px;border-radius:99px;margin-bottom:12px">CODE JAMMMY HIGH ROLLERS ONLY</span>
+            <h2 style="font-family:'Lilita One',sans-serif;font-size:1.35rem;margin:0 0 12px">25% Session Lossback</h2>
+            <p style="color:var(--muted);line-height:1.6;margin:0">If you make a deposit of $1,000, we can offer you 25% Lossback for that session, exclusively arranged for you.</p>
+          </div>
+        </div>
       </div>
 
       <!-- High Roller Referral Bounty -->
-      <div class="reveal" style="background:linear-gradient(160deg,rgba(192,132,252,.1),rgba(244,114,182,.06));border:1px solid rgba(192,132,252,.35);border-radius:16px;padding:30px;text-align:center">
-        <h2 style="font-family:'Lilita One',sans-serif;font-size:1.35rem;margin:0 0 14px">High Roller Referral Bounty</h2>
-        <p style="color:var(--muted);line-height:1.7;max-width:620px;margin:0 auto 22px">Bring in a high roller under code <b style="color:#f472b6">JAMMMY</b> who wagers <b style="color:#fff">$500,000</b> in any 30-day window, with a minimum deposit of <b style="color:#fff">$10,000</b> — you get <b style="color:#4ade80">$1,000</b>.</p>
-        <a href="https://discord.gg/jammmy" target="_blank" rel="noopener" style="display:inline-block;background:linear-gradient(135deg,#c084fc,#f472b6);color:#0a0a0f;font-weight:800;padding:12px 26px;border-radius:10px;text-decoration:none">Message Jammmy on Discord &rarr;</a>
+      <div class="pw-card pw-bounty-card" style="--pw-glow:74,222,128;animation-delay:.3s">
+        <div class="pw-card-topbar"></div>
+        <div style="padding:30px;text-align:center">
+          <div class="pw-icon-badge" style="background:linear-gradient(135deg,#4ade80,#15803d);margin:0 auto 14px">🎁</div>
+          <h2 style="font-family:'Lilita One',sans-serif;font-size:1.35rem;margin:0 0 14px">High Roller Referral Bounty</h2>
+          <p style="color:var(--muted);line-height:1.7;max-width:620px;margin:0 auto 22px">Bring in a high roller under code <b style="color:#f472b6">JAMMMY</b> who wagers <b style="color:#fff">$500,000</b> in any 30-day window, with a minimum deposit of <b style="color:#fff">$10,000</b> — you get <b style="color:#4ade80">$1,000</b>.</p>
+          <a href="https://discord.gg/jammmy" target="_blank" rel="noopener" class="pw-bounty-cta">Message Jammmy on Discord &rarr;</a>
+        </div>
       </div>
 
-      <p style="color:var(--faint);font-size:.8rem;text-align:center;margin-top:28px">Poker and extremely low-risk, low-variance bets excluded.</p>
+      <p class="reveal" style="color:var(--faint);font-size:.8rem;text-align:center;margin-top:28px">Poker and extremely low-risk, low-variance bets excluded.</p>
 
     </div>
   </section>
