@@ -1356,6 +1356,18 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .pw-bounty-cta{display:inline-block;background:linear-gradient(135deg,#4ade80,#15803d);color:#0a0a0f;
   font-weight:800;padding:13px 28px;border-radius:10px;text-decoration:none;transition:transform .2s}
 .pw-bounty-cta:hover{transform:scale(1.05)}
+.pw-mini-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:8px}
+.pw-mini-card{background:var(--panel);border:1px solid rgba(var(--pw-glow),.25);border-radius:14px;
+  padding:20px 16px;text-align:center;opacity:0;animation:pwFadeUp .55s cubic-bezier(.22,1,.36,1) forwards;
+  transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .22s,border-color .22s}
+.pw-mini-card:hover{transform:translateY(-5px);border-color:rgba(var(--pw-glow),.55);
+  box-shadow:0 14px 28px -10px rgba(var(--pw-glow),.4)}
+.pw-mini-icon{font-size:1.6rem;margin-bottom:10px}
+.pw-mini-title{font-weight:800;font-size:.95rem;margin-bottom:6px;color:rgb(var(--pw-glow))}
+.pw-mini-desc{color:var(--faint);font-size:.78rem;line-height:1.45}
+.pw-race-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.pw-race-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;
+  background:rgba(255,255,255,.03);border-radius:8px;font-size:.88rem}
 .battle-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;
   margin-bottom:14px;overflow:hidden;opacity:0;animation:battleCardIn .5s cubic-bezier(.22,1,.36,1) forwards;
   transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s,border-color .25s}
@@ -2744,6 +2756,70 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           </div>
         </div>
       </div>
+
+      <!-- More Ways to Win -->
+      <h3 class="reveal" style="font-family:'Lilita One',sans-serif;font-size:1.15rem;text-align:center;margin:44px 0 20px;color:var(--muted);letter-spacing:.02em">More Ways to Win</h3>
+      <div class="pw-mini-grid">
+        <div class="pw-mini-card" style="--pw-glow:96,165,250;animation-delay:.1s">
+          <div class="pw-mini-icon">💵</div>
+          <div class="pw-mini-title">Rakeback</div>
+          <div class="pw-mini-desc">Activated automatically — earn back a share of every wager, all the time.</div>
+        </div>
+        <div class="pw-mini-card" style="--pw-glow:248,113,113;animation-delay:.18s">
+          <div class="pw-mini-icon">📉</div>
+          <div class="pw-mini-title">Lossback</div>
+          <div class="pw-mini-desc">Get a share of net losses back, session after session.</div>
+        </div>
+        <div class="pw-mini-card" style="--pw-glow:251,191,36;animation-delay:.26s">
+          <div class="pw-mini-icon">⚡</div>
+          <div class="pw-mini-title">Cashboost</div>
+          <div class="pw-mini-desc">A boost drops after every 5th deposit.</div>
+        </div>
+        <div class="pw-mini-card" style="--pw-glow:74,222,128;animation-delay:.34s">
+          <div class="pw-mini-icon">📅</div>
+          <div class="pw-mini-title">Weekly Bonus</div>
+          <div class="pw-mini-desc">A fresh bonus lands every week just for playing.</div>
+        </div>
+        <div class="pw-mini-card" style="--pw-glow:192,132,252;animation-delay:.42s">
+          <div class="pw-mini-icon">👑</div>
+          <div class="pw-mini-title">VIP Bonus</div>
+          <div class="pw-mini-desc">The more you play, the bigger the perks that unlock.</div>
+        </div>
+      </div>
+
+      <!-- Live Races -->
+      <h3 class="reveal" style="font-family:'Lilita One',sans-serif;font-size:1.15rem;text-align:center;margin:44px 0 20px;color:var(--muted);letter-spacing:.02em">🏁 Live Races</h3>
+      <div class="pw-race-grid">
+        <div class="pw-card" style="--pw-glow:124,58,237;animation-delay:.1s;margin-bottom:0">
+          <div class="pw-card-topbar"></div>
+          <div style="padding:24px">
+            <h4 style="font-family:'Lilita One',sans-serif;font-size:1.1rem;margin:0 0 4px">Highest Wagering on Originals</h4>
+            <p style="color:var(--faint);font-size:.82rem;margin:0 0 16px">Ranked by total wagered on Power.win Originals</p>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div class="pw-race-row"><span>🥇 1st</span><b style="color:#fbbf24">10 USDT</b></div>
+              <div class="pw-race-row"><span>🥈 2nd</span><b style="color:#e5e7eb">5 USDT</b></div>
+              <div class="pw-race-row"><span>🥉 3rd</span><b style="color:#d97706">3 USDT</b></div>
+              <div class="pw-race-row"><span>4th</span><b>2 USDT</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="pw-card" style="--pw-glow:236,72,153;animation-delay:.2s;margin-bottom:0">
+          <div class="pw-card-topbar"></div>
+          <div style="padding:24px">
+            <h4 style="font-family:'Lilita One',sans-serif;font-size:1.1rem;margin:0 0 4px">Highest Win Multiplier</h4>
+            <p style="color:var(--faint);font-size:.82rem;margin:0 0 16px">Ranked by the biggest single-spin win multiplier</p>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div class="pw-race-row"><span>🥇 1st</span><b style="color:#fbbf24">10 USDT</b></div>
+              <div class="pw-race-row"><span>🥈 2nd</span><b style="color:#e5e7eb">5 USDT</b></div>
+              <div class="pw-race-row"><span>🥉 3rd</span><b style="color:#d97706">3 USDT</b></div>
+              <div class="pw-race-row"><span>4th</span><b>2 USDT</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="reveal" style="color:var(--faint);font-size:.78rem;text-align:center;margin-top:14px">Races run continuously — check power.win for current standings and time remaining.</p>
+
+      <div style="margin-top:44px"></div>
 
       <!-- High Roller Referral Bounty -->
       <div class="pw-card pw-bounty-card" style="--pw-glow:74,222,128;animation-delay:.3s">
