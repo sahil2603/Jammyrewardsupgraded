@@ -4689,9 +4689,11 @@ function renderProfile(data){
   var redEl = document.getElementById('pfRedemptions');
   if(data.redemptions && data.redemptions.length){
     redEl.innerHTML = data.redemptions.map(function(r){
-      var statusColor = r.status === 'paid' ? '#4ade80' : '#fbbf24';
+      var statusColor = r.status === 'paid' ? '#4ade80' : r.status === 'rejected' ? '#f87171' : '#fbbf24';
+      var isPlatform = r.redeem_method && r.redeem_method !== 'crypto';
+      var methodLabel = isPlatform ? (CASINO_DISPLAY_NAMES[r.redeem_method]||r.redeem_method) : r.crypto_currency;
       return '<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);flex-wrap:wrap;gap:6px">'
-        + '<span>'+r.id+' · '+r.crypto_currency+' · $'+r.usd_value.toFixed(2)+'</span>'
+        + '<span>'+r.id+' · '+methodLabel+' · $'+r.usd_value.toFixed(2)+'</span>'
         + '<span style="color:'+statusColor+';text-transform:uppercase;font-size:.78rem;font-weight:700">'+r.status+'</span>'
       + '</div>';
     }).join('');
@@ -5146,7 +5148,8 @@ async function loadAdminRedemptions(status){
     if(!data.redemptions.length){ listEl.innerHTML = '<div style="color:var(--muted)">No redemptions found.</div>'; return; }
     listEl.innerHTML = data.redemptions.map(function(r, i){
       var isPending = r.status === 'pending';
-      var glow = isPending ? '251,191,36' : '74,222,128';
+      var isRejected = r.status === 'rejected';
+      var glow = isPending ? '251,191,36' : isRejected ? '248,113,113' : '74,222,128';
       var isPlatform = r.redeem_method && r.redeem_method !== 'crypto';
       var methodHtml = isPlatform
         ? '<span class="admin-tag" style="border-color:rgba(192,132,252,.4);color:#c084fc;background:rgba(192,132,252,.14)">'+(CASINO_DISPLAY_NAMES[r.redeem_method]||r.redeem_method)+'</span>'
@@ -5155,6 +5158,8 @@ async function loadAdminRedemptions(status){
           + '<span class="admin-tag" style="font-family:monospace">'+r.wallet_address+'</span>';
       var statusPill = isPending
         ? '<span class="admin-pill" style="background:rgba(251,191,36,.14);color:#fbbf24;border:1px solid rgba(251,191,36,.35)">⏳ Pending</span>'
+        : isRejected
+        ? '<span class="admin-pill admin-pill-loss">✕ Rejected — coins refunded</span>'
         : '<span class="admin-pill admin-pill-profit">✓ Paid'+(r.paid_at ? ' · '+r.paid_at : '')+'</span>';
       return '<div class="battle-card" style="animation-delay:'+(Math.min(i,10)*0.04)+'s;--glow:'+glow+'">'
         + '<div class="battle-card-topbar" style="background:linear-gradient(90deg,rgb('+glow+'),rgba('+glow+',.4))"></div>'
