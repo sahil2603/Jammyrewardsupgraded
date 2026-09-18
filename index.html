@@ -2978,9 +2978,9 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <h2 class="loy2-card-title pink"><span class="loy2-icon">🪙</span> HOW TO EARN COINS FROM WAGERING</h2>
         <ol class="loy2-list">
           <li>Link your casino username from your Profile page, or claim it directly from the list on the Vault page</li>
-          <li>An admin manually verifies the claim against your Discord before anything is paid out</li>
-          <li>Once approved, you earn 0.1 Jammmy Coins for every dollar you've wagered</li>
-          <li>Keep playing — re-approval later only pays out the new wagering since last time</li>
+          <li>An admin manually verifies the claim against your Discord</li>
+          <li>Once approved, your wagering counts toward the shared community vault</li>
+          <li>When the vault collectively reaches 10,000 coins, everyone verified gets their own share paid out automatically — nothing else to do</li>
           <li>Once you reach 500 coins, redeem them for crypto right from your Profile page</li>
         </ol>
       </div>
@@ -4266,7 +4266,7 @@ function renderUnclaimedCard(data){
   var totalUnclaimed = Object.values(byCasino).reduce(function(s,c){ return s + c.wagered; }, 0);
   var potentialCoins = Math.min((data.vault_remaining || 0), totalUnclaimed * 0.1);
 
-  if(subEl) subEl.textContent = '$'+Math.round(totalUnclaimed).toLocaleString()+' not claimed yet. Find your name in the list below and claim it — once approved, you earn 0.1 Jammmy Coins per dollar wagered.';
+  if(subEl) subEl.textContent = '$'+Math.round(totalUnclaimed).toLocaleString()+' not claimed yet. Find your name in the list below and claim it — once approved, your wagering counts toward the vault, and coins are distributed automatically once it fills.';
   if(estEl) estEl.textContent = Math.round(potentialCoins).toLocaleString()+' Coins';
 
   var CASINO_LOGOS = {
@@ -4342,7 +4342,7 @@ function renderVaultPlayers(){
 async function claimCasinoAccount(casino, username){
   var token = localStorage.getItem('jammy_session_token');
   if(!token){ startDiscordLogin(); return; }
-  if(!confirm('Claim "'+username+'" on '+(CASINO_DISPLAY_NAMES[casino]||casino)+' as your account? An admin will verify this before coins are awarded.')) return;
+  if(!confirm('Claim "'+username+'" on '+(CASINO_DISPLAY_NAMES[casino]||casino)+' as your account? An admin will verify this — once approved, your wagering counts toward the shared vault, and coins are distributed automatically when it fills.')) return;
   try{
     var res = await fetch(AUTH_API + '/api/claim-casino-account', {
       method: 'POST',
