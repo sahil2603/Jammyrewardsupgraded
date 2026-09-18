@@ -3138,6 +3138,12 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         </div>
 
         <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px">
+          <h3 style="margin-top:0">Claim Your Casino Username</h3>
+          <p style="color:var(--muted);font-size:.9rem;margin-bottom:18px">Save your username for each casino you play on. An admin verifies it against your Discord — once approved, your wagering counts toward the shared vault, and coins are distributed automatically once it fills.</p>
+          <div id="pfCasinoLinks"></div>
+        </div>
+
+        <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px">
           <h3 style="margin-top:0">Redeem Coins</h3>
           <p id="pfRedeemInfo" style="color:var(--muted);font-size:.9rem"></p>
           <button id="pfRedeemLocked" class="pf-btn-locked" style="display:none" disabled></button>
@@ -4266,7 +4272,7 @@ function renderUnclaimedCard(data){
   var totalUnclaimed = Object.values(byCasino).reduce(function(s,c){ return s + c.wagered; }, 0);
   var potentialCoins = Math.min((data.vault_remaining || 0), totalUnclaimed * 0.1);
 
-  if(subEl) subEl.textContent = '$'+Math.round(totalUnclaimed).toLocaleString()+' not claimed yet. Find your name in the list below and claim it — once approved, your wagering counts toward the vault, and coins are distributed automatically once it fills.';
+  if(subEl) subEl.textContent = '$'+Math.round(totalUnclaimed).toLocaleString()+' not claimed yet. Claim your username from your Profile page — once approved, your wagering counts toward the vault, and coins are distributed automatically once it fills.';
   if(estEl) estEl.textContent = Math.round(potentialCoins).toLocaleString()+' Coins';
 
   var CASINO_LOGOS = {
@@ -4280,7 +4286,7 @@ function renderUnclaimedCard(data){
     return '<div class="vpl-cas">'
       + '<div class="vpl-logo-box">' + CASINO_LOGOS[casino] + '</div>'
       + '<div><b>'+(CASINO_DISPLAY_NAMES[casino]||casino)+'</b><span>$'+Math.round(c.wagered).toLocaleString()+' unclaimed · '+c.players+' player'+(c.players===1?'':'s')+'</span></div>'
-      + '<button class="vpl-btn" onclick="nav(\'vault\')">Find your name below</button>'
+      + '<button class="vpl-btn" onclick="nav(\'profile\')">Claim in Profile</button>'
     + '</div>';
   }).join('');
 }
@@ -4319,9 +4325,7 @@ function renderVaultPlayers(){
         + '<div class="vpp-dollar" style="opacity:.6">'+coinsIfApproved.toLocaleString()+' Coins</div>'
       + '</div>';
     } else {
-      rightSide = myUser
-        ? '<button class="admin-btn-row-action" onclick="claimCasinoAccount(\''+w.casino+'\',\''+w.name.replace(/'/g,"\\\\'")+'\')">Claim as mine</button>'
-        : '<button class="admin-btn-row-action" onclick="startDiscordLogin()">Log in to claim</button>';
+      rightSide = '<div class="vpp-right-col"><div style="color:var(--faint);font-size:.78rem;font-weight:700">Unclaimed</div></div>';
     }
     return '<div class="vpp-row">'
       + '<div class="vpp-avatar" style="--av-a:#a855f7;--av-b:#5b8def">'+initial+'</div>'
@@ -4769,6 +4773,15 @@ function renderProfile(data){
       + (status ? (STATUS_BADGES[status] || '') : '')
     + '</div>';
   });
+  /* Power.win shown alongside the 3 live casinos for a complete, consistent picture --
+     disabled rather than a real functional input, since the backend has no way to verify a
+     Power.win claim yet (no live leaderboard API wired in). Ready to flip to a real input
+     the moment that changes. */
+  html += '<div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap;opacity:.55">'
+    + '<label style="width:100px;font-size:.85rem;color:var(--faint)">Power.win</label>'
+    + '<input type="text" disabled placeholder="Coming soon" style="flex:1;min-width:150px;padding:9px 12px;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid var(--line);color:var(--faint);cursor:not-allowed">'
+    + '<button class="admin-btn-secondary" disabled style="padding:9px 16px;cursor:not-allowed">Save</button>'
+  + '</div>';
   var pfCasinoLinksEl = document.getElementById('pfCasinoLinks');
   if(pfCasinoLinksEl) pfCasinoLinksEl.innerHTML = html;
 
