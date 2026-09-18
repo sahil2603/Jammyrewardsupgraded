@@ -1973,7 +1973,7 @@ video.vp-mascot-img{animation:none;border-radius:16px;object-fit:cover}
 
 /* table header */
 .vpp-col-head{
-  display:grid;grid-template-columns:60px 1fr 110px 1fr;
+  display:grid;grid-template-columns:60px 1fr 110px;
   gap:14px;align-items:center;
   padding:10px 26px;
   font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
@@ -1995,6 +1995,15 @@ video.vp-mascot-img{animation:none;border-radius:16px;object-fit:cover}
 .vpp-row:nth-child(1){animation-delay:.05s}.vpp-row:nth-child(2){animation-delay:.11s}
 .vpp-row:nth-child(3){animation-delay:.17s}.vpp-row:nth-child(4){animation-delay:.23s}
 .vpp-row:nth-child(5){animation-delay:.29s}.vpp-row:nth-child(6){animation-delay:.35s}
+/* Top 3 rows get a colored glow border + medal instead of a plain avatar initial, plus a
+   gentle ongoing pulse on the border to draw the eye -- box-shadow only (not filter or
+   background-position), matching the safe animation pattern used everywhere else on the
+   site since those are what caused a real site-wide FPS crisis earlier. */
+.vpp-row-top3{background:rgba(var(--top-glow),.05);border-left:3px solid rgb(var(--top-glow));
+  animation:rowRise .5s cubic-bezier(.2,.8,.2,1) backwards,vppTopGlow 2.4s ease-in-out infinite}
+@keyframes vppTopGlow{0%,100%{box-shadow:inset 0 0 0 0 rgba(var(--top-glow),0)}50%{box-shadow:inset 60px 0 40px -40px rgba(var(--top-glow),.15)}}
+.vpp-medal{flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;filter:drop-shadow(0 0 6px rgba(var(--top-glow),.6))}
 /* proportional vault-share fill, driven by --share set inline per row — turns the list into
    a mini data-viz instead of a flat text table */
 .vpp-row::before{content:"";position:absolute;inset:0;width:var(--share,0%);
@@ -3101,7 +3110,6 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <div>Rank</div>
           <div>Player</div>
           <div style="text-align:right">Wagered</div>
-          <div>Vault Share</div>
         </div>
         <div id="vaultPlayers" class="vpp-list">
           <div style="padding:40px 20px;text-align:center;color:var(--faint)">Loading live players&hellip;</div>
@@ -4311,34 +4319,20 @@ function renderVaultPlayers(){
 
   listEl.innerHTML = filtered.slice(0, 60).map(function(w, i){
     var initial = (w.name||'?').charAt(0).toUpperCase();
-    var coinsIfApproved = Math.round(w.wager * 0.1 * 100) / 100;
-    var rightSide;
-    if(w.status === 'approved'){
-      rightSide = '<div class="vpp-right-col">'
-        + '<div style="color:#4ade80;font-size:.78rem;font-weight:700">✓ Claimed'+(w.claimed_by?(' by '+w.claimed_by):'')+'</div>'
-        + '<div class="vpp-dollar">'+coinsIfApproved.toLocaleString()+' Coins</div>'
-      + '</div>';
-    } else if(w.status === 'pending'){
-      var mine = w.is_mine;
-      rightSide = '<div class="vpp-right-col">'
-        + '<div style="color:#fbbf24;font-size:.78rem;font-weight:700">⏳ '+(mine ? 'Pending your review' : 'Claim pending review')+'</div>'
-        + '<div class="vpp-dollar" style="opacity:.6">'+coinsIfApproved.toLocaleString()+' Coins</div>'
-      + '</div>';
-    } else {
-      rightSide = '<div class="vpp-right-col"><div style="color:var(--faint);font-size:.78rem;font-weight:700">Unclaimed</div></div>';
-    }
-    return '<div class="vpp-row">'
-      + '<div class="vpp-avatar" style="--av-a:#a855f7;--av-b:#5b8def">'+initial+'</div>'
+    var isTop3 = i < 3;
+    var medal = ['🥇','🥈','🥉'][i] || '';
+    var topGlow = ['251,191,36', '148,163,184', '217,119,6'][i] || '';
+    return '<div class="vpp-row'+(isTop3 ? ' vpp-row-top3' : '')+'"'+(isTop3 ? ' style="--top-glow:'+topGlow+'"' : '')+'>'
+      + (isTop3
+          ? '<div class="vpp-medal">'+medal+'</div>'
+          : '<div class="vpp-avatar" style="--av-a:#a855f7;--av-b:#5b8def">'+initial+'</div>')
       + '<div class="vpp-info">'
         + '<b>'+(w.name||'—')+'</b>'
         + '<div class="vpp-meta">'
           + '<span>'+(CASINO_DISPLAY_NAMES[w.casino]||w.casino)+'</span>'
-          + '<span class="vpp-dot">•</span>'
-          + '<span>$'+Number(w.wager).toLocaleString(undefined,{maximumFractionDigits:0})+' wagered</span>'
         + '</div>'
       + '</div>'
-      + '<div class="vpp-wager">$'+Number(w.wager).toLocaleString(undefined,{maximumFractionDigits:0})+'</div>'
-      + rightSide
+      + '<div class="vpp-wager"'+(isTop3 ? ' style="color:rgb('+topGlow+');font-size:1.15rem"' : '')+'>$'+Number(w.wager).toLocaleString(undefined,{maximumFractionDigits:0})+'</div>'
     + '</div>';
   }).join('');
 }
