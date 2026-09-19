@@ -4875,33 +4875,55 @@ function pfTxPage(delta){
 }
 
 var _pendingProofImages = {};
+var _pendingProofPromises = {};
 function handleProofFileSelect(input, casino){
   var file = input.files[0];
   var nameEl = document.getElementById('proofFileName_'+casino);
   if(!file) return;
   if(!file.type.startsWith('image/')){ alert('Please choose an image file.'); input.value = ''; return; }
   if(nameEl) nameEl.textContent = 'Compressing…';
-  var img = new Image();
-  var reader = new FileReader();
-  reader.onload = function(e){
-    img.onload = function(){
-      /* Resize to a reasonable max dimension and re-encode as JPEG before it ever leaves
-         the browser -- keeps the upload small (a proof screenshot doesn't need to be full
-         resolution) and avoids sending a multi-megabyte photo straight to the database. */
-      var maxDim = 900;
-      var scale = Math.min(1, maxDim / Math.max(img.width, img.height));
-      var canvas = document.createElement('canvas');
-      canvas.width = Math.round(img.width * scale);
-      canvas.height = Math.round(img.height * scale);
-      var ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      var dataUrl = canvas.toDataURL('image/jpeg', 0.72);
-      _pendingProofImages[casino] = dataUrl;
-      if(nameEl) nameEl.textContent = '✓ '+file.name+' attached';
+  /* Returns a promise so saveCasinoLink can explicitly wait for compression to finish
+     before submitting, rather than relying on it happening to be done in time -- was a real
+     possible race (click Save right after picking a file) even if it didn't show up in
+     every test. Also now has proper error handling: a failed/undecodable image used to just
+     leave the UI stuck on "Compressing..." forever with the claim silently going out with
+     no image at all -- exactly the kind of silent failure that looks like this bug. */
+  _pendingProofPromises[casino] = new Promise(function(resolve){
+    var img = new Image();
+    var reader = new FileReader();
+    reader.onerror = function(){
+      if(nameEl) nameEl.textContent = '';
+      alert('Could not read that file — please try a different image.');
+      _pendingProofImages[casino] = null;
+      resolve();
     };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
+    reader.onload = function(e){
+      img.onerror = function(){
+        if(nameEl) nameEl.textContent = '';
+        alert('Could not process that image — please try a different file (JPG or PNG).');
+        _pendingProofImages[casino] = null;
+        resolve();
+      };
+      img.onload = function(){
+        /* Resize to a reasonable max dimension and re-encode as JPEG before it ever leaves
+           the browser -- keeps the upload small (a proof screenshot doesn't need to be full
+           resolution) and avoids sending a multi-megabyte photo straight to the database. */
+        var maxDim = 900;
+        var scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+        var canvas = document.createElement('canvas');
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        var dataUrl = canvas.toDataURL('image/jpeg', 0.72);
+        _pendingProofImages[casino] = dataUrl;
+        if(nameEl) nameEl.textContent = '✓ '+file.name+' attached';
+        resolve();
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 async function saveCasinoLink(btn, casino){
@@ -4913,6 +4935,10 @@ async function saveCasinoLink(btn, casino){
   var originalText = btn.textContent;
   btn.textContent = 'Saving…';
   btn.disabled = true;
+  /* Wait for any in-flight image compression to actually finish before reading
+     _pendingProofImages -- eliminates the race entirely rather than hoping compression
+     happens to be done by the time someone clicks Save. */
+  if(_pendingProofPromises[casino]){ await _pendingProofPromises[casino]; }
   try{
     var res = await fetch(AUTH_API + '/api/link-casino', {
       method:'POST',
@@ -4922,7 +4948,13 @@ async function saveCasinoLink(btn, casino){
     var data = await res.json();
     if(res.ok){
       btn.textContent = 'Saved ✓';
-      setTimeout(function(){ btn.textContent = originalText; btn.disabled = false; }, 1500);
+      /* Was leaving the page showing the same "Save" button with no visible sign the claim
+         actually went anywhere -- the pending-review badge next to the input never appeared
+         until a manual page reload. Re-loading the profile now makes it show up immediately,
+         plus a clear banner confirming the claim is in and awaiting review. */
+      var confirmEl = document.getElementById('proofFileName_'+casino);
+      if(confirmEl) confirmEl.innerHTML = '<span style="color:#fbbf24">⏳ Submitted — awaiting admin review</span>';
+      setTimeout(function(){ btn.textContent = originalText; btn.disabled = false; loadProfile(); }, 1200);
     } else {
       /* Previously silent here -- any failure (bad session, server error, whatever) left
          the button showing "Save" with zero indication anything went wrong, which is
