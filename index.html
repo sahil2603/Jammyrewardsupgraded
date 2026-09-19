@@ -4759,11 +4759,18 @@ function renderProfile(data){
   var html = '';
   Object.keys(KNOWN_CASINOS_DISPLAY).forEach(function(key){
     var status = linksByStatus[key];
-    html += '<div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap">'
-      + '<label style="width:100px;font-size:.85rem;color:var(--faint)">'+KNOWN_CASINOS_DISPLAY[key]+'</label>'
-      + '<input type="text" id="casinoInput_'+key+'" value="'+(linksByName[key]||'')+'" placeholder="Your '+KNOWN_CASINOS_DISPLAY[key]+' username" style="flex:1;min-width:150px;padding:9px 12px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-family:\'Poppins\'">'
-      + '<button class="admin-btn-secondary" style="padding:9px 16px" onclick="saveCasinoLink(this,\''+key+'\')">Save</button>'
-      + (status ? (STATUS_BADGES[status] || '') : '')
+    html += '<div style="margin-bottom:16px">'
+      + '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">'
+        + '<label style="width:100px;font-size:.85rem;color:var(--faint)">'+KNOWN_CASINOS_DISPLAY[key]+'</label>'
+        + '<input type="text" id="casinoInput_'+key+'" value="'+(linksByName[key]||'')+'" placeholder="Your '+KNOWN_CASINOS_DISPLAY[key]+' username" style="flex:1;min-width:150px;padding:9px 12px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-family:\'Poppins\'">'
+        + '<button class="admin-btn-secondary" style="padding:9px 16px" onclick="saveCasinoLink(this,\''+key+'\')">Save</button>'
+        + (status ? (STATUS_BADGES[status] || '') : '')
+      + '</div>'
+      + '<div style="display:flex;gap:8px;align-items:center;margin:8px 0 0 110px">'
+        + '<input type="file" id="proofInput_'+key+'" accept="image/*" style="display:none" onchange="handleProofFileSelect(this,\''+key+'\')">'
+        + '<button type="button" class="admin-btn-secondary" style="padding:6px 12px;font-size:.78rem" onclick="document.getElementById(\'proofInput_'+key+'\').click()">📎 Attach proof screenshot</button>'
+        + '<span id="proofFileName_'+key+'" style="color:var(--faint);font-size:.78rem"></span>'
+      + '</div>'
     + '</div>';
   });
   /* Power.win shown alongside the 3 live casinos for a complete, consistent picture --
@@ -4867,6 +4874,36 @@ function pfTxPage(delta){
   renderTransactionsPage();
 }
 
+var _pendingProofImages = {};
+function handleProofFileSelect(input, casino){
+  var file = input.files[0];
+  var nameEl = document.getElementById('proofFileName_'+casino);
+  if(!file) return;
+  if(!file.type.startsWith('image/')){ alert('Please choose an image file.'); input.value = ''; return; }
+  if(nameEl) nameEl.textContent = 'Compressing…';
+  var img = new Image();
+  var reader = new FileReader();
+  reader.onload = function(e){
+    img.onload = function(){
+      /* Resize to a reasonable max dimension and re-encode as JPEG before it ever leaves
+         the browser -- keeps the upload small (a proof screenshot doesn't need to be full
+         resolution) and avoids sending a multi-megabyte photo straight to the database. */
+      var maxDim = 900;
+      var scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+      var canvas = document.createElement('canvas');
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      var dataUrl = canvas.toDataURL('image/jpeg', 0.72);
+      _pendingProofImages[casino] = dataUrl;
+      if(nameEl) nameEl.textContent = '✓ '+file.name+' attached';
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
 async function saveCasinoLink(btn, casino){
   var token = localStorage.getItem('jammy_session_token');
   if(!token){ alert('Please log in with Discord first.'); return; }
@@ -4880,7 +4917,7 @@ async function saveCasinoLink(btn, casino){
     var res = await fetch(AUTH_API + '/api/link-casino', {
       method:'POST',
       headers: { 'Authorization':'Bearer '+token, 'Content-Type':'application/json' },
-      body: JSON.stringify({casino:casino, username:username})
+      body: JSON.stringify({casino:casino, username:username, proof_image: _pendingProofImages[casino] || null})
     });
     var data = await res.json();
     if(res.ok){
@@ -5377,6 +5414,17 @@ function renderDailyChart(byDay){
 /* ══════════════════════════════════════════════════════════════════════════
    ADMIN: VERIFY PLAYERS
    ══════════════════════════════════════════════════════════════════════════ */
+function showProofLightbox(src){
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;padding:20px';
+  overlay.onclick = function(){ overlay.remove(); };
+  var img = document.createElement('img');
+  img.src = src;
+  img.style.cssText = 'max-width:90vw;max-height:90vh;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.6)';
+  overlay.appendChild(img);
+  document.body.appendChild(overlay);
+}
+
 async function loadAdminVerifyList(status){
   status = status || 'pending';
   var token = localStorage.getItem('jammy_session_token');
@@ -5406,12 +5454,16 @@ async function loadAdminVerifyList(status){
       var checkboxHtml = status === 'pending'
         ? '<input type="checkbox" class="verify-claim-check" data-user-id="'+c.user_id+'" data-casino="'+c.casino+'" style="width:18px;height:18px;margin-right:12px;flex:none;accent-color:#a855f7">'
         : '';
+      var proofHtml = c.proof_image
+        ? '<div style="margin-top:8px"><img src="'+c.proof_image+'" onclick="showProofLightbox(this.src)" style="height:52px;border-radius:6px;cursor:pointer;border:1px solid var(--line)" title="Click to view full size"></div>'
+        : '<div style="margin-top:8px;color:var(--faint);font-size:.75rem">No proof uploaded</div>';
       return '<div class="admin-row" style="align-items:flex-start">'
         + checkboxHtml
         + '<div>'
           + '<b>'+c.username+'</b> <span style="color:var(--faint);font-size:.78rem">('+c.user_id+')</span><br>'
           + '<span style="color:var(--muted);font-size:.85rem">Claims: <b>'+c.casino_username+'</b> on '+(CASINO_DISPLAY_NAMES[c.casino]||c.casino)+'</span><br>'
           + '<span style="color:var(--faint);font-size:.78rem">Current wager: $'+c.current_wager.toLocaleString()+' · Already credited: $'+c.already_credited_wager.toLocaleString()+' · New: $'+c.new_wager_since_last.toLocaleString()+'</span>'
+          + proofHtml
         + '</div>'
         + '<div style="text-align:right;margin-left:auto">'
           + coinsLabel
