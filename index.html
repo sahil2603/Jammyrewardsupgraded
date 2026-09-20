@@ -5525,8 +5525,8 @@ async function loadAdminVerifyList(status){
   if(!token || !listEl) return;
   document.querySelectorAll('.admin-verify-filter').forEach(function(b){ b.classList.toggle('active', b.dataset.status === status); });
   if(descEl) descEl.textContent = status === 'pending'
-    ? "Pending casino account claims. Check the claimant's Discord against the casino username before approving — approving credits coins immediately and deducts them from the vault."
-    : 'Already-approved claims. If one turns out to be the wrong person, revoke it — this claws back the coins that were awarded (as much as is still in their balance) and restores that amount to the vault.';
+    ? "Pending casino account claims. Check the claimant's Discord against the casino username and proof screenshot before approving — coins are distributed automatically once the shared vault fills, not immediately on approval."
+    : 'Already-approved claims. If one turns out to be the wrong person, revoke it — this claws back any coins already distributed to them and resets their vault progress.';
   if(bulkBar) bulkBar.style.display = status === 'pending' ? 'flex' : 'none';
   listEl.innerHTML = 'Loading…';
   try{
@@ -5539,28 +5539,22 @@ async function loadAdminVerifyList(status){
         ? '<button class="admin-btn-row-action" onclick="adminApproveClaim(\''+c.user_id+'\',\''+c.casino+'\')">Approve</button>'
           + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#6b7280,#4b5563)" onclick="adminRejectClaim(\''+c.user_id+'\',\''+c.casino+'\')">Reject</button>'
         : '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminRevokeClaim(\''+c.user_id+'\',\''+c.casino+'\')">Revoke</button>';
-      var coinsLabel = status === 'pending'
-        ? '<div style="font-family:\'Lilita One\',sans-serif;color:#fbbf24;font-size:1.1rem">+'+c.would_award_coins.toLocaleString()+' Coins</div>'
-        : '<div style="font-family:\'Lilita One\',sans-serif;color:#4ade80;font-size:1.1rem">'+Math.round(c.already_credited_wager*0.1*100)/100+' Coins earned</div>';
       var checkboxHtml = status === 'pending'
         ? '<input type="checkbox" class="verify-claim-check" data-user-id="'+c.user_id+'" data-casino="'+c.casino+'" style="width:18px;height:18px;margin-right:12px;flex:none;accent-color:#a855f7">'
         : '';
       var proofHtml = c.proof_image
-        ? '<div style="margin-top:8px"><img src="'+c.proof_image+'" onclick="showProofLightbox(this.src)" style="height:52px;border-radius:6px;cursor:pointer;border:1px solid var(--line)" title="Click to view full size"></div>'
-        : '<div style="margin-top:8px;color:var(--faint);font-size:.75rem">No proof uploaded</div>';
+        ? '<img src="'+c.proof_image+'" onclick="showProofLightbox(this.src)" style="height:64px;border-radius:8px;cursor:pointer;border:1px solid var(--line)" title="Click to view full size">'
+        : '<span style="color:var(--faint);font-size:.78rem;font-style:italic">No proof uploaded</span>';
       return '<div class="admin-row" style="align-items:flex-start">'
         + checkboxHtml
-        + '<div>'
+        + '<div style="flex:1">'
           + '<b>'+c.username+'</b> <span style="color:var(--faint);font-size:.78rem">('+c.user_id+')</span><br>'
-          + '<span style="color:var(--muted);font-size:.85rem">Claims: <b>'+c.casino_username+'</b> on '+(CASINO_DISPLAY_NAMES[c.casino]||c.casino)+'</span><br>'
-          + '<span style="color:var(--faint);font-size:.78rem">Current wager: $'+c.current_wager.toLocaleString()+' · Already credited: $'+c.already_credited_wager.toLocaleString()+' · New: $'+c.new_wager_since_last.toLocaleString()+'</span>'
-          + proofHtml
+          + '<span style="color:var(--muted);font-size:.85rem">Claims: <b>'+c.casino_username+'</b> on '+(CASINO_DISPLAY_NAMES[c.casino]||c.casino)+'</span>'
+          + (c.current_wager > 0 ? '<br><span style="color:var(--faint);font-size:.78rem">Current wager: $'+c.current_wager.toLocaleString()+'</span>' : '')
+          + '<div style="margin-top:10px">'+proofHtml+'</div>'
         + '</div>'
-        + '<div style="text-align:right;margin-left:auto">'
-          + coinsLabel
-          + '<div style="margin-top:6px;display:flex;gap:6px;justify-content:flex-end">'
-            + actionsHtml
-          + '</div>'
+        + '<div style="display:flex;gap:6px;flex:none">'
+          + actionsHtml
         + '</div>'
       + '</div>';
     }).join('');
