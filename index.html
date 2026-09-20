@@ -1364,6 +1364,32 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .pw-bounty-cta{display:inline-block;background:linear-gradient(135deg,#4ade80,#15803d);color:#0a0a0f;
   font-weight:800;padding:13px 28px;border-radius:10px;text-decoration:none;transition:transform .2s}
 .pw-bounty-cta:hover{transform:scale(1.05)}
+/* Use Code JAMMMY box -- a "coupon" treatment with an animated conic-gradient border ring,
+   a periodic shine sweep, a pulsing outer glow, and a small rotating sparkle. The border ring
+   spins via background-position on the pseudo-element rather than filter, and since this
+   only ever runs on ONE element (not a list that scales with data), it's cheap regardless --
+   same reasoning as everywhere else on the site: transform/opacity/box-shadow first, and
+   background-position is fine here specifically because it's a single fixed element. */
+.pw-code-box{position:relative;display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;
+  justify-content:center;background:rgba(9,6,16,.7);border-radius:16px;padding:16px 26px;
+  isolation:isolate;overflow:hidden}
+.pw-code-box::before{content:'';position:absolute;inset:0;padding:2px;border-radius:16px;
+  background:conic-gradient(from 0deg,#c084fc,#f472b6,#fbbf24,#c084fc);
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  animation:pwCodeSpin 4s linear infinite;z-index:-1}
+@keyframes pwCodeSpin{to{transform:rotate(360deg)}}
+@keyframes pwCodeGlow{0%,100%{box-shadow:0 0 16px 0 rgba(192,132,252,.15)}50%{box-shadow:0 0 28px 4px rgba(244,114,182,.3)}}
+.pw-code-shine{position:absolute;top:0;left:0;width:40%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.12),transparent);
+  animation:pwCodeShineSweep 3.2s ease-in-out infinite}
+@keyframes pwCodeShineSweep{0%{transform:translateX(-120%)}60%,100%{transform:translateX(320%)}}
+.pw-code-link{color:#f472b6;font-size:1.25rem;font-weight:800;letter-spacing:.06em;
+  text-decoration:none;display:inline-block;position:relative;z-index:1;
+  transition:transform .2s,color .2s;text-shadow:0 0 12px rgba(244,114,182,.5)}
+.pw-code-link:hover{transform:scale(1.1);color:#fbbf24}
+.pw-code-spark{position:relative;z-index:1;display:inline-block;animation:pwCodeSparkSpin 3s ease-in-out infinite}
+@keyframes pwCodeSparkSpin{0%,100%{transform:rotate(-12deg) scale(1)}50%{transform:rotate(12deg) scale(1.25)}}
 .pw-mini-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:8px}
 .pw-mini-card{background:var(--panel);border:1px solid rgba(var(--pw-glow),.25);border-radius:14px;
   padding:20px 16px;text-align:center;opacity:0;animation:pwFadeUp .55s cubic-bezier(.22,1,.36,1) forwards;
@@ -2738,9 +2764,11 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <span style="display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:.1em;color:#c084fc;background:rgba(192,132,252,.12);border:1px solid rgba(192,132,252,.35);padding:5px 14px;border-radius:99px;margin-bottom:18px;animation:pwFadeUp .6s ease both">NEW PARTNER</span><br>
         <img src="powerwin.png" alt="Power.win" style="height:70px;width:auto;object-fit:contain;margin-bottom:20px;animation:pwFadeUp .6s .1s ease both">
         <h1 style="font-family:'Lilita One',sans-serif;font-size:clamp(1.8rem,5vw,2.8rem);line-height:1.15;margin:0 0 24px;animation:pwFadeUp .6s .2s ease both">The most rewarding<br>gambling site</h1>
-        <div style="display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.3);border-radius:14px;padding:14px 22px;animation:pwFadeUp .6s .3s ease both">
-          <span style="color:var(--muted);font-size:.9rem">Use Code</span>
-          <a href="https://power.win?ref=jammmy" target="_blank" rel="noopener" style="color:#f472b6;font-size:1.15rem;font-weight:800;letter-spacing:.03em;text-decoration:none;transition:transform .2s;display:inline-block" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='none'">JAMMMY</a>
+        <div class="pw-code-box" style="animation:pwFadeUp .6s .3s ease both, pwCodeGlow 2.8s ease-in-out infinite">
+          <div class="pw-code-shine"></div>
+          <span style="color:var(--muted);font-size:.9rem;position:relative;z-index:1">Use Code</span>
+          <a href="https://power.win?ref=jammmy" target="_blank" rel="noopener" class="pw-code-link">JAMMMY</a>
+          <span class="pw-code-spark">✨</span>
         </div>
       </div>
 
