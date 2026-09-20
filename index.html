@@ -1389,6 +1389,10 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   transition:transform .2s,color .2s;text-shadow:0 0 12px rgba(244,114,182,.5)}
 .pw-code-link:hover{transform:scale(1.1);color:#fbbf24}
 .pw-code-spark{position:relative;z-index:1;display:inline-block;animation:pwCodeSparkSpin 3s ease-in-out infinite}
+/* Claim Your Casino Username cards */
+.pcc-card{background:var(--panel);border:1px solid rgba(var(--pcc-glow),.25);border-radius:14px;
+  margin-bottom:16px;overflow:hidden}
+.pcc-card-top{height:3px;width:100%;background:linear-gradient(90deg,rgb(var(--pcc-glow)),rgba(var(--pcc-glow),.3))}
 @keyframes pwCodeSparkSpin{0%,100%{transform:rotate(-12deg) scale(1)}50%{transform:rotate(12deg) scale(1.25)}}
 .pw-mini-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:8px}
 .pw-mini-card{background:var(--panel);border:1px solid rgba(var(--pw-glow),.25);border-radius:14px;
@@ -4781,23 +4785,35 @@ function renderProfile(data){
     linksByName[l.casino] = l.casino_username; linksByStatus[l.casino] = l.status;
   });
   var STATUS_BADGES = {
-    approved: '<span style="color:#4ade80;font-size:.75rem;font-weight:700;white-space:nowrap">✓ Approved</span>',
-    pending: '<span style="color:#fbbf24;font-size:.75rem;font-weight:700;white-space:nowrap">⏳ Pending review</span>',
+    approved: '<span class="admin-pill admin-pill-profit">✓ Approved</span>',
+    pending: '<span class="admin-pill" style="background:rgba(251,191,36,.14);color:#fbbf24;border:1px solid rgba(251,191,36,.35)">⏳ Pending review</span>',
   };
+  var CASINO_GLOW = {upgrader:'96,165,250', degencity:'244,114,182', rustmafia:'168,85,247'};
   var html = '';
   Object.keys(KNOWN_CASINOS_DISPLAY).forEach(function(key){
     var status = linksByStatus[key];
-    html += '<div style="margin-bottom:16px">'
-      + '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">'
-        + '<label style="width:100px;font-size:.85rem;color:var(--faint)">'+KNOWN_CASINOS_DISPLAY[key]+'</label>'
-        + '<input type="text" id="casinoInput_'+key+'" value="'+(linksByName[key]||'')+'" placeholder="Your '+KNOWN_CASINOS_DISPLAY[key]+' username" style="flex:1;min-width:150px;padding:9px 12px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-family:\'Poppins\'">'
-        + '<button class="admin-btn-secondary" style="padding:9px 16px" onclick="saveCasinoLink(this,\''+key+'\')">Save</button>'
-        + (status ? (STATUS_BADGES[status] || '') : '')
-      + '</div>'
-      + '<div style="display:flex;gap:8px;align-items:center;margin:8px 0 0 110px">'
-        + '<input type="file" id="proofInput_'+key+'" accept="image/*" style="display:none" onchange="handleProofFileSelect(this,\''+key+'\')">'
-        + '<button type="button" class="admin-btn-secondary" style="padding:6px 12px;font-size:.78rem" onclick="document.getElementById(\'proofInput_'+key+'\').click()">📎 Attach proof screenshot</button>'
-        + '<span id="proofFileName_'+key+'" style="color:var(--faint);font-size:.78rem"></span>'
+    var isLocked = status === 'pending' || status === 'approved';
+    var glow = CASINO_GLOW[key] || '148,163,184';
+    html += '<div class="pcc-card" style="--pcc-glow:'+glow+'">'
+      + '<div class="pcc-card-top"></div>'
+      + '<div style="padding:18px 20px">'
+        + '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px">'
+          + '<b style="font-size:1rem">'+KNOWN_CASINOS_DISPLAY[key]+'</b>'
+          + (status ? (STATUS_BADGES[status] || '') : '<span style="color:var(--faint);font-size:.78rem">Not claimed yet</span>')
+        + '</div>'
+        + '<label style="display:block;font-size:.78rem;color:var(--faint);margin-bottom:5px">Your username <span style="color:#f87171">*</span></label>'
+        + '<input type="text" id="casinoInput_'+key+'" value="'+(linksByName[key]||'')+'" placeholder="Your '+KNOWN_CASINOS_DISPLAY[key]+' username" '+(isLocked?'disabled':'oninput="updatePccSubmitState(\''+key+'\')"')+' style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,'+(isLocked?'.02':'.04')+');border:1px solid var(--line);color:'+(isLocked?'var(--faint)':'#fff')+';font-family:\'Poppins\';box-sizing:border-box;margin-bottom:12px'+(isLocked?';cursor:not-allowed':'')+'">'
+        + '<label style="display:block;font-size:.78rem;color:var(--faint);margin-bottom:5px">Proof screenshot <span style="color:#f87171">*</span> <span style="color:var(--faint);font-weight:400">— a screenshot showing this account is yours</span></label>'
+        + '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">'
+          + '<input type="file" id="proofInput_'+key+'" accept="image/*" style="display:none" '+(isLocked?'disabled':'onchange="handleProofFileSelect(this,\''+key+'\')"')+'>'
+          + '<button type="button" class="admin-btn-secondary" '+(isLocked?'disabled':'onclick="document.getElementById(\'proofInput_'+key+'\').click()"')+' style="padding:8px 14px;font-size:.82rem'+(isLocked?';opacity:.5;cursor:not-allowed':'')+'">📎 Choose screenshot</button>'
+          + '<span id="proofFileName_'+key+'" style="color:var(--faint);font-size:.78rem"></span>'
+        + '</div>'
+        + (isLocked
+            ? '<p style="color:var(--faint);font-size:.8rem;margin:14px 0 0">'+(status==='pending' ? 'Submitted — locked while Jammmy reviews it. You\'ll see this update to Approved or reopen automatically if rejected.' : 'This account is verified. Contact an admin if anything needs to change.')+'</p>'
+            : '<button id="pccSubmit_'+key+'" class="admin-btn-primary" disabled onclick="saveCasinoLink(this,\''+key+'\')" style="width:100%;margin-top:14px;opacity:.5;cursor:not-allowed">Submit Claim</button>'
+              + '<div id="pccResult_'+key+'" style="margin-top:10px;font-size:.85rem"></div>'
+          )
       + '</div>'
     + '</div>';
   });
@@ -4805,10 +4821,15 @@ function renderProfile(data){
      disabled rather than a real functional input, since the backend has no way to verify a
      Power.win claim yet (no live leaderboard API wired in). Ready to flip to a real input
      the moment that changes. */
-  html += '<div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap;opacity:.55">'
-    + '<label style="width:100px;font-size:.85rem;color:var(--faint)">Power.win</label>'
-    + '<input type="text" disabled placeholder="Coming soon" style="flex:1;min-width:150px;padding:9px 12px;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid var(--line);color:var(--faint);cursor:not-allowed">'
-    + '<button class="admin-btn-secondary" disabled style="padding:9px 16px;cursor:not-allowed">Save</button>'
+  html += '<div class="pcc-card" style="--pcc-glow:192,132,252;opacity:.55">'
+    + '<div class="pcc-card-top"></div>'
+    + '<div style="padding:18px 20px">'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">'
+        + '<b style="font-size:1rem">Power.win</b>'
+        + '<span style="color:var(--faint);font-size:.78rem">Coming soon</span>'
+      + '</div>'
+      + '<input type="text" disabled placeholder="Coming soon" style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid var(--line);color:var(--faint);cursor:not-allowed;box-sizing:border-box">'
+    + '</div>'
   + '</div>';
   var pfCasinoLinksEl = document.getElementById('pfCasinoLinks');
   if(pfCasinoLinksEl) pfCasinoLinksEl.innerHTML = html;
@@ -4903,6 +4924,15 @@ function pfTxPage(delta){
 }
 
 var _pendingProofImages = {};
+function updatePccSubmitState(casino){
+  var input = document.getElementById('casinoInput_'+casino);
+  var btn = document.getElementById('pccSubmit_'+casino);
+  if(!input || !btn) return;
+  var ready = input.value.trim().length > 0 && !!_pendingProofImages[casino];
+  btn.disabled = !ready;
+  btn.style.opacity = ready ? '1' : '.5';
+  btn.style.cursor = ready ? 'pointer' : 'not-allowed';
+}
 var _pendingProofPromises = {};
 function handleProofFileSelect(input, casino){
   var file = input.files[0];
@@ -4946,6 +4976,7 @@ function handleProofFileSelect(input, casino){
         var dataUrl = canvas.toDataURL('image/jpeg', 0.72);
         _pendingProofImages[casino] = dataUrl;
         if(nameEl) nameEl.textContent = '✓ '+file.name+' attached';
+        updatePccSubmitState(casino);
         resolve();
       };
       img.src = e.target.result;
@@ -4959,13 +4990,15 @@ async function saveCasinoLink(btn, casino){
   if(!token){ alert('Please log in with Discord first.'); return; }
   var input = document.getElementById('casinoInput_'+casino);
   var username = input.value.trim();
-  if(!username){ alert('Please enter a username before saving.'); return; }
+  var resultEl = document.getElementById('pccResult_'+casino);
+  if(!username){ alert('Please enter a username first.'); return; }
+  if(!_pendingProofImages[casino]){ alert('A proof screenshot is required to submit a claim.'); return; }
   var originalText = btn.textContent;
-  btn.textContent = 'Saving…';
+  btn.textContent = 'Submitting…';
   btn.disabled = true;
   /* Wait for any in-flight image compression to actually finish before reading
      _pendingProofImages -- eliminates the race entirely rather than hoping compression
-     happens to be done by the time someone clicks Save. */
+     happens to be done by the time someone clicks Submit. */
   if(_pendingProofPromises[casino]){ await _pendingProofPromises[casino]; }
   try{
     var res = await fetch(AUTH_API + '/api/link-casino', {
@@ -4975,26 +5008,24 @@ async function saveCasinoLink(btn, casino){
     });
     var data = await res.json();
     if(res.ok){
-      btn.textContent = 'Saved ✓';
-      /* Was leaving the page showing the same "Save" button with no visible sign the claim
-         actually went anywhere -- the pending-review badge next to the input never appeared
-         until a manual page reload. Re-loading the profile now makes it show up immediately,
-         plus a clear banner confirming the claim is in and awaiting review. */
-      var confirmEl = document.getElementById('proofFileName_'+casino);
-      if(confirmEl) confirmEl.innerHTML = '<span style="color:#fbbf24">⏳ Submitted — awaiting admin review</span>';
-      setTimeout(function(){ btn.textContent = originalText; btn.disabled = false; loadProfile(); }, 1200);
+      btn.textContent = 'Submitted ✓';
+      /* The whole card locks itself on the next render (loadProfile re-renders with the new
+         'pending' status, which the card template already treats as a locked state) -- so
+         the confirmation here just needs to bridge the gap before that reload completes. */
+      if(resultEl) resultEl.innerHTML = '<span style="color:#fbbf24">⏳ Submitted — awaiting admin review. This will lock until Jammmy reviews it.</span>';
+      setTimeout(function(){ loadProfile(); }, 900);
     } else {
       /* Previously silent here -- any failure (bad session, server error, whatever) left
          the button showing "Save" with zero indication anything went wrong, which is
          exactly why this looked broken with no visible cause. */
-      console.error('Failed to save casino link:', data.error);
-      alert(data.error || 'Failed to save — please try again.');
+      console.error('Failed to submit claim:', data.error);
+      if(resultEl) resultEl.innerHTML = '<span style="color:#f87171">✕ '+(data.error || 'Failed to submit — please try again.')+'</span>';
       btn.textContent = originalText;
       btn.disabled = false;
     }
   }catch(e){
     console.error('Failed to save casino link:', e);
-    alert('Network error — please try again.');
+    if(resultEl) resultEl.innerHTML = '<span style="color:#f87171">✕ Network error — please try again.</span>';
     btn.textContent = originalText;
     btn.disabled = false;
   }
