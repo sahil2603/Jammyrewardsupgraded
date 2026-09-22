@@ -1393,6 +1393,14 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .pcc-card{background:var(--panel);border:1px solid rgba(var(--pcc-glow),.25);border-radius:14px;
   margin-bottom:16px;overflow:hidden}
 .pcc-card-top{height:3px;width:100%;background:linear-gradient(90deg,rgb(var(--pcc-glow)),rgba(var(--pcc-glow),.3))}
+/* Active/Awarded filter pills for Slot & Battle Requests -- a smooth sliding highlight
+   rather than an instant color swap, transform/opacity only. */
+.admin-filter-pill{background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--muted);
+  padding:8px 16px;border-radius:10px;font-size:.85rem;font-weight:700;cursor:pointer;
+  transition:all .22s cubic-bezier(.22,1,.36,1);position:relative}
+.admin-filter-pill:hover{border-color:rgba(168,85,247,.4);color:#fff}
+.admin-filter-pill.active{background:linear-gradient(135deg,#a855f7,#6366f1);border-color:transparent;
+  color:#fff;box-shadow:0 4px 14px -4px rgba(168,85,247,.5);transform:translateY(-1px)}
 @keyframes pwCodeSparkSpin{0%,100%{transform:rotate(-12deg) scale(1)}50%{transform:rotate(12deg) scale(1.25)}}
 .pw-mini-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:8px}
 .pw-mini-card{background:var(--panel);border:1px solid rgba(var(--pw-glow),.25);border-radius:14px;
@@ -2771,7 +2779,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div class="pw-code-box" style="animation:pwFadeUp .6s .3s ease both, pwCodeGlow 2.8s ease-in-out infinite">
           <div class="pw-code-shine"></div>
           <span style="color:var(--muted);font-size:.9rem;position:relative;z-index:1">Use Code</span>
-          <a href="https://power.win?ref=jammmy" target="_blank" rel="noopener" class="pw-code-link">JAMMMY</a>
+          <a href="https://power.win/?aff=jammmy" target="_blank" rel="noopener" class="pw-code-link">JAMMMY</a>
           <span class="pw-code-spark">✨</span>
         </div>
       </div>
@@ -3219,6 +3227,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
               <p style="color:var(--faint);font-size:.8rem;margin:0 0 14px">Funds will be credited within 24 hours.</p>
             </div>
 
+            <div id="pfRedeemEligibilityNote" style="font-size:.85rem;margin-bottom:10px"></div>
             <button class="admin-btn-primary" onclick="submitRedeem()" id="pfRedeemBtn">Redeem Full Balance</button>
           </div>
           <div id="pfRedeemResult" style="display:none;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.3);border-radius:12px;padding:18px;margin-top:14px;line-height:1.7"></div>
@@ -3476,7 +3485,11 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
         <!-- SLOT REQUESTS TAB -->
         <div id="adminSlotsTab" class="admin-tab-panel" style="display:none">
-          <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+            <div style="display:flex;gap:8px">
+              <button class="admin-filter-pill active admin-slot-filter" data-filter="active" onclick="loadAdminSlots('active')">Active</button>
+              <button class="admin-filter-pill admin-slot-filter" data-filter="awarded" onclick="loadAdminSlots('awarded')">🪙 Awarded</button>
+            </div>
             <button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminDeleteAllSlotRequests()">🗑️ Delete All</button>
           </div>
           <div id="adminSlotsList">Loading…</div>
@@ -3484,7 +3497,11 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
         <!-- BATTLE REQUESTS TAB -->
         <div id="adminBattlesTab" class="admin-tab-panel" style="display:none">
-          <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+            <div style="display:flex;gap:8px">
+              <button class="admin-filter-pill active admin-battle-filter" data-filter="active" onclick="loadAdminBattles('active')">Active</button>
+              <button class="admin-filter-pill admin-battle-filter" data-filter="awarded" onclick="loadAdminBattles('awarded')">🪙 Awarded</button>
+            </div>
             <button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminDeleteAllBattleRequests()">🗑️ Delete All</button>
           </div>
           <div id="adminBattlesList">Loading…</div>
@@ -4760,17 +4777,22 @@ function renderProfile(data){
   var info = document.getElementById('pfRedeemInfo');
   var form = document.getElementById('pfRedeemForm');
   var locked = document.getElementById('pfRedeemLocked');
-  if(data.user.coin_balance >= data.min_redeem_coins){
-    info.textContent = 'You can redeem your full balance of ' + fmtCoins(data.user.coin_balance) + ' coins (≈ $' + (data.user.coin_balance/data.coins_per_dollar).toFixed(2) + ').';
+  var lowestMin = Math.min(data.min_redeem_coins_crypto, data.min_redeem_coins_platform);
+  _redeemMinCrypto = data.min_redeem_coins_crypto;
+  _redeemMinPlatform = data.min_redeem_coins_platform;
+  _redeemBalance = data.user.coin_balance;
+  if(data.user.coin_balance >= lowestMin){
+    info.textContent = 'You have ' + fmtCoins(data.user.coin_balance) + ' coins (≈ $' + (data.user.coin_balance/data.coins_per_dollar).toFixed(2) + ') available to redeem.';
     form.style.display = 'block';
     updateNetworkOptions();
+    updateRedeemEligibilityNote();
     locked.style.display = 'none';
   } else {
-    var needed = data.min_redeem_coins - data.user.coin_balance;
-    info.textContent = fmtCoins(data.user.coin_balance) + ' / ' + data.min_redeem_coins.toLocaleString() + ' coins collected';
+    var needed = lowestMin - data.user.coin_balance;
+    info.textContent = fmtCoins(data.user.coin_balance) + ' / ' + lowestMin.toLocaleString() + ' coins collected';
     form.style.display = 'none';
     locked.style.display = 'block';
-    locked.textContent = '🔒 Collect ' + needed.toLocaleString() + ' more coin' + (needed === 1 ? '' : 's') + ' to redeem';
+    locked.textContent = '🔒 Collect ' + needed.toLocaleString() + ' more coin' + (needed === 1 ? '' : 's') + ' to unlock redeeming (platform min: ' + data.min_redeem_coins_platform.toLocaleString() + ', address min: ' + data.min_redeem_coins_crypto.toLocaleString() + ')';
   }
 
   var linksByName = {};
@@ -5048,6 +5070,25 @@ function updateNetworkOptions(){
 
 var _pfRedeemMethod = 'crypto';
 var PLATFORM_LABELS = {degencity:'DegenCity', upgrader:'Upgrader', rustmafia:'RustMafia', powerwin:'Power.win'};
+var _redeemMinCrypto = 10000, _redeemMinPlatform = 1000, _redeemBalance = 0;
+function updateRedeemEligibilityNote(){
+  var min = _pfRedeemMethod === 'crypto' ? _redeemMinCrypto : _redeemMinPlatform;
+  var btn = document.getElementById('pfRedeemBtn');
+  var noteEl = document.getElementById('pfRedeemEligibilityNote');
+  if(!btn) return;
+  if(_redeemBalance < min){
+    var needed = min - _redeemBalance;
+    if(noteEl) noteEl.innerHTML = '<span style="color:#f87171">🔒 Need '+needed.toLocaleString()+' more coins for this method (minimum '+min.toLocaleString()+').</span>';
+    btn.disabled = true;
+    btn.style.opacity = '.5';
+    btn.style.cursor = 'not-allowed';
+  } else {
+    if(noteEl) noteEl.innerHTML = '';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+  }
+}
 function setRedeemMethod(method){
   _pfRedeemMethod = method;
   document.querySelectorAll('.pf-redeem-method').forEach(function(b){ b.classList.toggle('active', b.dataset.method === method); });
@@ -5058,6 +5099,7 @@ function setRedeemMethod(method){
     document.getElementById('pfPlatformUsernameLabel').textContent = 'Your '+PLATFORM_LABELS[method]+' username';
     document.getElementById('pfPlatformUsername').placeholder = 'Your '+PLATFORM_LABELS[method]+' username';
   }
+  updateRedeemEligibilityNote();
 }
 
 async function submitRedeem(){
@@ -5717,17 +5759,21 @@ var PROVIDER_COLORS = {
   'Yggdrasil': '167,139,250', 'Thunderkick': '253,224,71', 'Novomatic': '148,163,184',
   'Microgaming': '96,165,250', 'Wazdan': '251,146,60',
 };
-async function loadAdminSlots(){
+var _currentSlotFilter = null, _currentBattleFilter = null;
+async function loadAdminSlots(filter){
+  filter = filter || _currentSlotFilter || 'active';
+  _currentSlotFilter = filter;
+  document.querySelectorAll('.admin-slot-filter').forEach(function(b){ b.classList.toggle('active', b.dataset.filter === filter); });
   var token = localStorage.getItem('jammy_session_token');
   var listEl = document.getElementById('adminSlotsList');
   if(!token || !listEl) return;
   listEl.innerHTML = 'Loading…';
   await ensureSlotCatalog(); /* so requests can show their real provider, same catalog the user-facing autocomplete uses */
   try{
-    var res = await fetch(AUTH_API + '/api/admin/slot-requests', { headers: { 'Authorization': 'Bearer ' + token } });
+    var res = await fetch(AUTH_API + '/api/admin/slot-requests?filter=' + filter, { headers: { 'Authorization': 'Bearer ' + token } });
     var data = await res.json();
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load.'; return; }
-    if(!data.requests.length){ listEl.innerHTML = '<div style="color:var(--muted)">No slot requests yet.</div>'; return; }
+    if(!data.requests.length){ listEl.innerHTML = '<div style="color:var(--muted)">'+(filter === 'awarded' ? 'No awarded requests yet.' : 'No active slot requests.')+'</div>'; return; }
     listEl.innerHTML = data.requests.map(function(r, i){
       var catalogMatch = (_slotCatalog || []).find(function(s){ return s.name && s.name.toLowerCase() === r.slot_name.toLowerCase(); });
       var provider = catalogMatch ? catalogMatch.provider : null;
@@ -5814,16 +5860,19 @@ async function adminDeleteAllSlotRequests(){
   }catch(e){ console.error('Delete all slot requests failed:', e); alert('Network error — try again.'); }
 }
 
-async function loadAdminBattles(){
+async function loadAdminBattles(filter){
+  filter = filter || _currentBattleFilter || 'active';
+  _currentBattleFilter = filter;
+  document.querySelectorAll('.admin-battle-filter').forEach(function(b){ b.classList.toggle('active', b.dataset.filter === filter); });
   var token = localStorage.getItem('jammy_session_token');
   var listEl = document.getElementById('adminBattlesList');
   if(!token || !listEl) return;
   listEl.innerHTML = 'Loading…';
   try{
-    var res = await fetch(AUTH_API + '/api/admin/battle-requests', { headers: { 'Authorization': 'Bearer ' + token } });
+    var res = await fetch(AUTH_API + '/api/admin/battle-requests?filter=' + filter, { headers: { 'Authorization': 'Bearer ' + token } });
     var data = await res.json();
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load.'; return; }
-    if(!data.requests.length){ listEl.innerHTML = '<div style="color:var(--muted)">No battle requests yet.</div>'; return; }
+    if(!data.requests.length){ listEl.innerHTML = '<div style="color:var(--muted)">'+(filter === 'awarded' ? 'No awarded requests yet.' : 'No active battle requests.')+'</div>'; return; }
     /* Was one flat blue color for every request regardless of game mode -- each mode now
        gets its own accent (glow, icon-badge gradient, and top border), so a Jackpot request
        reads differently from a Terminal one at a glance instead of everything looking the
