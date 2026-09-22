@@ -8,6 +8,19 @@ Newest entries at the top.
 
 ---
 
+## 2026-09 — Redemption minimums, request ordering, and Active/Awarded split
+- Referral link on the Power.win page updated to `https://power.win/?aff=jammmy`.
+- Redemption minimums now differ by method: 10,000 coins for crypto/address payouts, 1,000
+  for casino platform redemptions. The redeem form unlocks at the lower threshold and
+  independently checks eligibility per selected method, so someone with 1,500 coins can
+  redeem via a platform but sees a clear "need X more" note if they switch to crypto.
+- Slot/Battle Requests admin listings now show oldest-first instead of newest-first, for a
+  natural FIFO processing queue.
+- Added an Active/Awarded filter to both Slot and Battle Requests admin tabs. Once coins have
+  been awarded (slots: `coins_awarded` > 0; battles: `profit_status = 'profit'`), a request
+  moves into its own Awarded tab instead of staying mixed into the active queue; non-awarded
+  requests stay in Active either way until manually deleted.
+
 ## 2026-09 — Claim flow: proof screenshots, mandatory fields, locking
 - Users must now attach a proof screenshot (mandatory, not optional) alongside their casino
   username when claiming — enforced both client-side (Submit button stays disabled until both
