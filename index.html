@@ -3430,8 +3430,8 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <!-- REDEMPTIONS TAB -->
         <div id="adminRedemptionsTab" class="admin-tab-panel" style="display:none">
           <div style="display:flex;gap:8px;margin-bottom:18px">
-            <button class="admin-btn-secondary admin-redemption-filter active" data-status="" onclick="loadAdminRedemptions('')">All</button>
-            <button class="admin-btn-secondary admin-redemption-filter" data-status="pending" onclick="loadAdminRedemptions('pending')">Pending</button>
+            <button class="admin-btn-secondary admin-redemption-filter" data-status="" onclick="loadAdminRedemptions('')">All</button>
+            <button class="admin-btn-secondary admin-redemption-filter active" data-status="pending" onclick="loadAdminRedemptions('pending')">Pending</button>
             <button class="admin-btn-secondary admin-redemption-filter" data-status="paid" onclick="loadAdminRedemptions('paid')">Paid</button>
           </div>
           <div id="adminRedemptionsList"></div>
@@ -5159,7 +5159,7 @@ function switchAdminTab(tabId){
   document.querySelectorAll('.admin-tab-panel').forEach(function(p){ p.style.display = (p.id === tabId) ? 'block' : 'none'; });
   if(tabId==='adminOverviewTab') loadAdminOverview();
   if(tabId==='adminUsersTab') loadAdminUsers();
-  if(tabId==='adminRedemptionsTab') loadAdminRedemptions('');
+  if(tabId==='adminRedemptionsTab') loadAdminRedemptions();
   if(tabId==='adminAnalyticsTab') loadAdminAnalytics();
   if(tabId==='adminVerifyTab') loadAdminVerifyList();
   if(tabId==='adminSlotsTab') loadAdminSlots();
@@ -5396,7 +5396,10 @@ async function adminToggleAdmin(discordId, username, makeAdmin){
   }catch(e){ console.error('Set admin failed:', e); alert('Network error — try again.'); }
 }
 
+var _currentRedemptionFilter = 'pending';
 async function loadAdminRedemptions(status){
+  status = status !== undefined ? status : _currentRedemptionFilter;
+  _currentRedemptionFilter = status;
   var token = localStorage.getItem('jammy_session_token');
   if(!token) return;
   document.querySelectorAll('.admin-redemption-filter').forEach(function(b){ b.classList.toggle('active', b.dataset.status === status); });
@@ -5434,10 +5437,11 @@ async function loadAdminRedemptions(status){
               + statusPill
             + '</div>'
             + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">'+methodHtml+'</div>'
-            + (isPending ? '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">'
-                + '<button class="admin-btn-row-action" onclick="adminMarkPaid(\''+r.id+'\')">Mark Paid</button>'
-                + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminRejectRedemption(\''+r.id+'\')">Reject</button>'
-              + '</div>' : '')
+            + '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">'
+              + (isPending ? '<button class="admin-btn-row-action" onclick="adminMarkPaid(\''+r.id+'\')">Mark Paid</button>'
+                  + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#6b7280,#4b5563)" onclick="adminRejectRedemption(\''+r.id+'\')">Reject</button>' : '')
+              + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminDeleteRedemption(\''+r.id+'\')">🗑️ Delete</button>'
+            + '</div>'
           + '</div>'
         + '</div>'
       + '</div>';
@@ -5458,7 +5462,7 @@ async function adminMarkPaid(txId){
       body: JSON.stringify({ transaction_id: txId })
     });
     var data = await res.json();
-    if(res.ok){ loadAdminRedemptions(''); } else { alert(data.error || 'Failed to mark as paid.'); }
+    if(res.ok){ loadAdminRedemptions(_currentRedemptionFilter); } else { alert(data.error || 'Failed to mark as paid.'); }
   }catch(e){ console.error('Mark paid failed:', e); alert('Network error — try again.'); }
 }
 
@@ -5472,8 +5476,22 @@ async function adminRejectRedemption(txId){
       body: JSON.stringify({ transaction_id: txId })
     });
     var data = await res.json();
-    if(res.ok){ loadAdminRedemptions(''); } else { alert(data.error || 'Failed to reject.'); }
+    if(res.ok){ loadAdminRedemptions(_currentRedemptionFilter); } else { alert(data.error || 'Failed to reject.'); }
   }catch(e){ console.error('Reject redemption failed:', e); alert('Network error — try again.'); }
+}
+
+async function adminDeleteRedemption(txId){
+  if(!confirm('Delete ' + txId + ' permanently? If it\'s still pending, the coins are refunded to the user first — this cannot be undone.')) return;
+  var token = localStorage.getItem('jammy_session_token');
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/delete-redemption', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ transaction_id: txId })
+    });
+    var data = await res.json();
+    if(res.ok){ loadAdminRedemptions(_currentRedemptionFilter); } else { alert(data.error || 'Failed to delete.'); }
+  }catch(e){ console.error('Delete redemption failed:', e); alert('Network error — try again.'); }
 }
 
 async function loadAdminAnalytics(){
@@ -5549,11 +5567,31 @@ function renderDailyChart(byDay){
    ══════════════════════════════════════════════════════════════════════════ */
 function showProofLightbox(src){
   var overlay = document.createElement('div');
-  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;padding:20px';
-  overlay.onclick = function(){ overlay.remove(); };
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;padding:20px;animation:pwFadeUp .2s ease both';
+  function closeLightbox(){
+    overlay.remove();
+    document.removeEventListener('keydown', onKeyDown);
+  }
+  function onKeyDown(e){ if(e.key === 'Escape') closeLightbox(); }
+  document.addEventListener('keydown', onKeyDown);
+  overlay.onclick = closeLightbox;
+
+  var closeBtn = document.createElement('button');
+  closeBtn.innerHTML = '✕';
+  closeBtn.setAttribute('aria-label', 'Close');
+  closeBtn.style.cssText = 'position:fixed;top:20px;right:24px;width:42px;height:42px;border-radius:50%;'
+    + 'background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:1.2rem;'
+    + 'cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s;z-index:10000';
+  closeBtn.onmouseover = function(){ this.style.background = 'rgba(255,255,255,.22)'; this.style.transform = 'scale(1.08)'; };
+  closeBtn.onmouseout = function(){ this.style.background = 'rgba(255,255,255,.1)'; this.style.transform = 'none'; };
+  closeBtn.onclick = function(e){ e.stopPropagation(); closeLightbox(); };
+
   var img = document.createElement('img');
   img.src = src;
-  img.style.cssText = 'max-width:90vw;max-height:90vh;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.6)';
+  img.style.cssText = 'max-width:90vw;max-height:90vh;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.6);cursor:default';
+  img.onclick = function(e){ e.stopPropagation(); };
+
+  overlay.appendChild(closeBtn);
   overlay.appendChild(img);
   document.body.appendChild(overlay);
 }
