@@ -1391,12 +1391,16 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .pw-code-spark{position:relative;z-index:1;display:inline-block;animation:pwCodeSparkSpin 3s ease-in-out infinite}
 /* Claim Your Casino Username cards */
 .pcc-card{background:var(--panel);border:1px solid rgba(var(--pcc-glow),.25);border-radius:14px;
-  margin-bottom:16px;overflow:hidden}
+  margin-bottom:16px;overflow:hidden;box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 10px 22px -12px rgba(0,0,0,.6),0 2px 8px rgba(0,0,0,.35);
+  transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s}
+.pcc-card:hover{transform:translateY(-3px);box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 18px 34px -12px rgba(0,0,0,.65),0 4px 12px rgba(0,0,0,.4)}
 .pcc-card-top{height:3px;width:100%;background:linear-gradient(90deg,rgb(var(--pcc-glow)),rgba(var(--pcc-glow),.3))}
 .admin-overview-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;
   opacity:0;animation:pwFadeUp .5s cubic-bezier(.22,1,.36,1) forwards;
-  transition:transform .2s,border-color .2s}
-.admin-overview-card:hover{transform:translateY(-3px);border-color:rgba(168,85,247,.4)}
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 10px 22px -12px rgba(0,0,0,.6),0 2px 8px rgba(0,0,0,.35);
+  transition:transform .2s,border-color .2s,box-shadow .2s}
+.admin-overview-card:hover{transform:translateY(-4px);border-color:rgba(168,85,247,.4);
+  box-shadow:0 1px 0 rgba(255,255,255,.07) inset,0 18px 34px -12px rgba(0,0,0,.65),0 4px 12px rgba(0,0,0,.4)}
 /* Analytics chart animations -- bars grow from their own baseline via transform:scaleY on a
    transform-origin pinned to the chart's bottom edge (cheap, GPU-composited, no layout
    thrash even with 14 bars animating at once), and the visitor line draws in via a dashoffset
@@ -1426,9 +1430,10 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   background:rgba(255,255,255,.03);border-radius:8px;font-size:.88rem}
 .battle-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;
   margin-bottom:14px;overflow:hidden;opacity:0;animation:battleCardIn .5s cubic-bezier(.22,1,.36,1) forwards;
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 10px 22px -12px rgba(0,0,0,.6),0 2px 8px rgba(0,0,0,.35);
   transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s,border-color .25s}
-.battle-card:hover{transform:translateY(-3px);border-color:rgba(var(--glow),.5);
-  box-shadow:0 14px 30px -10px rgba(var(--glow),.35)}
+.battle-card:hover{transform:translateY(-4px);border-color:rgba(var(--glow),.5);
+  box-shadow:0 1px 0 rgba(255,255,255,.07) inset,0 20px 36px -12px rgba(var(--glow),.35),0 4px 12px rgba(0,0,0,.4)}
 .battle-card-topbar{height:4px;width:100%}
 /* Shimmer sweep implemented via transform (translateX) rather than animating
    background-position -- background-position animation is expensive per-element and this
@@ -5529,6 +5534,7 @@ function renderDailyChart(byDay){
   var n = byDay.length;
   var barGap = 8;
   var barW = Math.max(4, (chartW / n) - barGap);
+  var colW = chartW / n;
 
   var gridLines = '';
   for(var g=0; g<=4; g++){
@@ -5541,6 +5547,8 @@ function renderDailyChart(byDay){
   var depth = 7; /* pseudo-3D depth offset in px -- same amount for every bar so the whole
      chart reads as one consistent isometric angle rather than each bar looking different */
   var linePoints = [];
+  var barGeom = []; /* stored so the hover handler can look up each bar's exact rect without
+     re-deriving the math from scratch on every mousemove */
   var bars = byDay.map(function(d, i){
     var x = padL + i * (chartW/n) + barGap/2;
     var barH = Math.max(2, (d.views / maxViews) * chartH);
@@ -5548,16 +5556,17 @@ function renderDailyChart(byDay){
     var dateLabel = (d.day || '').slice(5).replace('-', '/'); /* "2026-08-30" -> "08/30" */
     var lineY = padT + chartH - (d.visitors / maxVisitors) * chartH;
     linePoints.push((x+barW/2)+','+lineY);
+    barGeom.push({x:x, barW:barW, colX:padL+i*colW, colW:colW, lineX:x+barW/2, lineY:lineY});
     /* Pseudo-3D bar: three faces grouped together so the scaleY entrance animation applies
        to all of them at once and they never fall out of sync with each other. Front = the
-       flat rectangle as before; top = a parallelogram (the bar's cap, viewed at an angle,
-       lighter shade for the "light hits it" side); right = a parallelogram (the bar's depth
-       side, darker shade for the "shadowed" side). Classic isometric-bar-chart construction,
-       just three flat shapes -- no actual 3D, no filter/lighting cost. */
+       flat rectangle; top/side = parallelograms for the isometric depth look. Grouped with
+       a data-i index so the hover handler can target and brighten the exact bar under the
+       cursor via a CSS class toggle (cheap, transform/filter already GPU-composited) rather
+       than re-rendering anything. */
     var topFace = '<polygon points="'+x+','+y+' '+(x+depth)+','+(y-depth)+' '+(x+barW+depth)+','+(y-depth)+' '+(x+barW)+','+y+'" fill="url(#dailyBarTopGrad)"/>';
     var sideFace = '<polygon points="'+(x+barW)+','+y+' '+(x+barW+depth)+','+(y-depth)+' '+(x+barW+depth)+','+(y-depth+barH)+' '+(x+barW)+','+(y+barH)+'" fill="url(#dailyBarSideGrad)"/>';
-    var frontFace = '<rect x="'+x+'" y="'+y+'" width="'+barW+'" height="'+barH+'" fill="url(#dailyBarGrad)"><title>'+d.day+': '+d.views+' views, '+d.visitors+' visitors</title></rect>';
-    return '<g style="transform-origin:'+(x+barW/2)+'px '+(padT+chartH)+'px;animation:anBarGrow .55s '+(i*0.04)+'s cubic-bezier(.22,1,.36,1) forwards">'
+    var frontFace = '<rect x="'+x+'" y="'+y+'" width="'+barW+'" height="'+barH+'" fill="url(#dailyBarGrad)"/>';
+    return '<g class="an-bar-3d" data-i="'+i+'" style="transform-origin:'+(x+barW/2)+'px '+(padT+chartH)+'px;animation:anBarGrow .55s '+(i*0.04)+'s cubic-bezier(.22,1,.36,1) forwards">'
       + sideFace + topFace + frontFace
       + '<text x="'+(x+barW/2)+'" y="'+(H-10)+'" text-anchor="middle" font-size="9" fill="var(--faint,#8b8296)">'+dateLabel+'</text>'
     + '</g>';
@@ -5567,11 +5576,20 @@ function renderDailyChart(byDay){
   var dots = byDay.map(function(d, i){
     var x = padL + i * (chartW/n) + barGap/2 + barW/2;
     var y = padT + chartH - (d.visitors / maxVisitors) * chartH;
-    return '<circle cx="'+x+'" cy="'+y+'" r="3.5" fill="#fbbf24" stroke="#0a0a0f" stroke-width="1.5" style="opacity:0;animation:pwFadeUp .4s '+(0.5+i*0.04)+'s ease forwards"><title>'+d.day+': '+d.visitors+' visitors</title></circle>';
+    return '<circle class="an-dot" data-i="'+i+'" cx="'+x+'" cy="'+y+'" r="3.5" fill="#fbbf24" stroke="#0a0a0f" stroke-width="1.5" style="opacity:0;animation:pwFadeUp .4s '+(0.5+i*0.04)+'s ease forwards"/>';
+  }).join('');
+
+  /* Invisible full-height hit-zones, one per day, wider than the bar itself so hovering
+     anywhere in that day's column (not just precisely on the thin bar) triggers it --
+     the actual interaction surface, everything else here is purely visual. */
+  var hitZones = byDay.map(function(d, i){
+    var hx = padL + i * colW;
+    return '<rect class="an-hitzone" data-i="'+i+'" x="'+hx+'" y="'+padT+'" width="'+colW+'" height="'+chartH+'" fill="transparent" style="cursor:crosshair"/>';
   }).join('');
 
   el.innerHTML =
-    '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;max-width:700px;font-family:Poppins,sans-serif;overflow:visible">'
+    '<div style="position:relative">'
+    + '<svg id="anChartSvg" viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;max-width:700px;font-family:Poppins,sans-serif;overflow:visible">'
       + '<defs>'
         + '<linearGradient id="dailyBarGrad" x1="0" y1="1" x2="0" y2="0">'
           + '<stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#22d3ee"/>'
@@ -5587,7 +5605,60 @@ function renderDailyChart(byDay){
       + bars
       + '<path d="'+linePath+'" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" style="stroke-dasharray:1000;stroke-dashoffset:1000;animation:anLineDraw 1.1s .3s cubic-bezier(.22,1,.36,1) forwards"/>'
       + dots
-    + '</svg>';
+      + '<line id="anCrosshair" x1="0" y1="'+padT+'" x2="0" y2="'+(padT+chartH)+'" stroke="rgba(255,255,255,.25)" stroke-width="1" stroke-dasharray="3,3" style="opacity:0;pointer-events:none"/>'
+      + hitZones
+    + '</svg>'
+    + '<div id="anTooltip" style="position:absolute;top:0;left:0;pointer-events:none;opacity:0;transition:opacity .12s;'
+      + 'background:rgba(10,8,20,.96);border:1px solid rgba(168,85,247,.4);border-radius:10px;padding:10px 14px;'
+      + 'font-size:.8rem;white-space:nowrap;box-shadow:0 10px 24px -8px rgba(0,0,0,.6);z-index:5"></div>'
+    + '</div>';
+
+  /* Hover wiring -- attached once per render rather than inline handlers per element, so
+     there's exactly one set of listeners regardless of how many days are in the range. */
+  var svg = document.getElementById('anChartSvg');
+  var tooltip = document.getElementById('anTooltip');
+  var crosshair = document.getElementById('anCrosshair');
+  var wrapper = el.querySelector('div');
+
+  function showForIndex(i){
+    var g = barGeom[i];
+    var d = byDay[i];
+    if(!g || !d) return;
+    crosshair.setAttribute('x1', g.lineX);
+    crosshair.setAttribute('x2', g.lineX);
+    crosshair.style.opacity = '1';
+
+    svg.querySelectorAll('.an-bar-3d').forEach(function(bar){
+      bar.style.filter = (bar.dataset.i === String(i)) ? 'brightness(1.35) saturate(1.1)' : 'brightness(1)';
+    });
+    svg.querySelectorAll('.an-dot').forEach(function(dot){
+      dot.setAttribute('r', dot.dataset.i === String(i) ? '5.5' : '3.5');
+    });
+
+    var svgRect = svg.getBoundingClientRect();
+    var wrapRect = wrapper.getBoundingClientRect();
+    var scale = svgRect.width / W;
+    var px = (g.x + g.barW/2) * scale;
+    var py = (svgRect.top - wrapRect.top);
+    tooltip.innerHTML = '<div style="color:#fff;font-weight:700;margin-bottom:4px">'+d.day+'</div>'
+      + '<div style="color:#22d3ee">● '+d.views.toLocaleString()+' views</div>'
+      + '<div style="color:#fbbf24">● '+d.visitors.toLocaleString()+' visitors</div>';
+    tooltip.style.opacity = '1';
+    var tw = tooltip.offsetWidth;
+    var left = Math.min(Math.max(px - tw/2, 0), (svgRect.width - tw));
+    tooltip.style.left = left + 'px';
+    tooltip.style.top = (py + 6) + 'px';
+  }
+  function hideHover(){
+    crosshair.style.opacity = '0';
+    tooltip.style.opacity = '0';
+    svg.querySelectorAll('.an-bar-3d').forEach(function(bar){ bar.style.filter = 'brightness(1)'; });
+    svg.querySelectorAll('.an-dot').forEach(function(dot){ dot.setAttribute('r', '3.5'); });
+  }
+  svg.querySelectorAll('.an-hitzone').forEach(function(zone){
+    zone.addEventListener('mouseenter', function(){ showForIndex(parseInt(zone.dataset.i, 10)); });
+  });
+  svg.addEventListener('mouseleave', hideHover);
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
