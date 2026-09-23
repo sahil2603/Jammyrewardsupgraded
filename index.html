@@ -1394,7 +1394,11 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   margin-bottom:16px;overflow:hidden;box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 10px 22px -12px rgba(0,0,0,.6),0 2px 8px rgba(0,0,0,.35);
   transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s}
 .pcc-card:hover{transform:translateY(-3px);box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 18px 34px -12px rgba(0,0,0,.65),0 4px 12px rgba(0,0,0,.4)}
-.pcc-card-top{height:3px;width:100%;background:linear-gradient(90deg,rgb(var(--pcc-glow)),rgba(var(--pcc-glow),.3))}
+.pcc-card-top{height:3px;width:100%;background:linear-gradient(90deg,rgb(var(--pcc-glow)),rgba(var(--pcc-glow),.3));
+  position:relative;overflow:hidden}
+.pcc-card-top::after,.battle-card-topbar::after{content:'';position:absolute;top:0;left:0;width:30%;height:100%;
+  background:rgba(255,255,255,.7);filter:blur(2px);animation:topbarShimmer 4s ease-in-out infinite}
+@keyframes topbarShimmer{0%{transform:translateX(-100%)}50%{transform:translateX(400%)}100%{transform:translateX(400%)}}
 .admin-overview-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;
   opacity:0;animation:pwFadeUp .5s cubic-bezier(.22,1,.36,1) forwards;
   box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 10px 22px -12px rgba(0,0,0,.6),0 2px 8px rgba(0,0,0,.35);
@@ -1407,6 +1411,10 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
    sweep. Both are one-shot entrance animations, not continuous, so there's no ongoing cost. */
 @keyframes anBarGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 @keyframes anLineDraw{to{stroke-dashoffset:0}}
+.admin-empty-state{text-align:center;padding:48px 20px;border:1px dashed var(--line);border-radius:16px;
+  background:rgba(255,255,255,.015);opacity:0;animation:pwFadeUp .5s cubic-bezier(.22,1,.36,1) forwards}
+.admin-empty-icon{font-size:2.4rem;margin-bottom:14px;display:inline-block;animation:adminEmptyFloat 3s ease-in-out infinite}
+@keyframes adminEmptyFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 /* Active/Awarded filter pills for Slot & Battle Requests -- a smooth sliding highlight
    rather than an instant color swap, transform/opacity only. */
 .admin-filter-pill{background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--muted);
@@ -1434,7 +1442,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s,border-color .25s}
 .battle-card:hover{transform:translateY(-4px);border-color:rgba(var(--glow),.5);
   box-shadow:0 1px 0 rgba(255,255,255,.07) inset,0 20px 36px -12px rgba(var(--glow),.35),0 4px 12px rgba(0,0,0,.4)}
-.battle-card-topbar{height:4px;width:100%}
+.battle-card-topbar{height:4px;width:100%;position:relative;overflow:hidden}
 /* Shimmer sweep implemented via transform (translateX) rather than animating
    background-position -- background-position animation is expensive per-element and this
    runs on every visible card's icon simultaneously (could be a dozen+ pending battle
@@ -4208,6 +4216,21 @@ function updateVaultMascotVideo(pct){
    if displayed raw -- confirmed this actually happened live. Backend now rounds to 2
    decimals at the database level too, but this is the display-side safety net regardless
    of what's already stored. */
+/* Shared empty-state block for every admin list -- was previously just a bare line of plain
+   text with no visual weight at all, which is a big part of why the admin panel looked
+   "static" on first glance: whenever there's little/nothing pending (a common, ordinary
+   state, not an edge case), every section that mattered was reduced to unstyled text with
+   zero separation from the tab buttons above it. This gives it an icon (gentle floating
+   animation, transform-only), a dashed border to actually contain/frame the empty area
+   instead of it bleeding into whatever's above, and a message with proper hierarchy. */
+function adminEmptyState(icon, message, sub){
+  return '<div class="admin-empty-state">'
+    + '<div class="admin-empty-icon">'+icon+'</div>'
+    + '<div style="color:var(--muted);font-size:.95rem;font-weight:600">'+message+'</div>'
+    + (sub ? '<div style="color:var(--faint);font-size:.8rem;margin-top:4px">'+sub+'</div>' : '')
+  + '</div>';
+}
+
 function fmtCoins(n){
   return (Math.round((+n||0) * 100) / 100).toLocaleString(undefined, {maximumFractionDigits: 2});
 }
@@ -5307,7 +5330,7 @@ async function loadAdminUsers(){
     var data = await res.json();
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load users.'; return; }
     document.getElementById('adminUsersTotal').textContent = data.total_users + ' total users' + (q ? ' (showing filtered results)' : '');
-    if(!data.users.length){ listEl.innerHTML = '<div style="color:var(--muted)">No users found.</div>'; return; }
+    if(!data.users.length){ listEl.innerHTML = adminEmptyState('👥', 'No users found', 'Try a different search, or check back once people sign up.'); return; }
     listEl.innerHTML = data.users.map(function(u, i){
       var linksHtml = u.casino_links.length
         ? u.casino_links.map(function(l){ return '<span class="admin-tag">'+l.casino+': '+l.username+'</span>'; }).join(' ')
@@ -5389,7 +5412,7 @@ async function loadAdminRedemptions(status){
     var res = await fetch(url, { headers: { 'Authorization': 'Bearer ' + token } });
     var data = await res.json();
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load redemptions.'; return; }
-    if(!data.redemptions.length){ listEl.innerHTML = '<div style="color:var(--muted)">No redemptions found.</div>'; return; }
+    if(!data.redemptions.length){ listEl.innerHTML = adminEmptyState('💸', 'No redemptions here', 'Nothing to review right now -- check back once someone redeems.'); return; }
     listEl.innerHTML = data.redemptions.map(function(r, i){
       var isPending = r.status === 'pending';
       var isRejected = r.status === 'rejected';
@@ -5712,7 +5735,7 @@ async function loadAdminVerifyList(status){
     var res = await fetch(AUTH_API + '/api/admin/pending-claims?status=' + status, { headers: { 'Authorization': 'Bearer ' + token } });
     var data = await res.json();
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load.'; return; }
-    if(!data.claims.length){ listEl.innerHTML = '<div style="color:var(--muted)">No '+status+' claims right now.</div>'; return; }
+    if(!data.claims.length){ listEl.innerHTML = status === 'pending' ? adminEmptyState('✅', 'No pending claims right now', 'You\'re all caught up -- new claims show up here for review.') : adminEmptyState('🔓', 'No approved claims to show', 'Approved accounts will appear here once you review some.'); return; }
     listEl.innerHTML = data.claims.map(function(c){
       var actionsHtml = status === 'pending'
         ? '<button class="admin-btn-row-action" onclick="adminApproveClaim(\''+c.user_id+'\',\''+c.casino+'\')">Approve</button>'
@@ -5910,7 +5933,7 @@ async function loadAdminSlots(filter){
     var res = await fetch(AUTH_API + '/api/admin/slot-requests?filter=' + filter, { headers: { 'Authorization': 'Bearer ' + token } });
     var data = await res.json();
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load.'; return; }
-    if(!data.requests.length){ listEl.innerHTML = '<div style="color:var(--muted)">'+(filter === 'awarded' ? 'No awarded requests yet.' : 'No active slot requests.')+'</div>'; return; }
+    if(!data.requests.length){ listEl.innerHTML = filter === 'awarded' ? adminEmptyState('🪙', 'No awarded requests yet', 'Once you award coins on a slot call, it shows up here.') : adminEmptyState('🎰', 'No active slot requests', 'All caught up -- new suggestions will appear here.'); return; }
     listEl.innerHTML = data.requests.map(function(r, i){
       var catalogMatch = (_slotCatalog || []).find(function(s){ return s.name && s.name.toLowerCase() === r.slot_name.toLowerCase(); });
       var provider = catalogMatch ? catalogMatch.provider : null;
@@ -6009,7 +6032,7 @@ async function loadAdminBattles(filter){
     var res = await fetch(AUTH_API + '/api/admin/battle-requests?filter=' + filter, { headers: { 'Authorization': 'Bearer ' + token } });
     var data = await res.json();
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load.'; return; }
-    if(!data.requests.length){ listEl.innerHTML = '<div style="color:var(--muted)">'+(filter === 'awarded' ? 'No awarded requests yet.' : 'No active battle requests.')+'</div>'; return; }
+    if(!data.requests.length){ listEl.innerHTML = filter === 'awarded' ? adminEmptyState('🪙', 'No awarded requests yet', 'Once you mark a call as profit, it shows up here.') : adminEmptyState('⚔️', 'No active battle requests', 'All caught up -- new requests will appear here.'); return; }
     /* Was one flat blue color for every request regardless of game mode -- each mode now
        gets its own accent (glow, icon-badge gradient, and top border), so a Jackpot request
        reads differently from a Terminal one at a glance instead of everything looking the
