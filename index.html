@@ -3882,8 +3882,19 @@ function currentUpgraderPeriod(){
   var anchor = Date.UTC(2026,8,9,0,0,0); // confirmed real period start: Sep 9, 2026
   var msPer14d = 14*24*60*60*1000;
   var now = Date.now();
-  var periodsElapsed = Math.floor((now-anchor)/msPer14d);
-  var start = anchor + periodsElapsed*msPer14d;
+  /* Jammmy asked for the CURRENT period specifically to end at 21:15 UTC on Sep 23, 2026
+     (people asking after an announcement) -- notably later than where the original anchor's
+     mechanical 14-day math would have already rolled it over to (Sep 23 00:00 UTC, which by
+     the time this was requested had already passed). So this holds the current period open
+     until that exact requested time, then resumes the normal 14-day cadence from THERE
+     onward -- future periods stay clean and predictable (Oct 7 21:15, Oct 21 21:15, etc.)
+     rather than needing another one-off adjustment next cycle. */
+  var overrideEnd = Date.UTC(2026,8,23,21,15,0);
+  if(now < overrideEnd){
+    return {start:new Date(anchor), end:new Date(overrideEnd)};
+  }
+  var periodsElapsed = Math.floor((now-overrideEnd)/msPer14d);
+  var start = overrideEnd + periodsElapsed*msPer14d;
   var end = start + msPer14d;
   return {start:new Date(start), end:new Date(end)};
 }
