@@ -1393,6 +1393,10 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .pcc-card{background:var(--panel);border:1px solid rgba(var(--pcc-glow),.25);border-radius:14px;
   margin-bottom:16px;overflow:hidden}
 .pcc-card-top{height:3px;width:100%;background:linear-gradient(90deg,rgb(var(--pcc-glow)),rgba(var(--pcc-glow),.3))}
+.admin-overview-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;
+  opacity:0;animation:pwFadeUp .5s cubic-bezier(.22,1,.36,1) forwards;
+  transition:transform .2s,border-color .2s}
+.admin-overview-card:hover{transform:translateY(-3px);border-color:rgba(168,85,247,.4)}
 /* Active/Awarded filter pills for Slot & Battle Requests -- a smooth sliding highlight
    rather than an instant color swap, transform/opacity only. */
 .admin-filter-pill{background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--muted);
@@ -5134,15 +5138,17 @@ async function loadAdminOverview(){
       var stats = [
         {label:'Pending Claims', value: data.pending_claims, color:'#f472b6'},
         {label:'Pending Redemptions', value: data.pending_redemptions, color:'#fbbf24'},
+        {label:'Pending Redemptions ($)', value: '$'+data.pending_redemptions_usd.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}), color:'#4ade80'},
         {label:'Pending Slot Requests', value: data.pending_slot_requests, color:'#fb923c'},
         {label:'Pending Battle Requests', value: data.pending_battle_requests, color:'#60a5fa'},
         {label:'New Signups Today', value: data.new_signups_today, color:'#4ade80'},
         {label:'Total Users', value: data.total_users, color:'#a855f7'},
         {label:'Coins in Circulation', value: Math.floor(data.total_coins_in_circulation).toLocaleString(), color:'#fbbf24'},
         {label:'Unclaimed Vault (Coins)', value: Math.floor(data.unclaimed_vault_coins).toLocaleString(), color:'#22d3ee'},
+        {label:'Vault Pool Progress', value: Math.floor(data.vault_pool_total).toLocaleString()+' / '+Math.floor(data.vault_pool_threshold).toLocaleString(), color:'#c084fc'},
       ];
-      grid.innerHTML = stats.map(function(s){
-        return '<div style="background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px">'
+      grid.innerHTML = stats.map(function(s, i){
+        return '<div class="admin-overview-card" style="animation-delay:'+(i*0.05)+'s">'
           + '<div style="color:var(--faint);font-size:.78rem;margin-bottom:6px">'+s.label+'</div>'
           + '<div style="font-family:\'Lilita One\',sans-serif;font-size:1.6rem;color:'+s.color+'">'+s.value+'</div>'
         + '</div>';
