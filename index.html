@@ -1393,6 +1393,15 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .pcc-card{background:var(--panel);border:1px solid rgba(var(--pcc-glow),.25);border-radius:14px;
   margin-bottom:16px;overflow:hidden;box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 10px 22px -12px rgba(0,0,0,.6),0 2px 8px rgba(0,0,0,.35);
   transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s}
+.pcc-pick{position:relative;margin-bottom:12px}
+.pcc-pick-list{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:30;max-height:240px;overflow-y:auto;
+  background:#15101f;border:1px solid var(--line);border-radius:10px;box-shadow:0 14px 30px -8px rgba(0,0,0,.7);display:none}
+.pcc-pick-list.open{display:block}
+.pcc-pick-item{display:block;width:100%;text-align:left;padding:9px 12px;background:none;border:0;color:#fff;
+  font-family:'Poppins',sans-serif;font-size:.88rem;cursor:pointer}
+.pcc-pick-item:hover,.pcc-pick-item:focus{background:rgba(192,132,252,.14);outline:none}
+.pcc-pick-note{padding:12px;color:var(--faint);font-size:.8rem;line-height:1.45}
+.pcc-pick-ok{color:#4ade80;font-size:.78rem;margin-top:5px}
 .pcc-card:hover{transform:translateY(-3px);box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 18px 34px -12px rgba(0,0,0,.65),0 4px 12px rgba(0,0,0,.4)}
 .pcc-card-top{height:3px;width:100%;background:linear-gradient(90deg,rgb(var(--pcc-glow)),rgba(var(--pcc-glow),.3));
   position:relative;overflow:hidden}
@@ -4801,7 +4810,10 @@ function renderProfile(data){
           + (status ? (STATUS_BADGES[status] || '') : '<span style="color:var(--faint);font-size:.78rem">Not claimed yet</span>')
         + '</div>'
         + '<label style="display:block;font-size:.78rem;color:var(--faint);margin-bottom:5px">Your username <span style="color:#f87171">*</span></label>'
-        + '<input type="text" id="casinoInput_'+key+'" value="'+(linksByName[key]||'')+'" placeholder="Your '+KNOWN_CASINOS_DISPLAY[key]+' username" '+(isLocked?'disabled':'oninput="updatePccSubmitState(\''+key+'\')"')+' style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,'+(isLocked?'.02':'.04')+');border:1px solid var(--line);color:'+(isLocked?'var(--faint)':'#fff')+';font-family:\'Poppins\';box-sizing:border-box;margin-bottom:12px'+(isLocked?';cursor:not-allowed':'')+'">'
+        + '<div class="pcc-pick">'
+          + '<input type="text" id="casinoInput_'+key+'" autocomplete="off" value="'+pccEsc(linksByName[key]||'')+'" placeholder="'+(isLocked?'':'Search your '+KNOWN_CASINOS_DISPLAY[key]+' username')+'" '+(isLocked?'disabled':'onfocus="openClaimPicker(\''+key+'\')" oninput="onClaimPickerInput(\''+key+'\')" onblur="closeClaimPickerSoon(\''+key+'\')" onkeydown="onClaimPickerKey(event,\''+key+'\')"')+' style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,'+(isLocked?'.02':'.04')+');border:1px solid var(--line);color:'+(isLocked?'var(--faint)':'#fff')+';font-family:\'Poppins\';box-sizing:border-box'+(isLocked?';cursor:not-allowed':'')+'">'
+          + (isLocked ? '' : '<div class="pcc-pick-list" id="casinoPick_'+key+'"></div><div class="pcc-pick-ok" id="casinoPickOk_'+key+'" style="display:none"></div>')
+        + '</div>'
         + '<label style="display:block;font-size:.78rem;color:var(--faint);margin-bottom:5px">Proof screenshot <span style="color:#f87171">*</span> <span style="color:var(--faint);font-weight:400">— a screenshot showing this account is yours</span></label>'
         + '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">'
           + '<input type="file" id="proofInput_'+key+'" accept="image/*" style="display:none" '+(isLocked?'disabled':'onchange="handleProofFileSelect(this,\''+key+'\')"')+'>'
@@ -4816,6 +4828,8 @@ function renderProfile(data){
       + '</div>'
     + '</div>';
   });
+  _claimPickSelected = {};
+  _claimableCache = {};
   var pfCasinoLinksEl = document.getElementById('pfCasinoLinks');
   if(pfCasinoLinksEl) pfCasinoLinksEl.innerHTML = html;
 
@@ -4909,11 +4923,103 @@ function pfTxPage(delta){
 }
 
 var _pendingProofImages = {};
+/* ── Claim username picker ─────────────────────────────────────────
+   Players can't free-type a username anymore: they pick their exact name from the casino's
+   live affiliate leaderboard, and names that already have a pending/approved claim by anyone
+   are left out of the list. The worker enforces the same two rules on submit, so this is the
+   friendly front of a server-side safeguard, not the safeguard itself. */
+var _claimableCache = {};     /* casino -> {usernames:[...]} | {error} | 'loading' */
+var _claimPickSelected = {};  /* casino -> exact picked username */
+function pccEsc(v){ return String(v).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+async function loadClaimableUsernames(casino){
+  if(_claimableCache[casino] && _claimableCache[casino] !== 'loading') return _claimableCache[casino];
+  _claimableCache[casino] = 'loading';
+  try{
+    var token = localStorage.getItem('jammy_session_token');
+    var res = await fetch(AUTH_API + '/api/claimable-usernames?casino=' + encodeURIComponent(casino), { headers: { 'Authorization':'Bearer '+token } });
+    var data = await res.json();
+    _claimableCache[casino] = res.ok ? data : { error: data.error || 'Couldn\'t load the leaderboard.' };
+  }catch(e){
+    _claimableCache[casino] = { error: 'Network error loading the leaderboard.' };
+  }
+  if(_claimableCache[casino].error){ var failed = _claimableCache[casino]; delete _claimableCache[casino]; return failed; }
+  return _claimableCache[casino];
+}
+function renderClaimPicker(casino, data){
+  var list = document.getElementById('casinoPick_'+casino);
+  var input = document.getElementById('casinoInput_'+casino);
+  if(!list || !input) return;
+  list.innerHTML = '';
+  var casinoName = KNOWN_CASINOS_DISPLAY[casino] || casino;
+  function note(text){ var d = document.createElement('div'); d.className = 'pcc-pick-note'; d.textContent = text; list.appendChild(d); }
+  if(!data || data === 'loading'){ note('Loading the ' + casinoName + ' leaderboard…'); list.classList.add('open'); return; }
+  if(data.error){ note(data.error); list.classList.add('open'); return; }
+  var q = input.value.trim().toLowerCase();
+  var matches = data.usernames.filter(function(u){ return !q || u.toLowerCase().indexOf(q) !== -1; });
+  matches.slice(0, 50).forEach(function(u){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'pcc-pick-item'; b.textContent = u;
+    /* mousedown (not click) so it fires before the input's blur closes the list */
+    b.addEventListener('mousedown', function(ev){ ev.preventDefault(); pickClaimUsername(casino, u); });
+    b.addEventListener('keydown', function(ev){ if(ev.key === 'Enter'){ ev.preventDefault(); pickClaimUsername(casino, u); } });
+    list.appendChild(b);
+  });
+  if(matches.length > 50) note('Showing 50 of ' + matches.length + ' — keep typing to narrow it down.');
+  if(!matches.length){
+    note(data.usernames.length
+      ? 'No available username matches "' + input.value.trim() + '". If your name was already claimed by someone else, contact an admin.'
+      : 'No unclaimed usernames on the ' + casinoName + ' leaderboard right now.');
+    note('Not listed? Sign up under JAMMMY and wager on ' + casinoName + ' first — the list comes straight from the live leaderboard.');
+  }
+  list.classList.add('open');
+}
+async function openClaimPicker(casino){
+  renderClaimPicker(casino, _claimableCache[casino] || 'loading');
+  var data = await loadClaimableUsernames(casino);
+  var input = document.getElementById('casinoInput_'+casino);
+  if(input && document.activeElement === input) renderClaimPicker(casino, data);
+}
+function onClaimPickerInput(casino){
+  /* any typing un-picks the name -- only an exact pick from the list can be submitted */
+  delete _claimPickSelected[casino];
+  var ok = document.getElementById('casinoPickOk_'+casino);
+  if(ok) ok.style.display = 'none';
+  renderClaimPicker(casino, _claimableCache[casino] || 'loading');
+  if(!_claimableCache[casino]) openClaimPicker(casino);
+  updatePccSubmitState(casino);
+}
+function onClaimPickerKey(ev, casino){
+  var list = document.getElementById('casinoPick_'+casino);
+  if(!list) return;
+  if(ev.key === 'Escape'){ list.classList.remove('open'); return; }
+  if(ev.key === 'ArrowDown'){ var first = list.querySelector('.pcc-pick-item'); if(first){ ev.preventDefault(); first.focus(); } }
+  if(ev.key === 'Enter'){
+    var items = list.querySelectorAll('.pcc-pick-item');
+    if(items.length === 1){ ev.preventDefault(); pickClaimUsername(casino, items[0].textContent); }
+  }
+}
+function closeClaimPickerSoon(casino){
+  setTimeout(function(){
+    var list = document.getElementById('casinoPick_'+casino);
+    if(list && !list.contains(document.activeElement)) list.classList.remove('open');
+  }, 150);
+}
+function pickClaimUsername(casino, username){
+  var input = document.getElementById('casinoInput_'+casino);
+  var list = document.getElementById('casinoPick_'+casino);
+  var ok = document.getElementById('casinoPickOk_'+casino);
+  _claimPickSelected[casino] = username;
+  if(input) input.value = username;
+  if(list) list.classList.remove('open');
+  if(ok){ ok.textContent = '✓ Found on the ' + (KNOWN_CASINOS_DISPLAY[casino]||casino) + ' leaderboard'; ok.style.display = 'block'; }
+  updatePccSubmitState(casino);
+}
 function updatePccSubmitState(casino){
   var input = document.getElementById('casinoInput_'+casino);
   var btn = document.getElementById('pccSubmit_'+casino);
   if(!input || !btn) return;
-  var ready = input.value.trim().length > 0 && !!_pendingProofImages[casino];
+  var picked = _claimPickSelected[casino];
+  var ready = !!picked && input.value === picked && !!_pendingProofImages[casino];
   btn.disabled = !ready;
   btn.style.opacity = ready ? '1' : '.5';
   btn.style.cursor = ready ? 'pointer' : 'not-allowed';
@@ -4974,9 +5080,9 @@ async function saveCasinoLink(btn, casino){
   var token = localStorage.getItem('jammy_session_token');
   if(!token){ alert('Please log in with Discord first.'); return; }
   var input = document.getElementById('casinoInput_'+casino);
-  var username = input.value.trim();
+  var username = _claimPickSelected[casino];
   var resultEl = document.getElementById('pccResult_'+casino);
-  if(!username){ alert('Please enter a username first.'); return; }
+  if(!username || input.value !== username){ alert('Please pick your username from the leaderboard list first.'); return; }
   if(!_pendingProofImages[casino]){ alert('A proof screenshot is required to submit a claim.'); return; }
   var originalText = btn.textContent;
   btn.textContent = 'Submitting…';
@@ -5004,6 +5110,7 @@ async function saveCasinoLink(btn, casino){
          the button showing "Save" with zero indication anything went wrong, which is
          exactly why this looked broken with no visible cause. */
       console.error('Failed to submit claim:', data.error);
+      if(res.status === 409 || res.status === 400){ delete _claimableCache[casino]; delete _claimPickSelected[casino]; }
       if(resultEl) resultEl.innerHTML = '<span style="color:#f87171">✕ '+(data.error || 'Failed to submit — please try again.')+'</span>';
       btn.textContent = originalText;
       btn.disabled = false;

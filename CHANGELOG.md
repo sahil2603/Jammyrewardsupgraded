@@ -8,6 +8,11 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-26 — Power.win live, reset-safe vault, leaderboard-only username claims
+- **Power.win is live**: default leaderboard tab, real bi-weekly period/countdown from Power.win's API, "Coming Soon" placeholders removed. Worker wires `fetchPowerWin()` into the leaderboard route, `KNOWN_CASINOS`, the vault and claim approvals.
+- **Vault survives leaderboard resets**: `vault_checkpoints` now stores `period_key`, `last_seen_wager` and `carry_wager`. When a casino starts a new period, an approved/pending player's unpaid wagering is banked as carry and their checkpoint restarts at 0 — previously they earned nothing after a reset until they passed their old total. Unclaimed players' wagering still expires with the period. Migration: `migration-vault-periods.sql`.
+- **Claims can only use real, unowned leaderboard usernames**: the Profile claim box is now a searchable picker fed by the new `GET /api/claimable-usernames?casino=` (everyone on that casino's live affiliate leaderboard, minus names with a pending/approved claim). Submit only enables after picking a name from the list. `/api/link-casino` re-checks server-side that the name is on the leaderboard and stores the leaderboard's exact spelling. A partial unique index (`idx_casino_links_one_active_owner`) guarantees one active owner per casino username, even for simultaneous submits. Rejected names become claimable again. Migration: `migration-claim-owner.sql`.
+
 ## 2026-09 — Redemption minimums, request ordering, and Active/Awarded split
 - Referral link on the Power.win page updated to `https://power.win/?aff=jammmy`.
 - Redemption minimums now differ by method: 10,000 coins for crypto/address payouts, 1,000
