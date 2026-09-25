@@ -2638,13 +2638,12 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <button onclick="goToLeaderboard('rustmafia')" style="background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#fff;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer">View Leaderboard &rarr;</button>
         </div>
         <div class="lb-preview-card" style="background:rgba(20,20,30,.6);border:1px solid rgba(192,132,252,.25);border-top:3px solid #c084fc;border-radius:16px;padding:28px;position:relative">
-          <span style="position:absolute;top:14px;right:14px;background:rgba(192,132,252,.15);border:1px solid rgba(192,132,252,.4);color:#c084fc;font-size:.68rem;font-weight:800;padding:3px 10px;border-radius:99px">COMING SOON</span>
           <div style="width:110px;height:44px;border-radius:10px;background:rgba(192,132,252,.12);display:flex;align-items:center;justify-content:center;margin-bottom:16px;padding:6px 10px">
             <img src="powerwin.png" alt="Power.win" style="width:100%;height:100%;object-fit:contain">
           </div>
           <h3 style="font-family:'Lilita One',sans-serif;font-size:1.2rem;margin-bottom:8px">Power.win Leaderboard</h3>
-          <p style="color:var(--faint);font-size:.9rem;margin-bottom:20px">Our newest partner is on the way — leaderboard and prizes launching soon.</p>
-          <button disabled style="background:transparent;border:1.5px solid rgba(255,255,255,.12);color:var(--faint);font-weight:700;padding:10px 18px;border-radius:10px;cursor:not-allowed">Coming Soon</button>
+          <p style="color:var(--faint);font-size:.9rem;margin-bottom:20px">Compete for prizes and climb the ranks in the Power.win leaderboard.</p>
+          <button onclick="goToLeaderboard('powerwin')" style="background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#fff;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer">View Leaderboard &rarr;</button>
         </div>
       </div>
       <div style="margin-top:24px;display:flex;gap:10px;align-items:flex-start;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:14px;padding:18px 22px;text-align:left">
@@ -2696,9 +2695,9 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
     <div style="padding:40px 0 10px">
       <!-- Casino tabs -->
       <div class="lb-casino-tabs">
-        <button class="lbt active" onclick="lbTab(this,'degencity')"><img src="degencity.png" alt="DegenCity" style="height:26px;width:auto;object-fit:contain"></button>
+        <button class="lbt" onclick="lbTab(this,'degencity')"><img src="degencity.png" alt="DegenCity" style="height:26px;width:auto;object-fit:contain"></button>
         <button class="lbt" onclick="lbTab(this,'rustmafia')"><img src="rustmafia.png" alt="RustMafia" style="height:26px;width:auto;object-fit:contain"></button>
-        <button class="lbt" onclick="lbTab(this,'powerwin')"><span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap"><img src="powerwin.png" alt="Power.win" style="height:30px;width:auto;object-fit:contain"> <span style="font-size:.62rem;font-weight:800;color:#c084fc;background:rgba(192,132,252,.15);padding:2px 6px;border-radius:99px">SOON</span></span></button>
+        <button class="lbt active" onclick="lbTab(this,'powerwin')"><img src="powerwin.png" alt="Power.win" style="height:30px;width:auto;object-fit:contain"></button>
       </div>
       <div class="lb-updated">Last updated · <span id="lbUpdatedTime"></span></div>
 
@@ -2731,7 +2730,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
       <!-- Date range + countdown -->
       <div class="lb2-range reveal">
         <div class="lb2-dates" id="lb2-dates">Loading period&hellip;</div>
-        <div class="lb2-countdown">&#x23F0; <span id="lb-cd-label">DEGENCITY</span> COMPETITION ENDS IN &nbsp;<b id="lb-cd2">--</b></div>
+        <div class="lb2-countdown">&#x23F0; <span id="lb-cd-label">POWER.WIN</span> COMPETITION ENDS IN &nbsp;<b id="lb-cd2">--</b></div>
       </div>
 
       <div style="text-align:center;margin-top:26px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap" id="lbActionButtons">
@@ -3777,7 +3776,7 @@ document.addEventListener('touchstart', function(){}, {passive:true});
 /* ============================================================
    LEADERBOARD
 ============================================================ */
-var CURRENT_LB_CASINO = 'degencity';
+var CURRENT_LB_CASINO = 'powerwin';
 var _lastLbWagers = []; /* raw wager data for the currently-displayed leaderboard, used by the Share on X button for real top-3 names + amounts */
 /* Snapshot each podium's originally-configured static prize text ($200/$100/$50 etc, set
    directly in the HTML) once, before any live rendering touches it — so when switching to
@@ -3872,7 +3871,7 @@ function lbTab(btn,casino){
   if(btn)btn.classList.add('active');
   CURRENT_LB_CASINO = casino;
   var lbl=document.getElementById('lb-cd-label');
-  if(lbl)lbl.textContent=casino.toUpperCase();
+  if(lbl)lbl.textContent=((typeof CASINO_DISPLAY_NAMES!=='undefined' && CASINO_DISPLAY_NAMES[casino]) || casino).toUpperCase();
   _realPeriodOverride = null; /* clear whatever the previous casino's real dates were (if any) -- otherwise the immediate lbcd2() call below could briefly show RustMafia's dates while switching to Upgrader, before loadLeaderboard's fetch resolves and corrects it */
   lbcd2(); /* reflect the right period type (monthly vs bi-weekly) immediately, not after up to 1s of delay */
   loadLeaderboard(casino);
@@ -3896,13 +3895,6 @@ function currentMonthlyPeriod(){
   return {start:start, end:end};
 }
 function lbcd2(){
-  if(CURRENT_LB_CASINO === 'powerwin'){
-    var elPw = document.getElementById('lb-cd2');
-    if(elPw) elPw.textContent = 'TBA';
-    var datesElPw = document.getElementById('lb2-dates');
-    if(datesElPw) datesElPw.textContent = 'Coming soon';
-    return;
-  }
   var period = _realPeriodOverride
     || (CURRENT_LB_CASINO === 'degencity' ? currentMonthlyPeriod()
       : currentLbPeriod());
@@ -3943,26 +3935,6 @@ async function loadLeaderboard(casino){
   var tableHeadEl = document.querySelector('.lb-full-row-head');
   var degenCityNoteEl = document.getElementById('lbDegenCityNote');
   if(degenCityNoteEl) degenCityNoteEl.style.display = (casino === 'degencity') ? 'flex' : 'none';
-  if(casino === 'powerwin'){
-    /* No API exists yet -- Power.win is a partner still in talks, not a live integration.
-       Skip the fetch entirely rather than hitting an endpoint that doesn't exist, and hide
-       every piece of UI that implies a real, running competition (countdown, share/full-list
-       buttons, the empty rank/player/wagered/prize table header) rather than just leaving
-       them showing stale/meaningless placeholder text. */
-    if(podiumEl) podiumEl.style.display = 'none';
-    if(actionBtnsEl) actionBtnsEl.style.display = 'none';
-    if(countdownEl) countdownEl.style.display = 'none';
-    if(tableHeadEl) tableHeadEl.style.display = 'none';
-    if(fullListEl) fullListEl.classList.add('lb-full-open');
-    if(rowsEl) rowsEl.innerHTML = '<div style="padding:60px 30px;text-align:center">'
-      + '<img src="powerwin.png" alt="Power.win" style="height:56px;width:auto;object-fit:contain;margin-bottom:18px;opacity:.9">'
-      + '<div style="font-family:\'Lilita One\',sans-serif;font-size:1.3rem;margin-bottom:8px">Leaderboard Coming Soon</div>'
-      + '<div style="color:var(--faint);max-width:420px;margin:0 auto">Power.win is joining the JammmyRewards family — the leaderboard and prizes will go live here once the partnership is finalized.</div>'
-      + '</div>';
-    var updatedEl = document.getElementById('lbUpdatedTime');
-    if(updatedEl) updatedEl.textContent = '—';
-    return;
-  }
   if(podiumEl) podiumEl.style.display = '';
   if(actionBtnsEl) actionBtnsEl.style.display = '';
   if(countdownEl) countdownEl.style.display = '';
@@ -4116,7 +4088,7 @@ function renderLeaderboardRows(wagers, rewards){
     +'</div>';
   }).join('');
 }
-loadLeaderboard('degencity');
+loadLeaderboard('powerwin');
 
 
 /* ============================================================
@@ -4240,7 +4212,7 @@ function fmtCoins(n){
 }
 
 var CASINO_DISPLAY_NAMES = {upgrader:'Upgrader', rustmagic:'RustMagic', degencity:'DegenCity', rustmafia:'RustMafia', powerwin:'Power.win'};
-var KNOWN_CASINOS_DISPLAY_LIST = ['degencity', 'rustmafia'];
+var KNOWN_CASINOS_DISPLAY_LIST = ['degencity', 'rustmafia', 'powerwin'];
 var _vaultPlayersData = [];
 var _vaultPlayerCasinoFilter = '';
 
@@ -4339,6 +4311,7 @@ function renderUnclaimedCard(data){
   var CASINO_LOGOS = {
     degencity: '<img src="degencity.png" alt="DegenCity" style="max-height:28px;max-width:100%;width:auto;object-fit:contain">',
     rustmafia: '<img src="rustmafia.png" alt="RustMafia" style="max-height:22px;max-width:100%;width:auto;object-fit:contain">',
+    powerwin: '<img src="powerwin.png" alt="Power.win" style="max-height:22px;max-width:100%;width:auto;object-fit:contain">',
   };
 
   listEl.innerHTML = KNOWN_CASINOS_DISPLAY_LIST.map(function(casino){
@@ -4736,7 +4709,7 @@ trackPageView(location.hash ? location.hash.slice(1) : 'home'); /* showPage() on
 /* ══════════════════════════════════════════════════════════════════════════
    PROFILE PAGE
    ══════════════════════════════════════════════════════════════════════════ */
-var KNOWN_CASINOS_DISPLAY = {degencity:'DegenCity', rustmafia:'RustMafia'};
+var KNOWN_CASINOS_DISPLAY = {degencity:'DegenCity', rustmafia:'RustMafia', powerwin:'Power.win'};
 
 async function loadProfile(){
   var token = localStorage.getItem('jammy_session_token');
@@ -4814,7 +4787,7 @@ function renderProfile(data){
     approved: '<span class="admin-pill admin-pill-profit">✓ Approved</span>',
     pending: '<span class="admin-pill" style="background:rgba(251,191,36,.14);color:#fbbf24;border:1px solid rgba(251,191,36,.35)">⏳ Pending review</span>',
   };
-  var CASINO_GLOW = {degencity:'244,114,182', rustmafia:'168,85,247'};
+  var CASINO_GLOW = {degencity:'244,114,182', rustmafia:'168,85,247', powerwin:'192,132,252'};
   var html = '';
   Object.keys(KNOWN_CASINOS_DISPLAY).forEach(function(key){
     var status = linksByStatus[key];
@@ -4843,20 +4816,6 @@ function renderProfile(data){
       + '</div>'
     + '</div>';
   });
-  /* Power.win shown alongside the 3 live casinos for a complete, consistent picture --
-     disabled rather than a real functional input, since the backend has no way to verify a
-     Power.win claim yet (no live leaderboard API wired in). Ready to flip to a real input
-     the moment that changes. */
-  html += '<div class="pcc-card" style="--pcc-glow:192,132,252;opacity:.55">'
-    + '<div class="pcc-card-top"></div>'
-    + '<div style="padding:18px 20px">'
-      + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">'
-        + '<b style="font-size:1rem">Power.win</b>'
-        + '<span style="color:var(--faint);font-size:.78rem">Coming soon</span>'
-      + '</div>'
-      + '<input type="text" disabled placeholder="Coming soon" style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid var(--line);color:var(--faint);cursor:not-allowed;box-sizing:border-box">'
-    + '</div>'
-  + '</div>';
   var pfCasinoLinksEl = document.getElementById('pfCasinoLinks');
   if(pfCasinoLinksEl) pfCasinoLinksEl.innerHTML = html;
 
