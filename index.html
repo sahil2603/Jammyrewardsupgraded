@@ -1414,6 +1414,10 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .admin-empty-state{text-align:center;padding:48px 20px;border:1px dashed var(--line);border-radius:16px;
   background:rgba(255,255,255,.015);opacity:0;animation:pwFadeUp .5s cubic-bezier(.22,1,.36,1) forwards}
 .admin-empty-icon{font-size:2.4rem;margin-bottom:14px;display:inline-block;animation:adminEmptyFloat 3s ease-in-out infinite}
+.redeem-timing-note{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.35);
+  border-radius:10px;padding:10px 14px;color:#fde68a;font-size:.85rem;margin:0 0 14px;
+  display:flex;align-items:center;gap:8px}
+.redeem-timing-note b{color:#fbbf24}
 @keyframes adminEmptyFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 /* Active/Awarded filter pills for Slot & Battle Requests -- a smooth sliding highlight
    rather than an instant color swap, transform/opacity only. */
@@ -2409,10 +2413,10 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
 <div class="sidetabs">
   <button class="sidetab slot" onclick="nav('requestslot')" title="Request a Slot" style="border:0;background:none;padding:0;cursor:pointer;display:block">
-    <img loading="lazy" src="request-a-slot.png?v=2" alt="Request a Slot" style="width:100%;display:block;border-radius:6px;pointer-events:none;will-change:auto;transform:translateZ(0)">
+    <img loading="lazy" src="request-a-slot.png?v=3" alt="Request a Slot" style="width:100%;display:block;pointer-events:none;will-change:auto;transform:translateZ(0)">
   </button>
   <button class="sidetab battle" onclick="nav('requestbattle')" title="Request a Battle" style="border:0;background:none;padding:0;cursor:pointer;display:block">
-    <img loading="lazy" src="request-a-battle.png?v=2" alt="Request a Battle" style="width:100%;display:block;border-radius:6px;pointer-events:none;will-change:auto;transform:translateZ(0)">
+    <img loading="lazy" src="request-a-battle.png?v=3" alt="Request a Battle" style="width:100%;display:block;pointer-events:none;will-change:auto;transform:translateZ(0)">
   </button>
 </div>
 
@@ -3208,13 +3212,13 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
               <select id="pfCryptoNetwork" class="pf-select"></select>
               <label style="display:block;font-size:.82rem;color:var(--faint);margin:14px 0 6px">Your wallet address</label>
               <input id="pfWallet" type="text" placeholder="Paste your wallet address" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:6px;font-family:monospace;box-sizing:border-box">
-              <p style="color:var(--faint);font-size:.8rem;margin:0 0 14px">Funds will be credited within 48-72 hours.</p>
+              <div class="redeem-timing-note">⏳ Funds are credited within <b>1–7 days</b>. Thanks for your patience!</div>
             </div>
 
             <div id="pfRedeemPlatformFields" style="display:none">
               <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px" id="pfPlatformUsernameLabel">Your username</label>
               <input id="pfPlatformUsername" type="text" placeholder="Your username on that platform" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:6px;box-sizing:border-box">
-              <p style="color:var(--faint);font-size:.8rem;margin:0 0 14px">Funds will be credited within 24 hours.</p>
+              <div class="redeem-timing-note">⏳ Funds are credited within <b>1–7 days</b>. Thanks for your patience!</div>
             </div>
 
             <div id="pfRedeemEligibilityNote" style="font-size:.85rem;margin-bottom:10px"></div>
@@ -5116,12 +5120,12 @@ async function submitRedeem(){
     payload.crypto_currency = currency;
     payload.crypto_network = network;
     payload.wallet_address = wallet;
-    timingNote = 'Funds will be credited within 48-72 hours.';
+    timingNote = 'Funds will be credited within 1-7 days.';
   } else {
     var platformUsername = document.getElementById('pfPlatformUsername').value.trim();
     if(!platformUsername){ alert('Please enter your '+PLATFORM_LABELS[_pfRedeemMethod]+' username.'); return; }
     payload.platform_username = platformUsername;
-    timingNote = 'Funds will be credited on '+PLATFORM_LABELS[_pfRedeemMethod]+' within 24 hours.';
+    timingNote = 'Funds will be credited on '+PLATFORM_LABELS[_pfRedeemMethod]+' within 1-7 days.';
   }
   if(btn) btn.textContent = 'Submitting…';
   try{
