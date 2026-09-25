@@ -562,6 +562,11 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 .searchbar input:focus{border-color:var(--purple)}
 .searchbar input::placeholder{color:var(--faint)}
 .searchbar button{background:var(--pg2);border:0;border-radius:12px;width:54px;display:grid;place-items:center;cursor:pointer;color:#fff}
+/* Inputs have a built-in minimum width (~20 characters); inside a flex row that pushed the
+   search button off-screen on 360px phones. min-width:0 lets the input shrink to fit. */
+.searchbar input{min-width:0}
+.searchbar button{flex:0 0 54px}
+@media (max-width:768px){#vplRefreshBtn{width:36px!important;height:36px!important;font-size:1rem!important}}
 .intro{color:var(--muted);max-width:760px;margin:26px auto 0;text-align:center;font-size:.97rem}
 
 /* ===== CARDS GRID (reviews) ===== */
@@ -1073,6 +1078,12 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .lbt img{height:36px;max-width:120px;object-fit:contain;filter:grayscale(.6);opacity:.7;transition:filter .2s,opacity .2s}
 .lbt.active{border-color:#d97706;background:rgba(217,119,6,.12);color:#fde68a}
 .lbt.active img{filter:none;opacity:1}
+/* Phones: keep all three casino tabs on ONE row (was wrapping RustMafia onto its own line). */
+@media (max-width:560px){
+  .lb-casino-tabs{flex-wrap:nowrap;gap:8px}
+  .lbt{flex:1 1 0;min-width:0;padding:10px 6px}
+  .lbt img{height:24px!important;max-width:100%}
+}
 .lbt:hover img{filter:none;opacity:1}
 .lbt:hover{color:#fff;transform:translateY(-2px)}
 .lb-updated{text-align:center;color:var(--faint);font-size:.82rem;margin-bottom:28px}
@@ -1398,7 +1409,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   background:#15101f;border:1px solid var(--line);border-radius:10px;box-shadow:0 14px 30px -8px rgba(0,0,0,.7);display:none}
 .pcc-pick-list.open{display:block}
 .pcc-pick-item{display:block;width:100%;text-align:left;padding:9px 12px;background:none;border:0;color:#fff;
-  font-family:'Poppins',sans-serif;font-size:.88rem;cursor:pointer}
+  font-family:'Poppins',sans-serif;font-size:.88rem;cursor:pointer;overflow-wrap:anywhere;line-height:1.35}
 .pcc-pick-item:hover,.pcc-pick-item:focus{background:rgba(192,132,252,.14);outline:none}
 .pcc-pick-note{padding:12px;color:var(--faint);font-size:.8rem;line-height:1.45}
 .pcc-pick-ok{color:#4ade80;font-size:.78rem;margin-top:5px}
@@ -3122,7 +3133,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div id="vplWarning" style="display:none;margin-bottom:14px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.35);border-radius:10px;padding:10px 14px;font-size:.82rem;color:#fbbf24"></div>
         <div class="vpl-head">
           <div>
-            <div class="vpl-title">Unclaimed wagering <button id="vplRefreshBtn" onclick="loadVaultPlayers()" title="Refresh live wagering data" style="background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--faint);width:26px;height:26px;border-radius:8px;cursor:pointer;font-size:.85rem;vertical-align:middle;margin-left:4px;line-height:1">↻</button></div>
+            <div class="vpl-title">Unclaimed wagering <button id="vplRefreshBtn" onclick="loadVaultPlayers()" title="Refresh live wagering data" aria-label="Refresh live wagering data" style="background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--faint);width:26px;height:26px;border-radius:8px;cursor:pointer;font-size:.85rem;vertical-align:middle;margin-left:4px;line-height:1">↻</button></div>
             <div class="vpl-sub" id="vplSub">Loading unclaimed wagering&hellip;</div>
           </div>
           <div class="vpl-est">Estimated unclaimed vault share: <b id="vplEst">—</b></div>
@@ -3704,7 +3715,7 @@ function countEl(el){
      progress can land just under 1.0 (e.g. .999), which combined with Math.floor() meant
      the animation could stop one short of the real number instead of landing on it exactly
      -- forces the exact target once progress reaches 1. */
-  function step(ts){if(!t0)t0=ts;var target=+el.dataset.count;var p=Math.min((ts-t0)/1400,1),e=1-Math.pow(1-p,3),v=p>=1?target:Math.floor(target*e);
+  function step(ts){if(!t0)t0=ts;var target=+el.dataset.count;var p=Math.min((ts-t0)/1400,1),e=1-Math.pow(1-p,3),v=p>=1?Math.floor(target):Math.floor(target*e); /* whole numbers only -- matches the 30s refresh, which floors too */
     if(suf){ el.innerHTML=pre+v.toLocaleString()+'<span style="font-size:.38em;font-weight:600;opacity:.85;margin-left:.15em">'+suf.trim()+'</span>'; }
     else{ el.textContent=pre+v.toLocaleString(); }
     if(p<1)requestAnimationFrame(step);}
@@ -4811,7 +4822,7 @@ function renderProfile(data){
         + '</div>'
         + '<label style="display:block;font-size:.78rem;color:var(--faint);margin-bottom:5px">Your username <span style="color:#f87171">*</span></label>'
         + '<div class="pcc-pick">'
-          + '<input type="text" id="casinoInput_'+key+'" autocomplete="off" value="'+pccEsc(linksByName[key]||'')+'" placeholder="'+(isLocked?'':'Search your '+KNOWN_CASINOS_DISPLAY[key]+' username')+'" '+(isLocked?'disabled':'onfocus="openClaimPicker(\''+key+'\')" oninput="onClaimPickerInput(\''+key+'\')" onblur="closeClaimPickerSoon(\''+key+'\')" onkeydown="onClaimPickerKey(event,\''+key+'\')"')+' style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,'+(isLocked?'.02':'.04')+');border:1px solid var(--line);color:'+(isLocked?'var(--faint)':'#fff')+';font-family:\'Poppins\';box-sizing:border-box'+(isLocked?';cursor:not-allowed':'')+'">'
+          + '<input type="text" id="casinoInput_'+key+'" autocomplete="off" value="'+pccEsc(linksByName[key]||'')+'" placeholder="'+(isLocked?'':'Search your username')+'" '+(isLocked?'disabled':'onfocus="openClaimPicker(\''+key+'\')" oninput="onClaimPickerInput(\''+key+'\')" onblur="closeClaimPickerSoon(\''+key+'\')" onkeydown="onClaimPickerKey(event,\''+key+'\')"')+' style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,'+(isLocked?'.02':'.04')+');border:1px solid var(--line);color:'+(isLocked?'var(--faint)':'#fff')+';font-family:\'Poppins\';box-sizing:border-box'+(isLocked?';cursor:not-allowed':'')+'">'
           + (isLocked ? '' : '<div class="pcc-pick-list" id="casinoPick_'+key+'"></div><div class="pcc-pick-ok" id="casinoPickOk_'+key+'" style="display:none"></div>')
         + '</div>'
         + '<label style="display:block;font-size:.78rem;color:var(--faint);margin-bottom:5px">Proof screenshot <span style="color:#f87171">*</span> <span style="color:var(--faint);font-weight:400">— a screenshot showing this account is yours</span></label>'
