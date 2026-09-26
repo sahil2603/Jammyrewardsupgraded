@@ -8,6 +8,12 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-26 (night) — Slot Library on the Reviews page
+- **Slot Library** added under Jammmy's own reviews: all 557 slots from `slots-catalog.json` with search (name or provider), provider / volatility filters, sort (full review first, A→Z, biggest max win) and "Show more" paging (24 at a time).
+- Each card shows facts from our own catalog only (name, provider, volatility, max win, image when the catalog has one) and links out to Slot-Streamers: **Read review ↗** goes straight to the review for slots that have one (verified once and stored as `"ss"` in the catalog); others get **Find review ↗**, which opens their search for that name. No text or images are copied from Slot-Streamers.
+- **Request** button on each card opens Request a Slot with that slot filled in.
+- The top search bar on the Reviews page now also filters the library.
+
 ## 2026-09-26 (late, cont.) — Request a Slot redesign
 - **Request a Slot redesigned** in the same style as Request a Battle, themed purple/pink/gold to match the slot button art: full-width hero with the slot card (float + light sweep), live canvas coin shower bursting from the 777 reels (spinning gold coins with gravity, twinkling purple sparkles, a bigger "jackpot" burst every few seconds; runs only while the page is visible, off for reduced motion), staggered entrance animations, animated gradient title, "1 Pick a slot · 2 Say why · 3 It pays → you earn" strip.
 - Popular picks restyled (glow/lift on hover, fill the row); tapping one fills the form, smooth-scrolls to it, flashes the field and marks the picked card.
