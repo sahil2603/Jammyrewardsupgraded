@@ -1762,6 +1762,88 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   .rbx-card{padding:20px 16px}
 }
 @media (prefers-reduced-motion:reduce){.rbx-art,.rbx-art-glow,.rbx-dot,.rbx-submit::after{animation:none}}
+/* ══ Request a Slot (rsx) — purple/pink/gold jackpot stage matching the slot button art ══ */
+.rsx-hero{position:relative;overflow:hidden;padding:56px 20px 40px;width:100vw;margin-left:calc(50% - 50vw);box-sizing:border-box}
+.rsx-hero::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(45% 75% at 68% 45%,rgba(168,85,247,.28),transparent 70%),
+             radial-gradient(28% 50% at 72% 60%,rgba(245,158,11,.12),transparent 70%),
+             radial-gradient(30% 55% at 20% 25%,rgba(236,72,153,.10),transparent 70%);
+  -webkit-mask-image:linear-gradient(#000 60%,transparent);mask-image:linear-gradient(#000 60%,transparent)}
+.rsx-fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+.rsx-hero-in{position:relative;z-index:1;max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+.rsx-copy > *{animation:rsxUp .7s cubic-bezier(.22,1,.36,1) both}
+.rsx-copy > *:nth-child(2){animation-delay:.08s}.rsx-copy > *:nth-child(3){animation-delay:.16s}.rsx-copy > *:nth-child(4){animation-delay:.24s}
+@keyframes rsxUp{from{opacity:0;transform:translateY(16px)}}
+.rsx-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:#f0abfc;background:rgba(192,38,211,.12);border:1px solid rgba(232,121,249,.35);padding:6px 12px;border-radius:99px}
+.rsx-dot{width:8px;height:8px;border-radius:50%;background:#fbbf24;box-shadow:0 0 10px #fbbf24;animation:rbxPulse 1.6s ease-in-out infinite}
+.rsx-title{font-family:'Lilita One','Arial Black',sans-serif;font-size:clamp(2.6rem,6vw,4.4rem);line-height:1;margin:18px 0 14px;color:#fff}
+.rsx-title span{display:block;background:linear-gradient(95deg,#f472b6,#e879f9 30%,#c084fc 55%,#a855f7 75%,#f472b6);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 22px rgba(217,70,239,.5));background-size:200% 100%;animation:rsxTitle 6s ease-in-out infinite}
+@keyframes rsxTitle{50%{background-position:100% 0}}
+.rsx-lead{color:#e9d5ff;opacity:.85;font-size:1.02rem;line-height:1.6;max-width:460px;margin:0 0 22px}
+.rsx-steps{display:flex;gap:10px;flex-wrap:wrap}
+.rsx-step{display:flex;align-items:center;gap:9px;background:rgba(30,10,45,.6);border:1px solid rgba(232,121,249,.22);border-radius:12px;padding:8px 12px 8px 8px;font-size:.84rem;color:#f5f3ff;font-weight:600}
+.rsx-step b{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;font-size:.78rem;color:#2a1204;background:linear-gradient(135deg,#fde047,#f59e0b)}
+.rsx-art{position:relative;justify-self:center;width:min(100%,440px);animation:rsxFloat 6s ease-in-out infinite;border-radius:28px}
+.rsx-art img{position:relative;width:100%;display:block;filter:drop-shadow(0 20px 40px rgba(147,51,234,.5))}
+.rsx-art-glow{position:absolute;inset:8% 6%;border-radius:40px;background:radial-gradient(closest-side,rgba(192,38,211,.55),transparent);filter:blur(30px);animation:rbxGlow 3.2s ease-in-out infinite}
+.rsx-art-shine{position:absolute;inset:0;border-radius:26px;overflow:hidden;pointer-events:none;
+  -webkit-mask-image:url(request-a-slot.png?v=4);mask-image:url(request-a-slot.png?v=4);-webkit-mask-size:100% 100%;mask-size:100% 100%}
+.rsx-art-shine::after{content:'';position:absolute;top:-20%;bottom:-20%;left:-40%;width:30%;transform:skewX(-18deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);animation:rsxSweep 4.5s ease-in-out infinite}
+@keyframes rsxSweep{0%,55%{left:-40%}100%{left:130%}}
+@keyframes rsxFloat{50%{transform:translateY(-10px) rotate(-.6deg)}}
+.rsx-body{max-width:1000px;margin:-6px auto 0;padding:0 20px 110px;position:relative;z-index:3}
+.rsx-picks{margin-bottom:24px}
+.rsx-picks-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:12px}
+.rsx-picks-h h3{margin:0}
+.rsx-picks-h span{color:#a78bfa;font-size:.82rem}
+.rsx-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.rsx .rs-slot-card{border-radius:16px!important;overflow:hidden;border:1px solid rgba(232,121,249,.18)!important;background:rgba(20,8,34,.85)!important;
+  transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s,border-color .25s!important}
+.rsx .rs-slot-card:hover{transform:translateY(-5px) scale(1.02);border-color:rgba(250,204,21,.55)!important;box-shadow:0 18px 36px -14px rgba(217,70,239,.6),0 0 0 1px rgba(250,204,21,.25)!important}
+.rsx .rs-slot-card > div:first-child{height:150px!important}
+.rsx .rs-slot-card.rsx-picked{border-color:#facc15!important;box-shadow:0 0 0 2px rgba(250,204,21,.6),0 16px 34px -12px rgba(250,204,21,.5)!important}
+.rsx-card{position:relative;border-radius:22px;padding:28px;background:linear-gradient(180deg,rgba(30,10,45,.92),rgba(14,6,24,.96));
+  border:1px solid rgba(232,121,249,.28);box-shadow:0 0 0 1px rgba(250,204,21,.05) inset,0 30px 70px -30px rgba(147,51,234,.6)}
+.rsx-card::before{content:'';position:absolute;left:24px;right:24px;top:-1px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,#fbbf24,#e879f9,#a855f7,transparent)}
+.rsx-sec{padding:16px 0;border-bottom:1px solid rgba(233,213,255,.08)}
+.rsx-sec:first-child{padding-top:4px}
+.rsx-sec-h{display:flex;align-items:center;gap:10px;font-weight:700;color:#fff;margin-bottom:12px;font-size:.98rem}
+.rsx-num{font-family:'Lilita One',sans-serif;font-size:.8rem;color:#fde68a;background:rgba(250,204,21,.10);border:1px solid rgba(250,204,21,.35);border-radius:8px;padding:3px 7px;letter-spacing:.06em}
+.rsx-opt{font-size:.72rem;color:#8b7aa8;font-weight:500}
+.rsx-input{width:100%;box-sizing:border-box;padding:13px 14px;border-radius:12px;background:rgba(10,4,18,.65);border:1px solid rgba(232,121,249,.22);
+  color:#fff;font-family:'Poppins',sans-serif;font-size:.95rem;outline:none;transition:border-color .2s,box-shadow .2s}
+.rsx-input:focus{border-color:#d946ef;box-shadow:0 0 0 3px rgba(217,70,239,.2)}
+.rsx-input.rsx-flash{animation:rsxFlash 1.1s ease-out}
+@keyframes rsxFlash{0%{box-shadow:0 0 0 0 rgba(250,204,21,.9);border-color:#facc15}100%{box-shadow:0 0 0 14px rgba(250,204,21,0)}}
+.rsx-dropdown{position:absolute;top:100%;left:0;right:0;margin-top:6px;background:#1a0a2c;border:1px solid rgba(232,121,249,.3);border-radius:12px;max-height:260px;overflow-y:auto;z-index:50;box-shadow:0 18px 40px -10px rgba(0,0,0,.8)}
+.rsx-submit{width:100%;margin-top:20px;border:0;border-radius:14px;padding:15px 20px;cursor:pointer;color:#fff;
+  font-family:'Lilita One','Arial Black',sans-serif;font-size:1.15rem;letter-spacing:.04em;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#f59e0b,#d946ef 45%,#7c3aed);box-shadow:0 14px 34px -10px rgba(192,38,211,.8),inset 0 1px 0 rgba(255,255,255,.25);transition:transform .2s,box-shadow .2s}
+.rsx-submit::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.3),transparent);animation:rbxShine 3.4s ease-in-out infinite}
+.rsx-submit:hover{transform:translateY(-2px);box-shadow:0 18px 40px -10px rgba(192,38,211,.95),inset 0 1px 0 rgba(255,255,255,.3)}
+.rsx-submit:disabled{opacity:.6;cursor:wait;transform:none}
+.rsx-login{text-align:center;padding:10px}
+.rsx-login-ic{font-size:2.2rem}
+.rsx-login h3{margin:8px 0 4px}
+.rsx-login p{color:#c4b5fd;margin:0 0 12px}
+.rsx-mine{margin-top:26px}
+.rsx-mine h3{margin:0 0 12px}
+.rsx-mine .rsx-req{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:rgba(20,8,34,.85);border:1px solid rgba(232,121,249,.16);border-radius:14px;padding:13px 16px;margin-bottom:10px;animation:rsxUp .5s both}
+@media (max-width:860px){
+  .rsx-hero{padding:28px 16px 20px}
+  .rsx-hero-in{grid-template-columns:1fr;gap:14px;text-align:center}
+  .rsx-art{order:-1;width:min(78%,300px)}
+  .rsx-lead{margin-left:auto;margin-right:auto}
+  .rsx-steps{justify-content:center}
+  .rsx-body{padding:0 14px 110px}
+  .rsx-card{padding:20px 16px}
+  .rsx-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rsx .rs-slot-card > div:first-child{height:120px!important}
+}
+@media (prefers-reduced-motion:reduce){.rsx-art,.rsx-art-glow,.rsx-dot,.rsx-title span,.rsx-submit::after,.rsx-art-shine::after,.rsx-copy > *{animation:none}}
 .rb-chip-group{display:flex;flex-wrap:wrap;gap:10px}
 .rb-chip{padding:10px 18px;border-radius:99px;font-family:'Poppins';font-weight:700;font-size:.85rem;
   cursor:pointer;background:rgba(255,255,255,.04);color:var(--muted);
@@ -3539,40 +3621,63 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
   </section>
 
   <section class="page" id="requestslot">
-    <div class="wrap" style="max-width:900px;margin:0 auto;padding:60px 20px 100px">
-      <div class="sec-head reveal" style="padding-top:10px">
-        <div style="font-size:3rem;margin-bottom:6px">🎰</div>
-        <h2>Request a <span class="g">Slot</span></h2>
-        <p>Suggest a slot for Jammmy to play on stream. If it pays, he can gift Jammmy Coins to whoever suggested it — so drop your best pick below.</p>
-      </div>
-
-      <div class="reveal" style="margin-bottom:36px">
-        <h3 style="margin-bottom:14px">🔥 Popular picks</h3>
-        <div id="rsFeatured" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px"></div>
-      </div>
-
-      <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#fb923c,#fbbf24,#f59e0b)"></div>
-        <div id="rsLoggedOut" style="display:none;text-align:center;padding:20px">
-          <p style="color:var(--muted)">Log in with Discord to suggest a slot.</p>
-          <button class="admin-btn-primary" style="max-width:240px;margin:10px auto 0" onclick="startDiscordLogin()">Login with Discord</button>
-        </div>
-        <div id="rsForm">
-          <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Slot name</label>
-          <div style="position:relative;margin-bottom:14px">
-            <input type="text" id="rsSlotName" placeholder="Start typing a real slot name…" maxlength="150" autocomplete="off" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-family:'Poppins';box-sizing:border-box">
-            <div id="rsSlotDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;margin-top:4px;background:#150826;border:1px solid var(--line);border-radius:10px;max-height:260px;overflow-y:auto;z-index:50;box-shadow:0 12px 28px -8px rgba(0,0,0,.6)"></div>
+    <div class="rsx">
+      <!-- Hero: purple/gold jackpot stage with a live coin shower off the reels -->
+      <div class="rsx-hero">
+        <canvas id="rsCoins" class="rsx-fx" aria-hidden="true"></canvas>
+        <div class="rsx-hero-in">
+          <div class="rsx-copy">
+            <span class="rsx-eyebrow"><span class="rsx-dot"></span> Your pick, spun live</span>
+            <h1 class="rsx-title">Request a <span>Slot</span></h1>
+            <p class="rsx-lead">Tell Jammmy what to spin next. If your pick pays on stream, he can drop Jammmy Coins straight to you.</p>
+            <div class="rsx-steps">
+              <div class="rsx-step"><b>1</b><span>Pick a slot</span></div>
+              <div class="rsx-step"><b>2</b><span>Say why</span></div>
+              <div class="rsx-step"><b>3</b><span>It pays → you earn</span></div>
+            </div>
           </div>
-          <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Why this one? (optional)</label>
-          <textarea id="rsNote" placeholder="Heard it's been paying well, cool bonus feature, etc." maxlength="500" rows="3" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:16px;font-family:'Poppins';box-sizing:border-box;resize:vertical"></textarea>
-          <button class="admin-btn-primary" onclick="submitSlotRequest()" id="rsSubmitBtn">🎰 Suggest This Slot</button>
-          <div id="rsResult" style="margin-top:12px;font-size:.9rem"></div>
+          <div class="rsx-art" id="rsArt">
+            <div class="rsx-art-glow"></div>
+            <img src="request-a-slot.png?v=4" alt="" aria-hidden="true">
+            <div class="rsx-art-shine" aria-hidden="true"></div>
+          </div>
         </div>
       </div>
 
-      <div id="rsMyRequestsWrap" style="display:none;margin-top:28px">
-        <h3 style="margin-bottom:14px">📋 My Requests</h3>
-        <div id="rsMyRequests"></div>
+      <div class="rsx-body">
+        <div class="rsx-picks">
+          <div class="rsx-picks-h"><h3>🔥 Popular picks</h3><span>Tap one to use it</span></div>
+          <div id="rsFeatured" class="rsx-grid"></div>
+        </div>
+
+        <div class="rsx-card" id="rsCard">
+          <div id="rsLoggedOut" style="display:none" class="rsx-login">
+            <div class="rsx-login-ic">🎰</div>
+            <h3>Log in to suggest a slot</h3>
+            <p>We use your Discord so Jammmy knows who to reward if it pays.</p>
+            <button class="rsx-submit" style="max-width:280px;margin:6px auto 0" onclick="startDiscordLogin()">Login with Discord</button>
+          </div>
+          <div id="rsForm">
+            <div class="rsx-sec">
+              <div class="rsx-sec-h"><span class="rsx-num">01</span> Which slot?</div>
+              <div style="position:relative">
+                <input class="rsx-input" type="text" id="rsSlotName" placeholder="Start typing a real slot name…" maxlength="150" autocomplete="off">
+                <div id="rsSlotDropdown" class="rsx-dropdown" style="display:none"></div>
+              </div>
+            </div>
+            <div class="rsx-sec">
+              <div class="rsx-sec-h"><span class="rsx-num">02</span> Why this one? <span class="rsx-opt">optional</span></div>
+              <textarea class="rsx-input" id="rsNote" placeholder="Heard it's been paying well, cool bonus feature, etc." maxlength="500" rows="3" style="resize:vertical"></textarea>
+            </div>
+            <button class="rsx-submit" onclick="submitSlotRequest()" id="rsSubmitBtn">🎰 Suggest This Slot</button>
+            <div id="rsResult" style="margin-top:12px;font-size:.9rem;text-align:center"></div>
+          </div>
+        </div>
+
+        <div id="rsMyRequestsWrap" style="display:none" class="rsx-mine">
+          <h3>📋 My Requests</h3>
+          <div id="rsMyRequests"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -6945,7 +7050,7 @@ async function renderFeaturedSlots(){
        the same gradient + emoji as a large centered fallback otherwise), with just the name
        overlaid at the bottom of the poster itself and the provider/stats condensed into one
        compact line below, instead of stacked separately. */
-    return '<div class="rs-slot-card battle-card" style="animation-delay:'+(i*0.06)+'s;--glow:'+hexToRgb(s.colors[0])+';cursor:pointer;margin-bottom:0;padding:0" onclick="pickFeaturedSlot(\''+s.name.replace(/'/g,"\\\\'")+'\')">'
+    return '<div class="rs-slot-card battle-card" data-name="'+pccEsc(s.name)+'" style="animation-delay:'+(i*0.06)+'s;--glow:'+hexToRgb(s.colors[0])+';cursor:pointer;margin-bottom:0;padding:0" onclick="pickFeaturedSlot(\''+s.name.replace(/'/g,"\\\\'")+'\')">'
       + '<div class="battle-icon-shimmer" style="position:relative;height:190px;background:linear-gradient(135deg,'+s.colors[0]+','+s.colors[1]+');display:flex;align-items:center;justify-content:center;overflow:hidden">'
         + (match && match.image
           ? '<img src="'+match.image+'" loading="lazy" style="width:100%;height:100%;object-fit:cover" onerror="this.remove()">'
@@ -6969,7 +7074,13 @@ function hexToRgb(hex){
 }
 function pickFeaturedSlot(name){
   var input = document.getElementById('rsSlotName');
-  if(input){ input.value = name; input.focus(); }
+  if(!input) return;
+  input.value = name;
+  document.querySelectorAll('#rsFeatured .rs-slot-card').forEach(function(c){ c.classList.toggle('rsx-picked', c.dataset.name === name); });
+  var card = document.getElementById('rsCard');
+  if(card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  input.classList.remove('rsx-flash'); void input.offsetWidth; input.classList.add('rsx-flash');
+  setTimeout(function(){ try{ input.focus({ preventScroll: true }); }catch(e){ input.focus(); } }, 450);
 }
 
 /* Home page's "Active players" stat was hardcoded to 6 forever -- wires it to the same
@@ -6990,7 +7101,132 @@ async function loadHomeActivePlayers(){
   }catch(e){ console.error('Failed to load active player count:', e); }
 }
 
+/* ── Slot page coin shower ────────────────────────────────────────────────
+   Spinning gold coins burst from the 777 reels on the slot art, with twinkling purple
+   sparkles around the machine and a bigger "jackpot" burst every few seconds. Same rules as
+   the battle sparks: only while the page is on screen, off for reduced motion. */
+var RS_COINS = { running:false, parts:[], last:0, nextBurst:0 };
+function startSlotCoins(){
+  var cv = document.getElementById('rsCoins');
+  if(!cv || RS_COINS.running) return;
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var ctx = cv.getContext('2d'); if(!ctx) return;
+  RS_COINS.running = true; RS_COINS.parts = [];
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  function fit(){ var r = cv.getBoundingClientRect(); cv.width = Math.max(1, r.width*dpr); cv.height = Math.max(1, r.height*dpr); }
+  fit();
+  function origin(){
+    var art = document.getElementById('rsArt'), c = cv.getBoundingClientRect();
+    if(!art) return { x:c.width*0.7, y:c.height*0.4, w:300 };
+    var a = art.getBoundingClientRect();
+    return { x: a.left - c.left + a.width*0.69, y: a.top - c.top + a.height*0.36, w: a.width };   /* the 777 reels */
+  }
+  function coins(n, big){
+    var o = origin();
+    for(var i=0;i<n;i++){
+      var ang = -Math.PI/2 + (Math.random()-0.5)*(big?2.4:1.6), sp = (big?4:2.2) + Math.random()*(big?6:3.5);
+      RS_COINS.parts.push({ k:'coin', x:o.x + (Math.random()-0.5)*o.w*0.25, y:o.y, vx:Math.cos(ang)*sp, vy:Math.sin(ang)*sp,
+        r: 4 + Math.random()*(big?6:4), spin: Math.random()*Math.PI*2, vs: 0.12 + Math.random()*0.2, life:0, max: 70+Math.random()*50 });
+    }
+  }
+  function sparkle(){
+    var o = origin();
+    RS_COINS.parts.push({ k:'star', x:o.x + (Math.random()-0.5)*o.w*1.1, y:o.y + (Math.random()-0.3)*o.w*0.8, life:0, max:40+Math.random()*40,
+      r: 3+Math.random()*5, hue: Math.random()<0.7 ? 290+Math.random()*30 : 45 });
+  }
+  function star(x, y, r, a, hue){
+    ctx.save(); ctx.translate(x, y); ctx.globalAlpha = a;
+    ctx.fillStyle = 'hsl('+hue+',100%,80%)'; ctx.shadowColor = 'hsl('+hue+',100%,65%)'; ctx.shadowBlur = 10;
+    ctx.beginPath();
+    for(var i=0;i<8;i++){ var rr = i%2 ? r*0.28 : r, t = i*Math.PI/4; ctx.lineTo(Math.cos(t)*rr, Math.sin(t)*rr); }
+    ctx.closePath(); ctx.fill(); ctx.restore();
+  }
+  function coin(p, a){
+    var sx = Math.max(0.12, Math.abs(Math.cos(p.spin)));           /* flipping edge-on */
+    ctx.save(); ctx.translate(p.x, p.y); ctx.globalAlpha = a; ctx.scale(sx, 1);
+    var g = ctx.createRadialGradient(-p.r*0.3, -p.r*0.3, p.r*0.1, 0, 0, p.r);
+    g.addColorStop(0, '#fff7c2'); g.addColorStop(0.45, '#fbbf24'); g.addColorStop(1, '#b45309');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, p.r, 0, Math.PI*2); ctx.fill();
+    ctx.strokeStyle = 'rgba(120,53,15,.8)'; ctx.lineWidth = Math.max(1, p.r*0.18); ctx.beginPath(); ctx.arc(0, 0, p.r*0.62, 0, Math.PI*2); ctx.stroke();
+    ctx.restore();
+  }
+  window.addEventListener('resize', fit);
+  function frame(t){
+    if(!cv.offsetParent || document.hidden){ RS_COINS.running = false; window.removeEventListener('resize', fit); return; }
+    if(!RS_COINS.last) RS_COINS.last = t;
+    var dt = Math.min(2.5, (t - RS_COINS.last)/16.7); RS_COINS.last = t;
+    if(t > RS_COINS.nextBurst){ coins(18 + (Math.random()*10|0), true); RS_COINS.nextBurst = t + 2200 + Math.random()*1800; }
+    if(Math.random() < 0.10*dt) coins(1, false);
+    if(Math.random() < 0.22*dt && RS_COINS.parts.length < 220) sparkle();
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,cv.width,cv.height);
+    var keep = [];
+    for(var i=0;i<RS_COINS.parts.length;i++){
+      var p = RS_COINS.parts[i];
+      p.life += dt;
+      if(p.life > p.max) continue;
+      var k = 1 - p.life/p.max;
+      if(p.k === 'coin'){
+        p.vy += 0.18*dt; p.vx *= Math.pow(0.99, dt); p.x += p.vx*dt; p.y += p.vy*dt; p.spin += p.vs*dt;
+        coin(p, Math.min(1, k*1.6));
+      } else {
+        var tw = Math.sin((p.life/p.max)*Math.PI);                   /* fade in and out */
+        star(p.x, p.y, p.r*(0.6+tw*0.6), tw, p.hue);
+      }
+      keep.push(p);
+    }
+    RS_COINS.parts = keep;
+    requestAnimationFrame(frame);
+  }
+  RS_COINS.last = 0; RS_COINS.nextBurst = 0;
+  requestAnimationFrame(frame);
+}
+
+/* One-off celebration burst from an element (used when a request is sent). kind: 'coins' | 'sparks' */
+function celebrateFrom(el, kind){
+  if(!el || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+  var r = el.getBoundingClientRect();
+  var cv = document.createElement('canvas');
+  cv.style.cssText = 'position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9999';
+  document.body.appendChild(cv);
+  var dpr = Math.min(window.devicePixelRatio || 1, 2), W = innerWidth, H = innerHeight;
+  cv.width = W*dpr; cv.height = H*dpr;
+  var ctx = cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
+  var ox = r.left + r.width/2, oy = r.top + r.height/2, parts = [];
+  for(var i=0;i<70;i++){
+    var ang = -Math.PI/2 + (Math.random()-0.5)*2.8, sp = 5 + Math.random()*9;
+    parts.push({ x:ox + (Math.random()-0.5)*r.width*0.6, y:oy, vx:Math.cos(ang)*sp, vy:Math.sin(ang)*sp, spin:Math.random()*6, vs:.15+Math.random()*.25,
+      r: kind === 'coins' ? 5+Math.random()*6 : 1.2+Math.random()*1.6, hue: kind === 'coins' ? 45 : 190+Math.random()*30, life:0, max:70+Math.random()*40 });
+  }
+  var last = 0;
+  function frame(t){
+    if(!last) last = t;
+    var dt = Math.min(2.5, (t-last)/16.7); last = t;
+    ctx.clearRect(0,0,W,H);
+    var alive = 0;
+    parts.forEach(function(p){
+      p.life += dt; if(p.life > p.max) return; alive++;
+      var k = 1 - p.life/p.max;
+      p.vy += 0.28*dt; p.vx *= Math.pow(0.985, dt);
+      var px = p.x, py = p.y; p.x += p.vx*dt; p.y += p.vy*dt; p.spin += p.vs*dt;
+      if(kind === 'coins'){
+        ctx.save(); ctx.translate(p.x, p.y); ctx.globalAlpha = Math.min(1, k*1.5); ctx.scale(Math.max(.12, Math.abs(Math.cos(p.spin))), 1);
+        var g = ctx.createRadialGradient(-p.r*.3,-p.r*.3,p.r*.1,0,0,p.r); g.addColorStop(0,'#fff7c2'); g.addColorStop(.45,'#fbbf24'); g.addColorStop(1,'#b45309');
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill(); ctx.restore();
+      } else {
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.strokeStyle = 'hsla('+p.hue+',100%,75%,'+k+')'; ctx.lineWidth = p.r*(.6+k); ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(px - p.vx*2, py - p.vy*2); ctx.lineTo(p.x, p.y); ctx.stroke();
+        ctx.globalCompositeOperation = 'source-over';
+      }
+    });
+    if(alive) requestAnimationFrame(frame); else cv.remove();
+  }
+  requestAnimationFrame(frame);
+}
+document.addEventListener('visibilitychange', function(){ if(!document.hidden && location.hash === '#requestslot') startSlotCoins(); });
 function loadRequestSlotPage(){
+  setTimeout(startSlotCoins, 60);
   renderFeaturedSlots();
   setupSlotAutocomplete();
   var token = localStorage.getItem('jammy_session_token');
@@ -7112,8 +7348,8 @@ async function loadMySlotRequests(){
         ? '<span class="admin-pill '+info.cls+'">'+info.icon+' '+info.label+(r.profit_amount!=null ? ' · $'+r.profit_amount.toLocaleString() : '')+'</span>'
         : '<span class="admin-pill admin-pill-none">⏳ Waiting on Jammmy</span>';
       var awardedBadge = r.coins_awarded ? '<span class="admin-pill admin-pill-profit" style="margin-left:6px">🪙 Awarded '+r.coins_awarded.toLocaleString()+' Coins</span>' : '';
-      return '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px">'
-        + '<div><b>'+r.slot_name+'</b><br><span style="color:var(--faint);font-size:.78rem">'+formatAdminDate(r.created_at)+'</span></div>'
+      return '<div class="rsx-req">'
+        + '<div><b>'+pccEsc(r.slot_name)+'</b><br><span style="color:var(--faint);font-size:.78rem">🕒 '+formatWhen(r.created_at)+'</span></div>'
         + '<div>'+badge+awardedBadge+'</div>'
       + '</div>';
     }).join('');
@@ -7140,6 +7376,8 @@ async function submitSlotRequest(){
     if(res.ok){
       resultEl.style.color = '#4ade80';
       resultEl.textContent = '✓ Sent! Jammmy will see this in his requested slots.';
+      celebrateFrom(btn, 'coins');
+      document.querySelectorAll('#rsFeatured .rsx-picked').forEach(function(c){ c.classList.remove('rsx-picked'); });
       document.getElementById('rsSlotName').value = '';
       document.getElementById('rsNote').value = '';
       loadMySlotRequests();
@@ -7288,6 +7526,7 @@ async function submitBattleRequest(){
     if(res.ok){
       resultEl.style.color = '#4ade80';
       resultEl.textContent = '✓ Sent! Jammmy will see this in his requested battles.';
+      celebrateFrom(btn, 'sparks');
       document.getElementById('rbKickDiscord').value = '';
       document.getElementById('rbPosition').value = '';
       document.getElementById('rbCases').value = '';

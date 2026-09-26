@@ -8,6 +8,13 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-26 (late, cont.) — Request a Slot redesign
+- **Request a Slot redesigned** in the same style as Request a Battle, themed purple/pink/gold to match the slot button art: full-width hero with the slot card (float + light sweep), live canvas coin shower bursting from the 777 reels (spinning gold coins with gravity, twinkling purple sparkles, a bigger "jackpot" burst every few seconds; runs only while the page is visible, off for reduced motion), staggered entrance animations, animated gradient title, "1 Pick a slot · 2 Say why · 3 It pays → you earn" strip.
+- Popular picks restyled (glow/lift on hover, fill the row); tapping one fills the form, smooth-scrolls to it, flashes the field and marks the picked card.
+- Form as numbered sections; submit shows a coin-burst celebration from the button. Request a Battle submit now shows a matching spark burst. My Requests rows show date + time.
+- Same fields, IDs and payload as before.
+- slots-catalog.json: Wanted Dead or a Wild provider → Hacksaw Gaming; Big Bass Bonanza max win 4,000x → 2,100x.
+
 ## 2026-09-26 (late) — Battle page redesign, Loyalty guide, mobile bar
 - **Request a Battle redesigned** to match the new battle button art: full-width electric-blue hero with the battle card, live spark bursts from the crossed swords + drifting embers (canvas; runs only while the page is visible, off for reduced-motion), "1 Pick the mode · 2 Choose your cases · 3 Watch it live" strip, form as numbered sections (01–05) with blue-glow chips and side-by-side Crazy mode / Borrow toggles. Same fields, IDs and submit payload as before.
 - **Loyalty page**: new "Get started in 4 steps" guide with real screenshots of the site (`guide-1..4.webp`): log in → claim casino username → play under code JAMMMY / vault → collect & redeem. Fixed the outdated "redeem at 500 coins" line (real minimums: 1,000 casino balance / 10,000 crypto).
