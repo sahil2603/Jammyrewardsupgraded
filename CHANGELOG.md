@@ -8,6 +8,13 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-26 (late) — Battle page redesign, Loyalty guide, mobile bar
+- **Request a Battle redesigned** to match the new battle button art: full-width electric-blue hero with the battle card, live spark bursts from the crossed swords + drifting embers (canvas; runs only while the page is visible, off for reduced-motion), "1 Pick the mode · 2 Choose your cases · 3 Watch it live" strip, form as numbered sections (01–05) with blue-glow chips and side-by-side Crazy mode / Borrow toggles. Same fields, IDs and submit payload as before.
+- **Loyalty page**: new "Get started in 4 steps" guide with real screenshots of the site (`guide-1..4.webp`): log in → claim casino username → play under code JAMMMY / vault → collect & redeem. Fixed the outdated "redeem at 500 coins" line (real minimums: 1,000 casino balance / 10,000 crypto).
+- **Mobile bottom bar**: Home · Leaderboard · Req. Slot · Req. Battle (replaces Bonuses and Discord, which are still in the ☰ menu / footer).
+- "Send me a test" notification button now only shows for admins.
+- Admin tabs: tidy 4×2 grid on desktop (no scrollbar); swipeable row with hidden scrollbar and edge fade on phones.
+
 ## 2026-09-26 (night) — Profile redesign, request dates, new buttons, Power.win race dates
 - **Profile redesigned**: header card (avatar, name, coin balance + $ value, daily claim in one row); casino accounts as a 3-across grid (locked Approved/Pending cards no longer show a dead "Choose screenshot" button); balanced two-column rows **Redeem | Notifications** and **Redemption history | Recent activity**, each pair equal height; every history line shows date + time + "x ago". Stacks cleanly on phones.
 - **Admin**: 🕒 date/time chip ("Requested … (5h ago)") on every redemption (+ paid time), slot request, battle request, and casino claim ("Submitted …", new `casino_links.submitted_at`); approved claims show "✓ Approved by X · date" (worker was dropping reviewed_by/reviewed_at from the list — fixed). Tabs on one row (scrolls sideways if needed). Phones: card icons hidden so details get the full width. Date parsing fixed for both D1 `YYYY-MM-DD HH:MM:SS` (UTC) and ISO timestamps.

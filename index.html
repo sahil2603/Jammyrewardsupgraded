@@ -1202,6 +1202,34 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 
 /* ===== LOYALTY v2 — sky blue theme, polished cards ===== */
 .loy2-wrap{padding:40px 0 60px;max-width:820px;margin:0 auto}
+/* Loyalty quick-start guide */
+.lg-guide{position:relative;border-radius:22px;padding:26px;margin-bottom:28px;
+  background:linear-gradient(160deg,rgba(250,204,21,.08),rgba(168,85,247,.07) 45%,rgba(12,8,24,.95));
+  border:1px solid rgba(250,204,21,.28);box-shadow:0 24px 60px -30px rgba(250,204,21,.35)}
+.lg-head{text-align:center;margin-bottom:20px}
+.lg-head .loy2-card-title{color:#facc15}
+.lg-head p{color:var(--muted);margin:6px 0 0;font-size:.92rem}
+.lg-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lg-step{background:rgba(10,8,20,.75);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,border-color .2s}
+.lg-step:hover{transform:translateY(-3px);border-color:rgba(250,204,21,.35)}
+.lg-shot{height:150px;display:grid;place-items:center;padding:12px;background:radial-gradient(80% 80% at 50% 40%,rgba(168,85,247,.16),transparent),#07050d;border-bottom:1px solid rgba(255,255,255,.06)}
+.lg-shot img{max-width:100%;max-height:126px;object-fit:contain;border-radius:10px;box-shadow:0 10px 26px -10px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.06)}
+.lg-txt{display:flex;gap:12px;padding:14px 16px 16px;align-items:flex-start}
+.lg-n{flex:none;width:30px;height:30px;border-radius:10px;display:grid;place-items:center;font-family:'Lilita One',sans-serif;color:#1a1204;background:linear-gradient(135deg,#fde047,#f59e0b);box-shadow:0 6px 16px -6px rgba(245,158,11,.8)}
+.lg-txt b{color:#fff}
+.lg-txt > div > b{display:block;font-size:.98rem;margin-bottom:3px}
+.lg-txt p{margin:0;color:var(--muted);font-size:.86rem;line-height:1.5}
+.lg-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.lg-btn{border:0;border-radius:12px;padding:12px 22px;cursor:pointer;font-family:'Lilita One','Arial Black',sans-serif;font-size:1rem;letter-spacing:.03em;
+  color:#1a1204;background:linear-gradient(135deg,#fde047,#f59e0b);box-shadow:0 10px 26px -10px rgba(245,158,11,.8);transition:transform .2s}
+.lg-btn:hover{transform:translateY(-2px)}
+.lg-head .loy2-card-title{text-align:center;justify-content:center;border:0;padding:0}
+@media (max-width:700px){
+  .lg-guide{padding:18px 14px;border-radius:18px}
+  .lg-grid{grid-template-columns:1fr}
+  .lg-shot{height:132px}
+  .lg-shot img{max-height:110px}
+}
 .loy2-head{text-align:center;margin-bottom:48px}
 .loy2-title{font-family:'Lilita One','Arial Black',sans-serif;font-size:clamp(2.2rem,6vw,3.4rem);
   letter-spacing:3px;color:#38bdf8;text-shadow:0 0 35px rgba(56,189,248,.45),0 0 70px rgba(56,189,248,.2)}
@@ -1306,8 +1334,16 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   color:#7dd3fc;
 }
 /* Admin dashboard tabs */
-.admin-tabs{display:flex;gap:6px;margin:0 0 24px;flex-wrap:nowrap;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:thin}
-.admin-tabs .admin-tab{flex:none;padding:9px 14px!important;font-size:.84rem!important;white-space:nowrap}
+.admin-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 24px;padding:2px}
+.admin-tabs .admin-tab{padding:10px 12px!important;font-size:.85rem!important;white-space:nowrap;text-align:center}
+.admin-tabs .admin-tab[style*="display: none"],.admin-tabs .admin-tab[style*="display:none"]{display:none}
+@media (max-width:700px){
+  .admin-tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+    margin:0 -16px 20px;padding:2px 16px 6px;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 16px,#000 calc(100% - 28px),transparent);
+            mask-image:linear-gradient(90deg,transparent 0,#000 16px,#000 calc(100% - 28px),transparent)}
+  .admin-tabs::-webkit-scrollbar{display:none}
+}
 .admin-when{display:inline-flex;align-items:center;gap:4px;font-size:.76rem;color:#cbd5e1;background:rgba(148,163,184,.10);
   border:1px solid rgba(148,163,184,.25);border-radius:8px;padding:3px 9px;margin-top:6px;white-space:nowrap}
 .admin-when + .admin-when{margin-left:6px}
@@ -1652,6 +1688,80 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
    dropdowns, each option with its own accent color so the form doesn't read as a wall of
    identical gray buttons. One selected at a time per group (radio behavior), toggled via
    JS adding/removing .selected. */
+/* ══ Request a Battle (rbx) — electric-blue arena matching the battle button art ══ */
+.rbx{--rb1:#22d3ee;--rb2:#3b82f6;--rb3:#6366f1;position:relative}
+.rbx-hero{position:relative;overflow:hidden;padding:56px 20px 40px;width:100vw;margin-left:calc(50% - 50vw);box-sizing:border-box}
+.rbx-hero::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(45% 75% at 68% 45%,rgba(59,130,246,.24),transparent 70%),
+             radial-gradient(30% 55% at 22% 25%,rgba(34,211,238,.10),transparent 70%);
+  -webkit-mask-image:linear-gradient(#000 60%,transparent);mask-image:linear-gradient(#000 60%,transparent)}
+.rbx-hero::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.35;z-index:0;
+  background-image:linear-gradient(rgba(96,165,250,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(96,165,250,.08) 1px,transparent 1px);
+  background-size:44px 44px;-webkit-mask-image:radial-gradient(70% 70% at 60% 45%,#000,transparent);mask-image:radial-gradient(70% 70% at 60% 45%,#000,transparent)}
+.rbx-sparks{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+.rbx-hero-in{position:relative;z-index:1;max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+.rbx-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:#93c5fd;background:rgba(59,130,246,.12);border:1px solid rgba(96,165,250,.35);padding:6px 12px;border-radius:99px}
+.rbx-dot{width:8px;height:8px;border-radius:50%;background:#22d3ee;box-shadow:0 0 10px #22d3ee;animation:rbxPulse 1.6s ease-in-out infinite}
+@keyframes rbxPulse{50%{opacity:.35;transform:scale(.7)}}
+.rbx-title{font-family:'Lilita One','Arial Black',sans-serif;font-size:clamp(2.6rem,6vw,4.4rem);line-height:1;margin:18px 0 14px;color:#fff;letter-spacing:.01em}
+.rbx-title span{display:block;background:linear-gradient(95deg,#67e8f9,#3b82f6 55%,#818cf8);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 22px rgba(59,130,246,.55))}
+.rbx-lead{color:#cbd5e1;font-size:1.02rem;line-height:1.6;max-width:460px;margin:0 0 22px}
+.rbx-steps{display:flex;gap:10px;flex-wrap:wrap}
+.rbx-step{display:flex;align-items:center;gap:9px;background:rgba(15,23,42,.6);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:8px 12px 8px 8px;font-size:.84rem;color:#e2e8f0;font-weight:600}
+.rbx-step b{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;font-size:.78rem;color:#0b1020;background:linear-gradient(135deg,#67e8f9,#3b82f6)}
+.rbx-art{position:relative;justify-self:center;width:min(100%,440px);animation:rbxFloat 6s ease-in-out infinite}
+.rbx-art img{position:relative;width:100%;display:block;filter:drop-shadow(0 20px 40px rgba(37,99,235,.45))}
+.rbx-art-glow{position:absolute;inset:8% 6%;border-radius:40px;background:radial-gradient(closest-side,rgba(59,130,246,.55),transparent);filter:blur(30px);animation:rbxGlow 3.2s ease-in-out infinite}
+@keyframes rbxFloat{50%{transform:translateY(-10px)}}
+@keyframes rbxGlow{50%{opacity:.55}}
+.rbx-body{max-width:900px;margin:-6px auto 0;padding:0 20px 110px;position:relative;z-index:3}
+.rbx-card{position:relative;border-radius:22px;padding:28px;background:linear-gradient(180deg,rgba(15,23,42,.92),rgba(10,12,28,.96));
+  border:1px solid rgba(96,165,250,.28);box-shadow:0 0 0 1px rgba(34,211,238,.06) inset,0 30px 70px -30px rgba(37,99,235,.55)}
+.rbx-card::before{content:'';position:absolute;left:24px;right:24px;top:-1px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,#22d3ee,#3b82f6,#818cf8,transparent)}
+.rbx-sec{padding:18px 0;border-bottom:1px solid rgba(148,163,184,.10)}
+.rbx-sec:first-child{padding-top:4px}
+.rbx-sec-h{display:flex;align-items:center;gap:10px;font-weight:700;color:#fff;margin-bottom:12px;font-size:.98rem}
+.rbx-num{font-family:'Lilita One',sans-serif;font-size:.8rem;color:#67e8f9;background:rgba(34,211,238,.10);border:1px solid rgba(34,211,238,.35);border-radius:8px;padding:3px 7px;letter-spacing:.06em}
+.rbx-two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.rbx-lbl{display:block;font-size:.8rem;color:#94a3b8;margin-bottom:6px}
+.rbx-opt{font-size:.7rem;color:#64748b;margin-left:4px}
+.rbx-input{width:100%;box-sizing:border-box;padding:12px 14px;border-radius:12px;background:rgba(2,6,23,.6);border:1px solid rgba(96,165,250,.22);
+  color:#fff;font-family:'Poppins',sans-serif;font-size:.92rem;outline:none;transition:border-color .2s,box-shadow .2s}
+.rbx-input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.2)}
+.rbx .rb-chip-group{gap:8px}
+.rbx .rb-chip{border:1px solid rgba(96,165,250,.25)!important;background:rgba(15,23,42,.7);color:#cbd5e1;padding:9px 16px;border-radius:11px;box-shadow:none}
+.rbx .rb-chip:hover{border-color:rgba(103,232,249,.6)!important;color:#fff}
+.rbx .rb-chip.selected{background:linear-gradient(135deg,rgba(34,211,238,.25),rgba(59,130,246,.35))!important;border-color:#38bdf8!important;color:#fff!important;
+  box-shadow:0 0 0 1px rgba(56,189,248,.35) inset,0 6px 20px -6px rgba(56,189,248,.7)!important}
+.rbx .rb-chip-no.selected{background:rgba(71,85,105,.45)!important;border-color:#94a3b8!important;box-shadow:none!important}
+.rbx-toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(2,6,23,.45);border:1px solid rgba(148,163,184,.14);border-radius:14px;padding:12px 14px}
+.rbx-toggle b{display:block;color:#fff;font-size:.9rem}
+.rbx-toggle small{color:#94a3b8;font-size:.76rem}
+.rbx-toggle .rb-chip{padding:7px 12px}
+.rbx-submit{width:100%;margin-top:22px;border:0;border-radius:14px;padding:15px 20px;cursor:pointer;color:#fff;
+  font-family:'Lilita One','Arial Black',sans-serif;font-size:1.15rem;letter-spacing:.04em;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#06b6d4,#2563eb 55%,#6366f1);box-shadow:0 14px 34px -10px rgba(37,99,235,.8),inset 0 1px 0 rgba(255,255,255,.25);transition:transform .2s,box-shadow .2s}
+.rbx-submit::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.28),transparent);animation:rbxShine 3.4s ease-in-out infinite}
+@keyframes rbxShine{60%,100%{left:130%}}
+.rbx-submit:hover{transform:translateY(-2px);box-shadow:0 18px 40px -10px rgba(37,99,235,.95),inset 0 1px 0 rgba(255,255,255,.3)}
+.rbx-submit:disabled{opacity:.6;cursor:wait;transform:none}
+.rbx-login{text-align:center;padding:10px}
+.rbx-login-ic{font-size:2.2rem}
+.rbx-login h3{margin:8px 0 4px}
+.rbx-login p{color:#94a3b8;margin:0 0 12px}
+@media (max-width:860px){
+  .rbx-hero{padding:28px 16px 20px}
+  .rbx-hero-in{grid-template-columns:1fr;gap:14px;text-align:center}
+  .rbx-art{order:-1;width:min(78%,300px)}
+  .rbx-lead{margin-left:auto;margin-right:auto}
+  .rbx-steps{justify-content:center}
+  .rbx-two{grid-template-columns:1fr}
+  .rbx-body{padding:0 14px 110px}
+  .rbx-card{padding:20px 16px}
+}
+@media (prefers-reduced-motion:reduce){.rbx-art,.rbx-art-glow,.rbx-dot,.rbx-submit::after{animation:none}}
 .rb-chip-group{display:flex;flex-wrap:wrap;gap:10px}
 .rb-chip{padding:10px 18px;border-radius:99px;font-family:'Poppins';font-weight:700;font-size:.85rem;
   cursor:pointer;background:rgba(255,255,255,.04);color:var(--muted);
@@ -2528,11 +2638,11 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
   <a href="javascript:void(0)" class="mobbar-item" data-page="leaderboards" onclick="nav('leaderboards')">
     <span class="mobbar-ic">🏆</span><span>Leaderboard</span>
   </a>
-  <a href="javascript:void(0)" class="mobbar-item" data-page="bonuses" onclick="nav('bonuses')">
-    <span class="mobbar-ic">🎁</span><span>Bonuses</span>
+  <a href="javascript:void(0)" class="mobbar-item" data-page="requestslot" onclick="nav('requestslot')">
+    <span class="mobbar-ic">🎰</span><span>Req. Slot</span>
   </a>
-  <a href="https://discord.gg/jammmy" target="_blank" rel="noopener" class="mobbar-item">
-    <span class="mobbar-ic">💬</span><span>Discord</span>
+  <a href="javascript:void(0)" class="mobbar-item" data-page="requestbattle" onclick="nav('requestbattle')">
+    <span class="mobbar-ic">⚔️</span><span>Req. Battle</span>
   </a>
 </nav>
 
@@ -3131,6 +3241,40 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div class="loy2-underline"></div>
       </div>
 
+      <!-- Illustrated quick-start guide (real screenshots of the site) -->
+      <div class="lg-guide reveal">
+        <div class="lg-head">
+          <h2 class="loy2-card-title" style="margin:0">🚀 GET STARTED IN 4 STEPS</h2>
+          <p>From signing up to getting paid, in a couple of minutes.</p>
+        </div>
+        <div class="lg-grid">
+          <div class="lg-step">
+            <div class="lg-shot"><img src="guide-1.webp" loading="lazy" alt="The Login with Discord button at the top right of the site"></div>
+            <div class="lg-txt"><span class="lg-n">1</span><div><b>Log in with Discord</b>
+              <p>Tap <b>Login with Discord</b> at the top right. That's your account — no passwords to remember.</p></div></div>
+          </div>
+          <div class="lg-step">
+            <div class="lg-shot"><img src="guide-2.webp" loading="lazy" alt="Picking your username from the casino leaderboard list on the Profile page"></div>
+            <div class="lg-txt"><span class="lg-n">2</span><div><b>Claim your casino username</b>
+              <p>On your <b>Profile</b>, pick your exact name from the casino's leaderboard and add a screenshot. A mod verifies it.</p></div></div>
+          </div>
+          <div class="lg-step">
+            <div class="lg-shot"><img src="guide-3.webp" loading="lazy" alt="The community vault progress bar filling toward 10,000 coins"></div>
+            <div class="lg-txt"><span class="lg-n">3</span><div><b>Play under code JAMMMY</b>
+              <p>Every $1 you wager adds 0.1 coins to the community <b>Vault</b>. When it hits 10,000, every verified player gets paid their share.</p></div></div>
+          </div>
+          <div class="lg-step">
+            <div class="lg-shot"><img src="guide-4.webp" loading="lazy" alt="Your Jammmy Coins balance and the Claim Daily button on your Profile"></div>
+            <div class="lg-txt"><span class="lg-n">4</span><div><b>Collect &amp; redeem</b>
+              <p>Coins land on your Profile — plus 5 free every day. Redeem from 1,000 coins as casino balance or 10,000 as crypto.</p></div></div>
+          </div>
+        </div>
+        <div class="lg-cta">
+          <button class="lg-btn" onclick="nav('profile')">Open my Profile →</button>
+          <button class="loy2-btn outline-btn" onclick="nav('vault')">See the Vault</button>
+        </div>
+      </div>
+
       <!-- How to check coins -->
       <div class="loy2-card cyan-card reveal">
         <h2 class="loy2-card-title cyan"><span class="loy2-icon">👤</span> HOW TO CHECK YOUR JAMMMY COINS</h2>
@@ -3150,7 +3294,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <li>An admin manually verifies the claim against your Discord</li>
           <li>Once approved, your wagering counts toward the shared community vault</li>
           <li>When the vault collectively reaches 10,000 coins, everyone verified gets their own share paid out automatically — nothing else to do</li>
-          <li>Once you reach 500 coins, redeem them for crypto right from your Profile page</li>
+          <li>Redeem from your Profile page once you have 1,000 coins (as casino balance) or 10,000 coins (as crypto)</li>
         </ol>
       </div>
 
@@ -3434,34 +3578,65 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
   </section>
 
   <section class="page" id="requestbattle">
-    <div class="wrap" style="max-width:900px;margin:0 auto;padding:60px 20px 100px">
-      <div class="sec-head reveal" style="padding-top:10px">
-        <div style="font-size:3rem;margin-bottom:6px">⚔️</div>
-        <h2>Request a <span class="g">Battle</span></h2>
-        <p>Challenge Jammmy to a slot battle on stream. Fill in the details below and submit your request.</p>
+    <div class="rbx">
+      <!-- Hero: electric-blue arena with live sparks off the crossed swords -->
+      <div class="rbx-hero">
+        <canvas id="rbSparks" class="rbx-sparks" aria-hidden="true"></canvas>
+        <div class="rbx-hero-in">
+          <div class="rbx-copy">
+            <span class="rbx-eyebrow"><span class="rbx-dot"></span> Played live on Kick</span>
+            <h1 class="rbx-title">Request a <span>Battle</span></h1>
+            <p class="rbx-lead">Set the mode, stack the cases and throw down the challenge. Jammmy takes it on live on stream.</p>
+            <div class="rbx-steps">
+              <div class="rbx-step"><b>1</b><span>Pick the mode</span></div>
+              <div class="rbx-step"><b>2</b><span>Choose your cases</span></div>
+              <div class="rbx-step"><b>3</b><span>Watch it live</span></div>
+            </div>
+          </div>
+          <div class="rbx-art" id="rbArt">
+            <div class="rbx-art-glow"></div>
+            <img src="request-a-battle.png?v=4" alt="" aria-hidden="true">
+          </div>
+        </div>
       </div>
 
-      <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#60a5fa,#a855f7,#f472b6)"></div>
-        <div id="rbLoggedOut" style="display:none;text-align:center;padding:20px">
-          <p style="color:var(--muted)">Log in with Discord to request a battle.</p>
-          <button class="admin-btn-primary" style="max-width:240px;margin:10px auto 0" onclick="startDiscordLogin()">Login with Discord</button>
-        </div>
-        <div id="rbForm">
-          <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Kick name & Discord</label>
-          <input type="text" id="rbKickDiscord" placeholder="e.g. yourkickname / yourdiscord#0001" maxlength="150" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:20px;font-family:'Poppins';box-sizing:border-box">
+      <div class="rbx-body">
+        <div class="rbx-card">
+          <div id="rbLoggedOut" style="display:none" class="rbx-login">
+            <div class="rbx-login-ic">⚔️</div>
+            <h3>Log in to send a challenge</h3>
+            <p>We use your Discord so Jammmy knows who called the battle.</p>
+            <button class="rbx-submit" style="max-width:280px;margin:6px auto 0" onclick="startDiscordLogin()">Login with Discord</button>
+          </div>
+          <div id="rbForm">
+            <div class="rbx-sec">
+              <div class="rbx-sec-h"><span class="rbx-num">01</span> Who's challenging?</div>
+              <div class="rbx-two">
+                <div>
+                  <label class="rbx-lbl" for="rbKickDiscord">Kick name &amp; Discord</label>
+                  <input class="rbx-input" type="text" id="rbKickDiscord" placeholder="e.g. yourkickname / yourdiscord" maxlength="150">
+                </div>
+                <div>
+                  <label class="rbx-lbl" for="rbPosition">Position <span class="rbx-opt">optional</span></label>
+                  <input class="rbx-input" type="text" id="rbPosition" placeholder="e.g. 1st position" maxlength="150">
+                </div>
+              </div>
+            </div>
 
-          <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:8px">Game mode</label>
-          <div class="rb-chip-group" id="rbGameMode" style="margin-bottom:20px">
+            <div class="rbx-sec">
+              <div class="rbx-sec-h"><span class="rbx-num">02</span> Game mode</div>
+              <div class="rb-chip-group" id="rbGameMode">
             <button type="button" class="rb-chip rb-chip-1" data-val="Normal">Normal</button>
             <button type="button" class="rb-chip rb-chip-2" data-val="Shared">Shared</button>
             <button type="button" class="rb-chip rb-chip-3" data-val="Point Rush">Point Rush</button>
             <button type="button" class="rb-chip rb-chip-4" data-val="Jackpot">Jackpot</button>
             <button type="button" class="rb-chip rb-chip-5" data-val="Terminal">Terminal</button>
           </div>
+            </div>
 
-          <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:8px">Match type</label>
-          <div class="rb-chip-group" id="rbMatchType" style="margin-bottom:20px">
+            <div class="rbx-sec">
+              <div class="rbx-sec-h"><span class="rbx-num">03</span> Match type</div>
+              <div class="rb-chip-group" id="rbMatchType">
             <button type="button" class="rb-chip rb-chip-1" data-val="1v1">1v1</button>
             <button type="button" class="rb-chip rb-chip-2" data-val="3-way">3-way</button>
             <button type="button" class="rb-chip rb-chip-3" data-val="4-way">4-way</button>
@@ -3470,28 +3645,30 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
             <button type="button" class="rb-chip rb-chip-6" data-val="2v2v2">2v2v2</button>
             <button type="button" class="rb-chip rb-chip-1" data-val="3v3">3v3</button>
           </div>
+            </div>
 
-          <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Position</label>
-          <input type="text" id="rbPosition" placeholder="e.g. 1st position" maxlength="150" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:20px;font-family:'Poppins';box-sizing:border-box">
+            <div class="rbx-sec">
+              <div class="rbx-sec-h"><span class="rbx-num">04</span> Cases</div>
+              <textarea class="rbx-input" id="rbCases" placeholder="e.g. AK case, Gold case, Mystery case" maxlength="500" rows="3" style="resize:vertical"></textarea>
+            </div>
 
-          <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px">Cases</label>
-          <textarea id="rbCases" placeholder="e.g. AK case, Gold case, Mystery case" maxlength="500" rows="4" style="width:100%;padding:14px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:6px;font-family:'Poppins';box-sizing:border-box;resize:vertical"></textarea>
-          <p style="color:var(--faint);font-size:.78rem;margin:0 0 20px">Example: AK case, Gold case, Mystery case</p>
-
-          <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:8px">Crazy mode</label>
-          <div class="rb-chip-group" id="rbCrazyMode" style="margin-bottom:20px">
+            <div class="rbx-sec">
+              <div class="rbx-sec-h"><span class="rbx-num">05</span> Extras</div>
+              <div class="rbx-two">
+                <div class="rbx-toggle"><div><b>🔥 Crazy mode</b></div><div class="rb-chip-group" id="rbCrazyMode">
             <button type="button" class="rb-chip rb-chip-yes" data-val="yes">Yes</button>
             <button type="button" class="rb-chip rb-chip-no" data-val="no">No</button>
-          </div>
-
-          <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:8px">Borrow</label>
-          <div class="rb-chip-group" id="rbBorrow" style="margin-bottom:24px">
+          </div></div>
+                <div class="rbx-toggle"><div><b>🤝 Borrow</b></div><div class="rb-chip-group" id="rbBorrow">
             <button type="button" class="rb-chip rb-chip-yes" data-val="yes">Yes</button>
             <button type="button" class="rb-chip rb-chip-no" data-val="no">No</button>
-          </div>
+          </div></div>
+              </div>
+            </div>
 
-          <button class="admin-btn-primary" onclick="submitBattleRequest()" id="rbSubmitBtn">⚔️ Submit Battle Request</button>
-          <div id="rbResult" style="margin-top:12px;font-size:.9rem"></div>
+            <button class="rbx-submit" onclick="submitBattleRequest()" id="rbSubmitBtn">⚔️ Send Battle Request</button>
+            <div id="rbResult" style="margin-top:12px;font-size:.9rem;text-align:center"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -5021,7 +5198,8 @@ async function refreshPushSettings(){
   }
   onBtn.style.display = on || Notification.permission === 'denied' ? 'none' : '';
   offBtn.style.display = on ? '' : 'none';
-  testBtn.style.display = on ? '' : 'none';
+  var me = null; try{ me = JSON.parse(localStorage.getItem('jammy_user') || 'null'); }catch(e){}
+  testBtn.style.display = (on && me && me.is_admin) ? '' : 'none';   /* admin-only tool */
   live.disabled = coins.disabled = !on;
 }
 async function savePushPrefs(){
@@ -6990,7 +7168,77 @@ document.querySelectorAll('.rb-chip-group').forEach(function(group){
   });
 });
 
+/* ── Battle page sparks ─────────────────────────────────────────────────────
+   Bursts of electric-blue sparks from the point where the swords cross on the battle art,
+   plus a few drifting embers. Runs only while the Battle page is on screen and the tab is
+   visible; skipped entirely for people who prefer reduced motion. */
+var RB_SPARKS = { running:false, parts:[], last:0, nextBurst:0 };
+function startBattleSparks(){
+  var cv = document.getElementById('rbSparks');
+  if(!cv || RB_SPARKS.running) return;
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var ctx = cv.getContext('2d'); if(!ctx) return;
+  RB_SPARKS.running = true; RB_SPARKS.parts = [];
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  function fit(){ var r = cv.getBoundingClientRect(); cv.width = Math.max(1, r.width*dpr); cv.height = Math.max(1, r.height*dpr); }
+  fit();
+  function origin(){
+    var art = document.getElementById('rbArt'), c = cv.getBoundingClientRect();
+    if(!art) return { x: c.width*0.7, y: c.height*0.45 };
+    var a = art.getBoundingClientRect();
+    return { x: a.left - c.left + a.width*0.705, y: a.top - c.top + a.height*0.46 };   /* where the blades cross */
+  }
+  function burst(n, big){
+    var o = origin();
+    for(var i=0;i<n;i++){
+      var ang = Math.random()*Math.PI*2, sp = (big?3:1.5) + Math.random()*(big?7:4);
+      RB_SPARKS.parts.push({ x:o.x, y:o.y, vx:Math.cos(ang)*sp, vy:Math.sin(ang)*sp - (big?1.5:0.5), life:0, max:28+Math.random()*40,
+        hue: Math.random()<0.75 ? 195+Math.random()*25 : 45, w: 1+Math.random()*1.6, ember:false });
+    }
+  }
+  function ember(){
+    var c = cv.getBoundingClientRect();
+    RB_SPARKS.parts.push({ x:Math.random()*c.width, y:c.height+5, vx:(Math.random()-.5)*.4, vy:-(0.4+Math.random()*0.9), life:0, max:160+Math.random()*120,
+      hue:200+Math.random()*30, w:1+Math.random()*1.4, ember:true });
+  }
+  window.addEventListener('resize', fit);
+  function frame(t){
+    if(!cv.offsetParent || document.hidden){ RB_SPARKS.running = false; window.removeEventListener('resize', fit); return; }
+    if(!RB_SPARKS.last) RB_SPARKS.last = t;
+    var dt = Math.min(2.5, (t - RB_SPARKS.last)/16.7); RB_SPARKS.last = t;
+    if(t > RB_SPARKS.nextBurst){ burst(26 + (Math.random()*18|0), true); RB_SPARKS.nextBurst = t + 1100 + Math.random()*1300; }
+    if(Math.random() < 0.35*dt) burst(2, false);
+    if(Math.random() < 0.12*dt && RB_SPARKS.parts.length < 260) ember();
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,cv.width,cv.height);
+    ctx.globalCompositeOperation = 'lighter';
+    var keep = [];
+    for(var i=0;i<RB_SPARKS.parts.length;i++){
+      var p = RB_SPARKS.parts[i];
+      p.life += dt;
+      if(p.life > p.max) continue;
+      var k = 1 - p.life/p.max;
+      if(!p.ember){ p.vy += 0.16*dt; p.vx *= Math.pow(0.985, dt); }
+      var px = p.x, py = p.y;
+      p.x += p.vx*dt; p.y += p.vy*dt;
+      ctx.strokeStyle = 'hsla('+p.hue+',100%,'+(p.ember?70:75)+'%,'+(p.ember? k*0.55 : k)+')';
+      ctx.lineWidth = p.w * (p.ember ? 1 : (0.6 + k));
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      if(p.ember){ ctx.arc(p.x, p.y, p.w*0.8, 0, Math.PI*2); ctx.fillStyle = ctx.strokeStyle; ctx.fill(); }
+      else { ctx.moveTo(px - p.vx*1.8, py - p.vy*1.8); ctx.lineTo(p.x, p.y); ctx.stroke(); }
+      keep.push(p);
+    }
+    RB_SPARKS.parts = keep;
+    ctx.globalCompositeOperation = 'source-over';
+    requestAnimationFrame(frame);
+  }
+  RB_SPARKS.last = 0; RB_SPARKS.nextBurst = 0;
+  requestAnimationFrame(frame);
+}
+document.addEventListener('visibilitychange', function(){ if(!document.hidden && location.hash === '#requestbattle') startBattleSparks(); });
 function loadRequestBattlePage(){
+  setTimeout(startBattleSparks, 60);
   var token = localStorage.getItem('jammy_session_token');
   var loggedOut = document.getElementById('rbLoggedOut');
   var form = document.getElementById('rbForm');
