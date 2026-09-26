@@ -13,6 +13,9 @@ Newest entries at the top.
 - Each card shows facts from our own catalog only (name, provider, volatility, max win, image when the catalog has one) and links out to Slot-Streamers: **Read review ↗** goes straight to the review for slots that have one (verified once and stored as `"ss"` in the catalog); others get **Find review ↗**, which opens their search for that name. No text or images are copied from Slot-Streamers.
 - **Request** button on each card opens Request a Slot with that slot filled in.
 - The top search bar on the Reviews page now also filters the library.
+- **Slot pictures:** 414 of 557 slots now have real game art (was 114). Images were looked up on SlotsLaunch game pages (the same image host the catalog already used); ambiguous same-name matches were skipped rather than risk showing the wrong game.
+- Slots with no art available get a themed card instead of a flat gradient: slow-rotating light rays, a theme icon picked from the name (Egypt 🏺, dragons 🐉, Vikings ⚔️, candy 🍭 …), sparkles and the title. If a real image fails to load, the card falls back to this automatically.
+- Fixed wrong providers on 24 catalog entries while matching (e.g. San Quentin and Mental → Nolimit City, Big Bamboo → Push Gaming, Cash Patrol → Pragmatic Play).
 
 ## 2026-09-26 (late, cont.) — Request a Slot redesign
 - **Request a Slot redesigned** in the same style as Request a Battle, themed purple/pink/gold to match the slot button art: full-width hero with the slot card (float + light sweep), live canvas coin shower bursting from the 777 reels (spinning gold coins with gravity, twinkling purple sparkles, a bigger "jackpot" burst every few seconds; runs only while the page is visible, off for reduced motion), staggered entrance animations, animated gradient title, "1 Pick a slot · 2 Say why · 3 It pays → you earn" strip.

@@ -637,6 +637,16 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 .sl-thumb{aspect-ratio:16/10;position:relative;display:grid;place-items:center;overflow:hidden}
 .sl-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .sl-thumb b{font-family:'Lilita One','Arial Black','Impact',system-ui,sans-serif;font-size:1.15rem;color:#fff;text-align:center;padding:0 12px;line-height:1.1;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+.sl-art{position:absolute;inset:0;overflow:hidden}
+.sl-art::before{content:'';position:absolute;inset:-40%;background:repeating-conic-gradient(from 0deg,rgba(255,255,255,.09) 0 10deg,transparent 10deg 20deg);animation:slRays 40s linear infinite}
+.sl-art::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 38%,rgba(255,255,255,.28),transparent 55%),radial-gradient(circle at 50% 120%,rgba(0,0,0,.55),transparent 60%)}
+.sl-art i{position:absolute;left:50%;top:36%;transform:translate(-50%,-50%);font-style:normal;font-size:3.1rem;line-height:1;z-index:1;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5));transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.sl-card:hover .sl-art i{transform:translate(-50%,-50%) scale(1.15) rotate(-6deg)}
+.sl-art s{position:absolute;width:5px;height:5px;border-radius:50%;background:#fff;opacity:.7;box-shadow:0 0 8px #fff;text-decoration:none}
+.sl-thumb.fallback b{position:absolute;left:0;right:0;bottom:12%;z-index:2;font-size:1.2rem;padding:0 14px;-webkit-text-stroke:.5px rgba(0,0,0,.35)}
+.sl-thumb:not(.fallback) .sl-art,.sl-thumb:not(.fallback) b{visibility:hidden}
+@keyframes slRays{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.sl-art::before{animation:none}}
 .sl-badge{position:absolute;top:8px;left:8px;z-index:2;background:rgba(10,6,18,.82);border:1px solid rgba(249,168,212,.45);color:#f9a8d4;font:600 .68rem 'Poppins',system-ui;padding:3px 8px;border-radius:7px;backdrop-filter:blur(4px)}
 .sl-body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:8px;flex:1}
 .sl-name{font-weight:700;font-size:.98rem;line-height:1.25;color:#fff}
@@ -4949,6 +4959,9 @@ var SL_PAGE = 24, _slShown = SL_PAGE, _slBound = false;
 var SL_GRADS = ['linear-gradient(135deg,#1f7a3d,#0c3d1e)','linear-gradient(135deg,#2aa6d6,#123a6b)','linear-gradient(135deg,#c9962e,#5a3210)','linear-gradient(135deg,#e0913a,#7a3d12)','linear-gradient(135deg,#7a3d9e,#2a1340)','linear-gradient(135deg,#a855f7,#3d1a6b)','linear-gradient(135deg,#dc2626,#4a0e0e)','linear-gradient(135deg,#0891b2,#083344)'];
 function slEsc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 function slGrad(name){ var h = 0; for(var i=0;i<name.length;i++) h = (h*31 + name.charCodeAt(i)) >>> 0; return SL_GRADS[h % SL_GRADS.length]; }
+var SL_THEMES=[[/egypt|pharaoh|anubis|scarab|pyramid|giza|horus|ankh|mummy|cleopatra|akhenaten|sphinx/,'🏺'],[/dragon/,'🐉'],[/wolf|fenrir/,'🐺'],[/viking|valhalla|thor|ymir|odin|loki|waylander|asgard|hel'?s/,'⚔️'],[/candy|sugar|cake|pudding|cupcake|cookie|sweet|bake/,'🍭'],[/fruit|cherry|berry/,'🍒'],[/pirate|bluebeard|captain|kraken/,'🏴‍☠️'],[/knight|crown|king|queen|castle|manor/,'👑'],[/fire|flaming|hot|burn|chilli|volcano|blaze/,'🔥'],[/fish|bass|ocean|pearl|shark/,'🐟'],[/zeus|god|olympus|athena|gladius|titan|poseidon|hades|pandora|trojan|minotaur|vulcan|zephyr/,'⚡'],[/gold|coin|cash|money|riches|wealth|fortune|treasure|bank|heist|loan/,'💰'],[/777|seven|sizzling|joker|classic|reel/,'🎰'],[/witch|potion|ritual|magic|spell|hex|curse|tome|book|scroll|mystery/,'🔮'],[/aztec|maya|temple|jungle|amazon/,'🗿'],[/samurai|ninja|dojo|japan|konbini|harakiri/,'🏯'],[/panda|tiger|monkey|rhino|buffalo|mustang|bronco|lion|ox|rabbit|cat|penguin|pigeon|bird|farm|chicken|turkey|piggy|pig|bear|capybara|saurus|snake/,'🐾'],[/clover|shamrock|lucky|leaf|irish|patrick/,'🍀'],[/football|ball/,'⚽'],[/christmas|xmas|snow|winter|arctic|gift/,'❄️'],[/space|astro|rocket|star|galaxy|cyber|plasma|solar|eclipse|moon|sun/,'🚀'],[/west|cowboy|frontier|wanted|bandit|prison|quentin|deadwood|tombstone/,'🤠'],[/rock|punk|party|dance|vegas|elvis|disco/,'🎸'],[/gem|diamond|jewel|emerald|crystal/,'💎'],[/train|rails|motor|racer/,'🚂'],[/vampire|zombie|dead|grim|skull|goblin|evil|ghost/,'💀']];
+function slIcon(name){ var n=name.toLowerCase(); for(var i=0;i<SL_THEMES.length;i++) if(SL_THEMES[i][0].test(n)) return SL_THEMES[i][1]; return '🎰'; }
+function slSparks(name){ var h=0,out=''; for(var i=0;i<name.length;i++) h=(h*33+name.charCodeAt(i))>>>0; for(var k=0;k<5;k++){ h=(Math.imul(h,1103515245)+12345)>>>0; out+='<s style="left:'+(6+h%88)+'%;top:'+(6+(h>>>8)%50)+'%;opacity:'+(.3+((h>>>16)%6)/10)+'"></s>'; } return out; }
 function slReviewUrl(s){
   return s.ss ? 'https://www.slot-streamers.com/game-reviews/' + encodeURIComponent(s.ss)
               : 'https://www.slot-streamers.com/game-reviews?search=' + encodeURIComponent(s.name);
@@ -4999,8 +5012,9 @@ function renderSlotLibrary(appending){
     var v = s.volatility ? '<span class="v-' + slEsc(s.volatility) + '">● ' + slEsc(s.volatility.charAt(0).toUpperCase() + s.volatility.slice(1)) + '</span>' : '';
     var mw = s.max_win ? '<span class="mw">Max <b>' + Number(s.max_win).toLocaleString('en-US') + 'x</b></span>' : '';
     return '<div class="sl-card" style="animation-delay:' + Math.min(i*0.03, 0.5) + 's">'
-      + '<div class="sl-thumb" style="background:' + slGrad(s.name) + '">' + (s.ss ? '<span class="sl-badge">Full review</span>' : '')
-      + '<b>' + n + '</b>' + (s.image ? '<img loading="lazy" alt="" src="' + slEsc(s.image) + '" onerror="this.remove()">' : '') + '</div>'
+      + '<div class="sl-thumb fallback" style="background:' + slGrad(s.name) + '">' + (s.ss ? '<span class="sl-badge">Full review</span>' : '')
+      + '<div class="sl-art"><i>' + slIcon(s.name) + '</i>' + slSparks(s.name) + '</div><b>' + n + '</b>'
+      + (s.image ? '<img loading="lazy" alt="' + n + '" src="' + slEsc(s.image) + '" onload="this.parentNode.classList.remove(\'fallback\')" onerror="this.remove()">' : '') + '</div>'
       + '<div class="sl-body"><div><div class="sl-name">' + n + '</div><div class="sl-prov">' + slEsc(s.provider || 'Unknown provider') + '</div></div>'
       + '<div class="sl-facts">' + v + mw + '</div>'
       + '<div class="sl-actions"><a class="sl-read' + (s.ss ? '' : ' search') + '" href="' + slReviewUrl(s) + '" target="_blank" rel="noopener">' + (s.ss ? 'Read review ↗' : 'Find review ↗') + '</a>'
