@@ -4982,7 +4982,8 @@ async function loadAdminPushStats(){
       ? (d.kick_check.ok ? 'auto-detect working (' + (d.kick_official_api ? 'official Kick API' : 'public Kick endpoint') + ', stream currently ' + (d.kick_check.live ? 'LIVE' : 'offline') + ')'
                          : '<span style="color:#fbbf24">auto-detect can\'t reach Kick' + (d.kick_official_api ? '' : ' -- add KICK_CLIENT_ID / KICK_CLIENT_SECRET, or use the button') + '</span>')
       : 'auto-detect waiting for the first cron run';
-    el.innerHTML = '<b style="color:#fff">' + d.live_devices + '</b> devices get live alerts · <b style="color:#fff">' + d.coin_devices + '</b> get coin alerts (' + d.users + ' accounts)'
+    function pl(n, w){ return n + ' ' + w + (n === 1 ? '' : 's'); }
+    el.innerHTML = '<b style="color:#fff">' + d.live_devices + '</b> ' + (d.live_devices === 1 ? 'device gets' : 'devices get') + ' live alerts · <b style="color:#fff">' + d.coin_devices + '</b> ' + (d.coin_devices === 1 ? 'gets' : 'get') + ' coin alerts (' + pl(d.users, 'account') + ')'
       + (d.queued ? ' · ' + d.queued + ' still sending' : '') + '<br>Live: ' + kick;
   }catch(e){ el.textContent = 'Network error.'; }
 }
