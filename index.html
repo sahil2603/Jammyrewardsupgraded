@@ -619,8 +619,8 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 .statline .rtp b{color:var(--green)}
 
 /* ===== SLOT LIBRARY (reviews page) ===== */
-.sl-wrap{margin-top:70px}
-.sl-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:34px}
+.sl-wrap{margin-top:34px}
+.sl-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap}
 .sl-title{font-family:'Lilita One','Arial Black','Impact',system-ui,sans-serif;font-size:2rem;letter-spacing:.5px;margin:0}
 .sl-sub{color:var(--muted);font-size:.9rem;margin:4px 0 0}
 .sl-sub b{color:#fff}
@@ -671,7 +671,7 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 .sl-more:hover{border-color:var(--purple)}
 .sl-note{color:var(--faint);font-size:.78rem;text-align:center;margin:18px auto 0;max-width:640px}
 @media (max-width:1100px){.sl-grid{grid-template-columns:repeat(3,1fr)}}
-@media (max-width:780px){.sl-grid{grid-template-columns:repeat(2,1fr);gap:12px}.sl-controls{width:100%}.sl-controls input{width:100%;flex:1 1 100%}.sl-controls select{flex:1 1 0}.sl-title{font-size:1.6rem}.sl-wrap{margin-top:50px}}
+@media (max-width:780px){.sl-grid{grid-template-columns:repeat(2,1fr);gap:12px}.sl-controls{width:100%}.sl-controls input{width:100%;flex:1 1 100%}.sl-controls select{flex:1 1 0}.sl-title{font-size:1.6rem}.sl-wrap{margin-top:26px}}
 @media (max-width:420px){.sl-actions{flex-direction:column}.sl-body{padding:10px 11px 12px}.sl-name{font-size:.9rem}}
 @media (prefers-reduced-motion:reduce){.sl-card{animation:none}.sl-card:hover{transform:none}}
 /* ===== LEADERBOARD ===== */
@@ -3300,73 +3300,8 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
   <!-- REVIEWS -->
   <section class="page" id="reviews">
-    <div class="sec-head"><h2>Slot Game <span class="g">Reviews</span></h2><p>Expert reviews of the latest slots — detailed analysis, RTP ratings and gameplay guides.</p></div>
-    <div class="searchbar reveal">
-      <input placeholder="Search slot reviews…" oninput="filterReviews(this.value)">
-      <button><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button>
-    </div>
-    <p class="intro">Discover comprehensive slot reviews written by gaming experts. Each one covers gameplay mechanics, RTP percentages, volatility and max-win potential — so you can pick the right games to play.</p>
-    <div class="inner">
-      <!-- To add a real game image: paste the image URL inside src="" on each card. The gradient + title shows until you do. -->
-      <div class="grid3 reveal" id="reviewGrid">
-        <div class="rcard" data-name="jiggy pot o gold push gaming irish">
-          <div class="thumb" style="background:linear-gradient(135deg,#1f7a3d,#0c3d1e)"><img loading="lazy" src="https://res.cloudinary.com/dce7ur4k0/image/upload/v1775335497/game-reviews/game-reviews/1775335497618-Jiggy-s-Pot-O-Gold-Client-Area-Game-Page.jpg.jpg" alt="Jiggy's Pot O'Gold"><b>Jiggy's<br>Pot O'Gold</b></div>
-          <h3>Jiggy's Pot O'Gold</h3>
-          <p class="desc">Step into a vibrant world of rolling green hills and folklore with Jiggy's Pot O'Gold, a charming Irish-themed slot from Push Gaming where lucky multipliers and pots of gold drive the action.</p>
-          <div class="meta-row"><span class="tagpill">Push Gaming</span><span class="vol low">● Low</span></div>
-          <div class="rdate">📅 Jun 2026</div>
-          <div class="statline"><span class="rtp">RTP <b>96.28%</b></span><span>Max Win <b>14,000x</b></span></div>
-        </div>
-        <div class="rcard" data-name="soaked seamen nolimit city">
-          <div class="thumb" style="background:linear-gradient(135deg,#2aa6d6,#123a6b)"><img loading="lazy" src="https://assets.slotslaunch.com/110059/soaked-by-seamen.jpg" alt="Soaked by Seamen"><b>Soaked<br>by Seamen</b></div>
-          <h3>Soaked by Seamen</h3>
-          <p class="desc">Soaked by Seamen, Nolimit City's upcoming slot set for June 23, 2026, plunges players into a darkly humorous nautical world built on brutal high-volatility math and a giant top-end potential.</p>
-          <div class="meta-row"><span class="tagpill">Nolimit City</span><span class="vol high">● High</span></div>
-          <div class="rdate">📅 Jun 2026</div>
-          <div class="statline"><span class="rtp">RTP <b>96.04%</b></span><span>Max Win <b>30,000x</b></span></div>
-        </div>
-        <div class="rcard" data-name="fury anubis pragmatic play egypt">
-          <div class="thumb" style="background:linear-gradient(135deg,#c9962e,#5a3210)"><img loading="lazy" src="https://res.cloudinary.com/dce7ur4k0/image/upload/v1778937612/game-reviews/game-reviews/1778937612368-Fury-of-Anubis-833x383.jpg.jpg" alt="Fury of Anubis"><b>Fury of<br>Anubis</b></div>
-          <h3>Fury of Anubis</h3>
-          <p class="desc">Journey to the sands of ancient Egypt with Pragmatic Play's Fury of Anubis, a captivating 5-reel slot adventure pairing rich visuals with steady medium-volatility pacing and god-tier bonus rounds.</p>
-          <div class="meta-row"><span class="tagpill">Pragmatic Play</span><span class="vol med">● Medium</span></div>
-          <div class="rdate">📅 Jun 2026</div>
-          <div class="statline"><span class="rtp">RTP <b>96.52%</b></span><span>Max Win <b>10,000x</b></span></div>
-        </div>
-        <div class="rcard" data-name="pirots 5 elk studios avian birds">
-          <div class="thumb" style="background:linear-gradient(135deg,#e0913a,#7a3d12)"><img loading="lazy" src="https://res.cloudinary.com/dce7ur4k0/image/upload/v1780877244/game-reviews/game-reviews/1780877244331-IMG-4764.webp.webp" alt="Pirots 5"><b>Pirots 5</b></div>
-          <h3>Pirots 5</h3>
-          <p class="desc">Pirots 5, ELK Studios' latest high-volatility spectacle, launches players into an exhilarating avian adventure across a colour-collecting grid packed with feature buys and huge top-end potential.</p>
-          <div class="meta-row"><span class="tagpill">ELK Studios</span><span class="vol high">● High</span></div>
-          <div class="rdate">📅 Jun 2026</div>
-          <div class="statline"><span class="rtp">RTP <b>96.10%</b></span><span>Max Win <b>10,000x</b></span></div>
-        </div>
-        <div class="rcard" data-name="viva lock vegas">
-          <div class="thumb" style="background:linear-gradient(135deg,#7a3d9e,#2a1340)"><img loading="lazy" src="https://res.cloudinary.com/dce7ur4k0/image/upload/v1775335197/game-reviews/game-reviews/1775335197239-Viva-Lock-Vegas-Client-Area-Image.jpg.jpg" alt="Viva Lock Vegas"><b>Viva Lock<br>Vegas</b></div>
-          <h3>Viva Lock Vegas</h3>
-          <p class="desc">A neon Vegas hold-and-win adventure with lock-and-respin reels. (Add your full review copy from your site.)</p>
-          <div class="meta-row"><span class="tagpill">Provider —</span><span class="vol med">● —</span></div>
-          <div class="rdate">📅 Jun 2026</div>
-          <div class="statline"><span class="rtp">RTP <b>—</b></span><span>Max Win <b>—</b></span></div>
-        </div>
-        <div class="rcard" data-name="kicker mania football">
-          <div class="thumb" style="background:linear-gradient(135deg,#1f8a4c,#0c3d22)"><img loading="lazy" src="https://assets.slotslaunch.com/109476/kicker-mania.jpg" alt="Kicker Mania"><b>Kicker<br>Mania</b></div>
-          <h3>Kicker Mania</h3>
-          <p class="desc">A football-themed slot bringing matchday energy to the reels. (Add your full review copy from your site.)</p>
-          <div class="meta-row"><span class="tagpill">Provider —</span><span class="vol high">● —</span></div>
-          <div class="rdate">📅 Jun 2026</div>
-          <div class="statline"><span class="rtp">RTP <b>—</b></span><span>Max Win <b>—</b></span></div>
-        </div>
-        <div class="rcard" data-name="triple launch fortune wild">
-          <div class="thumb" style="background:linear-gradient(135deg,#c0392b,#5a1410)"><img loading="lazy" src="https://assets.slotslaunch.com/109577/triple-launch-fortune-wild.jpg" alt="Triple Launch Fortune Wild"><b>Triple Launch<br>Fortune Wild</b></div>
-          <h3>Triple Launch Fortune Wild</h3>
-          <p class="desc">A fast-paced fortune slot with triple-launch wild features. (Add your full review copy from your site.)</p>
-          <div class="meta-row"><span class="tagpill">Provider —</span><span class="vol high">● —</span></div>
-          <div class="rdate">📅 Jun 2026</div>
-          <div class="statline"><span class="rtp">RTP <b>—</b></span><span>Max Win <b>—</b></span></div>
-        </div>
-      </div>
-    </div>
+    <div class="sec-head"><h2>Slot Game <span class="g">Reviews</span></h2><p>Find your next slot: facts, full reviews and one-tap requests.</p></div>
+    <p class="intro">Browse 550+ slots with provider, volatility and max-win at a glance. Tap <b>Read review</b> for the full breakdown, or <b>Request</b> to get Jammmy to play it on stream.</p>
     <!-- SLOT LIBRARY: built from slots-catalog.json. Facts only (name, provider, volatility, max win);
          the full review lives on Slot-Streamers and is linked out, never copied here. -->
     <div class="inner sl-wrap" id="slotLibrary">
@@ -4941,12 +4876,8 @@ document.querySelectorAll('.vpp-tab').forEach(function(t){
    REVIEWS FILTER
 ============================================================ */
 function filterReviews(q){
-  q=q.toLowerCase().trim();
-  document.querySelectorAll('#reviewGrid .rcard').forEach(c=>{
-    c.style.display=(!q||c.dataset.name.includes(q))?'flex':'none';
-  });
   var sl=document.getElementById('slSearch');
-  if(sl){ sl.value=q; _slShown=SL_PAGE; if(_slotCatalog&&_slotCatalog.length) renderSlotLibrary(); }
+  if(sl){ sl.value=q||''; _slShown=SL_PAGE; if(_slotCatalog&&_slotCatalog.length) renderSlotLibrary(); }
 }
 
 /* ============================================================
