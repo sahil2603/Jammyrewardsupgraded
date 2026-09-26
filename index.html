@@ -5306,16 +5306,25 @@ async function loadAdminDuplicates(){
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load.'; return; }
 
     var rows = [];
+    function casinoName(c){ return (typeof CASINO_DISPLAY_NAMES!=='undefined' && CASINO_DISPLAY_NAMES[c]) || KNOWN_CASINOS_DISPLAY[c] || c; }
+    function names(list){ return list.map(pccEsc).join(', '); }
     (data.shared_wallets || []).forEach(function(d){
+      if(!d.wallet_address || d.wallet_address === 'null') return; /* older workers grouped empty wallets together */
       rows.push('<div class="admin-row" style="border-left:3px solid #f87171">'
-        + '<div><b>Shared wallet:</b> <span style="font-family:monospace;font-size:.85rem">'+d.wallet_address+'</span><br>'
-        + '<span style="color:var(--muted);font-size:.85rem">Used by: '+d.usernames.join(', ')+'</span></div>'
+        + '<div><b>Shared crypto wallet:</b> <span style="font-family:monospace;font-size:.85rem;overflow-wrap:anywhere">'+pccEsc(d.wallet_address)+'</span><br>'
+        + '<span style="color:var(--muted);font-size:.85rem">Redemptions paid to it by: '+names(d.usernames)+'</span></div>'
+      + '</div>');
+    });
+    (data.shared_platform_payouts || []).forEach(function(d){
+      rows.push('<div class="admin-row" style="border-left:3px solid #f87171">'
+        + '<div><b>Shared '+pccEsc(casinoName(d.casino))+' payout account:</b> '+pccEsc(d.platform_username)+'<br>'
+        + '<span style="color:var(--muted);font-size:.85rem">Platform redemptions paid to it by: '+names(d.usernames)+'</span></div>'
       + '</div>');
     });
     (data.shared_casino_usernames || []).forEach(function(d){
       rows.push('<div class="admin-row" style="border-left:3px solid #fbbf24">'
-        + '<div><b>Shared '+d.casino+' username:</b> '+d.casino_username+'<br>'
-        + '<span style="color:var(--muted);font-size:.85rem">Linked by: '+d.usernames.join(', ')+'</span></div>'
+        + '<div><b>Shared '+pccEsc(casinoName(d.casino))+' username:</b> '+pccEsc(d.casino_username)+'<br>'
+        + '<span style="color:var(--muted);font-size:.85rem">Claimed by: '+names(d.usernames)+'</span></div>'
       + '</div>');
     });
     listEl.innerHTML = rows.length ? rows.join('') : '<div style="color:var(--faint)">Nothing flagged right now.</div>';
