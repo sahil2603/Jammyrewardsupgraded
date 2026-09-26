@@ -1,0 +1,14 @@
+{
+  "name": "JammmyRewards",
+  "short_name": "Jammmy",
+  "description": "Exclusive casino bonuses, leaderboards, raffles and loyalty rewards.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a0612",
+  "theme_color": "#0a0612",
+  "icons": [
+    { "src": "favicon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "favicon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

@@ -15,6 +15,7 @@
 <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
 <link rel="shortcut icon" href="favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
 
 <!-- Open Graph / social share preview -->
 <meta property="og:type" content="website">
@@ -1404,6 +1405,33 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .pcc-card{background:var(--panel);border:1px solid rgba(var(--pcc-glow),.25);border-radius:14px;
   margin-bottom:16px;overflow:hidden;box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 10px 22px -12px rgba(0,0,0,.6),0 2px 8px rgba(0,0,0,.35);
   transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s}
+/* ── Notification opt-in prompt + settings ── */
+.push-prompt{position:fixed;right:24px;bottom:24px;z-index:900;width:380px;max-width:calc(100vw - 32px);
+  background:linear-gradient(160deg,#1c1230,#120b1f);border:1px solid rgba(192,132,252,.35);border-radius:18px;
+  padding:18px 18px 16px;display:flex;gap:14px;box-shadow:0 24px 60px -12px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.03) inset;
+  transform:translateY(20px);opacity:0;transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .35s}
+.push-prompt.show{transform:none;opacity:1}
+.push-prompt[hidden]{display:none}
+.pp-icon{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:1.4rem;
+  background:linear-gradient(135deg,#a855f7,#6366f1);box-shadow:0 6px 18px -6px rgba(168,85,247,.7)}
+.pp-body{flex:1;min-width:0}
+.pp-body b{display:block;font-size:1rem;margin-bottom:4px;padding-right:18px}
+.pp-body p{margin:0 0 12px;color:var(--muted);font-size:.86rem;line-height:1.45}
+.pp-actions{display:flex;gap:8px;flex-wrap:wrap}
+.pp-yes{background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;border:0;border-radius:10px;padding:10px 16px;font-weight:700;font-family:'Poppins',sans-serif;cursor:pointer;font-size:.88rem}
+.pp-no{background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-family:'Poppins',sans-serif;cursor:pointer;font-size:.86rem}
+.pp-close{position:absolute;top:10px;right:12px;background:none;border:0;color:var(--faint);font-size:1rem;cursor:pointer;padding:6px;line-height:1}
+.pp-note{margin-top:10px!important;font-size:.8rem!important;color:#fbbf24!important}
+@media (max-width:768px){ .push-prompt{left:16px;right:16px;width:auto;max-width:none;bottom:calc(84px + env(safe-area-inset-bottom))} }
+.pf-notif-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.pf-notif-row:first-of-type{border-top:0}
+.pf-switch{position:relative;width:46px;height:26px;flex:none}
+.pf-switch input{opacity:0;width:0;height:0;position:absolute}
+.pf-switch span{position:absolute;inset:0;background:rgba(255,255,255,.12);border-radius:99px;transition:.2s;cursor:pointer}
+.pf-switch span::after{content:'';position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s}
+.pf-switch input:checked + span{background:#a855f7}
+.pf-switch input:checked + span::after{transform:translateX(20px)}
+.pf-switch input:disabled + span{opacity:.4;cursor:not-allowed}
 .pcc-pick{position:relative;margin-bottom:12px}
 .pcc-pick-list{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:30;max-height:240px;overflow-y:auto;
   background:#15101f;border:1px solid var(--line);border-radius:10px;box-shadow:0 14px 30px -8px rgba(0,0,0,.7);display:none}
@@ -3197,6 +3225,26 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           </div>
         </div>
 
+        <div class="reveal" id="pfNotifCard" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px">
+            <h3 style="margin:0">🔔 Notifications</h3>
+            <span id="pfNotifStatus" class="admin-pill" style="font-size:.75rem">Checking…</span>
+          </div>
+          <p id="pfNotifHelp" style="color:var(--muted);font-size:.88rem;margin:6px 0 10px">Get alerts on this device even when the site is closed.</p>
+          <div id="pfNotifRows">
+            <label class="pf-notif-row"><span><b style="font-weight:600">Jammmy goes live</b><br><span style="color:var(--faint);font-size:.8rem">The moment the Kick stream starts</span></span>
+              <span class="pf-switch"><input type="checkbox" id="pfNotifLive" onchange="savePushPrefs()"><span></span></span></label>
+            <label class="pf-notif-row"><span><b style="font-weight:600">Coins credited</b><br><span style="color:var(--faint);font-size:.8rem">Vault payouts, rewards and refunds</span></span>
+              <span class="pf-switch"><input type="checkbox" id="pfNotifCoins" onchange="savePushPrefs()"><span></span></span></label>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+            <button class="admin-btn-primary" id="pfNotifOn" onclick="profileEnablePush(this)" style="padding:10px 18px">Turn on notifications</button>
+            <button class="admin-btn-secondary" id="pfNotifTest" onclick="sendTestPush(this)" style="display:none">Send me a test</button>
+            <button class="admin-btn-secondary" id="pfNotifOff" onclick="profileDisablePush(this)" style="display:none">Turn off on this device</button>
+          </div>
+          <div id="pfNotifMsg" style="margin-top:10px;font-size:.85rem"></div>
+        </div>
+
         <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px">
           <h3 style="margin-top:0">Claim Your Casino Username</h3>
           <p style="color:var(--muted);font-size:.9rem;margin-bottom:18px">Save your username for each casino you play on. An admin verifies it against your Discord — once approved, your wagering counts toward the shared vault, and coins are distributed automatically once it fills.</p>
@@ -3369,11 +3417,11 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
   <section class="page" id="admin">
     <div class="wrap" style="max-width:1100px;margin:0 auto;padding:60px 20px 100px">
       <div id="adminDenied" style="display:none;text-align:center;padding:80px 20px">
-        <h2 style="font-family:'Lilita One',sans-serif">Admins only</h2>
-        <p style="color:var(--muted)">This page is only visible to site admins.</p>
+        <h2 style="font-family:'Lilita One',sans-serif">Staff only</h2>
+        <p style="color:var(--muted)">This page is only visible to site admins and mods.</p>
       </div>
       <div id="adminContent" style="display:none">
-        <h1 style="font-family:'Lilita One',sans-serif;font-size:1.8rem;margin-bottom:24px">⚙ Admin Dashboard</h1>
+        <h1 id="adminHeading" style="font-family:'Lilita One',sans-serif;font-size:1.8rem;margin-bottom:24px">⚙ Admin Dashboard</h1>
 
         <div style="display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap">
           <button class="admin-tab active" data-tab="adminOverviewTab" onclick="switchAdminTab('adminOverviewTab')">📊 Overview</button>
@@ -3389,6 +3437,15 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <!-- VAULT TAB -->
         <div id="adminOverviewTab" class="admin-tab-panel">
           <div id="adminOverviewGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:28px">Loading&hellip;</div>
+          <div style="background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:28px">
+            <h3 style="margin:0 0 6px">📣 Notifications</h3>
+            <div id="adminPushStats" style="color:var(--muted);font-size:.86rem;margin-bottom:14px">Loading&hellip;</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <input type="text" id="adminPushLiveMsg" maxlength="140" placeholder="Optional message (default: the Kick stream title)" style="flex:1;min-width:220px;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff">
+              <button class="admin-btn-primary" onclick="adminSendLivePush(this)" style="width:auto;flex:none;padding:11px 18px">🔴 Send "Jammmy is live"</button>
+            </div>
+            <div id="adminPushResult" style="margin-top:10px;font-size:.85rem"></div>
+          </div>
           <h3 style="color:#f87171;margin-bottom:6px">⚠️ Possible Duplicate Accounts</h3>
           <p style="color:var(--faint);font-size:.85rem;margin-bottom:16px">Flagged for a human look — not decided automatically. A shared wallet or casino username across two Discord accounts is worth checking, not necessarily wrongdoing on its own.</p>
           <div id="adminDuplicatesList">Loading&hellip;</div>
@@ -4598,11 +4655,13 @@ function renderAuthUI(user){
     + '<span class="up-coins"><img src="jammmy-coin.png" class="coin-icon" alt=""> '+fmtCoins(user.coin_balance)+'</span>'
     + '<div class="user-menu" id="userMenu">'
       + '<button onclick="event.stopPropagation();nav(\'profile\')">My Profile</button>'
-      + (user.is_admin ? '<button onclick="event.stopPropagation();nav(\'admin\')" style="color:#fbbf24">⚙ Admin Dashboard</button>' : '')
+      + (user.is_admin ? '<button onclick="event.stopPropagation();nav(\'admin\')" style="color:#fbbf24">⚙ Admin Dashboard</button>'
+         : user.is_mod ? '<button onclick="event.stopPropagation();nav(\'admin\')" style="color:#60a5fa">🛡 Mod Panel</button>' : '')
       + '<button onclick="event.stopPropagation();logoutUser()">Log out</button>'
     + '</div>'
   + '</div>';
   refreshClaimStatus();
+  if(typeof pushSyncAccount === 'function') pushSyncAccount();
 }
 
 function formatCountdown(ms){
@@ -4668,10 +4727,287 @@ document.addEventListener('click', function(){
 });
 
 function logoutUser(){
+  pushDetachFromAccount(); /* coin alerts for this account stop on this device; live alerts keep working */
   localStorage.removeItem('jammy_session_token');
   localStorage.removeItem('jammy_user');
   renderAuthUI(null);
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PUSH NOTIFICATIONS -- "Jammmy is live" + "coins credited"
+   Flow: our own friendly prompt first (#pushPrompt / Profile card), and ONLY when the user
+   taps "Turn on" do we trigger the browser's permission popup -- asking cold on page load
+   gets auto-blocked by Chrome and annoys people. The subscription is sent to the Worker,
+   which does the actual sending (see /api/push/* in worker.js).
+   ══════════════════════════════════════════════════════════════════════════ */
+var PUSH = {
+  supported: ('serviceWorker' in navigator) && ('PushManager' in window) && ('Notification' in window),
+  reg: null, publicKey: null, syncedFor: null
+};
+function pushIsIOS(){ return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); }
+function pushIsStandalone(){ return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true; }
+function pushB64ToBytes(b64u){
+  var s = b64u.replace(/-/g,'+').replace(/_/g,'/'); while(s.length % 4) s += '=';
+  var bin = atob(s), out = new Uint8Array(bin.length);
+  for(var i=0;i<bin.length;i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+function pushPrefs(){
+  try{ var p = JSON.parse(localStorage.getItem('jammy_push_prefs') || 'null'); if(p) return { live: p.live !== false, coins: p.coins !== false }; }catch(e){}
+  return { live: true, coins: true };
+}
+function pushSetPrefs(p){ try{ localStorage.setItem('jammy_push_prefs', JSON.stringify(p)); }catch(e){} }
+async function pushRegistration(){
+  if(PUSH.reg) return PUSH.reg;
+  PUSH.reg = await navigator.serviceWorker.register('sw.js');
+  return PUSH.reg;
+}
+async function pushPublicKey(){
+  if(PUSH.publicKey !== null) return PUSH.publicKey;
+  try{
+    var r = await fetch(AUTH_API + '/api/push/config', { cache: 'no-store' });
+    var d = await r.json();
+    PUSH.publicKey = d.enabled && d.public_key ? d.public_key : '';
+  }catch(e){ return ''; }
+  return PUSH.publicKey;
+}
+async function pushCurrentSubscription(){
+  if(!PUSH.supported) return null;
+  try{ var reg = await pushRegistration(); return await reg.pushManager.getSubscription(); }catch(e){ return null; }
+}
+async function pushSendSubscription(sub, prefs, detach){
+  var token = localStorage.getItem('jammy_session_token');
+  var headers = { 'Content-Type': 'application/json' };
+  if(token && !detach) headers.Authorization = 'Bearer ' + token;
+  var res = await fetch(AUTH_API + '/api/push/subscribe', {
+    method: 'POST', headers: headers,
+    body: JSON.stringify({ subscription: sub.toJSON(), live: prefs.live, coins: prefs.coins, detach: !!detach })
+  });
+  if(!res.ok) throw new Error('subscribe failed');
+}
+/* Must be called from a tap/click -- browsers only show the permission popup for a user gesture. */
+async function enablePush(){
+  if(!PUSH.supported){
+    return { ok: false, reason: (pushIsIOS() && !pushIsStandalone()) ? 'ios' : 'unsupported' };
+  }
+  var perm = await Notification.requestPermission();
+  if(perm !== 'granted') return { ok: false, reason: perm === 'denied' ? 'denied' : 'dismissed' };
+  var key = await pushPublicKey();
+  if(!key) return { ok: false, reason: 'server' };
+  var reg = await pushRegistration();
+  var sub = await reg.pushManager.getSubscription();
+  var appKey = pushB64ToBytes(key);
+  if(!sub){
+    sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: appKey });
+  }
+  var prefs = pushPrefs();
+  try{ await pushSendSubscription(sub, prefs); }
+  catch(e){
+    /* Most likely the server key changed since this device subscribed -- start fresh once. */
+    try{ await sub.unsubscribe(); }catch(e2){}
+    sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: appKey });
+    await pushSendSubscription(sub, prefs);
+  }
+  pushSetPrefs(prefs);
+  return { ok: true };
+}
+async function disablePush(){
+  var sub = await pushCurrentSubscription();
+  if(sub){
+    try{ await fetch(AUTH_API + '/api/push/unsubscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ endpoint: sub.endpoint }) }); }catch(e){}
+    try{ await sub.unsubscribe(); }catch(e){}
+  }
+}
+/* Re-links this device to whoever is logged in (runs after login / on load). */
+async function pushSyncAccount(){
+  if(!PUSH.supported || Notification.permission !== 'granted') return;
+  var token = localStorage.getItem('jammy_session_token');
+  if(!token || PUSH.syncedFor === token) return;
+  var sub = await pushCurrentSubscription();
+  if(!sub) return;
+  PUSH.syncedFor = token;
+  try{ await pushSendSubscription(sub, pushPrefs()); }catch(e){ PUSH.syncedFor = null; }
+}
+async function pushDetachFromAccount(){
+  PUSH.syncedFor = null;
+  var sub = await pushCurrentSubscription();
+  if(sub){ try{ await pushSendSubscription(sub, pushPrefs(), true); }catch(e){} }
+}
+function pushReasonText(reason){
+  if(reason === 'ios') return 'On iPhone/iPad: tap Share → "Add to Home Screen", open JammmyRewards from your home screen, then turn notifications on there.';
+  if(reason === 'denied') return 'Notifications are blocked for this site. Allow them in your browser\'s site settings (the 🔒 icon next to the address), then try again.';
+  if(reason === 'dismissed') return 'No problem -- you can turn them on any time from your Profile.';
+  if(reason === 'server') return 'Notifications aren\'t switched on for the site yet. Please try again later.';
+  return 'This browser doesn\'t support notifications. Try Chrome, Edge, Firefox or Safari.';
+}
+
+/* ── The one-time prompt ── */
+function maybeShowPushPrompt(){
+  var el = document.getElementById('pushPrompt');
+  if(!el) return;
+  if(location.hash === '#admin') return;
+  try{
+    var until = Number(localStorage.getItem('jammy_push_prompt_snooze') || 0);
+    if(Date.now() < until) return;
+  }catch(e){}
+  var iosNeedsInstall = !PUSH.supported && pushIsIOS() && !pushIsStandalone();
+  if(!PUSH.supported && !iosNeedsInstall) return;
+  if(PUSH.supported && Notification.permission !== 'default') return;
+  var loggedIn = !!localStorage.getItem('jammy_session_token');
+  document.getElementById('pushPromptText').textContent = loggedIn
+    ? 'Get a notification when Jammmy goes live on Kick and when coins land in your account.'
+    : 'Get a notification the moment Jammmy goes live on Kick. Log in too and we\'ll tell you when coins land in your account.';
+  if(iosNeedsInstall){
+    document.getElementById('pushPromptActions').hidden = true;
+    var note = document.getElementById('pushPromptNote');
+    note.textContent = pushReasonText('ios'); note.hidden = false;
+  }
+  el.hidden = false;
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ el.classList.add('show'); }); });
+}
+function hidePushPrompt(){
+  var el = document.getElementById('pushPrompt');
+  if(!el) return;
+  el.classList.remove('show');
+  setTimeout(function(){ el.hidden = true; }, 350);
+}
+function dismissPushPrompt(){
+  try{ localStorage.setItem('jammy_push_prompt_snooze', String(Date.now() + 7*24*3600*1000)); }catch(e){}
+  hidePushPrompt();
+}
+async function acceptPushPrompt(btn){
+  btn.disabled = true; btn.textContent = 'Turning on…';
+  var r;
+  try{ r = await enablePush(); }catch(e){ r = { ok: false, reason: 'unsupported' }; }
+  if(r.ok){
+    btn.textContent = '✓ Notifications on';
+    try{ localStorage.setItem('jammy_push_prompt_snooze', String(Date.now() + 3650*24*3600*1000)); }catch(e){}
+    setTimeout(hidePushPrompt, 1400);
+    refreshPushSettings();
+  } else {
+    var note = document.getElementById('pushPromptNote');
+    note.textContent = pushReasonText(r.reason); note.hidden = false;
+    document.getElementById('pushPromptActions').hidden = true;
+    try{ localStorage.setItem('jammy_push_prompt_snooze', String(Date.now() + 7*24*3600*1000)); }catch(e){}
+    setTimeout(hidePushPrompt, 7000);
+  }
+}
+
+/* ── Profile settings card ── */
+async function refreshPushSettings(){
+  var status = document.getElementById('pfNotifStatus');
+  if(!status) return;
+  var help = document.getElementById('pfNotifHelp');
+  var onBtn = document.getElementById('pfNotifOn'), offBtn = document.getElementById('pfNotifOff'), testBtn = document.getElementById('pfNotifTest');
+  var live = document.getElementById('pfNotifLive'), coins = document.getElementById('pfNotifCoins');
+  var prefs = pushPrefs();
+  live.checked = prefs.live; coins.checked = prefs.coins;
+  function pill(text, color){ status.textContent = text; status.style.color = color; status.style.background = 'rgba(255,255,255,.05)'; status.style.border = '1px solid ' + color; }
+  if(!PUSH.supported){
+    pill('Not available', '#9ca3af');
+    help.textContent = pushReasonText(pushIsIOS() && !pushIsStandalone() ? 'ios' : 'unsupported');
+    onBtn.style.display = 'none'; offBtn.style.display = 'none'; testBtn.style.display = 'none';
+    live.disabled = coins.disabled = true;
+    return;
+  }
+  var sub = await pushCurrentSubscription();
+  var on = Notification.permission === 'granted' && !!sub;
+  if(Notification.permission === 'denied'){
+    pill('Blocked', '#f87171');
+    help.textContent = pushReasonText('denied');
+  } else if(on){
+    pill('On for this device', '#4ade80');
+    help.textContent = 'You\'ll get these alerts on this device even when the site is closed.';
+  } else {
+    pill('Off', '#9ca3af');
+    help.textContent = 'Get alerts on this device even when the site is closed.';
+  }
+  onBtn.style.display = on || Notification.permission === 'denied' ? 'none' : '';
+  offBtn.style.display = on ? '' : 'none';
+  testBtn.style.display = on ? '' : 'none';
+  live.disabled = coins.disabled = !on;
+}
+async function savePushPrefs(){
+  var prefs = { live: document.getElementById('pfNotifLive').checked, coins: document.getElementById('pfNotifCoins').checked };
+  pushSetPrefs(prefs);
+  var msg = document.getElementById('pfNotifMsg');
+  var sub = await pushCurrentSubscription();
+  if(!sub) return;
+  try{ await pushSendSubscription(sub, prefs); msg.innerHTML = '<span style="color:#4ade80">✓ Saved</span>'; }
+  catch(e){ msg.innerHTML = '<span style="color:#f87171">Couldn\'t save -- try again.</span>'; }
+  setTimeout(function(){ msg.innerHTML = ''; }, 2500);
+}
+async function profileEnablePush(btn){
+  var msg = document.getElementById('pfNotifMsg');
+  btn.disabled = true; btn.textContent = 'Turning on…';
+  var r;
+  try{ r = await enablePush(); }catch(e){ r = { ok: false, reason: 'unsupported' }; }
+  btn.disabled = false; btn.textContent = 'Turn on notifications';
+  msg.innerHTML = r.ok ? '<span style="color:#4ade80">✓ Notifications are on. Try "Send me a test".</span>' : '<span style="color:#fbbf24">'+pushReasonText(r.reason)+'</span>';
+  refreshPushSettings();
+}
+async function profileDisablePush(btn){
+  btn.disabled = true;
+  await disablePush();
+  btn.disabled = false;
+  document.getElementById('pfNotifMsg').innerHTML = '<span style="color:var(--muted)">Notifications turned off on this device.</span>';
+  refreshPushSettings();
+}
+async function sendTestPush(btn){
+  var msg = document.getElementById('pfNotifMsg');
+  var token = localStorage.getItem('jammy_session_token');
+  if(!token){ msg.textContent = 'Log in first.'; return; }
+  await pushSyncAccount();
+  btn.disabled = true; btn.textContent = 'Sending…';
+  try{
+    var res = await fetch(AUTH_API + '/api/push/test', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: '{}' });
+    var d = await res.json();
+    msg.innerHTML = res.ok && d.sent ? '<span style="color:#4ade80">✓ Sent -- it should pop up in a few seconds.</span>'
+      : '<span style="color:#fbbf24">'+(d.error || 'Couldn\'t deliver a test right now -- try again in a minute.')+'</span>';
+  }catch(e){ msg.innerHTML = '<span style="color:#f87171">Network error -- try again.</span>'; }
+  btn.disabled = false; btn.textContent = 'Send me a test';
+}
+
+/* ── Admin: stats + manual "Jammmy is live" ── */
+async function loadAdminPushStats(){
+  var el = document.getElementById('adminPushStats');
+  var token = localStorage.getItem('jammy_session_token');
+  if(!el || !token) return;
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/push-stats', { headers: { 'Authorization': 'Bearer ' + token }, cache: 'no-store' });
+    var d = await res.json();
+    if(!res.ok){ el.textContent = d.error || 'Couldn\'t load notification stats.'; return; }
+    if(!d.configured){ el.innerHTML = '<span style="color:#fbbf24">Not set up yet: add the <b>VAPID_PRIVATE_JWK</b> secret to the Worker.</span>'; return; }
+    var kick = d.kick_check
+      ? (d.kick_check.ok ? 'auto-detect working (' + (d.kick_official_api ? 'official Kick API' : 'public Kick endpoint') + ', stream currently ' + (d.kick_check.live ? 'LIVE' : 'offline') + ')'
+                         : '<span style="color:#fbbf24">auto-detect can\'t reach Kick' + (d.kick_official_api ? '' : ' -- add KICK_CLIENT_ID / KICK_CLIENT_SECRET, or use the button') + '</span>')
+      : 'auto-detect waiting for the first cron run';
+    el.innerHTML = '<b style="color:#fff">' + d.live_devices + '</b> devices get live alerts · <b style="color:#fff">' + d.coin_devices + '</b> get coin alerts (' + d.users + ' accounts)'
+      + (d.queued ? ' · ' + d.queued + ' still sending' : '') + '<br>Live: ' + kick;
+  }catch(e){ el.textContent = 'Network error.'; }
+}
+async function adminSendLivePush(btn){
+  var out = document.getElementById('adminPushResult');
+  var msgEl = document.getElementById('adminPushLiveMsg');
+  if(!confirm('Send "Jammmy is LIVE on Kick!" to everyone who turned on live alerts?')) return;
+  var token = localStorage.getItem('jammy_session_token');
+  btn.disabled = true;
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/push-live', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msgEl.value.trim() }) });
+    var d = await res.json();
+    out.innerHTML = res.ok
+      ? '<span style="color:#4ade80">✓ Sent to ' + d.sent + ' device' + (d.sent === 1 ? '' : 's') + (d.remaining ? ' -- ' + d.remaining + ' more going out over the next few minutes' : '') + '.</span>'
+      : '<span style="color:#f87171">' + (d.error || 'Failed.') + '</span>';
+    if(res.ok) msgEl.value = '';
+    loadAdminPushStats();
+  }catch(e){ out.innerHTML = '<span style="color:#f87171">Network error.</span>'; }
+  btn.disabled = false;
+}
+
+if(PUSH.supported){
+  pushRegistration().then(function(){ pushSyncAccount(); }).catch(function(){ PUSH.supported = false; });
+}
+setTimeout(maybeShowPushPrompt, 8000); /* give people a moment to look around first */
 
 /* Runs on every page load. Two cases: (1) we're landing back from Discord with a fresh
    ?code= to exchange for a session, or (2) we already have a stored session to re-verify.
@@ -4740,6 +5076,7 @@ async function loadProfile(){
     if(content) content.style.display='none';
     return;
   }
+  refreshPushSettings();
   try{
     var res = await fetch(AUTH_API + '/api/profile', { headers: { 'Authorization': 'Bearer ' + token } });
     if(!res.ok){
@@ -5339,17 +5676,38 @@ async function loadAdminDashboard(){
   var denied = document.getElementById('adminDenied');
   var content = document.getElementById('adminContent');
   var cachedUser = localStorage.getItem('jammy_user');
-  var isAdminCached = cachedUser ? JSON.parse(cachedUser).is_admin : false;
-  if(!token || !isAdminCached){
+  var cu = null; try{ cu = cachedUser ? JSON.parse(cachedUser) : null; }catch(e){}
+  var isAdminCached = !!(cu && cu.is_admin);
+  var isModCached = !!(cu && cu.is_mod);
+  if(!token || !(isAdminCached || isModCached)){
     denied.style.display = 'block';
     content.style.display = 'none';
     return;
   }
   denied.style.display = 'none';
   content.style.display = 'block';
+  /* Mods (not admins) get a trimmed panel: Verify Players + a read-only Users list. The Worker
+     enforces the same split (requireStaff vs requireAdmin), so hiding here is just UX. */
+  _adminModOnly = !isAdminCached;
+  var MOD_TABS = ['adminVerifyTab', 'adminUsersTab'];
+  document.querySelectorAll('.admin-tab').forEach(function(b){
+    b.style.display = (_adminModOnly && MOD_TABS.indexOf(b.dataset.tab) === -1) ? 'none' : '';
+  });
+  var heading = document.getElementById('adminHeading');
+  if(heading) heading.textContent = _adminModOnly ? '🛡 Mod Panel' : '⚙ Admin Dashboard';
+  var syncBtn = document.getElementById('adminSyncWagersBtn');
+  if(syncBtn) syncBtn.style.display = _adminModOnly ? 'none' : '';
+  var approvedFilter = document.querySelector('.admin-verify-filter[data-status="approved"]');
+  if(approvedFilter) approvedFilter.textContent = _adminModOnly ? 'Approved' : 'Approved (revoke)';
+  if(_adminModOnly){
+    switchAdminTab('adminVerifyTab');
+    return;
+  }
   loadAdminOverview(); /* also populates the pending-count badges on every other tab */
   loadVaultForAdmin();
+  loadAdminPushStats();
 }
+var _adminModOnly = false;
 
 async function loadVaultForAdmin(){
   try{
@@ -5426,23 +5784,26 @@ async function loadAdminUsers(){
         ? u.casino_links.map(function(l){ return '<span class="admin-tag">'+l.casino+': '+l.username+'</span>'; }).join(' ')
         : '<span style="color:var(--faint);font-size:.8rem">No casino usernames linked</span>';
       var initial = u.username.charAt(0).toUpperCase();
-      var glow = u.is_admin ? '251,191,36' : '129,140,248';
+      var glow = u.is_admin ? '251,191,36' : u.is_mod ? '96,165,250' : '129,140,248';
+      var safeName = u.username.replace(/'/g,"\\'");
+      var actionsHtml = _adminModOnly ? '' : ('<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">'
+              + '<button class="admin-btn-row-action" onclick="adminAddCoinsPrompt(\''+u.discord_id+'\',\''+safeName+'\',1)">+ Add Coins</button>'
+              + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminAddCoinsPrompt(\''+u.discord_id+'\',\''+safeName+'\',-1)">− Deduct Coins</button>'
+              + '<button class="admin-btn-row-action" style="background:'+(u.is_admin?'linear-gradient(135deg,#6b7280,#4b5563)':'linear-gradient(135deg,#f59e0b,#d97706)')+'" onclick="adminToggleAdmin(\''+u.discord_id+'\',\''+safeName+'\','+(!u.is_admin)+')">'+(u.is_admin?'Remove Admin':'Make Admin')+'</button>'
+              + (u.is_admin ? '' : '<button class="admin-btn-row-action" style="background:'+(u.is_mod?'linear-gradient(135deg,#6b7280,#4b5563)':'linear-gradient(135deg,#3b82f6,#1d4ed8)')+'" onclick="adminToggleMod(\''+u.discord_id+'\',\''+safeName+'\','+(!u.is_mod)+')">'+(u.is_mod?'Remove Mod':'Make Mod')+'</button>')
+            + '</div>');
       return '<div class="battle-card" style="animation-delay:'+(Math.min(i,10)*0.04)+'s;--glow:'+glow+'">'
         + '<div class="battle-card-topbar" style="background:linear-gradient(90deg,rgb('+glow+'),rgba('+glow+',.4))"></div>'
         + '<div style="display:flex;gap:14px;padding:16px 18px;flex-wrap:wrap">'
           + '<div class="admin-card-icon" style="background:linear-gradient(135deg,rgb('+glow+'),rgba('+glow+',.6));font-family:\'Lilita One\',sans-serif;font-size:1.1rem;color:#0a0a0f">'+initial+'</div>'
           + '<div style="flex:1;min-width:200px">'
             + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-start">'
-              + '<div><b style="font-size:1.02rem">'+u.username+'</b>' + (u.is_admin ? ' <span class="admin-pill admin-pill-profit" style="background:rgba(251,191,36,.14);color:#fbbf24;border-color:rgba(251,191,36,.35)">ADMIN</span>' : '') + '<br>'
+              + '<div><b style="font-size:1.02rem">'+u.username+'</b>' + (u.is_admin ? ' <span class="admin-pill admin-pill-profit" style="background:rgba(251,191,36,.14);color:#fbbf24;border-color:rgba(251,191,36,.35)">ADMIN</span>' : u.is_mod ? ' <span class="admin-pill" style="background:rgba(96,165,250,.14);color:#60a5fa;border:1px solid rgba(96,165,250,.35)">MOD</span>' : '') + '<br>'
               + '<span style="color:var(--faint);font-size:.75rem;font-family:monospace">'+u.discord_id+'</span></div>'
               + '<div style="font-family:\'Lilita One\',sans-serif;color:#fbbf24;font-size:1.3rem;white-space:nowrap"><img src="jammmy-coin.png" class="coin-icon" alt=""> '+fmtCoins(u.coin_balance)+'</div>'
             + '</div>'
             + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">'+linksHtml+'</div>'
-            + '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">'
-              + '<button class="admin-btn-row-action" onclick="adminAddCoinsPrompt(\''+u.discord_id+'\',\''+u.username.replace(/'/g,"\\\\'")+'\',1)">+ Add Coins</button>'
-              + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminAddCoinsPrompt(\''+u.discord_id+'\',\''+u.username.replace(/'/g,"\\\\'")+'\',-1)">− Deduct Coins</button>'
-              + '<button class="admin-btn-row-action" style="background:'+(u.is_admin?'linear-gradient(135deg,#6b7280,#4b5563)':'linear-gradient(135deg,#f59e0b,#d97706)')+'" onclick="adminToggleAdmin(\''+u.discord_id+'\',\''+u.username.replace(/'/g,"\\\\'")+'\','+(!u.is_admin)+')">'+(u.is_admin?'Remove Admin':'Make Admin')+'</button>'
-            + '</div>'
+            + actionsHtml
           + '</div>'
         + '</div>'
       + '</div>';
@@ -5486,6 +5847,20 @@ async function adminToggleAdmin(discordId, username, makeAdmin){
     var data = await res.json();
     if(res.ok){ loadAdminUsers(); } else { alert(data.error || ('Failed to '+verb+' admin.')); }
   }catch(e){ console.error('Set admin failed:', e); alert('Network error — try again.'); }
+}
+
+async function adminToggleMod(discordId, username, makeMod){
+  if(!confirm((makeMod ? 'Make ' + username + ' a mod? They will be able to approve/reject claims and view users.' : 'Remove ' + username + ' as a mod?'))) return;
+  var token = localStorage.getItem('jammy_session_token');
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/set-mod', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ discord_id: discordId, is_mod: makeMod })
+    });
+    var data = await res.json();
+    if(res.ok){ loadAdminUsers(); } else { alert(data.error || 'Failed to update mod.'); }
+  }catch(e){ console.error('Set mod failed:', e); alert('Network error — try again.'); }
 }
 
 var _currentRedemptionFilter = 'pending';
@@ -5818,19 +6193,25 @@ async function loadAdminVerifyList(status){
   document.querySelectorAll('.admin-verify-filter').forEach(function(b){ b.classList.toggle('active', b.dataset.status === status); });
   if(descEl) descEl.textContent = status === 'pending'
     ? "Pending casino account claims. Check the claimant's Discord against the casino username and proof screenshot before approving — coins are distributed automatically once the shared vault fills, not immediately on approval."
-    : 'Already-approved claims. If one turns out to be the wrong person, revoke it — this claws back any coins already distributed to them and resets their vault progress.';
+    : (_adminModOnly
+        ? 'Already-approved claims. If one looks wrong, tell an admin -- only admins can revoke, since it takes coins back.'
+        : 'Already-approved claims. If one turns out to be the wrong person, revoke it — this claws back any coins already distributed to them and resets their vault progress.');
   if(bulkBar) bulkBar.style.display = status === 'pending' ? 'flex' : 'none';
   listEl.innerHTML = 'Loading…';
   try{
     var res = await fetch(AUTH_API + '/api/admin/pending-claims?status=' + status, { headers: { 'Authorization': 'Bearer ' + token } });
     var data = await res.json();
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load.'; return; }
+    if(status === 'pending' && _adminModOnly){
+      var bv = document.getElementById('badgeVerify');
+      if(bv) bv.textContent = data.claims.length ? data.claims.length : '';
+    }
     if(!data.claims.length){ listEl.innerHTML = status === 'pending' ? adminEmptyState('✅', 'No pending claims right now', 'You\'re all caught up -- new claims show up here for review.') : adminEmptyState('🔓', 'No approved claims to show', 'Approved accounts will appear here once you review some.'); return; }
     listEl.innerHTML = data.claims.map(function(c){
       var actionsHtml = status === 'pending'
         ? '<button class="admin-btn-row-action" onclick="adminApproveClaim(\''+c.user_id+'\',\''+c.casino+'\')">Approve</button>'
           + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#6b7280,#4b5563)" onclick="adminRejectClaim(\''+c.user_id+'\',\''+c.casino+'\')">Reject</button>'
-        : '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminRevokeClaim(\''+c.user_id+'\',\''+c.casino+'\')">Revoke</button>';
+        : (_adminModOnly ? '' : '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminRevokeClaim(\''+c.user_id+'\',\''+c.casino+'\')">Revoke</button>');
       var checkboxHtml = status === 'pending'
         ? '<input type="checkbox" class="verify-claim-check" data-user-id="'+c.user_id+'" data-casino="'+c.casino+'" style="width:18px;height:18px;margin-right:12px;flex:none;accent-color:#a855f7">'
         : '';
@@ -5843,6 +6224,7 @@ async function loadAdminVerifyList(status){
           + '<b>'+c.username+'</b> <span style="color:var(--faint);font-size:.78rem">('+c.user_id+')</span><br>'
           + '<span style="color:var(--muted);font-size:.85rem">Claims: <b>'+c.casino_username+'</b> on '+(CASINO_DISPLAY_NAMES[c.casino]||c.casino)+'</span>'
           + (c.current_wager > 0 ? '<br><span style="color:var(--faint);font-size:.78rem">Current wager: $'+c.current_wager.toLocaleString()+'</span>' : '')
+          + (status === 'approved' && c.reviewed_by ? '<br><span style="color:#4ade80;font-size:.78rem">✓ Approved by '+pccEsc(c.reviewed_by)+'</span>' : '')
           + '<div style="margin-top:10px">'+proofHtml+'</div>'
         + '</div>'
         + '<div style="display:flex;gap:6px;flex:none">'
@@ -6987,6 +7369,20 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
 })();
 </script>
 
+<!-- Notification opt-in (shown once, politely -- the browser's own permission popup only appears after "Turn on") -->
+<div id="pushPrompt" class="push-prompt" role="dialog" aria-labelledby="pushPromptTitle" hidden>
+  <button class="pp-close" aria-label="Close" onclick="dismissPushPrompt()">✕</button>
+  <div class="pp-icon">🔔</div>
+  <div class="pp-body">
+    <b id="pushPromptTitle">Never miss a stream or a payout</b>
+    <p id="pushPromptText">Get a notification when Jammmy goes live on Kick and when coins land in your account.</p>
+    <div class="pp-actions" id="pushPromptActions">
+      <button class="pp-yes" onclick="acceptPushPrompt(this)">Turn on notifications</button>
+      <button class="pp-no" onclick="dismissPushPrompt()">Not now</button>
+    </div>
+    <p class="pp-note" id="pushPromptNote" hidden></p>
+  </div>
+</div>
 </body>
 </html>
 <!-- INJECTED STYLES -->
