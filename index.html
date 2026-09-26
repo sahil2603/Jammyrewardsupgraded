@@ -913,6 +913,26 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 @media(max-width:860px){.foot-in{grid-template-columns:1fr 1fr;gap:32px}}
 @media(max-width:520px){.foot-in{grid-template-columns:1fr}}
 
+/* Header on laptop-size screens: logo + LIVE tag + 7 links + 5 socials + profile chip needed
+   ~1500px, so on 1100-1500px screens the chip ran off the right edge and the page scrolled
+   sideways. Items now give way in steps instead of overflowing. */
+@media(max-width:1500px){
+  .nav-in{gap:14px}
+  .user-pill .up-name{display:none}
+}
+@media(max-width:1320px){
+  .socials{display:none}
+}
+@media(max-width:1120px){
+  .nav-links{display:none}.burger{display:block}
+  nav.nav-open .nav-links{display:flex;flex-direction:column;gap:4px;
+    position:absolute;top:100%;left:0;right:0;z-index:100;
+    background:rgba(9,6,15,.97);backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--line);padding:10px 18px 16px;margin:0}
+  nav.nav-open .nav-links a{padding:13px 12px;font-size:1.02rem;border-radius:10px}
+  nav.nav-open .nav-indicator{display:none}
+  #authArea{margin-left:auto}
+}
 @media(max-width:980px){
   .grid3{grid-template-columns:1fr 1fr}.tiers{grid-template-columns:repeat(3,1fr)}
 }
@@ -1112,6 +1132,12 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .lb2-prize{font-family:'Lilita One','Arial Black',sans-serif;font-size:2rem;color:var(--muted)}
 .lb2-prize.gold{color:#d97706;text-shadow:0 0 24px rgba(217,119,6,.4)}
 .lb2-range{text-align:center;margin-top:32px;padding:24px;background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:14px;max-width:700px;margin-left:auto;margin-right:auto}
+.lb-join-btn{display:inline-flex;align-items:center;gap:10px;margin-top:16px;padding:12px 26px;border-radius:14px;
+  background:linear-gradient(135deg,#a855f7,#7c3aed 55%,#db2777);color:#fff;text-decoration:none;
+  font-family:'Lilita One','Arial Black',sans-serif;font-size:1.05rem;letter-spacing:.04em;
+  box-shadow:0 10px 28px -8px rgba(168,85,247,.7),inset 0 1px 0 rgba(255,255,255,.25);transition:transform .2s,box-shadow .2s}
+.lb-join-btn img{height:22px;width:auto;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))}
+.lb-join-btn:hover{transform:translateY(-2px);box-shadow:0 16px 34px -8px rgba(168,85,247,.85),inset 0 1px 0 rgba(255,255,255,.3)}
 .lb2-dates{font-family:'Lilita One','Arial Black',sans-serif;font-size:1.3rem;color:#fff;margin-bottom:10px}
 .lb2-countdown{color:var(--muted);font-size:.9rem}.lb2-countdown b{color:#d97706}
 
@@ -1280,6 +1306,17 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   color:#7dd3fc;
 }
 /* Admin dashboard tabs */
+.admin-tabs{display:flex;gap:6px;margin:0 0 24px;flex-wrap:nowrap;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:thin}
+.admin-tabs .admin-tab{flex:none;padding:9px 14px!important;font-size:.84rem!important;white-space:nowrap}
+.admin-when{display:inline-flex;align-items:center;gap:4px;font-size:.76rem;color:#cbd5e1;background:rgba(148,163,184,.10);
+  border:1px solid rgba(148,163,184,.25);border-radius:8px;padding:3px 9px;margin-top:6px;white-space:nowrap}
+.admin-when + .admin-when{margin-left:6px}
+@media (max-width:600px){
+  .admin-when{white-space:normal;max-width:100%;flex-wrap:wrap}
+  .admin-when + .admin-when{margin-left:0}
+  #adminContent .battle-card .admin-card-icon{display:none}   /* give the details the full width on phones */
+  #adminContent .battle-card > div[style*="padding:16px 18px"]{padding:14px!important}
+}
 /* Admin dashboard tabs — was a flat, generic rectangle with no depth or motion. Now uses
    the same premium hover language (lift + press feedback + glow) established for the rest
    of the site's card/button system, kept scoped to the admin dashboard specifically rather
@@ -1423,6 +1460,46 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .pp-close{position:absolute;top:10px;right:12px;background:none;border:0;color:var(--faint);font-size:1rem;cursor:pointer;padding:6px;line-height:1}
 .pp-note{margin-top:10px!important;font-size:.8rem!important;color:#fbbf24!important}
 @media (max-width:768px){ .push-prompt{left:16px;right:16px;width:auto;max-width:none;bottom:calc(84px + env(safe-area-inset-bottom))} }
+/* ── Profile page layout ── */
+.pf-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px 24px;margin-bottom:20px}
+.pf-h{margin:0 0 4px;font-size:1.08rem;display:flex;align-items:center;gap:8px}
+.pf-sub{color:var(--muted);font-size:.86rem;line-height:1.5;margin:0 0 16px}
+.pf-label{color:var(--faint);font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+.pf-hero{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:22px;
+  background:radial-gradient(120% 140% at 0% 0%,rgba(168,85,247,.16),transparent 55%),radial-gradient(120% 140% at 100% 100%,rgba(250,204,21,.10),transparent 55%),var(--panel)}
+.pf-avatar{width:68px;height:68px;border-radius:50%;object-fit:cover;border:2px solid rgba(192,132,252,.5);box-shadow:0 0 0 4px rgba(168,85,247,.12)}
+.pf-who{min-width:0}
+.pf-who h1{font-family:'Lilita One',sans-serif;font-size:1.7rem;margin:0 0 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pf-balance{text-align:right}
+.pf-coins{font-family:'Lilita One',sans-serif;font-size:2.1rem;line-height:1.1;color:#fbbf24;display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.pf-coins img{width:30px;height:30px;object-fit:contain}
+.pf-usd{color:var(--muted);font-size:.85rem}
+.pf-hero .pf-btn-claim{white-space:nowrap}
+.pf-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:stretch;margin-bottom:20px}
+.pf-grid > .pf-card{margin-bottom:0}
+#pfCasinoLinks{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;align-items:start}
+#pfCasinoLinks .pcc-card{margin:0}
+.pf-terms{margin-top:16px;display:flex;gap:10px;align-items:flex-start;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.28);border-radius:12px;padding:12px 14px;font-size:.82rem}
+.pf-list{color:var(--muted);font-size:.88rem}
+.pf-row{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+.pf-row:last-child{border-bottom:0}
+.pf-row-main{color:var(--text);font-weight:600;font-size:.88rem;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pf-row-meta{grid-column:1;color:var(--faint);font-size:.76rem}
+.pf-row-end{grid-row:1 / span 2;grid-column:2;text-align:right}
+.pf-amt{font-weight:800;font-size:.95rem}
+.pf-status{display:inline-block;font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:99px;border:1px solid currentColor}
+.pf-pager{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+@media (max-width:860px){
+  .pf-grid{grid-template-columns:1fr;gap:16px;margin-bottom:16px}
+  .pf-hero{grid-template-columns:auto 1fr;gap:14px 16px}
+  .pf-balance{grid-column:1 / -1;text-align:left;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .pf-balance .pf-label{width:100%}
+  .pf-coins{justify-content:flex-start}
+  .pf-hero .pf-btn-claim{grid-column:1 / -1;width:100%}
+  .pf-card{padding:18px 16px;border-radius:16px;margin-bottom:16px}
+  .pf-avatar{width:56px;height:56px}
+  .pf-who h1{font-size:1.4rem}
+}
 .pf-notif-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
 .pf-notif-row:first-of-type{border-top:0}
 .pf-switch{position:relative;width:46px;height:26px;flex:none}
@@ -2461,10 +2538,10 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
 <div class="sidetabs">
   <button class="sidetab slot" onclick="nav('requestslot')" title="Request a Slot" style="border:0;background:none;padding:0;cursor:pointer;display:block">
-    <img loading="lazy" src="request-a-slot.png?v=3" alt="Request a Slot" style="width:100%;display:block;pointer-events:none;will-change:auto;transform:translateZ(0)">
+    <img loading="lazy" src="request-a-slot.png?v=4" alt="Request a Slot" style="width:100%;display:block;pointer-events:none;will-change:auto;transform:translateZ(0)">
   </button>
   <button class="sidetab battle" onclick="nav('requestbattle')" title="Request a Battle" style="border:0;background:none;padding:0;cursor:pointer;display:block">
-    <img loading="lazy" src="request-a-battle.png?v=3" alt="Request a Battle" style="width:100%;display:block;pointer-events:none;will-change:auto;transform:translateZ(0)">
+    <img loading="lazy" src="request-a-battle.png?v=4" alt="Request a Battle" style="width:100%;display:block;pointer-events:none;will-change:auto;transform:translateZ(0)">
   </button>
 </div>
 
@@ -2779,6 +2856,9 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
       <div class="lb2-range reveal">
         <div class="lb2-dates" id="lb2-dates">Loading period&hellip;</div>
         <div class="lb2-countdown">&#x23F0; <span id="lb-cd-label">POWER.WIN</span> COMPETITION ENDS IN &nbsp;<b id="lb-cd2">--</b></div>
+        <a id="lbJoinPowerwin" class="lb-join-btn" href="https://power.win/?aff=jammmy" target="_blank" rel="noopener">
+          <img src="powerwin.png" alt="" aria-hidden="true"> Join Power.win <span aria-hidden="true">↗</span>
+        </a>
       </div>
 
       <div style="text-align:center;margin-top:26px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap" id="lbActionButtons">
@@ -3200,59 +3280,39 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
   </section>
 
   <section class="page" id="profile">
-    <div class="wrap" style="max-width:900px;margin:0 auto;padding:60px 20px 100px">
+    <div class="wrap" style="max-width:1100px;margin:0 auto;padding:48px 20px 100px">
       <div id="profileLoggedOut" style="display:none;text-align:center;padding:80px 20px">
         <h2 style="font-family:'Lilita One',sans-serif">Log in to view your profile</h2>
         <p style="color:var(--muted)">Use the Login with Discord button in the top right.</p>
       </div>
       <div id="profileContent" style="display:none">
-        <div class="reveal" style="display:flex;align-items:center;gap:18px;margin-bottom:40px">
-          <img id="pfAvatar" src="" alt="" style="width:72px;height:72px;border-radius:50%">
-          <div>
-            <h1 id="pfName" style="font-family:'Lilita One',sans-serif;font-size:1.8rem;margin:0"></h1>
-            <div style="color:var(--faint)">Your JammmyRewards profile</div>
+
+        <!-- Header: who you are + what you have + today's claim -->
+        <div class="pf-card pf-hero reveal">
+          <img id="pfAvatar" src="" alt="" class="pf-avatar">
+          <div class="pf-who">
+            <h1 id="pfName"></h1>
+            <div class="pf-sub" style="margin:0">Your JammmyRewards profile</div>
           </div>
+          <div class="pf-balance">
+            <div class="pf-label">Jammmy Coins</div>
+            <div id="pfCoins" class="pf-coins"><img src="jammmy-coin.png" alt=""><span id="pfCoinsNum">0</span></div>
+            <div id="pfUsdEquiv" class="pf-usd"></div>
+          </div>
+          <button class="pf-btn-claim claim-daily-btn" onclick="claimDaily()">🎁 Checking claim…</button>
         </div>
 
-        <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px">
-          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
-            <div>
-              <div style="color:var(--faint);font-size:.8rem;text-transform:uppercase;letter-spacing:.08em">Jammmy Coins</div>
-              <div id="pfCoins" style="font-family:'Lilita One',sans-serif;font-size:2.4rem;color:#fbbf24;display:flex;align-items:center;gap:10px"><img src="jammmy-coin.png" alt="" style="width:34px;height:34px;object-fit:contain"><span id="pfCoinsNum">0</span></div>
-              <div id="pfUsdEquiv" style="color:var(--muted);font-size:.9rem"></div>
-            </div>
-            <button class="pf-btn-claim claim-daily-btn" onclick="claimDaily()">🎁 Checking claim…</button>
-          </div>
-        </div>
-
-        <div class="reveal" id="pfNotifCard" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px">
-            <h3 style="margin:0">🔔 Notifications</h3>
-            <span id="pfNotifStatus" class="admin-pill" style="font-size:.75rem">Checking…</span>
-          </div>
-          <p id="pfNotifHelp" style="color:var(--muted);font-size:.88rem;margin:6px 0 10px">Get alerts on this device even when the site is closed.</p>
-          <div id="pfNotifRows">
-            <label class="pf-notif-row"><span><b style="font-weight:600">Jammmy goes live</b><br><span style="color:var(--faint);font-size:.8rem">The moment the Kick stream starts</span></span>
-              <span class="pf-switch"><input type="checkbox" id="pfNotifLive" onchange="savePushPrefs()"><span></span></span></label>
-            <label class="pf-notif-row"><span><b style="font-weight:600">Coins credited</b><br><span style="color:var(--faint);font-size:.8rem">Vault payouts, rewards and refunds</span></span>
-              <span class="pf-switch"><input type="checkbox" id="pfNotifCoins" onchange="savePushPrefs()"><span></span></span></label>
-          </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
-            <button class="admin-btn-primary" id="pfNotifOn" onclick="profileEnablePush(this)" style="padding:10px 18px">Turn on notifications</button>
-            <button class="admin-btn-secondary" id="pfNotifTest" onclick="sendTestPush(this)" style="display:none">Send me a test</button>
-            <button class="admin-btn-secondary" id="pfNotifOff" onclick="profileDisablePush(this)" style="display:none">Turn off on this device</button>
-          </div>
-          <div id="pfNotifMsg" style="margin-top:10px;font-size:.85rem"></div>
-        </div>
-
-        <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px">
-          <h3 style="margin-top:0">Claim Your Casino Username</h3>
-          <p style="color:var(--muted);font-size:.9rem;margin-bottom:18px">Save your username for each casino you play on. An admin verifies it against your Discord — once approved, your wagering counts toward the shared vault, and coins are distributed automatically once it fills.</p>
+        <!-- Casino accounts -->
+        <div class="pf-card reveal">
+          <h3 class="pf-h">🎰 Your Casino Accounts</h3>
+          <p class="pf-sub">Save your username for each casino you play on. An admin verifies it against your Discord — once approved, your wagering counts toward the shared vault, and coins are distributed automatically once it fills.</p>
           <div id="pfCasinoLinks"></div>
         </div>
 
-        <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px">
-          <h3 style="margin-top:0">Redeem Coins</h3>
+        <div class="pf-grid">
+          <!-- Redeem -->
+          <div class="pf-card reveal">
+            <h3 class="pf-h">💸 Redeem Coins</h3>
           <p id="pfRedeemInfo" style="color:var(--muted);font-size:.9rem"></p>
           <button id="pfRedeemLocked" class="pf-btn-locked" style="display:none" disabled></button>
           <div id="pfRedeemForm" style="display:none">
@@ -3292,20 +3352,43 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
             <button class="admin-btn-primary" onclick="submitRedeem()" id="pfRedeemBtn">Redeem Full Balance</button>
           </div>
           <div id="pfRedeemResult" style="display:none;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.3);border-radius:12px;padding:18px;margin-top:14px;line-height:1.7"></div>
-          <div style="margin-top:20px;display:flex;gap:10px;align-items:flex-start;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:14px;padding:18px 22px">
+          <div class="pf-terms">
             <span style="font-size:1.1rem">⚠️</span>
             <span style="color:var(--faint);font-size:.88rem"><b style="color:#f59e0b">T&amp;C's:</b> Redemptions are reviewed before payout. Jammmy reserves the right to decline, delay, or reverse any redemption if wager manipulation, multi-accounting, or any other abuse of the rewards system is found.</span>
           </div>
+          </div>
+
+          <!-- Notifications -->
+          <div class="pf-card reveal" id="pfNotifCard">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px">
+            <h3 class="pf-h">🔔 Notifications</h3>
+            <span id="pfNotifStatus" class="admin-pill" style="font-size:.75rem">Checking…</span>
+          </div>
+          <p id="pfNotifHelp" class="pf-sub" style="margin:6px 0 4px">Get alerts on this device even when the site is closed.</p>
+          <div id="pfNotifRows">
+            <label class="pf-notif-row"><span><b style="font-weight:600">Jammmy goes live</b><br><span style="color:var(--faint);font-size:.8rem">The moment the Kick stream starts</span></span>
+              <span class="pf-switch"><input type="checkbox" id="pfNotifLive" onchange="savePushPrefs()"><span></span></span></label>
+            <label class="pf-notif-row"><span><b style="font-weight:600">Coins credited</b><br><span style="color:var(--faint);font-size:.8rem">Vault payouts, rewards and refunds</span></span>
+              <span class="pf-switch"><input type="checkbox" id="pfNotifCoins" onchange="savePushPrefs()"><span></span></span></label>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+            <button class="admin-btn-primary" id="pfNotifOn" onclick="profileEnablePush(this)" style="padding:10px 18px">Turn on notifications</button>
+            <button class="admin-btn-secondary" id="pfNotifTest" onclick="sendTestPush(this)" style="display:none">Send me a test</button>
+            <button class="admin-btn-secondary" id="pfNotifOff" onclick="profileDisablePush(this)" style="display:none">Turn off on this device</button>
+          </div>
+          <div id="pfNotifMsg" style="margin-top:10px;font-size:.85rem"></div>
+            </div>
         </div>
 
-        <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px">
-          <h3 style="margin-top:0">Redemption History</h3>
-          <div id="pfRedemptions" style="color:var(--muted);font-size:.9rem">No redemptions yet.</div>
-        </div>
-
-        <div class="reveal" style="background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px">
-          <h3 style="margin-top:0">Recent Activity</h3>
-          <div id="pfTransactions" style="color:var(--muted);font-size:.9rem">No activity yet.</div>
+        <div class="pf-grid">
+          <div class="pf-card reveal">
+            <h3 class="pf-h">🧾 Redemption History</h3>
+            <div id="pfRedemptions" class="pf-list">No redemptions yet.</div>
+          </div>
+          <div class="pf-card reveal">
+            <h3 class="pf-h">📜 Recent Activity</h3>
+            <div id="pfTransactions" class="pf-list">No activity yet.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -3423,7 +3506,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
       <div id="adminContent" style="display:none">
         <h1 id="adminHeading" style="font-family:'Lilita One',sans-serif;font-size:1.8rem;margin-bottom:24px">⚙ Admin Dashboard</h1>
 
-        <div style="display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap">
+        <div class="admin-tabs">
           <button class="admin-tab active" data-tab="adminOverviewTab" onclick="switchAdminTab('adminOverviewTab')">📊 Overview</button>
           <button class="admin-tab" data-tab="adminVaultTab" onclick="switchAdminTab('adminVaultTab')">🏦 Vault</button>
           <button class="admin-tab" data-tab="adminUsersTab" onclick="switchAdminTab('adminUsersTab')">👥 Users</button>
@@ -3971,9 +4054,21 @@ function currentMonthlyPeriod(){
   var end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth()+1, 1, 0, 0, 0));
   return {start:start, end:end};
 }
+/* Power.win races run on fixed 2-week cycles starting Thursdays 00:00 UTC (per Power.win's
+   affiliate API docs: e.g. Sep 10 -> Sep 24 -> Oct 8, 2026). Their API currently only returns a
+   rolling "last 14 days" window, so the real race dates are computed here instead. If Jammy's
+   race ever moves, change POWERWIN_CYCLE_ANCHOR to any real start date of the new schedule. */
+var POWERWIN_CYCLE_ANCHOR = Date.UTC(2026, 8, 10, 0, 0, 0);   /* Thu 10 Sep 2026 00:00 UTC */
+function currentPowerwinPeriod(){
+  var len = 14*24*60*60*1000;
+  var k = Math.floor((Date.now() - POWERWIN_CYCLE_ANCHOR) / len);
+  var start = POWERWIN_CYCLE_ANCHOR + k*len;
+  return { start: new Date(start), end: new Date(start + len) };
+}
 function lbcd2(){
   var period = _realPeriodOverride
     || (CURRENT_LB_CASINO === 'degencity' ? currentMonthlyPeriod()
+      : CURRENT_LB_CASINO === 'powerwin' ? currentPowerwinPeriod()
       : currentLbPeriod());
   var n = new Date();
   var s = Math.max(0, Math.floor((period.end - n)/1000));
@@ -4012,6 +4107,8 @@ async function loadLeaderboard(casino){
   var tableHeadEl = document.querySelector('.lb-full-row-head');
   var degenCityNoteEl = document.getElementById('lbDegenCityNote');
   if(degenCityNoteEl) degenCityNoteEl.style.display = (casino === 'degencity') ? 'flex' : 'none';
+  var joinPwEl = document.getElementById('lbJoinPowerwin');
+  if(joinPwEl) joinPwEl.style.display = (casino === 'powerwin') ? '' : 'none';
   if(podiumEl) podiumEl.style.display = '';
   if(actionBtnsEl) actionBtnsEl.style.display = '';
   if(countdownEl) countdownEl.style.display = '';
@@ -5163,12 +5260,14 @@ function renderProfile(data){
           + '<input type="text" id="casinoInput_'+key+'" autocomplete="off" value="'+pccEsc(linksByName[key]||'')+'" placeholder="'+(isLocked?'':'Search your username')+'" '+(isLocked?'disabled':'onfocus="openClaimPicker(\''+key+'\')" oninput="onClaimPickerInput(\''+key+'\')" onblur="closeClaimPickerSoon(\''+key+'\')" onkeydown="onClaimPickerKey(event,\''+key+'\')"')+' style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,'+(isLocked?'.02':'.04')+');border:1px solid var(--line);color:'+(isLocked?'var(--faint)':'#fff')+';font-family:\'Poppins\';box-sizing:border-box'+(isLocked?';cursor:not-allowed':'')+'">'
           + (isLocked ? '' : '<div class="pcc-pick-list" id="casinoPick_'+key+'"></div><div class="pcc-pick-ok" id="casinoPickOk_'+key+'" style="display:none"></div>')
         + '</div>'
-        + '<label style="display:block;font-size:.78rem;color:var(--faint);margin-bottom:5px">Proof screenshot <span style="color:#f87171">*</span> <span style="color:var(--faint);font-weight:400">— a screenshot showing this account is yours</span></label>'
-        + '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">'
-          + '<input type="file" id="proofInput_'+key+'" accept="image/*" style="display:none" '+(isLocked?'disabled':'onchange="handleProofFileSelect(this,\''+key+'\')"')+'>'
-          + '<button type="button" class="admin-btn-secondary" '+(isLocked?'disabled':'onclick="document.getElementById(\'proofInput_'+key+'\').click()"')+' style="padding:8px 14px;font-size:.82rem'+(isLocked?';opacity:.5;cursor:not-allowed':'')+'">📎 Choose screenshot</button>'
-          + '<span id="proofFileName_'+key+'" style="color:var(--faint);font-size:.78rem"></span>'
-        + '</div>'
+        + (isLocked ? '' : (''
+          + '<label style="display:block;font-size:.78rem;color:var(--faint);margin-bottom:5px">Proof screenshot <span style="color:#f87171">*</span> <span style="color:var(--faint);font-weight:400">— a screenshot showing this account is yours</span></label>'
+          + '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">'
+            + '<input type="file" id="proofInput_'+key+'" accept="image/*" style="display:none" '+(isLocked?'disabled':'onchange="handleProofFileSelect(this,\''+key+'\')"')+'>'
+            + '<button type="button" class="admin-btn-secondary" '+(isLocked?'disabled':'onclick="document.getElementById(\'proofInput_'+key+'\').click()"')+' style="padding:8px 14px;font-size:.82rem'+(isLocked?';opacity:.5;cursor:not-allowed':'')+'">📎 Choose screenshot</button>'
+            + '<span id="proofFileName_'+key+'" style="color:var(--faint);font-size:.78rem"></span>'
+          + '</div>'
+        ))
         + (isLocked
             ? '<p style="color:var(--faint);font-size:.8rem;margin:14px 0 0">'+(status==='pending' ? 'Submitted — locked while Jammmy reviews it. You\'ll see this update to Approved or reopen automatically if rejected.' : 'This account is verified. Contact an admin if anything needs to change.')+'</p>'
             : '<button id="pccSubmit_'+key+'" class="admin-btn-primary" disabled onclick="saveCasinoLink(this,\''+key+'\')" style="width:100%;margin-top:14px;opacity:.5;cursor:not-allowed">Submit Claim</button>'
@@ -5187,10 +5286,13 @@ function renderProfile(data){
     redEl.innerHTML = data.redemptions.map(function(r){
       var statusColor = r.status === 'paid' ? '#4ade80' : r.status === 'rejected' ? '#f87171' : '#fbbf24';
       var isPlatform = r.redeem_method && r.redeem_method !== 'crypto';
-      var methodLabel = isPlatform ? (CASINO_DISPLAY_NAMES[r.redeem_method]||r.redeem_method) : r.crypto_currency;
-      return '<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);flex-wrap:wrap;gap:6px">'
-        + '<span>'+r.id+' · '+methodLabel+' · $'+r.usd_value.toFixed(2)+'</span>'
-        + '<span style="color:'+statusColor+';text-transform:uppercase;font-size:.78rem;font-weight:700">'+r.status+'</span>'
+      var methodLabel = isPlatform ? (CASINO_DISPLAY_NAMES[r.redeem_method]||r.redeem_method) : (r.crypto_currency || 'Crypto');
+      var when = formatWhen(r.created_at);
+      var paid = r.status === 'paid' && r.paid_at ? ' · paid ' + formatWhen(r.paid_at, true) : '';
+      return '<div class="pf-row">'
+        + '<div class="pf-row-main">$'+Number(r.usd_value).toFixed(2)+' · '+pccEsc(methodLabel)+'</div>'
+        + '<div class="pf-row-end"><span class="pf-status" style="color:'+statusColor+'">'+pccEsc(r.status)+'</span></div>'
+        + '<div class="pf-row-meta">🕒 '+when+paid+' · <span style="font-family:monospace">'+pccEsc(r.id)+'</span></div>'
       + '</div>';
     }).join('');
   } else {
@@ -5247,14 +5349,15 @@ function renderTransactionsPage(){
   var rowsHtml = pageItems.map(function(t){
     var sign = t.amount >= 0 ? '+' : '';
     var color = t.amount >= 0 ? '#4ade80' : '#f87171';
-    return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:.85rem;flex-wrap:wrap;gap:6px">'
-      + '<span>'+(TX_LABELS[t.type]||t.note||t.type)+'</span>'
-      + '<span style="color:'+color+';font-weight:700">'+sign+t.amount+'</span>'
+    return '<div class="pf-row">'
+      + '<div class="pf-row-main">'+pccEsc(TX_LABELS[t.type]||t.note||t.type)+'</div>'
+      + '<div class="pf-row-end"><span class="pf-amt" style="color:'+color+'">'+sign+fmtCoins(t.amount)+'</span></div>'
+      + '<div class="pf-row-meta">🕒 '+formatWhen(t.created_at)+'</div>'
     + '</div>';
   }).join('');
 
   var pagerHtml = totalPages > 1
-    ? '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px">'
+    ? '<div class="pf-pager">'
       + '<button class="admin-btn-secondary" style="padding:7px 14px;font-size:.82rem" '+(page<=0?'disabled':'')+' onclick="pfTxPage(-1)">&larr; Newer</button>'
       + '<span style="color:var(--faint);font-size:.78rem">Page '+(page+1)+' of '+totalPages+'</span>'
       + '<button class="admin-btn-secondary" style="padding:7px 14px;font-size:.82rem" '+(page>=totalPages-1?'disabled':'')+' onclick="pfTxPage(1)">Older &rarr;</button>'
@@ -5893,7 +5996,7 @@ async function loadAdminRedemptions(status){
         ? '<span class="admin-pill" style="background:rgba(251,191,36,.14);color:#fbbf24;border:1px solid rgba(251,191,36,.35)">⏳ Pending</span>'
         : isRejected
         ? '<span class="admin-pill admin-pill-loss">✕ Rejected — coins refunded</span>'
-        : '<span class="admin-pill admin-pill-profit">✓ Paid'+(r.paid_at ? ' · '+r.paid_at : '')+'</span>';
+        : '<span class="admin-pill admin-pill-profit">✓ Paid</span>';
       return '<div class="battle-card" style="animation-delay:'+(Math.min(i,10)*0.04)+'s;--glow:'+glow+'">'
         + '<div class="battle-card-topbar" style="background:linear-gradient(90deg,rgb('+glow+'),rgba('+glow+',.4))"></div>'
         + '<div style="display:flex;gap:14px;padding:16px 18px">'
@@ -5901,7 +6004,8 @@ async function loadAdminRedemptions(status){
           + '<div style="flex:1;min-width:0">'
             + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-start">'
               + '<div><b style="font-size:1.02rem;font-family:monospace">'+r.id+'</b><br>'
-              + '<span style="color:var(--muted);font-size:.85rem">'+r.username+' · '+r.coin_amount.toLocaleString()+' coins · $'+r.usd_value.toFixed(2)+'</span></div>'
+              + '<span style="color:var(--muted);font-size:.85rem">'+r.username+' · '+r.coin_amount.toLocaleString()+' coins · $'+r.usd_value.toFixed(2)+'</span><br>'
+              + adminWhenChip('Requested', r.created_at) + (r.paid_at ? adminWhenChip('Paid', r.paid_at) : '') + '</div>'
               + statusPill
             + '</div>'
             + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">'+methodHtml+'</div>'
@@ -6224,8 +6328,9 @@ async function loadAdminVerifyList(status){
         + '<div style="flex:1">'
           + '<b>'+c.username+'</b> <span style="color:var(--faint);font-size:.78rem">('+c.user_id+')</span><br>'
           + '<span style="color:var(--muted);font-size:.85rem">Claims: <b>'+c.casino_username+'</b> on '+(CASINO_DISPLAY_NAMES[c.casino]||c.casino)+'</span>'
+          + (c.submitted_at ? '<br>' + adminWhenChip('Submitted', c.submitted_at) : '')
           + (c.current_wager > 0 ? '<br><span style="color:var(--faint);font-size:.78rem">Current wager: $'+c.current_wager.toLocaleString()+'</span>' : '')
-          + (status === 'approved' && c.reviewed_by ? '<br><span style="color:#4ade80;font-size:.78rem">✓ Approved by '+pccEsc(c.reviewed_by)+'</span>' : '')
+          + (status === 'approved' && (c.reviewed_by || c.reviewed_at) ? '<br><span class="admin-when" style="color:#4ade80;border-color:rgba(74,222,128,.3);background:rgba(74,222,128,.08)">✓ Approved'+(c.reviewed_by ? ' by '+pccEsc(c.reviewed_by) : '')+(c.reviewed_at ? ' · '+formatWhen(c.reviewed_at) : '')+'</span>' : '')
           + '<div style="margin-top:10px">'+proofHtml+'</div>'
         + '</div>'
         + '<div style="display:flex;gap:6px;flex:none">'
@@ -6371,11 +6476,34 @@ async function adminRejectClaim(userId, casino){
    ══════════════════════════════════════════════════════════════════════════ */
 /* SQLite's raw 'YYYY-MM-DD HH:MM:SS' timestamps aren't great to read at a glance --
    formats them the way the rest of the admin dashboard already reads (e.g. "Sep 4, 8:00 AM"). */
-function formatAdminDate(raw){
-  if(!raw) return '';
-  var d = new Date(raw.replace(' ', 'T') + 'Z');
-  if(isNaN(d)) return raw;
-  return d.toLocaleDateString(undefined,{month:'short',day:'numeric'}) + ', ' + d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+/* D1 stores CURRENT_TIMESTAMP as "YYYY-MM-DD HH:MM:SS" in UTC (no zone), while values written
+   from JS are ISO strings with a Z -- parse both correctly and show them in the viewer's time. */
+function parseWhen(raw){
+  if(!raw) return null;
+  var s = String(raw).trim();
+  if(/^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$/.test(s)) s = s.replace(' ', 'T') + 'Z';
+  var d = new Date(s);
+  return isNaN(d) ? null : d;
+}
+function formatWhen(raw, short){
+  var d = parseWhen(raw);
+  if(!d) return raw ? pccEsc(String(raw)) : '—';
+  var now = new Date();
+  var opts = { day:'numeric', month:'short' };
+  if(d.getFullYear() !== now.getFullYear()) opts.year = 'numeric';
+  var abs = d.toLocaleDateString(undefined, opts) + ', ' + d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+  if(short) return abs;
+  var mins = Math.round((now - d) / 60000), rel;
+  if(mins < 1) rel = 'just now';
+  else if(mins < 60) rel = mins + 'm ago';
+  else if(mins < 1440) rel = Math.round(mins/60) + 'h ago';
+  else if(mins < 1440*30) rel = Math.round(mins/1440) + 'd ago';
+  else rel = '';
+  return abs + (rel ? ' <span style="opacity:.7">('+rel+')</span>' : '');
+}
+function formatAdminDate(raw){ return formatWhen(raw); }
+function adminWhenChip(label, raw){
+  return '<span class="admin-when">🕒 '+label+' '+formatWhen(raw)+'</span>';
 }
 
 /* Was flagged the same way Battle Requests was ("too basic") -- given the same redesign:
@@ -6422,11 +6550,11 @@ async function loadAdminSlots(filter){
           + '<div style="flex:1;min-width:0">'
             + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-start">'
               + '<div><b style="font-size:1.05rem">'+r.slot_name+'</b><br>'
-              + '<span style="color:var(--muted);font-size:.85rem">requested by '+r.username+(provider ? ' · '+provider : '')+'</span></div>'
+              + '<span style="color:var(--muted);font-size:.85rem">requested by '+r.username+(provider ? ' · '+provider : '')+'</span><br>'
+              + adminWhenChip('Requested', r.created_at) + '</div>'
               + '<div>'+profitBadge+awardedBadge+'</div>'
             + '</div>'
             + (r.note ? '<div style="color:var(--muted);font-size:.85rem;margin-top:8px;font-style:italic">"'+r.note+'"</div>' : '')
-            + '<div style="color:var(--faint);font-size:.75rem;margin-top:6px">'+formatAdminDate(r.created_at)+'</div>'
             + '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center">'
               + '<select id="slotProfitStatus_'+r.id+'" class="pf-select" style="width:auto;margin-bottom:0;padding:8px 10px;font-size:.82rem">'
                 + '<option value="">No result yet</option>'
@@ -6535,7 +6663,8 @@ async function loadAdminBattles(filter){
           + '<div style="flex:1;min-width:0">'
             + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-start">'
               + '<div><b style="font-size:1.05rem">'+r.kick_discord_name+'</b><br>'
-              + '<span style="color:var(--muted);font-size:.85rem">requested by '+r.username+'</span></div>'
+              + '<span style="color:var(--muted);font-size:.85rem">requested by '+r.username+'</span><br>'
+              + adminWhenChip('Requested', r.created_at) + '</div>'
               + profitBadge
             + '</div>'
             + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">'
@@ -6545,7 +6674,6 @@ async function loadAdminBattles(filter){
             + '</div>'
             + specialFlags
             + '<div style="color:var(--muted);font-size:.85rem;margin-top:10px">🎁 <b>Cases:</b> '+r.cases+'</div>'
-            + '<div style="color:var(--faint);font-size:.75rem;margin-top:6px">'+formatAdminDate(r.created_at)+'</div>'
             + '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center">'
               + '<select id="battleProfitStatus_'+r.id+'" class="pf-select" style="width:auto;margin-bottom:0;padding:8px 10px;font-size:.82rem">'
                 + '<option value="">No result yet</option>'
