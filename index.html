@@ -1390,7 +1390,40 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   color:#7dd3fc;
 }
 /* Admin dashboard tabs */
-.admin-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 24px;padding:2px}
+.audit-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.audit-filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.audit-filters .pf-select{width:auto;min-width:170px;margin:0}
+.audit-cats{display:flex;gap:6px;flex-wrap:wrap}
+.audit-search{flex:1;min-width:180px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-family:'Poppins'}
+.audit-list{display:flex;flex-direction:column;gap:8px}
+.audit-day{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:10px 2px 2px}
+.audit-row{display:grid;grid-template-columns:40px 1fr auto;gap:12px;align-items:start;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+.audit-ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:1.1rem;background:rgba(255,255,255,.05)}
+.audit-ic.claims{background:rgba(74,222,128,.12)}.audit-ic.coins{background:rgba(251,191,36,.14)}.audit-ic.redemptions{background:rgba(192,132,252,.14)}
+.audit-ic.requests{background:rgba(96,165,250,.14)}.audit-ic.roles{background:rgba(244,114,182,.14)}
+.audit-sum{font-weight:600;line-height:1.4;word-break:break-word}
+.audit-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:5px;font-size:.8rem;color:var(--faint)}
+.audit-who{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:#e9e3ff}
+.audit-role{font-size:.64rem;font-weight:800;letter-spacing:.1em;padding:2px 7px;border-radius:6px}
+.audit-role.admin{background:rgba(251,191,36,.14);color:#fbbf24;border:1px solid rgba(251,191,36,.35)}
+.audit-role.mod{background:rgba(96,165,250,.14);color:#60a5fa;border:1px solid rgba(96,165,250,.35)}
+.audit-det{margin-top:7px;display:flex;flex-direction:column;gap:3px;font-size:.82rem;color:var(--muted)}
+.audit-det b{color:#fff;font-weight:600}
+.audit-det .n{padding:6px 10px;border-radius:8px;background:rgba(255,255,255,.04);border-left:3px solid #fbbf24;color:#fde68a}
+.audit-when{font-size:.78rem;color:var(--faint);white-space:nowrap;text-align:right}
+@media (max-width:640px){.audit-row{grid-template-columns:34px 1fr}.audit-ic{width:34px;height:34px;font-size:.95rem}.audit-when{grid-column:2;text-align:left;margin-top:-4px}.audit-filters .pf-select{flex:1}}
+.adm-modal{position:fixed;inset:0;z-index:9000;background:rgba(5,3,12,.72);backdrop-filter:blur(6px);display:grid;place-items:center;padding:16px}
+.adm-modal-card{width:min(440px,100%);background:linear-gradient(180deg,#1b1330,#110b20);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.6);animation:admPop .25s cubic-bezier(.16,1,.3,1)}
+@keyframes admPop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+.adm-lbl{display:block;font-size:.8rem;color:var(--faint);margin:12px 0 6px;font-weight:600}
+.adm-input{width:100%;box-sizing:border-box;padding:11px 12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-family:'Poppins';font-size:.95rem;resize:vertical}
+.adm-input:focus{outline:none;border-color:var(--purple)}
+.adm-err{min-height:18px;margin-top:8px;font-size:.8rem;color:#f87171}
+.coin-dir{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.coin-dir button{padding:10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--muted);font:700 .9rem 'Poppins';cursor:pointer}
+.coin-dir button.active[data-dir="1"]{background:rgba(74,222,128,.14);border-color:rgba(74,222,128,.5);color:#4ade80}
+.coin-dir button.active[data-dir="-1"]{background:rgba(248,113,113,.14);border-color:rgba(248,113,113,.5);color:#f87171}
+.admin-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:0 0 24px;padding:2px}
 .admin-tabs .admin-tab{padding:10px 12px!important;font-size:.85rem!important;white-space:nowrap;text-align:center}
 .admin-tabs .admin-tab[style*="display: none"],.admin-tabs .admin-tab[style*="display:none"]{display:none}
 @media (max-width:700px){
@@ -3823,6 +3856,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <button class="admin-tab" data-tab="adminVerifyTab" onclick="switchAdminTab('adminVerifyTab')">✅ Verify Players <span class="admin-badge" id="badgeVerify"></span></button>
           <button class="admin-tab" data-tab="adminSlotsTab" onclick="switchAdminTab('adminSlotsTab')">🎰 Slot Requests <span class="admin-badge" id="badgeSlots"></span></button>
           <button class="admin-tab" data-tab="adminBattlesTab" onclick="switchAdminTab('adminBattlesTab')">⚔️ Battle Requests <span class="admin-badge" id="badgeBattles"></span></button>
+          <button class="admin-tab" data-tab="adminAuditTab" onclick="switchAdminTab('adminAuditTab')">🧾 Activity Log</button>
         </div>
 
         <!-- VAULT TAB -->
@@ -3987,6 +4021,53 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
             <button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminDeleteAllBattleRequests()">🗑️ Delete All</button>
           </div>
           <div id="adminBattlesList">Loading…</div>
+        </div>
+
+        <!-- ACTIVITY LOG TAB (admins only) -->
+        <div id="adminAuditTab" class="admin-tab-panel" style="display:none">
+          <div class="audit-head">
+            <div>
+              <h3 style="margin:0;font-size:1.15rem">Staff activity log</h3>
+              <p style="margin:4px 0 0;color:var(--faint);font-size:.85rem">Every action by admins and mods: approvals, rejections, coin changes, redemptions, requests and role changes. Only admins can see this.</p>
+            </div>
+            <button class="admin-btn-secondary" onclick="loadAuditLog(true)" style="padding:8px 14px">↻ Refresh</button>
+          </div>
+          <div class="audit-filters">
+            <select id="auditActor" class="pf-select" onchange="loadAuditLog(true)"><option value="">Everyone</option></select>
+            <div class="audit-cats" id="auditCats">
+              <button class="admin-filter-pill active" data-cat="" onclick="setAuditCat(this)">All</button>
+              <button class="admin-filter-pill" data-cat="claims" onclick="setAuditCat(this)">✅ Claims</button>
+              <button class="admin-filter-pill" data-cat="coins" onclick="setAuditCat(this)">🪙 Coins</button>
+              <button class="admin-filter-pill" data-cat="redemptions" onclick="setAuditCat(this)">💸 Redemptions</button>
+              <button class="admin-filter-pill" data-cat="requests" onclick="setAuditCat(this)">🎰 Requests</button>
+              <button class="admin-filter-pill" data-cat="roles" onclick="setAuditCat(this)">🛡 Roles</button>
+              <button class="admin-filter-pill" data-cat="other" onclick="setAuditCat(this)">⚙ Other</button>
+            </div>
+            <input id="auditSearch" class="audit-search" type="search" placeholder="Search user, note, ID…" oninput="clearTimeout(window._auditT);window._auditT=setTimeout(function(){loadAuditLog(true)},350)">
+          </div>
+          <div id="auditList" class="audit-list">Loading…</div>
+          <div style="text-align:center;margin-top:14px"><button id="auditMore" class="admin-btn-secondary" style="display:none;padding:9px 18px" onclick="loadAuditLog(false)">Load older</button></div>
+        </div>
+
+        <!-- manual coin change dialog -->
+        <div id="coinModal" class="adm-modal" style="display:none" onclick="if(event.target===this)closeCoinModal()">
+          <div class="adm-modal-card">
+            <h3 id="coinModalTitle" style="margin:0 0 4px">Adjust coins</h3>
+            <p id="coinModalSub" style="margin:0 0 16px;color:var(--faint);font-size:.86rem"></p>
+            <div class="coin-dir">
+              <button type="button" data-dir="1" class="active" onclick="setCoinDir(1)">＋ Add</button>
+              <button type="button" data-dir="-1" onclick="setCoinDir(-1)">－ Deduct</button>
+            </div>
+            <label class="adm-lbl">Amount</label>
+            <input id="coinModalAmount" type="number" min="1" step="1" inputmode="numeric" class="adm-input" placeholder="e.g. 1000" oninput="validateCoinModal()">
+            <label class="adm-lbl">Note <span style="color:#f87171">*</span> <span style="color:var(--faint);font-weight:400">(the player sees this in their activity)</span></label>
+            <textarea id="coinModalNote" class="adm-input" rows="2" maxlength="200" placeholder="e.g. Giveaway winner, 27 Sep stream" oninput="validateCoinModal()"></textarea>
+            <div id="coinModalErr" class="adm-err"></div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px">
+              <button class="admin-btn-secondary" onclick="closeCoinModal()">Cancel</button>
+              <button id="coinModalSave" class="admin-btn-primary" onclick="submitCoinModal()" disabled>Add coins</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -5714,8 +5795,9 @@ function renderProfile(data){
     vault_distribution: 'Vault distribution',
     wager_auto_synced: 'Wager earnings (pending vault)',
     slot_request_reward: 'Slot request reward',
-    redemption: 'Redeemed for crypto',
-    admin_add: 'Balance adjusted',
+    redemption: 'Redeemed',
+    redemption_refund: 'Redemption refunded',
+    admin_add: 'Coins adjusted by the team',
   };
   /* Shows 10 at a time instead of dumping up to 15-50 transactions in one long list, with
      Previous/Next paging through whatever the backend already returned (up to 50) rather
@@ -5724,6 +5806,32 @@ function renderProfile(data){
   window._pfAllTransactions = data.transactions || [];
   window._pfTxPage = 0;
   renderTransactionsPage();
+}
+
+/* Human label for a Recent Activity row. Manual coin changes show the note the admin wrote
+   (mandatory now), redemptions show where they went, refunds say they were refunded. */
+function txLabel(t, TX_LABELS){
+  var note = String(t.note || '').trim();
+  var clean = note.replace(/\s*\(by [^)]*\)\s*$/, '');
+  var refund = note.match(/^Redemption (\S+) (rejected|deleted) by/);
+  if(t.type === 'redemption_refund' || (t.type === 'admin_add' && refund)){
+    var r = note.match(/Redemption (\S+)/);
+    return { main: 'Redemption refunded', sub: r ? r[1] : '' };
+  }
+  if(t.type === 'admin_add'){
+    if(!clean || clean === 'Admin adjustment') return { main: t.amount >= 0 ? 'Coins added by the team' : 'Coins removed by the team' };
+    return { main: clean, sub: t.amount >= 0 ? 'Added by the JammmyRewards team' : 'Deducted by the JammmyRewards team' };
+  }
+  if(t.type === 'redemption'){
+    var m = note.match(/^Redeemed via (.+?) \((JR-[^)]+)\)$/);
+    if(m){
+      var pm = m[1].match(/^(degencity|rustmafia|powerwin) \((.*)\)$/i);
+      if(pm) return { main: 'Redeemed to ' + (PLATFORM_LABELS[pm[1].toLowerCase()] || pm[1]), sub: m[2] };
+      return { main: 'Redeemed for crypto', sub: m[1].split(' ')[0] + ' · ' + m[2] };
+    }
+    return { main: 'Redeemed' };
+  }
+  return { main: TX_LABELS[t.type] || clean || t.type };
 }
 
 function renderTransactionsPage(){
@@ -5738,8 +5846,9 @@ function renderTransactionsPage(){
     vault_distribution: 'Vault distribution',
     wager_auto_synced: 'Wager earnings (pending vault)',
     slot_request_reward: 'Slot request reward',
-    redemption: 'Redeemed for crypto',
-    admin_add: 'Balance adjusted',
+    redemption: 'Redeemed',
+    redemption_refund: 'Redemption refunded',
+    admin_add: 'Coins adjusted by the team',
   };
   var PAGE_SIZE = 10;
   if(!all.length){ txEl.textContent = 'No activity yet.'; return; }
@@ -5751,10 +5860,11 @@ function renderTransactionsPage(){
   var rowsHtml = pageItems.map(function(t){
     var sign = t.amount >= 0 ? '+' : '';
     var color = t.amount >= 0 ? '#4ade80' : '#f87171';
+    var lb = txLabel(t, TX_LABELS);
     return '<div class="pf-row">'
-      + '<div class="pf-row-main">'+pccEsc(TX_LABELS[t.type]||t.note||t.type)+'</div>'
+      + '<div class="pf-row-main">'+pccEsc(lb.main)+'</div>'
       + '<div class="pf-row-end"><span class="pf-amt" style="color:'+color+'">'+sign+fmtCoins(t.amount)+'</span></div>'
-      + '<div class="pf-row-meta">🕒 '+formatWhen(t.created_at)+'</div>'
+      + '<div class="pf-row-meta">🕒 '+formatWhen(t.created_at)+(lb.sub ? ' · '+pccEsc(lb.sub) : '')+'</div>'
     + '</div>';
   }).join('');
 
@@ -6099,6 +6209,7 @@ function switchAdminTab(tabId){
   if(tabId==='adminVerifyTab') loadAdminVerifyList();
   if(tabId==='adminSlotsTab') loadAdminSlots();
   if(tabId==='adminBattlesTab') loadAdminBattles();
+  if(tabId==='adminAuditTab') loadAuditLog(true);
 }
 
 /* Backs both the Overview tab and the pending-count badges on every other tab button, so
@@ -6331,24 +6442,111 @@ async function loadAdminUsers(){
   }
 }
 
-async function adminAddCoinsPrompt(discordId, username, direction){
-  var verb = direction > 0 ? 'add to' : 'deduct from';
-  var amountStr = prompt('How many coins to ' + verb + ' ' + username + '? (enter a positive number)');
-  if(amountStr === null) return;
-  var amount = parseInt(amountStr, 10);
-  if(!Number.isInteger(amount) || amount <= 0){ alert('Please enter a positive whole number.'); return; }
-  var signedAmount = amount * direction;
-  var note = prompt('Note for this adjustment (optional):') || '';
-  var token = localStorage.getItem('jammy_session_token');
+/* Manual coin changes: a proper dialog with a REQUIRED note (the worker enforces it too).
+   The note is what the player sees in Recent Activity and what the activity log records. */
+var _coinModal = { id:null, name:'', dir:1 };
+function adminAddCoinsPrompt(discordId, username, direction){
+  var modal = document.getElementById('coinModal'); if(modal.parentNode !== document.body) document.body.appendChild(modal);
+  _coinModal = { id: discordId, name: username, dir: direction > 0 ? 1 : -1 };
+  document.getElementById('coinModalAmount').value = '';
+  document.getElementById('coinModalNote').value = '';
+  document.getElementById('coinModalErr').textContent = '';
+  document.getElementById('coinModalSub').textContent = 'Player: ' + username;
+  setCoinDir(_coinModal.dir);
+  document.getElementById('coinModal').style.display = 'grid';
+  setTimeout(function(){ document.getElementById('coinModalAmount').focus(); }, 60);
+}
+function setCoinDir(d){
+  _coinModal.dir = d;
+  document.querySelectorAll('.coin-dir button').forEach(function(b){ b.classList.toggle('active', Number(b.dataset.dir) === d); });
+  document.getElementById('coinModalTitle').textContent = d > 0 ? 'Add coins' : 'Deduct coins';
+  validateCoinModal();
+}
+function closeCoinModal(){ document.getElementById('coinModal').style.display = 'none'; }
+function validateCoinModal(){
+  var amt = parseInt(document.getElementById('coinModalAmount').value, 10);
+  var note = document.getElementById('coinModalNote').value.trim();
+  var ok = Number.isInteger(amt) && amt > 0 && note.length >= 3;
+  var btn = document.getElementById('coinModalSave');
+  btn.disabled = !ok;
+  btn.textContent = (_coinModal.dir > 0 ? 'Add ' : 'Deduct ') + (Number.isInteger(amt) && amt > 0 ? amt.toLocaleString() + ' ' : '') + 'coins';
+  return ok;
+}
+async function submitCoinModal(){
+  var err = document.getElementById('coinModalErr');
+  var amt = parseInt(document.getElementById('coinModalAmount').value, 10);
+  var note = document.getElementById('coinModalNote').value.trim();
+  if(!(Number.isInteger(amt) && amt > 0)){ err.textContent = 'Enter a positive whole number.'; return; }
+  if(note.length < 3){ err.textContent = 'A note is required (at least 3 characters).'; return; }
+  var btn = document.getElementById('coinModalSave'); btn.disabled = true; btn.textContent = 'Saving…';
   try{
     var res = await fetch(AUTH_API + '/api/admin/add-coins', {
       method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ discord_id: discordId, amount: signedAmount, note: note })
+      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jammy_session_token'), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ discord_id: _coinModal.id, amount: amt * _coinModal.dir, note: note })
     });
     var data = await res.json();
-    if(res.ok){ loadAdminUsers(); } else { alert(data.error || 'Failed to adjust coins.'); }
-  }catch(e){ console.error('Add coins failed:', e); alert('Network error — try again.'); }
+    if(res.ok){ closeCoinModal(); loadAdminUsers(); }
+    else { err.textContent = data.error || 'Failed to adjust coins.'; validateCoinModal(); }
+  }catch(e){ console.error('Add coins failed:', e); err.textContent = 'Network error — try again.'; validateCoinModal(); }
+}
+
+/* ---- Staff activity log (admins only) ---- */
+var _auditCat = '', _auditBefore = null, _auditActorsLoaded = false;
+var AUDIT_ICONS = { claims:'✅', coins:'🪙', redemptions:'💸', requests:'🎰', roles:'🛡', other:'⚙️' };
+var AUDIT_KEYS = { note:'Note', balance:'Balance', refund:'Refund', result:'Result', coins_awarded:'Coins awarded', message:'Message', queued:'Devices notified', target_amount:'Vault target', last_added_amount:'Last added', last_added_date:'Last added on' };
+function setAuditCat(btn){
+  document.querySelectorAll('#auditCats .admin-filter-pill').forEach(function(b){ b.classList.toggle('active', b === btn); });
+  _auditCat = btn.dataset.cat || '';
+  loadAuditLog(true);
+}
+function auditDetailsHtml(d){
+  if(!d) return '';
+  var out = [];
+  if(d.note) out.push('<div class="n">“'+pccEsc(d.note)+'”</div>');
+  Object.keys(d).forEach(function(k){
+    if(k === 'note') return;
+    if(k === 'claims' && Array.isArray(d.claims)){ out.push('<div>'+d.claims.map(function(c){ return '• '+pccEsc(c); }).join('<br>')+'</div>'); return; }
+    out.push('<div>'+(AUDIT_KEYS[k]||k)+': <b>'+pccEsc(String(d[k]))+'</b></div>');
+  });
+  return out.length ? '<div class="audit-det">'+out.join('')+'</div>' : '';
+}
+async function loadAuditLog(reset){
+  var list = document.getElementById('auditList'), more = document.getElementById('auditMore');
+  if(reset){ _auditBefore = null; list.innerHTML = '<div style="color:var(--faint)">Loading…</div>'; }
+  var qs = ['limit=40'];
+  if(_auditBefore) qs.push('before=' + _auditBefore);
+  var actor = document.getElementById('auditActor').value; if(actor) qs.push('actor=' + encodeURIComponent(actor));
+  if(_auditCat) qs.push('category=' + _auditCat);
+  var q = document.getElementById('auditSearch').value.trim(); if(q) qs.push('q=' + encodeURIComponent(q));
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/audit-log?' + qs.join('&'), { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jammy_session_token') } });
+    var data = await res.json();
+    if(!res.ok){ list.innerHTML = '<div style="color:#f87171">'+pccEsc(data.error || 'Could not load the activity log.')+'</div>'; more.style.display = 'none'; return; }
+    if(!_auditActorsLoaded && data.actors){
+      var sel = document.getElementById('auditActor');
+      data.actors.forEach(function(a){ var o = document.createElement('option'); o.value = a.actor_id; o.textContent = a.actor_name + ' (' + a.actor_role + ') · ' + a.actions; sel.appendChild(o); });
+      _auditActorsLoaded = true;
+    }
+    var rows = data.entries || [];
+    if(reset && !rows.length){ list.innerHTML = '<div style="color:var(--faint);padding:18px 4px">Nothing logged yet'+(qs.length>1?' for these filters':'')+'. Actions are recorded from now on.</div>'; more.style.display='none'; return; }
+    var lastDay = reset ? '' : (list.dataset.lastDay || '');
+    var html = rows.map(function(e){
+      var d = parseWhen(e.created_at), day = d ? d.toLocaleDateString(undefined, { weekday:'short', day:'numeric', month:'short', year:'numeric' }) : '';
+      var sep = day && day !== lastDay ? '<div class="audit-day">'+day+'</div>' : ''; lastDay = day || lastDay;
+      return sep + '<div class="audit-row">'
+        + '<div class="audit-ic '+pccEsc(e.category||'')+'">'+(AUDIT_ICONS[e.category]||'•')+'</div>'
+        + '<div><div class="audit-sum">'+pccEsc(e.summary)+'</div>'
+        + '<div class="audit-meta"><span class="audit-who">'+pccEsc(e.actor_name||e.actor_id)+' <span class="audit-role '+(e.actor_role==='admin'?'admin':'mod')+'">'+String(e.actor_role||'').toUpperCase()+'</span></span></div>'
+        + auditDetailsHtml(e.details) + '</div>'
+        + '<div class="audit-when">'+formatWhen(e.created_at)+'</div>'
+      + '</div>';
+    }).join('');
+    if(reset) list.innerHTML = html; else list.insertAdjacentHTML('beforeend', html);
+    list.dataset.lastDay = lastDay;
+    _auditBefore = data.next_before;
+    more.style.display = data.has_more ? '' : 'none';
+  }catch(e){ console.error('Audit log failed:', e); list.innerHTML = '<div style="color:#f87171">Network error — try again.</div>'; }
 }
 
 async function adminToggleAdmin(discordId, username, makeAdmin){
