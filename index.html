@@ -1467,6 +1467,17 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   .rq-ctrl .del{margin-left:0}
   .rq-list.big .rq-title{font-size:1.4rem}
 }
+.login-err-toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:9500;width:min(460px,calc(100% - 32px));display:flex;flex-direction:column;gap:6px;
+  padding:16px 18px;border-radius:16px;background:linear-gradient(180deg,#2a1020,#170a14);border:1px solid rgba(248,113,113,.5);box-shadow:0 20px 50px rgba(0,0,0,.6);color:#fff;animation:admPop .25s ease}
+.login-err-toast b{color:#fca5a5}.login-err-toast span{color:#f3e8ff;font-size:.9rem;line-height:1.5}
+.login-err-toast button{align-self:flex-end;margin-top:4px;background:rgba(255,255,255,.08);border:1px solid var(--line);color:#fff;border-radius:9px;padding:6px 16px;font:600 .85rem 'Poppins';cursor:pointer}
+.dup-row{display:flex;align-items:center;gap:14px;transition:opacity .25s,transform .25s}
+.dup-row.gone{opacity:0;transform:translateX(12px)}
+.dup-dismiss{flex:none;background:rgba(74,222,128,.10);border:1px solid rgba(74,222,128,.45);color:#86efac;border-radius:9px;padding:8px 14px;font:600 .82rem 'Poppins';cursor:pointer;white-space:nowrap}
+.dup-dismiss:hover{background:rgba(74,222,128,.2)}
+.dup-foot{margin-top:10px;font-size:.82rem;color:var(--faint)}
+.dup-foot button{background:none;border:0;color:#a5b4fc;font:600 .82rem 'Poppins';cursor:pointer;text-decoration:underline;padding:0}
+@media (max-width:640px){.dup-row{flex-direction:column;align-items:flex-start}.dup-dismiss{align-self:flex-end}}
 .audit-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:14px}
 .audit-filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
 .audit-filters .pf-select{width:auto;min-width:170px;margin:0}
@@ -5292,11 +5303,23 @@ function trackPageView(path){
 var DISCORD_CLIENT_ID = '1473817153059819650';
 var DISCORD_REDIRECT = 'https://jammmyrewards.com/';
 
-function startDiscordLogin(){
-  var authUrl = 'https://discord.com/api/oauth2/authorize?client_id=' + DISCORD_CLIENT_ID
-    + '&redirect_uri=' + encodeURIComponent(DISCORD_REDIRECT)
+/* The Discord app ID comes from the worker (/api/auth/config, set in Cloudflare), so if Jammmy
+   switches Discord apps only the Cloudflare settings change. The constants above are only a
+   fallback if the worker can't be reached. */
+async function startDiscordLogin(){
+  var cid = DISCORD_CLIENT_ID, redirect = DISCORD_REDIRECT;
+  try{
+    var r = await fetch(AUTH_API + '/api/auth/config', { cache:'no-store' });
+    if(r.ok){ var c = await r.json(); if(c.client_id) cid = c.client_id; if(c.redirect_uri) redirect = c.redirect_uri; }
+  }catch(e){}
+  window.location.href = 'https://discord.com/api/oauth2/authorize?client_id=' + encodeURIComponent(cid)
+    + '&redirect_uri=' + encodeURIComponent(redirect)
     + '&response_type=code&scope=identify';
-  window.location.href = authUrl;
+}
+function showLoginError(msg){
+  var el = document.getElementById('loginErrorToast');
+  if(!el){ el = document.createElement('div'); el.id = 'loginErrorToast'; el.className = 'login-err-toast'; document.body.appendChild(el); }
+  el.innerHTML = '<b>Couldn\u2019t log you in with Discord</b><span>'+pccEsc(msg)+'</span><button onclick="this.parentNode.remove()">OK</button>';
 }
 
 var LOGIN_BTN_HTML = '<button class="login" id="discordLoginBtn" onclick="startDiscordLogin()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 5a18 18 0 0 0-4.5-1.4l-.2.5A16 16 0 0 1 18 5a16 16 0 0 0-12 0 16 16 0 0 1 2.5-.9l-.2-.5A18 18 0 0 0 4 5C1.6 8.6 1 12.2 1.2 15.7A18 18 0 0 0 6.7 18l.4-.6a12 12 0 0 1-1.9-.9l.5-.4a13 13 0 0 0 11 0l.5.4a12 12 0 0 1-1.9.9l.4.6a18 18 0 0 0 5.5-2.3C23.2 11.6 22.4 8 20 5M8.7 14c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8m6.6 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8"/></svg> Login with Discord</button>';
@@ -5676,6 +5699,11 @@ setTimeout(maybeShowPushPrompt, 8000); /* give people a moment to look around fi
 async function initAuth(){
   var urlParams = new URLSearchParams(window.location.search);
   var code = urlParams.get('code');
+  if(!code && urlParams.get('error')){
+    var de = urlParams.get('error');
+    if(de !== 'access_denied') showLoginError('Discord said: ' + (urlParams.get('error_description') || de));
+    history.replaceState(null, '', window.location.pathname + window.location.hash);
+  }
   if(code){
     try{
       var res = await fetch(AUTH_API + '/auth/discord/callback?code=' + encodeURIComponent(code));
@@ -5685,9 +5713,10 @@ async function initAuth(){
         localStorage.setItem('jammy_user', JSON.stringify(data.user));
         renderAuthUI(data.user);
       } else {
-        console.error('Discord login failed:', data.error);
+        console.error('Discord login failed:', data);
+        showLoginError(data.reason === 'expired_code' ? data.error : 'Please try again in a few minutes. If it keeps happening, tell a mod: ' + (data.error || 'unknown error'));
       }
-    }catch(e){ console.error('Discord login failed:', e); }
+    }catch(e){ console.error('Discord login failed:', e); showLoginError('Network error. Please try again.'); }
     history.replaceState(null, '', window.location.pathname + window.location.hash);
     return;
   }
@@ -6348,6 +6377,30 @@ async function loadAdminOverview(){
   loadAdminDuplicates();
 }
 
+/* Dismiss = "seen it, it's fine" -- hides the flag for every admin. If another account joins the
+   same shared wallet/username later, it's a different flag and shows up again. */
+async function dismissDuplicate(btn){
+  var rowEl = btn.closest('.dup-row'); if(!rowEl) return;
+  btn.disabled = true; btn.textContent = 'Dismissing…';
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/dismiss-duplicate', { method:'POST',
+      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jammy_session_token'), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: rowEl.dataset.key, label: rowEl.dataset.label }) });
+    var data = await res.json();
+    if(!res.ok){ alert(data.error || 'Could not dismiss.'); btn.disabled = false; btn.textContent = '✓ Seen · Dismiss'; return; }
+    rowEl.classList.add('gone'); setTimeout(loadAdminDuplicates, 280);
+  }catch(e){ alert('Network error — try again.'); btn.disabled = false; btn.textContent = '✓ Seen · Dismiss'; }
+}
+async function restoreDuplicates(){
+  if(!confirm('Show all dismissed duplicate-account flags again?')) return;
+  try{
+    await fetch(AUTH_API + '/api/admin/dismiss-duplicate', { method:'POST',
+      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jammy_session_token'), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ restore_all: true }) });
+  }catch(e){}
+  loadAdminDuplicates();
+}
+
 async function loadAdminDuplicates(){
   var listEl = document.getElementById('adminDuplicatesList');
   if(!listEl) return;
@@ -6361,26 +6414,28 @@ async function loadAdminDuplicates(){
     var rows = [];
     function casinoName(c){ return (typeof CASINO_DISPLAY_NAMES!=='undefined' && CASINO_DISPLAY_NAMES[c]) || KNOWN_CASINOS_DISPLAY[c] || c; }
     function names(list){ return list.map(pccEsc).join(', '); }
+    function row(color, head, sub, key, label){
+      return '<div class="admin-row dup-row" style="border-left:3px solid '+color+'" data-key="'+pccEsc(key)+'" data-label="'+pccEsc(label)+'">'
+        + '<div style="min-width:0;flex:1">'+head+'<br><span style="color:var(--muted);font-size:.85rem">'+sub+'</span></div>'
+        + '<button class="dup-dismiss" onclick="dismissDuplicate(this)" title="Hide this flag for all admins">✓ Seen · Dismiss</button>'
+      + '</div>';
+    }
     (data.shared_wallets || []).forEach(function(d){
       if(!d.wallet_address || d.wallet_address === 'null') return; /* older workers grouped empty wallets together */
-      rows.push('<div class="admin-row" style="border-left:3px solid #f87171">'
-        + '<div><b>Shared crypto wallet:</b> <span style="font-family:monospace;font-size:.85rem;overflow-wrap:anywhere">'+pccEsc(d.wallet_address)+'</span><br>'
-        + '<span style="color:var(--muted);font-size:.85rem">Redemptions paid to it by: '+names(d.usernames)+'</span></div>'
-      + '</div>');
+      rows.push(row('#f87171', '<b>Shared crypto wallet:</b> <span style="font-family:monospace;font-size:.85rem;overflow-wrap:anywhere">'+pccEsc(d.wallet_address)+'</span>',
+        'Redemptions paid to it by: '+names(d.usernames), d.key, 'shared wallet '+d.wallet_address+' ('+d.usernames.join(', ')+')'));
     });
     (data.shared_platform_payouts || []).forEach(function(d){
-      rows.push('<div class="admin-row" style="border-left:3px solid #f87171">'
-        + '<div><b>Shared '+pccEsc(casinoName(d.casino))+' payout account:</b> '+pccEsc(d.platform_username)+'<br>'
-        + '<span style="color:var(--muted);font-size:.85rem">Platform redemptions paid to it by: '+names(d.usernames)+'</span></div>'
-      + '</div>');
+      rows.push(row('#f87171', '<b>Shared '+pccEsc(casinoName(d.casino))+' payout account:</b> '+pccEsc(d.platform_username),
+        'Platform redemptions paid to it by: '+names(d.usernames), d.key, casinoName(d.casino)+' payout "'+d.platform_username+'" ('+d.usernames.join(', ')+')'));
     });
     (data.shared_casino_usernames || []).forEach(function(d){
-      rows.push('<div class="admin-row" style="border-left:3px solid #fbbf24">'
-        + '<div><b>Shared '+pccEsc(casinoName(d.casino))+' username:</b> '+pccEsc(d.casino_username)+'<br>'
-        + '<span style="color:var(--muted);font-size:.85rem">Claimed by: '+names(d.usernames)+'</span></div>'
-      + '</div>');
+      rows.push(row('#fbbf24', '<b>Shared '+pccEsc(casinoName(d.casino))+' username:</b> '+pccEsc(d.casino_username),
+        'Claimed by: '+names(d.usernames), d.key, casinoName(d.casino)+' username "'+d.casino_username+'" ('+d.usernames.join(', ')+')'));
     });
-    listEl.innerHTML = rows.length ? rows.join('') : '<div style="color:var(--faint)">Nothing flagged right now.</div>';
+    var hidden = data.dismissed_count || 0;
+    var foot = hidden ? '<div class="dup-foot">'+hidden+' dismissed flag'+(hidden===1?'':'s')+' hidden · <button onclick="restoreDuplicates()">Show them again</button></div>' : '';
+    listEl.innerHTML = (rows.length ? rows.join('') : '<div style="color:var(--faint)">Nothing flagged right now.</div>') + foot;
   }catch(e){
     console.error('Failed to load duplicate accounts:', e);
     listEl.innerHTML = 'Network error — try again.';

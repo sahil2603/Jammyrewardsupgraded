@@ -8,6 +8,17 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-27 — Dismiss duplicate-account flags
+- Each flag under **Possible Duplicate Accounts** (Overview) has a **✓ Seen · Dismiss** button. Dismissing hides it for all admins (stored in `app_state` key `dup_dismissed`, no migration needed).
+- A flag is identified by what's shared *and which accounts share it*. If another account later joins the same shared wallet / payout account / casino username, it's a new situation and the flag shows up again.
+- "N dismissed flags hidden · Show them again" brings them all back if needed.
+- Dismiss and restore are recorded in the Activity Log; admins only (mods get 403).
+
+## 2026-09-27 — Discord login: configurable app + visible errors
+- The Discord app used for login is now set in Cloudflare instead of being hard-coded: `DISCORD_CLIENT_ID` (variable) + `DISCORD_CLIENT_SECRET` (secret), optional `DISCORD_REDIRECT_URI` (defaults to https://jammmyrewards.com/). The website reads the client ID from the new `/api/auth/config`, so switching Discord apps needs no code change. Falls back to the old app ID if the variable isn't set.
+- Failed logins now tell the player (toast) instead of silently failing, and the worker translates Discord's errors: wrong ID/secret (`invalid_client`), redirect not registered in the Discord app, expired/used code, missing secret.
+- Cancelling on Discord's approval screen just returns to the site quietly.
+
 ## 2026-09-27 — Redemptions: readable payout queue
 - Admin **Redemptions** now use the same queue layout as slot/battle requests. Pending view is sorted oldest first and numbered, with a header like "3 to pay · $120.30 total".
 - Each card: player name large, "⏱ 18h ago" + exact time + transaction ID, and the **dollar amount big and green** on the right (coins underneath).
