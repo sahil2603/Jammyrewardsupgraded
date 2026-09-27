@@ -8,6 +8,9 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-27 — Users list: verified accounts only
+- Admin → Users now shows only **verified (approved) accounts on current partners** (Power.win, DegenCity, RustMafia) as "✓ Casino: username" badges tinted per partner. Pending/rejected claims and retired casinos (Upgrader, RustMagic) are no longer listed; users with none show "No verified casino accounts". Filtered in the worker (`/api/admin/users`) and in the page. Nothing is deleted from the database.
+
 ## 2026-09-27 — Dismiss duplicate-account flags
 - Each flag under **Possible Duplicate Accounts** (Overview) has a **✓ Seen · Dismiss** button. Dismissing hides it for all admins (stored in `app_state` key `dup_dismissed`, no migration needed).
 - A flag is identified by what's shared *and which accounts share it*. If another account later joins the same shared wallet / payout account / casino username, it's a new situation and the flag shows up again.

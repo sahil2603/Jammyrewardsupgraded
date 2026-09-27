@@ -1478,6 +1478,12 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .dup-foot{margin-top:10px;font-size:.82rem;color:var(--faint)}
 .dup-foot button{background:none;border:0;color:#a5b4fc;font:600 .82rem 'Poppins';cursor:pointer;text-decoration:underline;padding:0}
 @media (max-width:640px){.dup-row{flex-direction:column;align-items:flex-start}.dup-dismiss{align-self:flex-end}}
+.admin-tag.vlink{display:inline-flex;align-items:center;gap:6px}
+.admin-tag.vlink i{font-style:normal;color:#4ade80;font-weight:800}
+.admin-tag.vlink b{color:#fff;font-weight:600}
+.admin-tag.vlink.powerwin{border-color:rgba(192,132,252,.45);background:rgba(192,132,252,.12)}
+.admin-tag.vlink.degencity{border-color:rgba(244,114,182,.42);background:rgba(244,114,182,.10)}
+.admin-tag.vlink.rustmafia{border-color:rgba(248,113,113,.42);background:rgba(248,113,113,.10)}
 .audit-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:14px}
 .audit-filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
 .audit-filters .pf-select{width:auto;min-width:170px;margin:0}
@@ -6551,9 +6557,11 @@ async function loadAdminUsers(){
     document.getElementById('adminUsersTotal').textContent = data.total_users + ' total users' + (q ? ' (showing filtered results)' : '');
     if(!data.users.length){ listEl.innerHTML = adminEmptyState('👥', 'No users found', 'Try a different search, or check back once people sign up.'); return; }
     listEl.innerHTML = data.users.map(function(u, i){
-      var linksHtml = u.casino_links.length
-        ? u.casino_links.map(function(l){ return '<span class="admin-tag">'+l.casino+': '+l.username+'</span>'; }).join(' ')
-        : '<span style="color:var(--faint);font-size:.8rem">No casino usernames linked</span>';
+      var VERIFIED_OK = { powerwin:1, degencity:1, rustmafia:1 };
+      var vLinks = (u.casino_links || []).filter(function(l){ return VERIFIED_OK[l.casino]; });
+      var linksHtml = vLinks.length
+        ? vLinks.map(function(l){ return '<span class="admin-tag vlink '+pccEsc(l.casino)+'"><i>✓</i>'+pccEsc(CASINO_DISPLAY_NAMES[l.casino]||l.casino)+': <b>'+pccEsc(l.username)+'</b></span>'; }).join(' ')
+        : '<span style="color:var(--faint);font-size:.8rem">No verified casino accounts</span>';
       var initial = u.username.charAt(0).toUpperCase();
       var glow = u.is_admin ? '251,191,36' : u.is_mod ? '96,165,250' : '129,140,248';
       var safeName = u.username.replace(/'/g,"\\'");
