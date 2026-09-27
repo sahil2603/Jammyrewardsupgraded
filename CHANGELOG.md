@@ -8,6 +8,24 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-27: Home hero v2 (wordmark back)
+
+- The hero is centered on the big **JAMMMYREWARDS** wordmark again. It uses the rainbow gradient, letters flip in one by one, and a soft glow and a gentle wave run through the letters afterwards. Under it is "Wager · Climb · Get paid" and the original tagline.
+- The Jammmy jar is back as the mascot (full rainbow jar), with rings and orbiting coins. The Vault card and Vault-linked jar fill were removed from the hero. Beside the jar: the Power.win race countdown and Kick status. Buttons are back to Explore bonuses / Join loyalty / Leaderboards.
+- The Vault section further down is more compact.
+
+---
+
+## 2026-09-27: Home page redesign + smooth scrolling
+
+- **New hero:** "Wager. Climb. Get paid." with a word-by-word reveal and a moving colour mesh. The Vault jar sits on a stage with spinning rings and orbiting Jammmy coins, and its fill level now matches the real Vault %. Three floating live cards show Vault % to payout, the Power.win race countdown and $350 pool, and Kick live status. Also added a tap-to-copy JAMMMY chip and partner logos.
+- **Motion:** smooth scrolling site-wide (Lenis, inlined; mouse wheel only, phones keep native scroll, nested scroll areas unaffected). Added scroll reveals and hero parallax, a slanted marquee that speeds up and skews with scroll speed, 3D tilt + spotlight on cards and magnetic buttons (desktop only). The "How it works" line draws itself as you scroll.
+- **Sections:** stat tiles, a bento grid (bonuses, live races with animated podium, Jammmy Coins with a spinning coin, slot/battle requests) and 4-step "How it works". Also a Vault showcase with an animated progress ring, partner cards with a rotating border beam and Leaderboard buttons, a Kick "screen" for Watch Live, and a closing call-to-action.
+- **Copy fixes:** removed claims that weren't true any more ("$2,000+ weekly prizes, paid every Monday", "Bronze to Diamond tiers").
+- **Performance:** offscreen sections pause their animations, the hero video pauses when scrolled away and never has a filter on it, and everything animates with transform/opacity. Respects reduced-motion.
+
+---
+
 ## 2026-09-27: Leaderboard, Power.win page and Slot Library refresh
 
 - **Leaderboard redesigned:** animated partner tabs, prize-pool tile, a segmented countdown with a race progress bar, and a code-copy/Join tile. The top 3 now sit on a podium with a crown and glow. Full standings show wager bars and prize column, search ("Find your name"), and a show-all toggle (first 10 visible).

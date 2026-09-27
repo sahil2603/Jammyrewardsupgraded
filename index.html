@@ -1748,6 +1748,414 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 @media (max-width:860px){.pwx-mini{grid-template-columns:repeat(2,1fr)}.pwx-mini .pwx-m:last-child{grid-column:1/-1}.pwx-races,.pwx-steps,.pwx-bullets{grid-template-columns:1fr}.pwx-stats{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:620px){.pwx{padding:34px 16px 90px}.pwx-card{padding:22px 18px;border-radius:18px}.pwx-roller,.pwx-bounty{flex-direction:column;text-align:center;gap:18px}.pwx-roller-num{width:130px;height:130px}.pwx-roller-num span{top:32px;right:20px}.pwx-feat-top{align-items:flex-start}.pwx-ico{width:52px;height:52px;font-size:1.5rem}.pwx-card h2{font-size:1.3rem}.pwx-go,.pwx-code{width:100%;justify-content:center}.pwx-logo{height:48px}.pwx-logo-wrap{padding:14px 26px}}
 @media (prefers-reduced-motion:reduce){.pwx-rv{opacity:1;transform:none}.pwx-track-bar i{width:100%}}
+/* =====================================================================
+   HOME (hx) — premium landing: hero stage, marquee, bento, steps,
+   vault showcase, partners, live, final CTA. Motion engine in JS (hx*).
+   Everything animated uses transform/opacity only, so it stays smooth.
+===================================================================== */
+html.lenis,html.lenis body{height:auto}
+html.lenis{scroll-behavior:auto!important}
+.lenis.lenis-stopped{overflow:hidden}
+.lenis.lenis-smooth iframe{pointer-events:none}
+.hx{--hx-ease:cubic-bezier(.16,1,.3,1);position:relative;width:var(--hx-vw,100vw);margin-left:calc(50% - var(--hx-vw,100vw) / 2);overflow-x:clip}
+.hx-wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* ---------- HERO ---------- */
+.hx-hero{position:relative;min-height:min(900px,calc(100svh - 70px));display:flex;align-items:center;padding:40px 0 90px;isolation:isolate}
+.hx-hero-bg{position:absolute;inset:-70px 0 0;z-index:-1;pointer-events:none;overflow:hidden}
+.hx-mesh{position:absolute;inset:0;will-change:transform}
+.hx-mesh i{position:absolute;border-radius:50%;opacity:.9;will-change:transform}
+.hx-mesh i:nth-child(1){width:760px;height:760px;left:-220px;top:-260px;background:radial-gradient(closest-side,rgba(147,51,234,.42),transparent);animation:hxBlob1 18s ease-in-out infinite alternate}
+.hx-mesh i:nth-child(2){width:680px;height:680px;right:-200px;top:-120px;background:radial-gradient(closest-side,rgba(236,72,153,.30),transparent);animation:hxBlob2 22s ease-in-out infinite alternate}
+.hx-mesh i:nth-child(3){width:620px;height:620px;left:35%;bottom:-320px;background:radial-gradient(closest-side,rgba(34,211,238,.22),transparent);animation:hxBlob1 26s ease-in-out infinite alternate-reverse}
+.hx-mesh i:nth-child(4){width:420px;height:420px;right:18%;top:30%;background:radial-gradient(closest-side,rgba(74,222,128,.12),transparent);animation:hxBlob2 20s ease-in-out infinite alternate-reverse}
+@keyframes hxBlob1{to{transform:translate(120px,80px) scale(1.15)}}
+@keyframes hxBlob2{to{transform:translate(-110px,70px) scale(.9)}}
+.hx-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 45%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse 70% 60% at 50% 45%,#000 20%,transparent 75%)}
+.hx-spot{position:absolute;width:560px;height:560px;left:0;top:0;border-radius:50%;background:radial-gradient(closest-side,rgba(192,132,252,.16),transparent);transform:translate3d(var(--sx,-999px),var(--sy,-999px),0) translate(-50%,-50%);transition:opacity .4s;opacity:var(--so,0)}
+.hx-hero-in{position:relative;width:100%;max-width:1240px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1.08fr .92fr;gap:40px;align-items:center}
+
+.hx-in{opacity:0;transform:translateY(24px);animation:hxIn 1s var(--hx-ease) var(--d,0s) forwards}
+@keyframes hxIn{to{opacity:1;transform:none}}
+.hx-eyebrow{display:inline-flex;align-items:center;gap:10px;font:600 .74rem 'Poppins',system-ui;letter-spacing:.14em;text-transform:uppercase;color:#e9d5ff;padding:8px 16px 8px 12px;border-radius:99px;background:linear-gradient(135deg,rgba(168,85,247,.16),rgba(34,211,238,.06));border:1px solid rgba(192,132,252,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.hx-eyebrow-dot{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,.6);animation:slPulse 2s infinite}
+.hx-h1{font-family:'Lilita One',sans-serif;font-weight:400;font-size:clamp(3.1rem,7.4vw,6.4rem);line-height:.94;letter-spacing:.005em;margin:22px 0 22px;color:#fff}
+.hx-w{display:inline-block;overflow:hidden;vertical-align:top;padding:.04em .06em .1em 0;margin-bottom:-.1em}
+.hx-w>span{display:inline-block;transform:translateY(110%) rotate(4deg);animation:hxWord 1.1s var(--hx-ease) var(--d,0s) forwards}
+@keyframes hxWord{to{transform:none}}
+.hx-shine{background:linear-gradient(100deg,#c084fc 0%,#f472b6 30%,#fbbf24 50%,#4ade80 70%,#22d3ee 90%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent}
+@keyframes hxGrad{to{background-position:100% center}}
+.hx-lead{color:rgba(226,232,240,.78);font-size:clamp(1rem,1.3vw,1.14rem);line-height:1.7;max-width:540px;margin:0 0 30px}
+.hx-cta{display:flex;gap:14px;flex-wrap:wrap}
+.hx-cta.center{justify-content:center}
+
+/* buttons */
+.hx-btn{--mx:0px;--my:0px;position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;height:54px;padding:0 26px;border-radius:15px;border:0;cursor:pointer;font:700 .95rem 'Poppins',system-ui;letter-spacing:.01em;color:#fff;text-decoration:none;white-space:nowrap;overflow:hidden;isolation:isolate;transform:translate3d(var(--mx),var(--my),0);transition:transform .35s var(--hx-ease),box-shadow .35s,background .3s,border-color .3s}
+.hx-btn svg{width:18px;height:18px;transition:transform .35s var(--hx-ease)}
+.hx-btn:hover svg{transform:translateX(4px)}
+.hx-btn.sm{height:44px;padding:0 18px;font-size:.84rem;border-radius:12px}
+.hx-btn-p{background:linear-gradient(135deg,#9333ea,#db2777);box-shadow:0 18px 40px -16px rgba(219,39,119,.8),inset 0 1px 0 rgba(255,255,255,.25)}
+.hx-btn-p.blue{background:linear-gradient(135deg,#2563eb,#7c3aed);box-shadow:0 18px 40px -16px rgba(37,99,235,.8),inset 0 1px 0 rgba(255,255,255,.25)}
+.hx-btn-p::before,.hx-btn-green::before,.hx-btn-kick::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-120%);transition:transform .9s var(--hx-ease)}
+.hx-btn-p:hover::before,.hx-btn-green:hover::before,.hx-btn-kick:hover::before{transform:translateX(120%)}
+.hx-btn-p:hover{box-shadow:0 22px 50px -14px rgba(219,39,119,.95),inset 0 1px 0 rgba(255,255,255,.3)}
+.hx-btn-g{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.hx-btn-g:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.3)}
+.hx-btn-green{color:#03220f;background:linear-gradient(135deg,#86efac,#22c55e);box-shadow:0 18px 40px -16px rgba(34,197,94,.85),inset 0 1px 0 rgba(255,255,255,.4)}
+.hx-btn-kick{color:#051a02;background:#53fc18;box-shadow:0 18px 40px -16px rgba(83,252,24,.7)}
+.hx-live-dot{width:8px;height:8px;border-radius:50%;background:#f43f5e;box-shadow:0 0 0 0 rgba(244,63,94,.7);animation:hxPulseR 1.8s infinite}
+@keyframes hxPulseR{70%{box-shadow:0 0 0 8px rgba(244,63,94,0)}100%{box-shadow:0 0 0 0 rgba(244,63,94,0)}}
+
+.hx-code-row{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-top:26px}
+.hx-code{display:inline-flex;align-items:center;gap:12px;background:rgba(10,6,20,.55);border:1px dashed rgba(251,191,36,.5);border-radius:13px;padding:9px 10px 9px 16px;cursor:pointer;color:#fff;font:600 .78rem 'Poppins',system-ui;transition:.3s}
+.hx-code:hover{border-style:solid;box-shadow:0 10px 30px -14px rgba(251,191,36,.7)}
+.hx-code-k{color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.14em;font-size:.64rem}
+.hx-code b{font-family:'Lilita One',sans-serif;font-weight:400;font-size:1.2rem;letter-spacing:.14em;color:#fcd34d}
+.hx-code-c{background:rgba(251,191,36,.14);color:#fcd34d;border-radius:8px;padding:5px 10px;font-size:.7rem;transition:.25s}
+.hx-code.done .hx-code-c{background:#4ade80;color:#052e16}
+.hx-trust{display:flex;align-items:center;gap:16px}
+.hx-trust span{font:600 .66rem 'Poppins',system-ui;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.hx-trust img{opacity:.75;filter:grayscale(.2);transition:.3s}
+.hx-trust img:hover{opacity:1;filter:none}
+.hx-trust-pw{height:30px}.hx-trust-dc{height:18px}
+
+/* stage */
+.hx-stage{position:relative;aspect-ratio:1;width:100%;max-width:540px;justify-self:center}
+.hx-stage-par{position:absolute;inset:0;transform:translate3d(var(--px,0),var(--py,0),0);transition:transform .9s var(--hx-ease)}
+.hx-halo{position:absolute;inset:14%;border-radius:50%;background:conic-gradient(from 0deg,rgba(168,85,247,.5),rgba(236,72,153,.35),rgba(34,211,238,.35),rgba(74,222,128,.3),rgba(168,85,247,.5));-webkit-mask:radial-gradient(closest-side,transparent 55%,#000 56%,#000 70%,transparent 100%);mask:radial-gradient(closest-side,transparent 55%,#000 56%,#000 70%,transparent 100%);opacity:.55;animation:hxSpin 16s linear infinite}
+.hx-halo::after{content:"";position:absolute;inset:18%;border-radius:50%;background:radial-gradient(closest-side,rgba(147,51,234,.35),transparent)}
+.hx-rings{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.hx-rings.ra{animation:hxSpin 60s linear infinite}
+.hx-rings.rb{animation:hxSpin 28s linear infinite reverse}
+@keyframes hxSpin{to{transform:rotate(360deg)}}
+.hx-orbit{position:absolute;inset:6%;animation:hxSpin 24s linear infinite}
+.hx-oc{position:absolute;width:13%;height:auto;filter:drop-shadow(0 10px 18px rgba(0,0,0,.45));animation:hxSpin 24s linear infinite reverse}
+.hx-oc.c1{left:43.5%;top:-6.5%}
+.hx-oc.c2{left:88%;top:62%;width:10%}
+.hx-oc.c3{left:-3%;top:60%;width:9%}
+.hx-jar{position:absolute;left:50%;top:50%;width:46%;transform:translate(-50%,-52%);cursor:pointer;animation:hxBob 6s ease-in-out infinite}
+.hx-jar-v{position:relative;z-index:1;width:100%;display:block} /* no filter on the video: a filter would be re-applied on every decoded frame */
+.hx-jar::before{content:"";position:absolute;inset:-8% -14% 0;border-radius:50%;background:radial-gradient(closest-side,rgba(147,51,234,.45),transparent)}
+.hx-jar-shadow{position:absolute;left:18%;right:18%;bottom:-8%;height:12%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.55),transparent);animation:hxShadow 6s ease-in-out infinite}
+@keyframes hxBob{50%{transform:translate(-50%,-56%)}}
+@keyframes hxShadow{50%{transform:scaleX(.82);opacity:.6}}
+
+.hx-fc{position:absolute;z-index:3;cursor:pointer;background:linear-gradient(160deg,rgba(40,24,72,.94),rgba(12,8,26,.95));border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:14px 16px;box-shadow:0 24px 50px -20px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.08);transform:translate3d(var(--px,0),var(--py,0),0);transition:transform .9s var(--hx-ease),border-color .3s}
+.hx-fc:hover{border-color:rgba(255,255,255,.28)}
+.hx-fc{text-align:left}.hx-fc-big small,.hx-fc-top span{white-space:nowrap}
+.hx-fc>*{animation:none}
+.hx-fc-vault{left:-6%;top:12%;width:178px;animation:hxFloat 7s ease-in-out infinite}
+.hx-fc-race{right:-4%;top:26%;width:186px;animation:hxFloat 8s ease-in-out -2s infinite}
+.hx-fc-kick{left:4%;bottom:6%;display:flex;align-items:center;gap:12px;padding:12px 16px;animation:hxFloat 9s ease-in-out -4s infinite}
+@keyframes hxFloat{50%{translate:0 -12px}}
+.hx-fc-top{display:flex;align-items:center;gap:8px;font:600 .68rem 'Poppins',system-ui;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:8px}
+.hx-fc-ico{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;font-size:.8rem}
+.hx-fc-ico.v{background:rgba(74,222,128,.16);color:#4ade80}
+.hx-fc-pw{height:18px;width:auto}
+.hx-fc-big{display:flex;align-items:baseline;gap:6px}
+.hx-fc-big b{font-family:'Lilita One',sans-serif;font-weight:400;font-size:2rem;line-height:1;color:#fff}
+.hx-fc-big small{font-size:.72rem;color:rgba(255,255,255,.55)}
+.hx-fc-bar{height:6px;border-radius:9px;background:rgba(255,255,255,.08);margin-top:10px;overflow:hidden}
+.hx-fc-bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#4ade80,#22d3ee);transition:width 1.6s var(--hx-ease)}
+.hx-fc-cd{font:600 .8rem 'Poppins',system-ui;color:rgba(255,255,255,.6)}
+.hx-fc-cd b{font-family:'Lilita One',sans-serif;font-weight:400;font-size:1.55rem;color:#fff;margin-left:2px}
+.hx-fc-cd b:first-child{margin-left:0}
+.hx-fc-sub{font-size:.72rem;color:rgba(255,255,255,.55);margin-top:6px}
+.hx-fc-sub b{color:#fbbf24}
+.hx-fc-kick b{display:block;font-size:.86rem;color:#fff}
+.hx-fc-kick small{font-size:.7rem;color:rgba(255,255,255,.5)}
+.hx-kick-dot{flex:none;width:12px;height:12px;border-radius:50%;background:#6b7280;box-shadow:0 0 0 4px rgba(107,114,128,.18)}
+.hx-kick-dot.on{background:#53fc18;box-shadow:0 0 0 0 rgba(83,252,24,.7);animation:hxPulseG 1.6s infinite}
+.hx-kick-dot.sm{width:8px;height:8px;box-shadow:none;display:inline-block}
+@keyframes hxPulseG{70%{box-shadow:0 0 0 10px rgba(83,252,24,0)}100%{box-shadow:0 0 0 0 rgba(83,252,24,0)}}
+
+.hx-scroll{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);width:28px;height:44px;border-radius:16px;border:1.5px solid rgba(255,255,255,.28);background:none;cursor:pointer;padding:0}
+.hx-scroll span{position:absolute;left:50%;top:9px;width:4px;height:8px;margin-left:-2px;border-radius:4px;background:#fff;animation:hxWheel 2s var(--hx-ease) infinite}
+@keyframes hxWheel{0%{opacity:0;transform:translateY(-4px)}30%{opacity:1}100%{opacity:0;transform:translateY(14px)}}
+
+/* ---- hero v2: centered JAMMMYREWARDS wordmark ---- */
+.hx-hero{min-height:0;padding:34px 0 96px}
+.hx-hero-c{position:relative;width:100%;min-width:0;box-sizing:border-box;max-width:1120px;margin:0 auto;padding:0 20px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.hx-wm{position:relative;font-family:'Lilita One','Arial Black',sans-serif;font-weight:400;font-size:clamp(2.5rem,9.4vw,7.6rem);line-height:1;letter-spacing:.01em;margin:26px 0 14px;white-space:nowrap;perspective:900px}
+.hx-wm-row{position:relative;display:inline-flex;align-items:flex-end}
+.hx-l{display:inline-block;background-image:linear-gradient(90deg,#a855f7,#6d7cf7,#22d3ee,#dffcff,#3ddc84,#ffd23d,#ff7a3d,#ff3db6);background-size:1300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0;transform:translateY(55%) rotateX(-85deg);transform-origin:50% 100%;animation:hxLetter 1.1s var(--hx-ease) calc(.15s + var(--i) * .045s) forwards,hxWave 5s ease-in-out calc(2.2s + var(--i) * .09s) infinite}
+@keyframes hxLetter{to{opacity:1;transform:none}}
+@keyframes hxWave{0%,30%,100%{transform:none}15%{transform:translateY(-7%)}}
+.hx-wm-gap{display:inline-block;width:.1em}
+.hx-wm-glow{position:absolute;inset:-45% -8%;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 38% 50% at 28% 55%,rgba(168,85,247,.42),transparent 70%),radial-gradient(ellipse 34% 50% at 55% 50%,rgba(34,211,238,.28),transparent 70%),radial-gradient(ellipse 34% 50% at 80% 55%,rgba(255,61,182,.3),transparent 70%);opacity:0;animation:hxGlowIn 1.6s var(--hx-ease) .5s forwards,hxGlowPulse 6s ease-in-out 2.1s infinite}
+@keyframes hxGlowIn{to{opacity:1}}
+@keyframes hxGlowPulse{0%,100%{opacity:1}50%{opacity:.55}}
+.hx-tag{display:flex;align-items:center;justify-content:center;gap:16px;font:800 clamp(.8rem,1.3vw,1rem) 'Poppins',system-ui;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.85);margin-bottom:14px}
+.hx-tag i{width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,#c084fc,#22d3ee)}
+.hx-tag .hx-shine{letter-spacing:.32em}
+.hx-hero-c .hx-lead{margin:0 auto;max-width:620px;text-align:center}
+.hx-mstage{position:relative;width:min(330px,68vw);aspect-ratio:1;margin:22px auto 10px}
+.hx-mstage .hx-jar{width:60%}
+.hx-mstage .hx-fc-race{right:calc(100% + 18px);left:auto;top:34%;bottom:auto;width:176px}
+.hx-mstage .hx-fc-kick{left:calc(100% + 18px);right:auto;top:48%;bottom:auto;display:flex;width:max-content}
+.hx-btn-c{color:#a5f3fc;background:rgba(34,211,238,.07);border:1px solid rgba(34,211,238,.38)}
+.hx-btn-c:hover{background:rgba(34,211,238,.15);border-color:rgba(34,211,238,.7)}
+.hx-code-row.center{justify-content:center;margin-top:28px}
+@media (max-width:760px){
+  .hx-hero{padding:14px 0 64px}
+  .hx-wm{font-size:clamp(1.9rem,9.6vw,3.1rem);margin:18px 0 10px}
+  .hx-hero-c{padding:0 16px}
+  .hx-hero-c .hx-lead{font-size:.93rem}
+  .hx-tag{gap:10px;letter-spacing:.22em;font-size:.72rem}
+  .hx-mstage{width:min(250px,62vw);margin:14px auto 4px}
+  .hx-mstage .hx-fc-race{right:auto;left:-20%;top:auto;bottom:2%;width:128px}
+  .hx-mstage .hx-fc-kick{left:auto;right:-18%;top:4%;padding:9px 11px;gap:8px}
+  .hx-mstage .hx-fc-kick b{font-size:.7rem}.hx-mstage .hx-fc-kick small{display:none}
+  .hx-cta .hx-btn{flex:1 1 100%}
+  .hx-hero .hx-cta .hx-btn:not(.hx-btn-p){flex:1 1 40%;padding:0 12px;font-size:.86rem}
+}
+.hx-fc-cd{white-space:nowrap}
+@media (prefers-reduced-motion:reduce){.hx-l,.hx-wm-glow{opacity:1!important;transform:none!important;animation:none!important}}
+/* ---------- MARQUEE ---------- */
+.hx-marquee{position:relative;overflow:hidden;padding:18px 0;margin:0 0 70px;background:linear-gradient(90deg,rgba(147,51,234,.16),rgba(236,72,153,.12),rgba(34,211,238,.12));border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);transform:rotate(-1.6deg) scale(1.04);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.hx-mq-track{display:flex;width:max-content;will-change:transform}
+.hx-mq-row{display:flex;align-items:center;gap:30px;padding-right:30px;flex:none}
+.hx-mq-row span{font-family:'Lilita One',sans-serif;font-size:clamp(1.25rem,2.2vw,1.8rem);letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.88);white-space:nowrap}
+.hx-mq-row span b{font-weight:400;color:#fcd34d}
+.hx-mq-row i{font-style:normal;color:#f472b6;font-size:1.1rem}
+
+/* ---------- REVEAL ---------- */
+.hx-rv{opacity:0;transform:translate3d(0,40px,0) scale(.98);transition:opacity 1s var(--hx-ease) var(--d,0s),transform 1.1s var(--hx-ease) var(--d,0s)}
+.hx-rv.in{opacity:1;transform:none}
+
+/* ---------- STATS ---------- */
+.hx-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:120px}
+.hx-stat{position:relative;padding:26px 22px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.08);overflow:hidden;transition:transform .5s var(--hx-ease),border-color .3s}
+.hx-stat:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.18)}
+.hx-stat-ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:rgb(var(--c));background:rgba(var(--c),.12);border:1px solid rgba(var(--c),.25);margin-bottom:18px}
+.hx-stat-ico svg{width:20px;height:20px}
+.hx-stat-num{font-family:'Lilita One',sans-serif;font-size:clamp(1.8rem,3vw,2.5rem);line-height:1;color:#fff;white-space:nowrap}
+.hx-stat-lbl{margin-top:8px;font:600 .72rem 'Poppins',system-ui;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.hx-spotlight::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(420px circle at var(--x,50%) var(--y,-40%),rgba(var(--c,168,85,247),.16),transparent 45%);opacity:0;transition:opacity .4s}
+.hx-spotlight:hover::after{opacity:1}
+
+/* ---------- SECTION HEAD ---------- */
+.hx-head{text-align:center;max-width:720px;margin:0 auto 46px}
+.hx-kicker{display:inline-flex;align-items:center;gap:8px;font:700 .7rem 'Poppins',system-ui;letter-spacing:.2em;text-transform:uppercase;color:#c084fc}
+.hx-kicker.green{color:#4ade80}.hx-kicker.kick{color:#53fc18}
+.hx-h2{font-family:'Lilita One',sans-serif;font-weight:400;font-size:clamp(2.1rem,4.6vw,3.6rem);line-height:1.02;margin:14px 0 14px;color:#fff}
+.hx-head p{color:rgba(226,232,240,.65);line-height:1.7;margin:0}
+.hx-grad{background:linear-gradient(100deg,#c084fc,#f472b6 55%,#fbbf24);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hx-grad.g2{background-image:linear-gradient(100deg,#4ade80,#22d3ee 60%,#a78bfa)}
+
+/* ---------- BENTO ---------- */
+.hx-bento{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:minmax(250px,auto);gap:16px;margin-bottom:130px}
+.hx-b{--rx:0deg;--ry:0deg;position:relative;border-radius:26px;padding:30px;overflow:hidden;cursor:pointer;background:linear-gradient(160deg,rgba(var(--c),.11),rgba(14,10,28,.9) 55%);border:1px solid rgba(var(--c),.2);transform:perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));transition:transform .6s var(--hx-ease),border-color .35s,box-shadow .35s,opacity 1s var(--hx-ease)}
+.hx-b.hx-rv:not(.in){transform:perspective(1000px) translate3d(0,40px,0) scale(.98)}
+.hx-b:hover{border-color:rgba(var(--c),.45);box-shadow:0 30px 70px -35px rgba(var(--c),.6)}
+.hx-b h3{font-family:'Lilita One',sans-serif;font-weight:400;font-size:clamp(1.5rem,2.2vw,1.95rem);line-height:1.05;margin:12px 0 10px;color:#fff}
+.hx-b p{color:rgba(226,232,240,.66);line-height:1.6;margin:0;font-size:.93rem;max-width:380px}
+.hx-b p b{color:#fcd34d}
+.hx-b-tag{display:inline-block;font:700 .64rem 'Poppins',system-ui;letter-spacing:.16em;text-transform:uppercase;color:rgb(var(--c));background:rgba(var(--c),.1);border:1px solid rgba(var(--c),.28);border-radius:99px;padding:4px 11px}
+.hx-b-link{display:inline-flex;align-items:center;gap:6px;margin-top:20px;font:700 .86rem 'Poppins',system-ui;color:#fff}
+.hx-b-link em{font-style:normal;transition:transform .35s var(--hx-ease)}
+.hx-b:hover .hx-b-link em{transform:translateX(5px)}
+.hx-b-bonus{grid-column:span 4;display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:center}
+.hx-b-race{grid-column:span 2}
+.hx-b-coin{grid-column:span 3}
+.hx-b-req{grid-column:span 3;cursor:default}
+.hx-bonus-art{position:relative;height:210px}
+.hx-chip-card{position:absolute;width:200px;padding:18px;border-radius:18px;background:linear-gradient(160deg,rgba(38,24,66,.95),rgba(14,10,28,.95));border:1px solid rgba(255,255,255,.1);box-shadow:0 24px 44px -22px rgba(0,0,0,.8);transition:transform .7s var(--hx-ease)}
+.hx-chip-card img{height:26px;width:auto;display:block;margin-bottom:12px}
+.hx-chip-card b{display:block;font-family:'Lilita One',sans-serif;font-weight:400;font-size:2.3rem;line-height:1;color:#fff}
+.hx-chip-card small{color:rgba(255,255,255,.55);font-size:.78rem}
+.hx-chip-card.c1{left:0;top:0;transform:rotate(-6deg);z-index:1}
+.hx-chip-card.c2{right:0;top:88px;transform:rotate(5deg);z-index:2}
+.hx-chip-card.c2 b{color:#93c5fd}.hx-chip-card.c1 b{color:#e9d5ff}
+.hx-b-bonus:hover .c1{transform:rotate(-9deg) translate(-10px,-8px)}
+.hx-b-bonus:hover .c2{transform:rotate(8deg) translate(8px,6px)}
+.hx-podium{display:flex;align-items:flex-end;justify-content:center;gap:8px;height:110px;margin-top:18px}
+.hx-podium div{display:flex;flex-direction:column;align-items:center;gap:6px;width:30%}
+.hx-podium i{font-style:normal;font:800 .8rem 'Poppins',system-ui;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#1a1300;background:#fbbf24}
+.hx-podium .p2 i{background:#e5e7eb}.hx-podium .p3 i{background:#f59e0b}
+.hx-podium .p1 i{background:none;font-size:1.3rem;animation:hxBob2 3s ease-in-out infinite}
+@keyframes hxBob2{50%{transform:translateY(-5px)}}
+.hx-podium span{display:block;width:100%;border-radius:10px 10px 4px 4px;background:linear-gradient(180deg,rgba(251,191,36,.5),rgba(251,191,36,.06));transform-origin:bottom;transform:scaleY(.1);transition:transform 1.2s var(--hx-ease)}
+.hx-podium .p1 span{height:70px}.hx-podium .p2 span{height:48px;background:linear-gradient(180deg,rgba(229,231,235,.4),rgba(229,231,235,.05))}.hx-podium .p3 span{height:34px;background:linear-gradient(180deg,rgba(245,158,11,.4),rgba(245,158,11,.05))}
+.hx-b-race.in .hx-podium span{transform:none}
+.hx-b-race.in .p2 span{transition-delay:.15s}.hx-b-race.in .p1 span{transition-delay:.3s}.hx-b-race.in .p3 span{transition-delay:.45s}
+.hx-b-coin{padding-right:200px}
+.hx-coin3d{position:absolute;right:26px;top:50%;width:150px;height:150px;margin-top:-75px;perspective:600px}
+.hx-coin3d img{width:100%;height:100%;animation:hxCoinSpin 6s cubic-bezier(.45,0,.55,1) infinite;filter:drop-shadow(0 20px 30px rgba(250,204,21,.25))}
+@keyframes hxCoinSpin{0%{transform:rotateY(0) translateY(0)}50%{transform:rotateY(180deg) translateY(-10px)}100%{transform:rotateY(360deg) translateY(0)}}
+.hx-req-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.hx-req-btns button{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 18px;border-radius:13px;cursor:pointer;font:700 .86rem 'Poppins',system-ui;color:#fff;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.3);transition:.3s var(--hx-ease)}
+.hx-req-btns button:hover{background:rgba(34,211,238,.18);transform:translateY(-2px)}
+.hx-req-btns span{font-size:1.1rem}
+
+/* ---------- STEPS ---------- */
+.hx-steps{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:140px}
+.hx-steps-line{position:absolute;left:12.5%;right:12.5%;top:33px;height:2px;background:rgba(255,255,255,.08);border-radius:2px}
+.hx-steps-line i{position:absolute;inset:0;transform-origin:left;transform:scaleX(var(--p,0));background:linear-gradient(90deg,#a855f7,#ec4899,#fbbf24,#4ade80);border-radius:inherit;box-shadow:0 0 14px rgba(236,72,153,.6)}
+.hx-step{position:relative;text-align:center;padding:0 8px}
+.hx-step-n{position:relative;z-index:1;width:66px;height:66px;margin:0 auto 20px;border-radius:20px;display:grid;place-items:center;background:#0d0a1c;border:1px solid rgba(255,255,255,.12);box-shadow:0 0 0 8px #07101f;transition:border-color .5s,box-shadow .5s,background .5s}
+.hx-step-n span{font-family:'Lilita One',sans-serif;font-size:1.3rem;color:rgba(255,255,255,.4);transition:color .5s}
+.hx-step.lit .hx-step-n{border-color:rgba(236,72,153,.7);background:linear-gradient(135deg,#7e22ce,#db2777);box-shadow:0 0 0 8px #07101f,0 14px 36px -10px rgba(219,39,119,.8)}
+.hx-step.lit .hx-step-n span{color:#fff}
+.hx-step h4{font-family:'Lilita One',sans-serif;font-weight:400;font-size:1.25rem;margin:0 0 8px;color:#fff}
+.hx-step p{color:rgba(226,232,240,.6);font-size:.88rem;line-height:1.6;margin:0}
+
+/* ---------- VAULT SHOWCASE ---------- */
+.hx-vault{position:relative;margin:0 auto 140px;max-width:1180px;padding:0 24px}
+.hx-vault-glow{position:absolute;inset:-60px 0;background:radial-gradient(ellipse 50% 60% at 30% 50%,rgba(34,197,94,.14),transparent),radial-gradient(ellipse 40% 50% at 75% 40%,rgba(168,85,247,.14),transparent);pointer-events:none}
+.hx-vault-in{position:relative;display:grid;grid-template-columns:.75fr 1.25fr;gap:44px;align-items:center;padding:40px 48px;border-radius:32px;background:linear-gradient(145deg,rgba(20,40,32,.55),rgba(12,8,26,.9) 55%);border:1px solid rgba(74,222,128,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.hx-vault-visual{position:relative;aspect-ratio:1;max-width:310px;width:100%;justify-self:center;cursor:pointer}
+.hx-ring{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 0 22px rgba(34,211,238,.25))}
+#hxRingArc{transition:stroke-dasharray 2.2s var(--hx-ease)}
+.hx-vault-mascot{position:absolute;left:50%;top:50%;width:48%;transform:translate(-50%,-55%);animation:hxBobC 5s ease-in-out infinite;filter:drop-shadow(0 20px 30px rgba(0,0,0,.5))}
+@keyframes hxBobC{50%{transform:translate(-50%,-60%) rotate(-3deg)}}
+.hx-ring-pct{position:absolute;left:50%;bottom:16%;transform:translateX(-50%);font:700 .9rem 'Poppins',system-ui;color:rgba(255,255,255,.7);background:rgba(8,20,14,.85);border:1px solid rgba(74,222,128,.35);border-radius:99px;padding:5px 14px;white-space:nowrap}
+.hx-ring-pct b{font-family:'Lilita One',sans-serif;font-weight:400;font-size:1.15rem;color:#4ade80}
+.hx-vault-sub{color:rgba(226,232,240,.68);line-height:1.7;margin:0 0 28px;max-width:520px}
+.hx-vault-bal{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.hx-vault-bal small,.hx-vault-minis small{display:block;font:600 .66rem 'Poppins',system-ui;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:6px}
+.hx-vault-num{font-family:'Lilita One',sans-serif;font-size:clamp(2.6rem,5vw,3.8rem);line-height:1;color:#fff;cursor:pointer;white-space:nowrap}
+.hx-vault-goal{text-align:right}
+.hx-vault-goal b{font:700 1rem 'Poppins',system-ui;color:#4ade80}
+.hx-vbar{position:relative;height:12px;border-radius:99px;background:rgba(255,255,255,.07);margin:20px 0 10px;overflow:hidden}
+.hx-vbar-fill{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#22c55e,#22d3ee,#a855f7);background-size:200% 100%;box-shadow:0 0 18px rgba(34,211,238,.5);transition:width 2s var(--hx-ease);position:relative}
+.hx-vbar-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.45) 50%,transparent 65%);animation:slShine 3s ease-in-out infinite}
+.hx-vbar-meta{display:flex;justify-content:space-between;font-size:.8rem;color:rgba(255,255,255,.55)}
+.hx-vbar-meta span:first-child{color:#4ade80;font-weight:700}
+.hx-vault-minis{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0 26px}
+.hx-vault-minis>div{padding:16px 18px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07)}
+.hx-vault-minis b{display:flex;align-items:center;gap:8px;font-family:'Lilita One',sans-serif;font-weight:400;font-size:1.4rem;color:#4ade80}
+.hx-vault-minis b.st{color:#fff}
+.hx-vault-minis>div>span{display:block;font-size:.75rem;color:rgba(255,255,255,.45);margin-top:3px}
+.hx-vault-btns{display:flex;gap:12px;flex-wrap:wrap}
+
+/* ---------- PARTNERS ---------- */
+.hx-partners{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:980px;margin:0 auto}
+.hx-p{--rx:0deg;--ry:0deg;position:relative;border-radius:28px;padding:1px;overflow:hidden;background:rgba(255,255,255,.08);transform:perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));transition:transform .6s var(--hx-ease),box-shadow .35s,opacity 1s var(--hx-ease)}
+.hx-p.hx-rv:not(.in){transform:perspective(1000px) translate3d(0,40px,0) scale(.98)}
+.hx-p:hover{box-shadow:0 34px 70px -34px rgba(var(--c),.7)}
+.hx-p-beam{position:absolute;inset:-50%;background:conic-gradient(from 0deg,transparent 0 70%,rgba(var(--c),.9) 85%,transparent 100%);animation:hxSpin 6s linear infinite;opacity:.6}
+.hx-p:hover .hx-p-beam{opacity:1}
+.hx-p-logo,.hx-p-body{position:relative}
+.hx-p-logo{height:170px;display:grid;place-items:center;border-radius:27px 27px 0 0;background:radial-gradient(ellipse at 50% 120%,rgba(var(--c),.3),transparent 60%),linear-gradient(160deg,#170c26,#0a0614)}
+.hx-p-logo img{max-width:62%;max-height:92px;object-fit:contain;transition:transform .7s var(--hx-ease);filter:drop-shadow(0 12px 30px rgba(var(--c),.35))}
+.hx-p:hover .hx-p-logo img{transform:scale(1.07)}
+.hx-p-body{padding:24px 26px 26px;border-radius:0 0 27px 27px;background:#0c0918}
+.hx-p-name{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-family:'Lilita One',sans-serif;font-size:1.55rem;color:#fff}
+.hx-p-badge{font:700 .62rem 'Poppins',system-ui;letter-spacing:.12em;text-transform:uppercase;color:#d8b4fe;background:rgba(192,132,252,.12);border:1px solid rgba(192,132,252,.3);border-radius:99px;padding:4px 10px}
+.hx-p-badge.blue{color:#93c5fd;background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.3)}
+.hx-p-feats{list-style:none;padding:0;margin:16px 0 22px;display:grid;gap:9px}
+.hx-p-feats li{display:flex;align-items:center;gap:10px;color:rgba(226,232,240,.78);font-size:.9rem}
+.hx-p-feats i{font-style:normal;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font-size:.9rem;background:rgba(var(--c),.1);border:1px solid rgba(var(--c),.2)}
+.hx-p-btns{display:flex;gap:10px}
+.hx-p-btns .hx-btn{flex:1}
+.hx-note{max-width:980px;margin:18px auto 140px;text-align:center;color:rgba(255,255,255,.5);font-size:.84rem;line-height:1.6}
+.hx-note b{color:#f59e0b}
+
+/* ---------- LIVE ---------- */
+.hx-live{display:grid;grid-template-columns:1fr 1.05fr;gap:50px;align-items:center;margin-bottom:140px}
+.hx-live p{color:rgba(226,232,240,.66);line-height:1.7;margin:0 0 28px;max-width:470px}
+.hx-kick-g{color:#53fc18;text-shadow:0 0 30px rgba(83,252,24,.45)}
+.hx-live-btns{display:flex;gap:12px;flex-wrap:wrap}
+.hx-screen{position:relative;display:block;border-radius:24px;padding:10px;background:linear-gradient(160deg,rgba(83,252,24,.35),rgba(255,255,255,.06) 40%,rgba(83,252,24,.15));text-decoration:none;box-shadow:0 40px 80px -40px rgba(83,252,24,.35);transition:transform .6s var(--hx-ease)}
+.hx-screen:hover{transform:translateY(-6px) rotate(-.5deg)}
+.hx-screen-in{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 40%,rgba(83,252,24,.14),transparent 60%),repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 2px,transparent 2px 4px),#050a06}
+.hx-kick-logo{position:absolute;left:18px;top:16px;width:26px;height:26px}
+.hx-play{width:78px;height:78px;border-radius:50%;display:grid;place-items:center;color:#051a02;background:#53fc18;box-shadow:0 0 0 12px rgba(83,252,24,.14),0 0 0 26px rgba(83,252,24,.06);transition:transform .5s var(--hx-ease)}
+.hx-play svg{width:30px;height:30px;margin-left:4px}
+.hx-screen:hover .hx-play{transform:scale(1.1)}
+.hx-screen-cap{position:absolute;left:18px;bottom:16px;right:18px;display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:rgba(255,255,255,.65)}
+.hx-screen-cap b{color:#fff;font-size:.95rem}
+.hx-eq{position:absolute;right:18px;top:18px;display:flex;align-items:flex-end;gap:3px;height:22px}
+.hx-eq i{width:3px;height:100%;border-radius:2px;background:#53fc18;transform-origin:bottom;transform:scaleY(.3);animation:hxEq 1s ease-in-out infinite}
+.hx-eq i:nth-child(2){animation-delay:-.2s}.hx-eq i:nth-child(3){animation-delay:-.5s}.hx-eq i:nth-child(4){animation-delay:-.1s}.hx-eq i:nth-child(5){animation-delay:-.7s}.hx-eq i:nth-child(6){animation-delay:-.35s}.hx-eq i:nth-child(7){animation-delay:-.6s}
+@keyframes hxEq{50%{transform:scaleY(1)}}
+
+/* ---------- FINAL CTA ---------- */
+.hx-final{position:relative;text-align:center;padding:84px 24px;border-radius:34px;overflow:hidden;margin-bottom:90px;border:1px solid rgba(255,255,255,.08);isolation:isolate}
+.hx-final-bg{position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse 60% 80% at 50% 120%,rgba(236,72,153,.35),transparent),radial-gradient(ellipse 50% 60% at 0% 0%,rgba(147,51,234,.35),transparent),radial-gradient(ellipse 50% 60% at 100% 0%,rgba(34,211,238,.2),transparent),#0b0818}
+.hx-final p{color:rgba(226,232,240,.7);margin:0 auto 30px;max-width:480px;line-height:1.7}
+.hx-final-coin{position:absolute;width:120px;z-index:-1;opacity:.9;filter:drop-shadow(0 20px 30px rgba(0,0,0,.5))}
+.hx-final-coin.a{left:6%;top:18%;transform:rotate(-18deg);animation:hxFloat2 7s ease-in-out infinite}
+.hx-final-coin.b{right:7%;bottom:14%;width:84px;transform:rotate(14deg);animation:hxFloat2 8s ease-in-out -3s infinite}
+@keyframes hxFloat2{50%{translate:0 -16px}}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:1020px){
+  .hx-hero-in{grid-template-columns:1fr;text-align:center;gap:10px;padding:0 20px}
+  .hx-copy{display:flex;flex-direction:column;align-items:center}
+  .hx-lead{margin-left:auto;margin-right:auto}
+  .hx-cta,.hx-code-row{justify-content:center}
+  .hx-stage{max-width:460px;order:-1;margin-top:-10px}
+  .hx-hero{min-height:0;padding:20px 0 80px}
+  .hx-bento{grid-template-columns:1fr 1fr}
+  .hx-b-bonus,.hx-b-race,.hx-b-coin,.hx-b-req{grid-column:span 1}
+  .hx-b-bonus{grid-column:1/-1}
+  .hx-vault-in{grid-template-columns:1fr;padding:36px 28px;gap:24px;text-align:center}
+  .hx-vault-visual{max-width:300px}
+  .hx-vault-sub{margin-left:auto;margin-right:auto}
+  .hx-vault-bal{justify-content:center;flex-direction:column;align-items:center}
+  .hx-vault-goal{text-align:center}
+  .hx-vault-btns{justify-content:center}
+  .hx-live{grid-template-columns:1fr;text-align:center;gap:34px}
+  .hx-live p{margin-left:auto;margin-right:auto}
+  .hx-live-btns{justify-content:center}
+}
+@media (max-width:760px){
+  .hx-wrap{padding:0 16px}
+  .hx-h1{font-size:clamp(2.7rem,13.5vw,3.5rem);margin:14px 0 12px}
+  .hx-lead{font-size:.95rem;line-height:1.6;margin-bottom:22px}
+  .hx-hero{padding:6px 0 60px}
+  .hx-eyebrow{font-size:.62rem;letter-spacing:.1em;padding:7px 12px 7px 10px}
+  .hx-stage{max-width:290px;width:74%;margin-top:4px}
+  .hx-fc{padding:10px 12px;border-radius:14px}
+  .hx-fc-vault{width:124px;left:-18%;top:6%}
+  .hx-fc-race{width:134px;right:-20%;top:auto;bottom:14%}
+  .hx-fc-kick{display:none}
+  .hx-fc-big b{font-size:1.5rem}.hx-fc-big small{font-size:.6rem}.hx-fc-top{letter-spacing:.04em}.hx-fc-cd b{font-size:1.15rem}.hx-fc-top{font-size:.58rem;margin-bottom:6px}.hx-fc-sub{font-size:.62rem}
+  .hx-cta{width:100%}
+  .hx-cta .hx-btn{flex:1 1 100%}
+  .hx-code-row{flex-direction:column;gap:16px}
+  .hx-scroll{display:none}
+  .hx-marquee{margin-bottom:46px;padding:13px 0}
+  .hx-stats{grid-template-columns:1fr 1fr;gap:10px;margin-bottom:84px}
+  .hx-stat{padding:18px 16px;border-radius:18px}
+  .hx-stat-ico{width:34px;height:34px;margin-bottom:12px}
+  .hx-stat-num{font-size:1.5rem}
+  .hx-stat-lbl{font-size:.6rem;letter-spacing:.08em}
+  .hx-head{margin-bottom:30px}
+  .hx-bento{grid-template-columns:1fr;margin-bottom:90px;gap:12px}
+  .hx-b{padding:24px;border-radius:22px}
+  .hx-b-bonus{grid-template-columns:1fr}
+  .hx-bonus-art{height:170px;margin-top:6px}
+  .hx-chip-card{width:170px;padding:14px}
+  .hx-chip-card b{font-size:1.9rem}
+  .hx-chip-card.c1{left:0;right:auto}.hx-chip-card.c2{right:0;top:56px}
+  .hx-b-coin{padding-right:24px;padding-top:150px}
+  .hx-coin3d{top:22px;margin-top:0;left:24px;right:auto;width:110px;height:110px}
+  .hx-steps{grid-template-columns:1fr;gap:26px;margin-bottom:90px;padding-left:4px}
+  .hx-steps-line{left:36px;right:auto;top:30px;bottom:30px;width:2px;height:auto}
+  .hx-steps-line i{transform-origin:top;transform:scaleY(var(--p,0))}
+  .hx-step{display:grid;grid-template-columns:66px 1fr;column-gap:18px;text-align:left;padding:0}
+  .hx-step-n{grid-row:span 2;margin:0}
+  .hx-step h4{align-self:end;margin-bottom:4px}
+  .hx-vault{padding:0 16px;margin-bottom:90px}
+  .hx-vault-in{padding:28px 18px;border-radius:24px}
+  .hx-vault-minis{grid-template-columns:1fr 1fr;text-align:left}
+  .hx-vault-btns .hx-btn,.hx-live-btns .hx-btn{flex:1 1 100%}
+  .hx-partners{grid-template-columns:1fr}
+  .hx-p-logo{height:130px}
+  .hx-note{margin-bottom:90px}
+  .hx-live{margin-bottom:90px}
+  .hx-final{padding:60px 20px;border-radius:26px}
+  .hx-final-coin{width:64px}.hx-final-coin.a{left:-12px;top:-12px}.hx-final-coin.b{width:48px;right:-8px;bottom:-8px}
+}
+@media (hover:none){.hx-b,.hx-p{transform:none}}
+.hx-off,.hx-off *,.hx-off *::before,.hx-off *::after{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){
+  .hx-in,.hx-w>span,.hx-rv{opacity:1!important;transform:none!important;animation:none!important}
+  .hx-mesh i,.hx-halo,.hx-rings,.hx-orbit,.hx-oc,.hx-jar,.hx-fc,.hx-p-beam,.hx-coin3d img{animation:none!important}
+}
 .audit-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:14px}
 .audit-filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
 .audit-filters .pf-select{width:auto;min-width:170px;margin:0}
@@ -3200,246 +3608,291 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
   <!-- HOME -->
   <section class="page show" id="home">
-    <div class="hero">
-      
-      <span class="pill">The future of community rewards</span>
-      <h1 class="wordmark"><div class="wordmark-glow"><span></span><span></span><span></span><span></span></div><span class="jam">JAMMMY</span><span class="slots">REWARDS</span></h1>
-      <p class="sub">Experience the next generation of online casino rewards, exclusive leaderboards, and community-driven gaming.</p>
-      <!-- Mascot wrapper (coins spill from JS) -->
-      <div class="mascot-wrap" style="position:relative;width:clamp(160px,16vw,210px);margin:22px auto 6px;display:block;filter:none;perspective:none">
-        <video class="mascot" autoplay loop muted playsinline style="position:relative;z-index:1;width:100%;display:block;border-radius:16px" onclick="openVaultModal()">
-          <source src="vault-jar-7.mp4.webm" type="video/webm">
-        </video>
-      </div>
-      <div class="hero-cta">
-        <button class="skew primary" onclick="nav('bonuses')"><span>EXPLORE BONUSES</span></button>
-        <button class="skew dark" onclick="nav('loyalty')"><span>JOIN LOYALTY</span></button>
-        <button class="skew secondary" onclick="nav('leaderboards')"><span>LEADERBOARDS</span></button>
-      </div>
-    </div>
+  <div class="hx">
 
-    <div class="sec-head reveal"><h2>Why play with <span class="g">Jammmy</span></h2><p>Real rewards, a real community, and offers you won't find on the casino alone.</p></div>
-    <div class="inner">
-
-      <!-- STATS BAR -->
-      <div class="lobby-stats reveal" style="position:relative;overflow:hidden"><div style="position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(90deg,rgba(168,85,247,.3),rgba(34,211,238,.2),rgba(244,114,182,.2),rgba(168,85,247,.3));background-size:200%;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none"></div>
-        <div class="lstat">
-          <svg class="lstat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8.4"/><path d="M12 7.2v9.6M9.3 9.3c0-1.1 1.2-1.9 2.7-1.9s2.7.8 2.7 1.9-1.2 1.5-2.7 1.9c-1.5.4-2.7.8-2.7 1.9s1.2 1.9 2.7 1.9 2.7-.8 2.7-1.9" stroke-linecap="round"/></svg>
-          <div class="lstat-num display" data-count="134179" data-prefix="$">$0</div>
-          <div class="lstat-label">Leaderboard wagered</div>
-        </div>
-        <div class="lstat-div"></div>
-        <div class="lstat">
-          <svg class="lstat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="6" width="17" height="13" rx="2.2"/><path d="M3.5 10.5h17" stroke-linecap="round"/><circle cx="12" cy="14.3" r="2.1"/><path d="M8 6V5a4 4 0 0 1 8 0v1" stroke-linecap="round"/></svg>
-          <div class="lstat-num display" id="homeMiniVaultBalance" data-count="800" data-suffix=" Coins">0</div>
-          <div class="lstat-label">Vault balance</div>
-        </div>
-        <div class="lstat-div"></div>
-        <div class="lstat">
-          <svg class="lstat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8.5" cy="8.5" r="3"/><path d="M2.8 19c.5-3 2.7-4.9 5.7-4.9s5.2 1.9 5.7 4.9" stroke-linecap="round"/><circle cx="16.8" cy="9.2" r="2.4"/><path d="M15.2 14.4c2.4.2 4 1.9 4.4 4.4" stroke-linecap="round"/></svg>
-          <div class="lstat-num display" id="homeActivePlayers" data-count="6">0</div>
-          <div class="lstat-label">Active players</div>
-        </div>
-        <div class="lstat-div"></div>
-        <div class="lstat">
-          <svg class="lstat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3.2 19 6v5.4c0 4.5-2.9 7.7-7 8.4-4.1-.7-7-3.9-7-8.4V6z" stroke-linejoin="round"/><path d="m8.6 12.1 2.3 2.3 4.5-4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div class="lstat-num display" data-count="2" data-suffix=" partners">0</div>
-          <div class="lstat-label">Verified casinos</div>
-        </div>
+    <!-- ===================== HERO ===================== -->
+    <header class="hx-hero" id="hxHero">
+      <div class="hx-hero-bg" aria-hidden="true">
+        <div class="hx-mesh" data-hx-par="-0.12"><i></i><i></i><i></i><i></i></div>
+        <div class="hx-grid"></div>
+        <div class="hx-spot"></div>
       </div>
 
-      <!-- FEATURE CARDS -->
-      <div class="lobby-grid reveal">
-        <div class="lobby-card lc-purple">
-          <div class="lc-icon">🎁</div>
-          <div class="lc-body">
-            <h3>Exclusive Bonus Codes</h3>
-            <p>Hand-picked reloads, rakeback and deposit offers you won't get signing up alone. Sign up under <b>JAMMMY</b> to unlock everything.</p>
+      <div class="hx-hero-c">
+        <span class="hx-eyebrow hx-in" style="--d:.05s"><span class="hx-eyebrow-dot"></span>The future of community rewards</span>
+
+        <h1 class="hx-wm" aria-label="JammmyRewards">
+          <span class="hx-wm-glow" aria-hidden="true"></span>
+          <span class="hx-wm-row" aria-hidden="true"><span class="hx-l j" style="--i:0;background-position:0.0% 50%">J</span><span class="hx-l j" style="--i:1;background-position:8.3% 50%">A</span><span class="hx-l j" style="--i:2;background-position:16.7% 50%">M</span><span class="hx-l j" style="--i:3;background-position:25.0% 50%">M</span><span class="hx-l j" style="--i:4;background-position:33.3% 50%">M</span><span class="hx-l j" style="--i:5;background-position:41.7% 50%">Y</span><span class="hx-wm-gap"></span><span class="hx-l r" style="--i:6;background-position:50.0% 50%">R</span><span class="hx-l r" style="--i:7;background-position:58.3% 50%">E</span><span class="hx-l r" style="--i:8;background-position:66.7% 50%">W</span><span class="hx-l r" style="--i:9;background-position:75.0% 50%">A</span><span class="hx-l r" style="--i:10;background-position:83.3% 50%">R</span><span class="hx-l r" style="--i:11;background-position:91.7% 50%">D</span><span class="hx-l r" style="--i:12;background-position:100.0% 50%">S</span></span>
+        </h1>
+        <div class="hx-tag hx-in" style="--d:.75s"><span>Wager</span><i></i><span>Climb</span><i></i><span class="hx-shine">Get paid</span></div>
+        <p class="hx-lead hx-in" style="--d:.85s">Experience the next generation of online casino rewards, exclusive leaderboards, and community-driven gaming.</p>
+
+        <div class="hx-mstage hx-in" style="--d:.35s" id="hxStage">
+          <div class="hx-stage-par" data-hx-mouse="1">
+            <div class="hx-halo"></div>
+            <svg class="hx-rings ra" viewBox="0 0 400 400" aria-hidden="true">
+              <defs><linearGradient id="hxRg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset=".5" stop-color="#f472b6"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs>
+              <circle cx="200" cy="200" r="190" fill="none" stroke="url(#hxRg)" stroke-width="1" stroke-dasharray="2 10" opacity=".55"/>
+            </svg>
+            <svg class="hx-rings rb" viewBox="0 0 400 400" aria-hidden="true">
+              <circle cx="200" cy="200" r="158" fill="none" stroke="url(#hxRg)" stroke-width="1.5" stroke-dasharray="120 40 8 40" opacity=".7"/>
+            </svg>
+            <div class="hx-orbit" aria-hidden="true">
+              <img src="jammmy-coin.png" alt="" class="hx-oc c1"><img src="jammmy-coin.png" alt="" class="hx-oc c2"><img src="jammmy-coin.png" alt="" class="hx-oc c3">
+            </div>
+            <div class="hx-jar" onclick="openVaultModal()" title="Jammmy">
+              <video id="homeJarVideo" class="hx-jar-v" autoplay loop muted playsinline preload="auto"><source src="vault-jar-7.mp4.webm" type="video/webm"></video>
+              <div class="hx-jar-shadow"></div>
+            </div>
           </div>
-          <button class="lc-btn" style="background:rgba(168,85,247,.2);border-color:rgba(168,85,247,.5);color:#e9d5ff" onclick="nav('bonuses')">View Bonuses →</button>
+          <div class="hx-fc hx-fc-race" data-hx-mouse="2.2" onclick="goToLeaderboard('powerwin')">
+            <div class="hx-fc-top"><img src="powerwin.png" alt="" class="hx-fc-pw"><span>Race ends in</span></div>
+            <div class="hx-fc-cd" id="hxRaceCd"><b>--</b>d <b>--</b>h <b>--</b>m</div>
+            <div class="hx-fc-sub"><b>$350</b> prize pool</div>
+          </div>
+          <div class="hx-fc hx-fc-kick" data-hx-mouse="1.6" onclick="window.open('https://kick.com/jammmyslots','_blank')">
+            <span class="hx-kick-dot" id="hxKickDot"></span>
+            <div><b id="hxKickText">Checking stream…</b><small>kick.com/jammmyslots</small></div>
+          </div>
         </div>
-        <div class="lobby-card lc-gold">
-          <div class="lc-icon">🏆</div>
-          <div class="lc-body">
-            <h3>Weekly Leaderboards</h3>
-            <p>$2,000+ in weekly prizes across partner races. Wager, climb the board and get paid every Monday.</p>
-          </div>
-          <button class="lc-btn" style="background:rgba(251,191,36,.15);border-color:rgba(251,191,36,.45);color:#fde68a" onclick="nav('leaderboards')">See Leaderboard →</button>
+
+        <div class="hx-cta center hx-in" style="--d:1s">
+          <button type="button" class="hx-btn hx-btn-p hx-mag" onclick="nav('bonuses')"><span>Explore bonuses</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button type="button" class="hx-btn hx-btn-g hx-mag" onclick="nav('loyalty')"><span>Join loyalty</span></button>
+          <button type="button" class="hx-btn hx-btn-c hx-mag" onclick="nav('leaderboards')"><span class="hx-live-dot"></span><span>Leaderboards</span></button>
         </div>
-        <div class="lobby-card lc-cyan">
-          <div class="lc-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 21 7v10l-9 5-9-5V7z" stroke-linejoin="round"/></svg></div>
-          <div class="lc-body">
-            <h3>Community Vault</h3>
-            <p>Every wager from the community fills the shared jar. Hit the goal and the whole chat cashes out together.</p>
+
+        <div class="hx-code-row center hx-in" style="--d:1.12s">
+          <button type="button" class="hx-code" onclick="hxCopyCode(this)" aria-label="Copy code JAMMMY">
+            <span class="hx-code-k">Use code</span><b>JAMMMY</b><span class="hx-code-c">Copy</span>
+          </button>
+          <div class="hx-trust">
+            <span>Official partners</span>
+            <img src="powerwin.png" alt="Power.win" class="hx-trust-pw">
+            <img src="degencity.png" alt="DegenCity" class="hx-trust-dc">
           </div>
-          <button class="lc-btn" style="background:rgba(34,211,238,.15);border-color:rgba(34,211,238,.45);color:#a5f3fc" onclick="nav('vault')">View Vault →</button>
         </div>
-        <div class="lobby-card lc-green">
-          <div class="lc-icon">⚡</div>
-          <div class="lc-body">
-            <h3>Loyalty Tiers</h3>
-            <p>Rank up from Bronze to Diamond. Unlock VIP perks, drops, giveaways and exclusive race invites automatically.</p>
-          </div>
-          <button class="lc-btn" style="background:rgba(74,222,128,.15);border-color:rgba(74,222,128,.45);color:#bbf7d0" onclick="nav('loyalty')">Join Loyalty →</button>
+      </div>
+
+      <button type="button" class="hx-scroll" onclick="hxScrollTo('#hxMarquee')" aria-label="Scroll down"><span></span></button>
+    </header>
+
+    <!-- ===================== MARQUEE ===================== -->
+    <div class="hx-marquee" id="hxMarquee" aria-hidden="true">
+      <div class="hx-mq-track" id="hxMqTrack">
+        <div class="hx-mq-row">
+          <span>Code <b>JAMMMY</b></span><i>✦</i><span>Live wager races</span><i>✦</i><span>Community Vault</span><i>✦</i><span>Exclusive bonuses</span><i>✦</i><span>Daily coin claims</span><i>✦</i><span>Redeem for cash &amp; crypto</span><i>✦</i><span>Slot &amp; battle requests</span><i>✦</i>
+        </div>
+        <div class="hx-mq-row">
+          <span>Code <b>JAMMMY</b></span><i>✦</i><span>Live wager races</span><i>✦</i><span>Community Vault</span><i>✦</i><span>Exclusive bonuses</span><i>✦</i><span>Daily coin claims</span><i>✦</i><span>Redeem for cash &amp; crypto</span><i>✦</i><span>Slot &amp; battle requests</span><i>✦</i>
         </div>
       </div>
     </div>
 
-    <!-- JAMMMY VAULT -->
-    <div class="vault-wrap reveal">
-      <!-- LEFT: big title + mascot, like the screenshot -->
-      <div class="vault-left">
-        <div>
-          <span class="vault-tag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:none"><path d="M12 2 21 7v10l-9 5-9-5V7z" stroke-linejoin="round"/></svg> COMMUNITY VAULT</span>
-          <h2 class="vault-title"><span class="vj">JAMMMY</span> <span class="vv" style="background:var(--rainbow);background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent">VAULT</span></h2>
-          <p class="vault-sub">Watch the community jar fill up in real time. Every wager builds toward the next payout.</p>
+    <!-- ===================== STATS ===================== -->
+    <div class="hx-wrap">
+      <div class="hx-stats hx-rv">
+        <div class="hx-stat hx-spotlight">
+          <div class="hx-stat-ico" style="--c:34,211,238"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8.4"/><path d="M12 7.2v9.6M9.3 9.3c0-1.1 1.2-1.9 2.7-1.9s2.7.8 2.7 1.9-1.2 1.5-2.7 1.9c-1.5.4-2.7.8-2.7 1.9s1.2 1.9 2.7 1.9 2.7-.8 2.7-1.9" stroke-linecap="round"/></svg></div>
+          <div class="hx-stat-num display" data-count="134179" data-prefix="$">$0</div>
+          <div class="hx-stat-lbl">Leaderboard wagered</div>
         </div>
-        <img src="logo.png" alt="Jammmy mascot" class="vault-mascot" onclick="openVaultModal()">
+        <div class="hx-stat hx-spotlight">
+          <div class="hx-stat-ico" style="--c:168,85,247"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="6" width="17" height="13" rx="2.2"/><path d="M3.5 10.5h17" stroke-linecap="round"/><circle cx="12" cy="14.3" r="2.1"/><path d="M8 6V5a4 4 0 0 1 8 0v1" stroke-linecap="round"/></svg></div>
+          <div class="hx-stat-num display" id="homeMiniVaultBalance" data-count="800" data-suffix=" Coins">0</div>
+          <div class="hx-stat-lbl">Vault balance</div>
+        </div>
+        <div class="hx-stat hx-spotlight">
+          <div class="hx-stat-ico" style="--c:244,114,182"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8.5" cy="8.5" r="3"/><path d="M2.8 19c.5-3 2.7-4.9 5.7-4.9s5.2 1.9 5.7 4.9" stroke-linecap="round"/><circle cx="16.8" cy="9.2" r="2.4"/><path d="M15.2 14.4c2.4.2 4 1.9 4.4 4.4" stroke-linecap="round"/></svg></div>
+          <div class="hx-stat-num display" id="homeActivePlayers" data-count="6">0</div>
+          <div class="hx-stat-lbl">Active players</div>
+        </div>
+        <div class="hx-stat hx-spotlight">
+          <div class="hx-stat-ico" style="--c:74,222,128"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3.2 19 6v5.4c0 4.5-2.9 7.7-7 8.4-4.1-.7-7-3.9-7-8.4V6z" stroke-linejoin="round"/><path d="m8.6 12.1 2.3 2.3 4.5-4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="hx-stat-num display" data-count="2" data-suffix=" partners">0</div>
+          <div class="hx-stat-lbl">Verified casinos</div>
+        </div>
       </div>
 
-      <!-- RIGHT: live balance + bar + mini cards + buttons — floating freely -->
-      <div class="vault-right">
-        <div class="vault-balance-label">CURRENT BALANCE</div>
-        <div class="vault-balance display" id="homeVaultBalance" data-count="800" data-suffix=" Coins" onclick="openVaultModal()" style="cursor:pointer">0</div>
-        <div class="vault-goal-label">Goal: <span id="homeVaultGoal">1,000 Coins</span></div>
-        <div class="vault-bar-wrap">
-          <div class="vault-bar"><div class="vault-bar-fill" id="vaultBar"></div></div>
-          <div class="vault-bar-meta"><span class="vault-pct" id="homeVaultPct">80% complete</span><span id="homeVaultRemaining">200 Coins remaining</span></div>
-        </div>
-        <!-- mini cards row — LAST DISTRIBUTED + STATUS -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0">
-          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 18px">
-            <div style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:8px">LAST DISTRIBUTED</div>
-            <div id="homeLastAdded" style="font-family:'Lilita One',sans-serif;font-size:1.5rem;color:var(--neon-green)">—</div>
-            <div id="homeLastAddedDate" style="font-size:.76rem;color:var(--faint);margin-top:3px">No distribution yet</div>
+      <!-- ===================== WHY (BENTO) ===================== -->
+      <div class="hx-head hx-rv">
+        <span class="hx-kicker">Why play with Jammmy</span>
+        <h2 class="hx-h2">More than a code.<br><span class="hx-grad">A whole rewards system.</span></h2>
+        <p>Real rewards, a real community, and offers you won't find by signing up on the casino alone.</p>
+      </div>
+
+      <div class="hx-bento">
+        <article class="hx-b hx-b-bonus hx-rv hx-tilt hx-spotlight" style="--c:168,85,247" onclick="nav('bonuses')">
+          <div class="hx-b-txt">
+            <span class="hx-b-tag">Bonuses</span>
+            <h3>Exclusive bonus codes</h3>
+            <p>Hand-picked deposit matches, rakeback and cashback from our verified partners. Sign up under <b>JAMMMY</b> to unlock everything.</p>
+            <span class="hx-b-link">View bonuses <em>→</em></span>
           </div>
-          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 18px">
-            <div style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:8px">STATUS</div>
-            <div style="display:flex;align-items:center;gap:8px;font-family:'Lilita One',sans-serif;font-size:1.3rem;color:#fff"><span class="live-dot"></span>Active</div>
-            <div style="font-size:.76rem;color:var(--faint);margin-top:3px">Live &amp; filling up</div>
+          <div class="hx-b-art hx-bonus-art" aria-hidden="true">
+            <div class="hx-chip-card c1"><img src="powerwin.png" alt=""><b>100%</b><small>Cash match</small></div>
+            <div class="hx-chip-card c2"><img src="degencity.png" alt=""><b>10%</b><small>Cashback · 7 days</small></div>
           </div>
-        </div>
-        <div class="vault-btns">
-          <button class="vbtn green-btn" onclick="nav('vault')">📈 VIEW VAULT</button>
-          <button class="vbtn dark-btn" onclick="nav('loyalty')">EARN COINS</button>
-        </div>
+        </article>
+
+        <article class="hx-b hx-b-race hx-rv hx-tilt hx-spotlight" style="--c:251,191,36" onclick="nav('leaderboards')">
+          <span class="hx-b-tag">Leaderboards</span>
+          <h3>Live wager races</h3>
+          <p>Wager under code JAMMMY, climb the board and win cash prizes.</p>
+          <div class="hx-podium" aria-hidden="true">
+            <div class="p2"><i>2</i><span></span></div><div class="p1"><i>👑</i><span></span></div><div class="p3"><i>3</i><span></span></div>
+          </div>
+          <span class="hx-b-link">See leaderboard <em>→</em></span>
+        </article>
+
+        <article class="hx-b hx-b-coin hx-rv hx-tilt hx-spotlight" style="--c:250,204,21" onclick="nav('loyalty')">
+          <div class="hx-coin3d" aria-hidden="true"><img src="jammmy-coin.png" alt=""></div>
+          <span class="hx-b-tag">Loyalty</span>
+          <h3>Jammmy Coins</h3>
+          <p>Claim daily, earn from the Vault and redeem for cash, crypto or casino balance.</p>
+          <span class="hx-b-link">Start earning <em>→</em></span>
+        </article>
+
+        <article class="hx-b hx-b-req hx-rv hx-tilt hx-spotlight" style="--c:34,211,238">
+          <span class="hx-b-tag">On stream</span>
+          <h3>You pick the action</h3>
+          <p>Request a slot or a case battle and watch Jammmy play it live.</p>
+          <div class="hx-req-btns">
+            <button type="button" onclick="nav('requestslot')"><span>🎰</span>Request a slot</button>
+            <button type="button" onclick="nav('requestbattle')"><span>⚔️</span>Request a battle</button>
+          </div>
+        </article>
+      </div>
+
+      <!-- ===================== HOW IT WORKS ===================== -->
+      <div class="hx-head hx-rv">
+        <span class="hx-kicker">How it works</span>
+        <h2 class="hx-h2">Four steps to <span class="hx-grad">getting paid</span></h2>
+      </div>
+      <div class="hx-steps" id="hxSteps">
+        <div class="hx-steps-line" aria-hidden="true"><i id="hxStepsFill"></i></div>
+        <div class="hx-step hx-rv" style="--d:0s"><div class="hx-step-n"><span>01</span></div><h4>Log in with Discord</h4><p>One tap, no passwords. That's your account.</p></div>
+        <div class="hx-step hx-rv" style="--d:.08s"><div class="hx-step-n"><span>02</span></div><h4>Claim your username</h4><p>Pick your casino name on your Profile. A mod verifies it.</p></div>
+        <div class="hx-step hx-rv" style="--d:.16s"><div class="hx-step-n"><span>03</span></div><h4>Play under JAMMMY</h4><p>Every wager counts toward races and fills the Vault.</p></div>
+        <div class="hx-step hx-rv" style="--d:.24s"><div class="hx-step-n"><span>04</span></div><h4>Collect &amp; redeem</h4><p>Cash out coins for crypto or casino balance.</p></div>
       </div>
     </div>
 
-    <!-- VERIFIED PARTNERS -->
-    <div class="vp-wrap reveal">
-      <div class="vp-head">
-        <h2 class="vp-title">VERIFIED PARTNERS</h2>
-        <p class="vp-sub">Hand-picked casinos with the best player rewards.</p>
-        <div class="vp-line"></div>
-      </div>
-      <div class="vp-grid">
-
-        <!-- POWER.WIN -->
-        <div class="vp-card">
-          <div class="vp-logo-wrap" style="background:linear-gradient(160deg,#1a0d26,#0a0512)">
-            <img src="powerwin.png" alt="Power.win" class="vp-logo" style="width:75%;height:auto;object-fit:contain">
+    <!-- ===================== VAULT SHOWCASE ===================== -->
+    <section class="hx-vault hx-rv" aria-label="Community Vault">
+      <div class="hx-vault-glow" aria-hidden="true"></div>
+      <div class="hx-vault-in">
+        <div class="hx-vault-visual" onclick="openVaultModal()">
+          <svg class="hx-ring" viewBox="0 0 220 220" aria-hidden="true">
+            <defs><linearGradient id="hxVg" gradientUnits="userSpaceOnUse" x1="206" y1="110" x2="40" y2="60"><stop offset="0" stop-color="#4ade80"/><stop offset=".55" stop-color="#22d3ee"/><stop offset="1" stop-color="#a855f7"/></linearGradient></defs>
+            <circle cx="110" cy="110" r="96" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="10"/>
+            <circle id="hxRingArc" cx="110" cy="110" r="96" fill="none" stroke="url(#hxVg)" stroke-width="10" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 110 110)"/>
+          </svg>
+          <img src="logo.png" alt="Jammmy mascot" class="hx-vault-mascot">
+          <div class="hx-ring-pct"><b id="hxRingPct">0</b>%</div>
+        </div>
+        <div class="hx-vault-copy">
+          <span class="hx-kicker green"><span class="live-dot"></span> Community Vault · live</span>
+          <h2 class="hx-h2">The <span class="hx-grad g2">Jammmy Vault</span></h2>
+          <p class="hx-vault-sub">Every $1 wagered under code JAMMMY adds 0.1 coins to the shared jar. When it hits the goal, every verified player gets paid their share.</p>
+          <div class="hx-vault-bal">
+            <div><small>Current balance</small><div class="hx-vault-num display" id="homeVaultBalance" data-count="800" data-suffix=" Coins" onclick="openVaultModal()">0</div></div>
+            <div class="hx-vault-goal"><small>Goal</small><b id="homeVaultGoal">10,000 Coins</b></div>
           </div>
-          <div class="vp-body">
-            <div class="vp-cas">Power.win</div>
-            <div class="vp-tag-s" style="color:#c084fc">Newest Partner</div>
-            <ul class="vp-feats">
-              <li>💰 100% First Deposit Cash Match</li>
-              <li>💵 Rakeback Activated</li>
-              <li>📉 High Roller Lossback</li>
-              <li>🏁 Weekly Live Races</li>
+          <div class="hx-vbar"><div class="hx-vbar-fill" id="vaultBar"></div></div>
+          <div class="hx-vbar-meta"><span id="homeVaultPct">0% complete</span><span id="homeVaultRemaining">—</span></div>
+          <div class="hx-vault-minis">
+            <div><small>Last distributed</small><b id="homeLastAdded">—</b><span id="homeLastAddedDate">No distribution yet</span></div>
+            <div><small>Status</small><b class="st"><span class="live-dot"></span>Active</b><span>Live &amp; filling up</span></div>
+          </div>
+          <div class="hx-vault-btns">
+            <button type="button" class="hx-btn hx-btn-green hx-mag" onclick="nav('vault')"><span>View the Vault</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button type="button" class="hx-btn hx-btn-g hx-mag" onclick="nav('loyalty')"><span>Earn coins</span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PARTNERS ===================== -->
+    <div class="hx-wrap">
+      <div class="hx-head hx-rv">
+        <span class="hx-kicker">Verified partners</span>
+        <h2 class="hx-h2">Hand-picked <span class="hx-grad">casino partners</span></h2>
+      </div>
+      <div class="hx-partners">
+        <article class="hx-p hx-rv hx-tilt" style="--c:192,132,252">
+          <div class="hx-p-beam" aria-hidden="true"></div>
+          <div class="hx-p-logo"><img src="powerwin.png" alt="Power.win"></div>
+          <div class="hx-p-body">
+            <div class="hx-p-name">Power.win <span class="hx-p-badge">Newest partner</span></div>
+            <ul class="hx-p-feats">
+              <li><i>💰</i>100% First Deposit Cash Match</li>
+              <li><i>💵</i>Rakeback Activated</li>
+              <li><i>📉</i>High Roller Lossback</li>
+              <li><i>🏁</i>Weekly Live Races</li>
             </ul>
-            <button class="vp-btn vp-btn-radium" onclick="nav('new')">View All Offers &rsaquo;</button>
+            <div class="hx-p-btns">
+              <button type="button" class="hx-btn hx-btn-p sm" onclick="nav('new')"><span>View all offers</span></button>
+              <button type="button" class="hx-btn hx-btn-g sm" onclick="goToLeaderboard('powerwin')"><span>Leaderboard</span></button>
+            </div>
           </div>
-        </div>
-
-        <!-- DEGENCITY -->
-        <div class="vp-card">
-          <div class="vp-logo-wrap" style="background:linear-gradient(160deg,#1a0a1a,#0a0508)">
-            <img src="degencity.png" alt="DegenCity" class="vp-logo" style="width:75%;height:auto;object-fit:contain">
-          </div>
-          <div class="vp-body">
-            <div class="vp-cas">DegenCity</div>
-            <div class="vp-tag-s" style="color:#60a5fa">10% Cashback for 7 Days</div>
-            <ul class="vp-feats">
-              <li>💰 10% Cashback for 7 days</li>
-              <li>⚡ Instant Cashouts</li>
-              <li>🎁 Tip &amp; Giveaways</li>
-              <li>✨ Daily Promo Codes</li>
+        </article>
+        <article class="hx-p hx-rv hx-tilt" style="--c:96,165,250;--d:.1s">
+          <div class="hx-p-beam" aria-hidden="true"></div>
+          <div class="hx-p-logo"><img src="degencity.png" alt="DegenCity"></div>
+          <div class="hx-p-body">
+            <div class="hx-p-name">DegenCity <span class="hx-p-badge blue">10% cashback · 7 days</span></div>
+            <ul class="hx-p-feats">
+              <li><i>💰</i>10% Cashback for 7 days</li>
+              <li><i>⚡</i>Instant Cashouts</li>
+              <li><i>🎁</i>Tip &amp; Giveaways</li>
+              <li><i>✨</i>Daily Promo Codes</li>
             </ul>
-            <button class="vp-btn vp-btn-radium" onclick="go('https://degencity.com')">Claim Bonus &rsaquo;</button>
+            <div class="hx-p-btns">
+              <button type="button" class="hx-btn hx-btn-p sm blue" onclick="go('https://degencity.com')"><span>Claim bonus</span></button>
+              <button type="button" class="hx-btn hx-btn-g sm" onclick="goToLeaderboard('degencity')"><span>Leaderboard</span></button>
+            </div>
+          </div>
+        </article>
+      </div>
+      <p class="hx-note hx-rv"><b>Leaderboard rule:</b> users must deposit more than the placement prize. If the deposit is less than the prize, the prize will be voided.</p>
+
+      <!-- ===================== WATCH LIVE ===================== -->
+      <section class="hx-live hx-rv" aria-label="Watch live">
+        <div class="hx-live-copy">
+          <span class="hx-kicker kick"><span class="hx-kick-dot sm" id="kickStatusDot"></span> <span id="kickStatusText">Checking...</span></span>
+          <h2 class="hx-h2">Watch <span class="hx-kick-g">live</span> on Kick</h2>
+          <p>Casino gameplay, giveaways and community events most evenings. Follow to get notified the moment Jammmy goes live.</p>
+          <div class="hx-live-btns">
+            <a href="https://kick.com/jammmyslots" target="_blank" rel="noopener" class="hx-btn hx-btn-kick wl-kick-btn hx-mag">FOLLOW ON KICK ↗</a>
+            <a href="https://discord.gg/jammmy" target="_blank" rel="noopener" class="hx-btn hx-btn-g hx-mag"><span>Join the Discord</span></a>
           </div>
         </div>
-
-
-
-      </div>
-    </div>
-
-    <!-- COMPETITIVE LEADERBOARDS PREVIEW -->
-    <div class="lb-preview-wrap reveal" style="max-width:1100px;margin:60px auto 0;padding:0 20px;text-align:center">
-      <h2 class="vp-title" style="font-size:clamp(1.8rem,4vw,2.6rem)">Competitive <span class="g">Leaderboards</span></h2>
-      <p class="vp-sub" style="max-width:520px;margin:10px auto 34px">Wager on partner sites and climb the ranks for cash prizes, coins, and vault share.</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;text-align:left" class="lb-preview-grid">
-        <div class="lb-preview-card" style="background:rgba(20,20,30,.6);border:1px solid rgba(168,85,247,.25);border-top:3px solid #a855f7;border-radius:16px;padding:28px">
-          <div style="width:56px;height:56px;border-radius:14px;background:rgba(168,85,247,.12);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
-            <img loading="lazy" src="degencity.png" alt="DegenCity" style="width:40px;height:40px;object-fit:contain">
+        <a class="hx-screen" href="https://kick.com/jammmyslots/videos" target="_blank" rel="noopener" aria-label="Watch past streams on Kick">
+          <div class="hx-screen-in">
+            <div class="hx-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <svg viewBox="0 0 24 24" class="hx-kick-logo" aria-hidden="true"><path fill="#53fc18" d="M3 3h6v5l3-5h7l-5 9 5 9h-7l-3-5v5H3z"/></svg>
+            <div class="hx-play"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></div>
+            <div class="hx-screen-cap"><b>jammmyslots</b><span>Watch past streams ↗</span></div>
           </div>
-          <h3 style="font-family:'Lilita One',sans-serif;font-size:1.2rem;margin-bottom:8px">DegenCity Leaderboard</h3>
-          <p style="color:var(--faint);font-size:.9rem;margin-bottom:20px">Compete for prizes and climb the ranks in the DegenCity leaderboard.</p>
-          <button onclick="goToLeaderboard('degencity')" style="background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#fff;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer">View Leaderboard &rarr;</button>
-        </div>
-        <div class="lb-preview-card" style="background:rgba(20,20,30,.6);border:1px solid rgba(192,132,252,.25);border-top:3px solid #c084fc;border-radius:16px;padding:28px;position:relative">
-          <div style="width:110px;height:44px;border-radius:10px;background:rgba(192,132,252,.12);display:flex;align-items:center;justify-content:center;margin-bottom:16px;padding:6px 10px">
-            <img src="powerwin.png" alt="Power.win" style="width:100%;height:100%;object-fit:contain">
-          </div>
-          <h3 style="font-family:'Lilita One',sans-serif;font-size:1.2rem;margin-bottom:8px">Power.win Leaderboard</h3>
-          <p style="color:var(--faint);font-size:.9rem;margin-bottom:20px">Compete for prizes and climb the ranks in the Power.win leaderboard.</p>
-          <button onclick="goToLeaderboard('powerwin')" style="background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#fff;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer">View Leaderboard &rarr;</button>
-        </div>
-      </div>
-      <div style="margin-top:24px;display:flex;gap:10px;align-items:flex-start;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:14px;padding:18px 22px;text-align:left">
-        <span style="font-size:1.1rem">⚠️</span>
-        <span style="color:var(--faint);font-size:.88rem"><b style="color:#f59e0b">Note:</b> Users must deposit more than the placement prize. If the deposit is less than the prize, the prize will be voided.</span>
-      </div>
-    </div>
-    <style>@media(max-width:700px){.lb-preview-grid{grid-template-columns:1fr !important}}</style>
+        </a>
+      </section>
 
-    <!-- WATCH LIVE -->
-    <div class="wl-wrap reveal" style="margin-top:50px;padding-bottom:40px">
-    <!-- Watch Live -->
-      <div class="wl-head">
-        <div class="wl-head-left">
-          <div class="wl-tag"><span class="wl-tag-dot"></span> LIVE STREAMS</div>
-          <h2 class="wl-title">WATCH <span class="wl-live">LIVE</span></h2>
-          <p class="wl-sub">Casino gameplay, giveaways, and community events most evenings.</p>
+      <!-- ===================== FINAL CTA ===================== -->
+      <section class="hx-final hx-rv">
+        <div class="hx-final-bg" aria-hidden="true"></div>
+        <img src="jammmy-coin.png" alt="" class="hx-final-coin a" aria-hidden="true"><img src="jammmy-coin.png" alt="" class="hx-final-coin b" aria-hidden="true">
+        <h2 class="hx-h2">Your seat at the table<br><span class="hx-grad">is waiting.</span></h2>
+        <p>Log in, claim your casino username and start stacking rewards today.</p>
+        <div class="hx-cta center">
+          <button type="button" class="hx-btn hx-btn-p hx-mag" onclick="nav('loyalty')"><span>Get started</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button type="button" class="hx-btn hx-btn-g hx-mag" onclick="nav('bonuses')"><span>See bonuses</span></button>
         </div>
-        <a href="https://kick.com/jammmyslots/videos" target="_blank" class="wl-kick-btn">FOLLOW ON KICK &#x2197;</a>
-      </div>
-      <div class="wl-chips">
-        <a href="https://kick.com/jammmyslots/videos" target="_blank" class="wl-chip wl-chip-link">
-          <svg viewBox="0 0 24 24" fill="#53fc18" style="height:22px;width:22px;flex:none"><path d="M3 3h6v5l3-5h7l-5 9 5 9h-7l-3-5v5H3z"/></svg>
-          <div><div class="wlc-title">Watch Live</div><div class="wlc-sub">kick.com/jammmyslots</div></div>
-          <span class="wl-chip-arrow">&#x2197;</span>
-        </a>
-        <a href="https://kick.com/jammmyslots" target="_blank" class="wl-chip wl-chip-link">
-          <span style="font-size:1.4rem">🔔</span>
-          <div><div class="wlc-title">Follow</div><div class="wlc-sub">Get notified</div></div>
-          <span class="wl-chip-arrow">&#x2197;</span>
-        </a>
-        <a href="https://discord.gg/jammmy" target="_blank" class="wl-chip wl-chip-link">
-          <span style="font-size:1.4rem">💬</span>
-          <div><div class="wlc-title">Discord</div><div class="wlc-sub">Join community</div></div>
-          <span class="wl-chip-arrow">&#x2197;</span>
-        </a>
-        <div class="wl-chip" id="kickStatusChip">
-          <span id="kickStatusDot" class="wl-offline-dot"></span>
-          <div><div class="wlc-title">Status</div><div class="wlc-sub" id="kickStatusText">Checking...</div></div>
-        </div>
-      </div>
-
+      </section>
     </div>
 
+  </div>
   </section>
 
   <!-- LEADERBOARDS -->
@@ -4990,6 +5443,7 @@ async function loadVaultSettings(){
     if(document.getElementById('vpProgGoal')) document.getElementById('vpProgGoal').textContent = goalText;
 
     var b = document.getElementById('vaultBar'); if(b) b.style.width = pct+'%';
+    if(window.hxVaultUpdate) hxVaultUpdate(pct);
     var b2 = document.getElementById('vaultBar2'); if(b2) b2.style.width = pct+'%';
 
     if(document.getElementById('homeVaultPct')) document.getElementById('homeVaultPct').textContent = pct+'% complete';
@@ -5441,6 +5895,7 @@ async function initKickStream(){
         statusDot.style.boxShadow=live?'0 0 8px rgba(74,222,128,.6)':'none';
       }
       if(statusText)statusText.textContent=live?('Live · '+d.livestream.viewer_count+' watching'):'Offline';
+      if(window.hxKick) hxKick(!!live, live ? d.livestream.viewer_count : 0);
       if(kickBtn&&live){kickBtn.textContent='JOIN LIVE ↗';kickBtn.style.background='#4ade80';kickBtn.style.color='#0a2012';}
       /* The nav pill used to be permanently hardcoded to "Not Live" with nothing ever
          touching it -- now driven from this same real check, the only place live status
@@ -5450,7 +5905,7 @@ async function initKickStream(){
         navTag.innerHTML = '<span class="d"></span> ' + (live ? 'Live' : 'Not Live');
       }
     }
-  }catch(e){}
+  }catch(e){ if(window.hxKick) hxKick(null); }
 }
 initKickStream();
 setInterval(initKickStream, 60000); /* the nav pill is visible on every page, not just Home/Bonuses where the call below already fires on nav -- keeps it correct even if someone stays on another page for a while */
@@ -8753,6 +9208,229 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     <p class="pp-note" id="pushPromptNote" hidden></p>
   </div>
 </div>
+<script>/* Lenis 1.3.26 (MIT) — smooth scrolling, inlined */
+(function(){var e=`1.3.26`;function t(e,t,n){return Math.max(e,Math.min(t,n))}function n(e,t,n){return(1-n)*e+n*t}function r(e,t,r,i){return n(e,t,1-Math.exp(-r*i))}function i(e,t){return(e%t+t)%t}var a=class{isRunning=!1;value=0;from=0;to=0;currentTime=0;lerp;duration;easing;onUpdate;advance(e){if(!this.isRunning)return;let n=!1;if(this.duration&&this.easing){this.currentTime+=e;let r=t(0,this.currentTime/this.duration,1);n=r>=1;let i=n?1:this.easing(r);this.value=this.from+(this.to-this.from)*i}else this.lerp?(this.value=r(this.value,this.to,this.lerp*60,e),Math.round(this.value)===Math.round(this.to)&&(this.value=this.to,n=!0)):(this.value=this.to,n=!0);n&&this.stop(),this.onUpdate?.(this.value,n)}stop(){this.isRunning=!1}fromTo(e,t,{lerp:n,duration:r,easing:i,onStart:a,onUpdate:o}){this.from=this.value=e,this.to=t,this.lerp=n,this.duration=r,this.easing=i,this.currentTime=0,this.isRunning=!0,a?.(),this.onUpdate=o}};function o(e,t){let n;return function(...r){clearTimeout(n),n=setTimeout(()=>{n=void 0,e.apply(this,r)},t)}}var s=class{width=0;height=0;scrollHeight=0;scrollWidth=0;debouncedResize;wrapperResizeObserver;contentResizeObserver;constructor(e,t,{autoResize:n=!0,debounce:r=250}={}){this.wrapper=e,this.content=t,n&&(this.debouncedResize=o(this.resize,r),this.wrapper instanceof Window?window.addEventListener(`resize`,this.debouncedResize):(this.wrapperResizeObserver=new ResizeObserver(this.debouncedResize),this.wrapperResizeObserver.observe(this.wrapper)),this.contentResizeObserver=new ResizeObserver(this.debouncedResize),this.contentResizeObserver.observe(this.content)),this.resize()}destroy(){this.wrapperResizeObserver?.disconnect(),this.contentResizeObserver?.disconnect(),this.wrapper===window&&this.debouncedResize&&window.removeEventListener(`resize`,this.debouncedResize)}resize=()=>{this.onWrapperResize(),this.onContentResize()};onWrapperResize=()=>{this.wrapper instanceof Window?(this.width=window.innerWidth,this.height=window.innerHeight):(this.width=this.wrapper.clientWidth,this.height=this.wrapper.clientHeight)};onContentResize=()=>{this.wrapper instanceof Window?(this.scrollHeight=this.content.scrollHeight,this.scrollWidth=this.content.scrollWidth):(this.scrollHeight=this.wrapper.scrollHeight,this.scrollWidth=this.wrapper.scrollWidth)};get limit(){return{x:this.scrollWidth-this.width,y:this.scrollHeight-this.height}}},c=class{events={};emit(e,...t){let n=this.events[e]||[];for(let e=0,r=n.length;e<r;e++)n[e]?.(...t)}on(e,t){return this.events[e]?this.events[e].push(t):this.events[e]=[t],()=>{this.events[e]=this.events[e]?.filter(e=>t!==e)}}off(e,t){this.events[e]=this.events[e]?.filter(e=>t!==e)}destroy(){this.events={}}};let l={passive:!1};function u(e,t){return e===1?16.666666666666668:e===2?t:1}var d=class{touchStart={x:0,y:0};lastDelta={x:0,y:0};window={width:0,height:0};emitter=new c;constructor(e,t={wheelMultiplier:1,touchMultiplier:1}){this.element=e,this.options=t,window.addEventListener(`resize`,this.onWindowResize),this.onWindowResize(),this.element.addEventListener(`wheel`,this.onWheel,l),this.element.addEventListener(`touchstart`,this.onTouchStart,l),this.element.addEventListener(`touchmove`,this.onTouchMove,l),this.element.addEventListener(`touchend`,this.onTouchEnd,l)}on(e,t){return this.emitter.on(e,t)}destroy(){this.emitter.destroy(),window.removeEventListener(`resize`,this.onWindowResize),this.element.removeEventListener(`wheel`,this.onWheel,l),this.element.removeEventListener(`touchstart`,this.onTouchStart,l),this.element.removeEventListener(`touchmove`,this.onTouchMove,l),this.element.removeEventListener(`touchend`,this.onTouchEnd,l)}onTouchStart=e=>{let{clientX:t,clientY:n}=e.targetTouches?e.targetTouches[0]:e;this.touchStart.x=t,this.touchStart.y=n,this.lastDelta={x:0,y:0},this.emitter.emit(`scroll`,{deltaX:0,deltaY:0,event:e})};onTouchMove=e=>{let{clientX:t,clientY:n}=e.targetTouches?e.targetTouches[0]:e,r=-(t-this.touchStart.x)*this.options.touchMultiplier,i=-(n-this.touchStart.y)*this.options.touchMultiplier;this.touchStart.x=t,this.touchStart.y=n,this.lastDelta={x:r,y:i},this.emitter.emit(`scroll`,{deltaX:r,deltaY:i,event:e})};onTouchEnd=e=>{this.emitter.emit(`scroll`,{deltaX:this.lastDelta.x,deltaY:this.lastDelta.y,event:e})};onWheel=e=>{let{deltaX:t,deltaY:n,deltaMode:r}=e,i=u(r,this.window.width),a=u(r,this.window.height);t*=i,n*=a,t*=this.options.wheelMultiplier,n*=this.options.wheelMultiplier,this.emitter.emit(`scroll`,{deltaX:t,deltaY:n,event:e})};onWindowResize=()=>{this.window={width:window.innerWidth,height:window.innerHeight}}};let f=e=>Math.min(1,1.001-2**(-10*e));var p=class{_isScrolling=!1;_isStopped=!1;_isLocked=!1;_preventNextNativeScrollEvent=!1;_resetVelocityTimeout=null;_rafId=null;_isDraggingSelection=!1;reducedMotionMediaQuery=window.matchMedia(`(prefers-reduced-motion: reduce)`);isTouching;isIos;time=0;userData={};lastVelocity=0;velocity=0;direction=0;options;targetScroll;animatedScroll;animate=new a;emitter=new c;dimensions;virtualScroll;constructor({wrapper:t=window,content:n=document.documentElement,eventsTarget:r=t,smoothWheel:i=!0,syncTouch:a=!1,syncTouchLerp:o=.075,touchInertiaExponent:c=1.7,duration:l,easing:u,lerp:p=.1,infinite:m=!1,orientation:h=`vertical`,gestureOrientation:g=h===`horizontal`?`both`:`vertical`,touchMultiplier:_=1,wheelMultiplier:v=1,autoResize:y=!0,prevent:b,virtualScroll:x,overscroll:S=!0,autoRaf:C=!1,anchors:w=!1,autoToggle:T=!1,allowNestedScroll:E=!1,__experimental__naiveDimensions:D=!1,naiveDimensions:O=D,stopInertiaOnNavigate:k=!1,respectReducedMotion:A=!0}={}){window.lenisVersion=e,window.lenis||(window.lenis={}),window.lenis.version=e,h===`horizontal`&&(window.lenis.horizontal=!0),a===!0&&(window.lenis.touch=!0),this.isIos=/(iPad|iPhone|iPod)/g.test(navigator.userAgent),(!t||t===document.documentElement)&&(t=window),typeof l==`number`&&typeof u!=`function`?u=f:typeof u==`function`&&typeof l!=`number`&&(l=1),this.options={wrapper:t,content:n,eventsTarget:r,smoothWheel:i,syncTouch:a,syncTouchLerp:o,touchInertiaExponent:c,duration:l,easing:u,lerp:p,infinite:m,gestureOrientation:g,orientation:h,touchMultiplier:_,wheelMultiplier:v,autoResize:y,prevent:b,virtualScroll:x,overscroll:S,autoRaf:C,anchors:w,autoToggle:T,allowNestedScroll:E,naiveDimensions:O,stopInertiaOnNavigate:k,respectReducedMotion:A},this.dimensions=new s(t,n,{autoResize:y}),this.updateClassName(),this.targetScroll=this.animatedScroll=this.actualScroll,this.options.wrapper.addEventListener(`scroll`,this.onNativeScroll),this.options.wrapper.addEventListener(`scrollend`,this.onScrollEnd,{capture:!0}),(this.options.anchors||this.options.stopInertiaOnNavigate)&&this.options.wrapper.addEventListener(`click`,this.onClick),this.options.wrapper.addEventListener(`pointerdown`,this.onPointerDown),this.virtualScroll=new d(r,{touchMultiplier:_,wheelMultiplier:v}),this.virtualScroll.on(`scroll`,this.onVirtualScroll),this.options.autoToggle&&(this.checkOverflow(),this.rootElement.addEventListener(`transitionend`,this.onTransitionEnd)),this.options.autoRaf&&(this._rafId=requestAnimationFrame(this.raf))}destroy(){this.emitter.destroy(),this.options.wrapper.removeEventListener(`scroll`,this.onNativeScroll),this.options.wrapper.removeEventListener(`scrollend`,this.onScrollEnd,{capture:!0}),this.options.wrapper.removeEventListener(`pointerdown`,this.onPointerDown),(this.options.anchors||this.options.stopInertiaOnNavigate)&&this.options.wrapper.removeEventListener(`click`,this.onClick),this.virtualScroll.destroy(),this.dimensions.destroy(),this.cleanUpClassName(),this._rafId&&cancelAnimationFrame(this._rafId)}on(e,t){return this.emitter.on(e,t)}off(e,t){return this.emitter.off(e,t)}onScrollEnd=e=>{e instanceof CustomEvent||(this.isScrolling===`smooth`||this.isScrolling===!1)&&e.stopPropagation()};dispatchScrollendEvent=()=>{this.options.wrapper.dispatchEvent(new CustomEvent(`scrollend`,{bubbles:this.options.wrapper===window,detail:{lenisScrollEnd:!0}}))};get overflow(){let e=this.isHorizontal?`overflow-x`:`overflow-y`;return getComputedStyle(this.rootElement)[e]}checkOverflow(){[`hidden`,`clip`].includes(this.overflow)?this.internalStop():this.internalStart()}onTransitionEnd=e=>{e.propertyName?.includes(`overflow`)&&e.target===this.rootElement&&this.checkOverflow()};setScroll(e){this.isHorizontal?this.options.wrapper.scrollTo({left:e,behavior:`instant`}):this.options.wrapper.scrollTo({top:e,behavior:`instant`})}onClick=e=>{let t=e.composedPath().filter(e=>e instanceof HTMLAnchorElement&&e.href).map(e=>new URL(e.href)),n=new URL(window.location.href);if(this.options.anchors){let e=t.find(e=>n.host===e.host&&n.pathname===e.pathname&&e.hash);if(e){let t=typeof this.options.anchors==`object`&&this.options.anchors?this.options.anchors:void 0,n=decodeURIComponent(e.hash);this.scrollTo(n,t);return}}if(this.options.stopInertiaOnNavigate&&t.some(e=>n.host===e.host&&n.pathname!==e.pathname)){this.reset();return}};onPointerDown=e=>{e.button===1&&this.reset()};isTouchOnSelectionHandle(e){let t=window.getSelection();if(!t||t.isCollapsed||t.rangeCount===0)return!1;let n=e.targetTouches[0]??e.changedTouches[0];if(!n)return!1;let r=t.getRangeAt(0).getClientRects();if(r.length===0)return!1;let i=r[0],a=r[r.length-1],o=Math.hypot(n.clientX-i.left,n.clientY-i.top)<=40,s=Math.hypot(n.clientX-a.right,n.clientY-a.bottom)<=40;return o||s}onVirtualScroll=e=>{if(typeof this.options.virtualScroll==`function`&&this.options.virtualScroll(e)===!1)return;let{deltaX:t,deltaY:n,event:r}=e;if(this.emitter.emit(`virtual-scroll`,{deltaX:t,deltaY:n,event:r}),r.ctrlKey||r.lenisStopPropagation)return;let i=r.type.includes(`touch`),a=r.type.includes(`wheel`);if(i&&this.isIos&&(r.type===`touchstart`&&(this._isDraggingSelection=this.isTouchOnSelectionHandle(r)),this._isDraggingSelection)){r.type===`touchend`&&(this._isDraggingSelection=!1);return}this.isTouching=r.type===`touchstart`||r.type===`touchmove`;let o=t===0&&n===0;if(this.options.syncTouch&&i&&r.type===`touchstart`&&o&&!this.isStopped&&!this.isLocked){this.reset();return}let s=this.options.gestureOrientation===`vertical`&&n===0||this.options.gestureOrientation===`horizontal`&&t===0;if(o||s)return;let c=r.composedPath();c=c.slice(0,c.indexOf(this.rootElement));let l=this.options.prevent,u=Math.abs(t)>=Math.abs(n)?`horizontal`:`vertical`;if(c.find(e=>e instanceof HTMLElement&&(typeof l==`function`&&l?.(e)||e.hasAttribute?.(`data-lenis-prevent`)||u===`vertical`&&e.hasAttribute?.(`data-lenis-prevent-vertical`)||u===`horizontal`&&e.hasAttribute?.(`data-lenis-prevent-horizontal`)||i&&e.hasAttribute?.(`data-lenis-prevent-touch`)||a&&e.hasAttribute?.(`data-lenis-prevent-wheel`)||this.options.allowNestedScroll&&this.hasNestedScroll(e,{deltaX:t,deltaY:n}))))return;if(this.isStopped||this.isLocked){r.cancelable&&r.preventDefault();return}if(!(this.options.syncTouch&&i||this.options.smoothWheel&&a)){this.isScrolling=`native`,this.animate.stop(),r.lenisStopPropagation=!0;return}let d=n;this.options.gestureOrientation===`both`?d=Math.abs(n)>Math.abs(t)?n:t:this.options.gestureOrientation===`horizontal`&&(d=t),(!this.options.overscroll||this.options.infinite||this.options.wrapper!==window&&this.limit>0&&(this.animatedScroll>0&&this.animatedScroll<this.limit||this.animatedScroll===0&&n>0||this.animatedScroll===this.limit&&n<0))&&(r.lenisStopPropagation=!0),r.cancelable&&r.preventDefault();let f=i&&this.options.syncTouch,p=i&&r.type===`touchend`;p&&(d=Math.sign(d)*Math.abs(this.velocity)**this.options.touchInertiaExponent),this.scrollTo(this.targetScroll+d,{programmatic:!1,...f?{lerp:p?this.options.syncTouchLerp:1}:{lerp:this.options.lerp,duration:this.options.duration,easing:this.options.easing}})};resize(){this.dimensions.resize(),this.animatedScroll=this.targetScroll=this.actualScroll,this.emit()}emit(){this.emitter.emit(`scroll`,this)}onNativeScroll=()=>{if(this._resetVelocityTimeout!==null&&(clearTimeout(this._resetVelocityTimeout),this._resetVelocityTimeout=null),this._preventNextNativeScrollEvent){this._preventNextNativeScrollEvent=!1;return}if(this.isScrolling===!1||this.isScrolling===`native`){let e=this.animatedScroll;this.animatedScroll=this.targetScroll=this.actualScroll,this.lastVelocity=this.velocity,this.velocity=this.animatedScroll-e,this.direction=Math.sign(this.animatedScroll-e),this.isStopped||(this.isScrolling=`native`),this.emit(),this.velocity!==0&&(this._resetVelocityTimeout=setTimeout(()=>{this.lastVelocity=this.velocity,this.velocity=0,this.isScrolling=!1,this.emit()},400))}};reset(){this.isLocked=!1,this.isScrolling=!1,this.animatedScroll=this.targetScroll=this.actualScroll,this.lastVelocity=this.velocity=0,this.animate.stop()}start(){if(this.isStopped){if(this.options.autoToggle){this.rootElement.style.removeProperty(`overflow`);return}this.internalStart()}}internalStart(){this.isStopped&&(this.reset(),this.isStopped=!1,this.emit())}stop(){if(!this.isStopped){if(this.options.autoToggle){this.rootElement.style.setProperty(`overflow`,`clip`);return}this.internalStop()}}internalStop(){this.isStopped||(this.reset(),this.isStopped=!0,this.emit())}raf=e=>{let t=e-(this.time||e);this.time=e,this.animate.advance(t*.001),this.options.autoRaf&&(this._rafId=requestAnimationFrame(this.raf))};scrollTo(e,{offset:n=0,immediate:r=!1,lock:i=!1,programmatic:a=!0,lerp:o=a?this.options.lerp:void 0,duration:s=a?this.options.duration:void 0,easing:c=a?this.options.easing:void 0,onStart:l,onComplete:u,force:d=!1,userData:p}={}){if(this.prefersReducedMotion&&(a?r=!0:(o=1,s=void 0,c=void 0)),(this.isStopped||this.isLocked)&&!d)return;let m=e,h=n;if(typeof m==`string`&&[`top`,`left`,`start`,`#`].includes(m))m=0;else if(typeof m==`string`&&[`bottom`,`right`,`end`].includes(m))m=this.limit;else{let e=null;if(typeof m==`string`?(e=m.startsWith(`#`)?document.getElementById(m.slice(1)):document.querySelector(m),e||(m===`#top`?m=0:console.warn(`Lenis: Target not found`,m))):m instanceof HTMLElement&&m?.nodeType&&(e=m),e){if(this.options.wrapper!==window){let e=this.rootElement.getBoundingClientRect();h-=this.isHorizontal?e.left:e.top}let t=e.getBoundingClientRect(),n=getComputedStyle(e),r=this.isHorizontal?Number.parseFloat(n.scrollMarginLeft):Number.parseFloat(n.scrollMarginTop),i=getComputedStyle(this.rootElement),a=this.isHorizontal?Number.parseFloat(i.scrollPaddingLeft):Number.parseFloat(i.scrollPaddingTop);m=(this.isHorizontal?t.left:t.top)+this.animatedScroll-(Number.isNaN(r)?0:r)-(Number.isNaN(a)?0:a)}}if(typeof m==`number`){if(m+=h,this.options.infinite){if(a){this.targetScroll=this.animatedScroll=this.scroll;let e=m-this.animatedScroll;e>this.limit/2?m-=this.limit:e<-this.limit/2&&(m+=this.limit)}}else m=t(0,m,this.limit);if(m===this.targetScroll){l?.(this),u?.(this);return}if(this.userData=p??{},r){this.animatedScroll=this.targetScroll=m,this.setScroll(this.scroll),this.reset(),this.preventNextNativeScrollEvent(),this.emit(),u?.(this),this.userData={},requestAnimationFrame(()=>{this.dispatchScrollendEvent()});return}a||(this.targetScroll=m),typeof s==`number`&&typeof c!=`function`?c=f:typeof c==`function`&&typeof s!=`number`&&(s=1),this.animate.fromTo(this.animatedScroll,m,{duration:s,easing:c,lerp:o,onStart:()=>{i&&(this.isLocked=!0),this.isScrolling=`smooth`,l?.(this)},onUpdate:(e,t)=>{this.isScrolling=`smooth`,this.lastVelocity=this.velocity,this.velocity=e-this.animatedScroll,this.direction=Math.sign(this.velocity),this.animatedScroll=e,this.setScroll(this.scroll),a&&(this.targetScroll=e),t||this.emit(),t&&(this.reset(),this.emit(),u?.(this),this.userData={},requestAnimationFrame(()=>{this.dispatchScrollendEvent()}),this.preventNextNativeScrollEvent())}})}}preventNextNativeScrollEvent(){this._preventNextNativeScrollEvent=!0,requestAnimationFrame(()=>{this._preventNextNativeScrollEvent=!1})}hasNestedScroll(e,{deltaX:t,deltaY:n}){let r=Date.now();e._lenis||={};let i=e._lenis,a,o,s,c,l,u,d,f,p,m;if(r-(i.time??0)>2e3){i.time=Date.now();let t=window.getComputedStyle(e);if(i.computedStyle=t,a=[`auto`,`overlay`,`scroll`].includes(t.overflowX),o=[`auto`,`overlay`,`scroll`].includes(t.overflowY),l=[`auto`].includes(t.overscrollBehaviorX),u=[`auto`].includes(t.overscrollBehaviorY),i.hasOverflowX=a,i.hasOverflowY=o,!(a||o))return!1;d=e.scrollWidth,f=e.scrollHeight,p=e.clientWidth,m=e.clientHeight,s=d>p,c=f>m,i.isScrollableX=s,i.isScrollableY=c,i.scrollWidth=d,i.scrollHeight=f,i.clientWidth=p,i.clientHeight=m,i.hasOverscrollBehaviorX=l,i.hasOverscrollBehaviorY=u}else s=i.isScrollableX,c=i.isScrollableY,a=i.hasOverflowX,o=i.hasOverflowY,d=i.scrollWidth,f=i.scrollHeight,p=i.clientWidth,m=i.clientHeight,l=i.hasOverscrollBehaviorX,u=i.hasOverscrollBehaviorY;if(!(a&&s||o&&c))return!1;let h=Math.abs(t)>=Math.abs(n)?`horizontal`:`vertical`,g,_,v,y,b,x;if(h===`horizontal`)g=Math.round(e.scrollLeft),_=d-p,v=t,y=a,b=s,x=l;else if(h===`vertical`)g=Math.round(e.scrollTop),_=f-m,v=n,y=o,b=c,x=u;else return!1;return!x&&(g>=_||g<=0)?!0:(v>0?g<_:g>0)&&y&&b}get rootElement(){return this.options.wrapper===window?document.documentElement:this.options.wrapper}get limit(){return this.options.naiveDimensions?this.isHorizontal?this.rootElement.scrollWidth-this.rootElement.clientWidth:this.rootElement.scrollHeight-this.rootElement.clientHeight:this.dimensions.limit[this.isHorizontal?`x`:`y`]}get isHorizontal(){return this.options.orientation===`horizontal`}get actualScroll(){let e=this.options.wrapper;return this.isHorizontal?e.scrollX??e.scrollLeft:e.scrollY??e.scrollTop}get scroll(){return this.options.infinite?i(this.animatedScroll,this.limit):this.animatedScroll}get progress(){return this.limit===0?1:this.scroll/this.limit}get isScrolling(){return this._isScrolling}set isScrolling(e){this._isScrolling!==e&&(this._isScrolling=e,this.updateClassName())}get isStopped(){return this._isStopped}set isStopped(e){this._isStopped!==e&&(this._isStopped=e,this.updateClassName())}get isLocked(){return this._isLocked}set isLocked(e){this._isLocked!==e&&(this._isLocked=e,this.updateClassName())}get isSmooth(){return this.isScrolling===`smooth`}get prefersReducedMotion(){return this.options.respectReducedMotion&&this.reducedMotionMediaQuery.matches}get className(){let e=`lenis`;return this.options.autoToggle&&(e+=` lenis-autoToggle`),this.isStopped&&(e+=` lenis-stopped`),this.isLocked&&(e+=` lenis-locked`),this.isScrolling&&(e+=` lenis-scrolling`),this.isScrolling===`smooth`&&(e+=` lenis-smooth`),e}updateClassName(){this.cleanUpClassName(),this.className.split(` `).forEach(e=>{this.rootElement.classList.add(e)})}cleanUpClassName(){for(let e of Array.from(this.rootElement.classList))(e===`lenis`||e.startsWith(`lenis-`))&&this.rootElement.classList.remove(e)}};globalThis.Lenis=p,globalThis.Lenis.prototype=p.prototype})();
+
+</script>
+<script>
+/* =====================================================================
+   HOME MOTION ENGINE (hx)
+   - Smooth scrolling site-wide (Lenis, inlined above). Mouse-wheel only: phones keep their
+     native touch scrolling. Nested scroll areas (modals, admin tables) scroll normally.
+   - Scroll reveals, hero parallax, velocity-reactive marquee, scroll-drawn steps line.
+   - Pointer effects (desktop only): card tilt + spotlight, magnetic buttons, hero depth.
+   - Live bits: Vault % on the hero card + ring, Power.win race countdown, Kick status.
+   All motion is transform/opacity only; the loop does nothing while Home isn't showing.
+===================================================================== */
+(function(){
+  var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var FINE = window.matchMedia && matchMedia('(pointer: fine)').matches;
+  var home = document.getElementById('home');
+  if(!home) return;
+  /* full-bleed home without a horizontal scrollbar: the real viewport width minus any scrollbar */
+  function setVw(){ document.documentElement.style.setProperty('--hx-vw', document.documentElement.clientWidth + 'px'); }
+  setVw(); window.addEventListener('resize', setVw);
+
+  /* ---------- smooth scroll ---------- */
+  var lenis = null;
+  if(!RM && window.Lenis){
+    try{
+      lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 0.95, smoothWheel: true, syncTouch: false, allowNestedScroll: true, stopInertiaOnNavigate: true });
+      window.hxLenis = lenis;
+    }catch(e){ lenis = null; }
+  }
+  /* page switches must land at the top instantly, not glide from wherever the old page was */
+  if(typeof window.showPage === 'function'){
+    var _sp = window.showPage;
+    window.showPage = function(id){
+      if(lenis) lenis.scrollTo(0, { immediate: true, force: true });
+      _sp.apply(this, arguments);
+      if(id === 'home' || !id) setTimeout(hxKickRace, 50);
+    };
+  }
+  window.hxScrollTo = function(sel){
+    var el = typeof sel === 'string' ? document.querySelector(sel) : sel; if(!el) return;
+    if(lenis) lenis.scrollTo(el, { offset: -80, duration: 1.4 });
+    else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  /* intro animations hand control back once finished, so scroll/mouse motion can take over */
+  home.addEventListener('animationend', function(e){ if(e.animationName === 'hxIn') e.target.classList.remove('hx-in'); });
+
+  /* ---------- reveals ---------- */
+  var rvEls = [].slice.call(home.querySelectorAll('.hx-rv'));
+  function reveal(el, delay){
+    if(el.classList.contains('in')) return;
+    var own = el.style.getPropertyValue('--d');
+    if(!own && delay){ el.style.transitionDelay = delay + 's'; setTimeout(function(){ el.style.transitionDelay = ''; }, 1400 + delay*1000); }
+    el.classList.add('in');
+    if(el.classList.contains('hx-vault')) hxRingDraw();
+  }
+  if(RM || !('IntersectionObserver' in window)){ rvEls.forEach(function(el){ reveal(el, 0); }); }
+  else{
+    var io = new IntersectionObserver(function(es){
+      var shown = es.filter(function(e){ return e.isIntersecting; })
+                    .sort(function(a,b){ return a.boundingClientRect.top - b.boundingClientRect.top || a.boundingClientRect.left - b.boundingClientRect.left; });
+      shown.forEach(function(e, i){ reveal(e.target, Math.min(i, 5) * 0.09); io.unobserve(e.target); });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    rvEls.forEach(function(el){ io.observe(el); });
+  }
+
+  /* ---------- offscreen sections stop animating (keeps scrolling light) ---------- */
+  if('IntersectionObserver' in window){
+    var jarV = document.getElementById('homeJarVideo');
+    var offIo = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        e.target.classList.toggle('hx-off', !e.isIntersecting);
+        if(e.target.id === 'hxHero' && jarV){ if(e.isIntersecting) jarV.play().catch(function(){}); else jarV.pause(); }
+      });
+    }, { rootMargin: '120px 0px' });
+    home.querySelectorAll('.hx-hero, .hx-bento, .hx-vault, .hx-partners, .hx-live, .hx-final, .hx-steps').forEach(function(el){ offIo.observe(el); });
+  }
+
+  /* ---------- scroll-linked loop ---------- */
+  var hero = document.getElementById('hxHero');
+  var copy = home.querySelector('.hx-hero-c'), stage = null;
+  var pars = [].slice.call(home.querySelectorAll('[data-hx-par]'));
+  var track = document.getElementById('hxMqTrack'), mq = document.getElementById('hxMarquee');
+  var steps = document.getElementById('hxSteps'), stepsFill = document.getElementById('hxStepsFill');
+  var stepEls = steps ? [].slice.call(steps.querySelectorAll('.hx-step')) : [];
+  var mqX = 0, mqDir = 1, mqW = 0, lastY = window.scrollY, vel = 0, skew = 0;
+  var vertical = function(){ return window.innerWidth <= 760; };
+
+  function measure(){ var row = track && track.firstElementChild; mqW = row ? row.getBoundingClientRect().width : 0; }
+  window.addEventListener('resize', measure); setTimeout(measure, 400);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+
+  function tick(t){
+    requestAnimationFrame(tick);
+    if(!home.classList.contains('show') || document.hidden) return;
+    var y = lenis ? lenis.scroll : window.scrollY;
+    var dy = y - lastY; lastY = y;
+    vel += (dy - vel) * 0.2;
+    var vh = window.innerHeight;
+
+    /* hero: content drifts and fades as you scroll past it */
+    var moved = Math.abs(dy) > 0.05 || !tick._init; tick._init = 1;
+    if(hero && moved && y < vh * 1.3 && !RM){
+      pars.forEach(function(el){ el.style.transform = 'translate3d(0,' + (y * parseFloat(el.getAttribute('data-hx-par'))) + 'px,0)'; });
+      var k = Math.min(1, y / (vh * 0.9));
+      if(copy){ copy.style.transform = 'translate3d(0,' + (y * 0.22) + 'px,0) scale(' + (1 - k * 0.05) + ')'; copy.style.opacity = String(1 - k * 0.85); }
+      if(stage){ stage.style.transform = 'translate3d(0,' + (y * 0.08) + 'px,0) scale(' + (1 - k * 0.08) + ')'; stage.style.opacity = String(1 - k * 0.7); }
+    }
+
+    /* marquee: always drifting, speeds up + skews with scroll velocity, flips direction */
+    if(track && mqW && !RM){
+      var r = mq.getBoundingClientRect();
+      if(r.bottom > -50 && r.top < vh + 50){
+        if(Math.abs(dy) > 0.5) mqDir = dy > 0 ? 1 : -1;
+        mqX -= (0.55 + Math.min(Math.abs(vel) * 0.35, 14)) * mqDir;
+        if(mqX <= -mqW) mqX += mqW; if(mqX > 0) mqX -= mqW;
+        skew += ((Math.max(-8, Math.min(8, -vel * 0.35))) - skew) * 0.12;
+        track.style.transform = 'translate3d(' + mqX.toFixed(2) + 'px,0,0) skewX(' + skew.toFixed(2) + 'deg)';
+      }
+    }
+
+    /* steps: a line draws itself as you scroll through, lighting each step */
+    if(steps && moved){
+      var sr = steps.getBoundingClientRect();
+      if(sr.top < vh && sr.bottom > 0){
+        var p = RM ? 1 : Math.max(0, Math.min(1, (vh * 0.72 - sr.top) / (sr.height * (vertical() ? 0.95 : 0.6))));
+        stepsFill.parentNode.style.setProperty('--p', p.toFixed(3));
+        stepEls.forEach(function(el, i){ el.classList.toggle('lit', p >= (stepEls.length > 1 ? i / (stepEls.length - 1) : 0) - 0.02); });
+      }
+    }
+  }
+  if(lenis){ requestAnimationFrame(function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }); }
+  requestAnimationFrame(tick);
+
+  /* ---------- pointer effects (desktop) ---------- */
+  if(FINE && !RM){
+    var mouseEls = [].slice.call(home.querySelectorAll('[data-hx-mouse]'));
+    var spot = home.querySelector('.hx-spot'), pend = null, heroQ = false;
+    hero && hero.addEventListener('pointermove', function(e){
+      pend = e; if(heroQ) return; heroQ = true;
+      requestAnimationFrame(function(){
+        heroQ = false; var ev = pend, r = hero.getBoundingClientRect();
+        var nx = (ev.clientX - r.left) / r.width - .5, ny = (ev.clientY - r.top) / r.height - .5;
+        mouseEls.forEach(function(el){ var f = parseFloat(el.getAttribute('data-hx-mouse')) || 1;
+          el.style.setProperty('--px', (-nx * 14 * f).toFixed(1) + 'px'); el.style.setProperty('--py', (-ny * 12 * f).toFixed(1) + 'px'); });
+        if(spot){ spot.style.setProperty('--sx', (ev.clientX - r.left) + 'px'); spot.style.setProperty('--sy', (ev.clientY - r.top + 70) + 'px'); spot.style.setProperty('--so', 1); }
+      });
+    });
+    hero && hero.addEventListener('pointerleave', function(){
+      mouseEls.forEach(function(el){ el.style.setProperty('--px', '0px'); el.style.setProperty('--py', '0px'); });
+      if(spot) spot.style.setProperty('--so', 0);
+    });
+
+    var q = null, homeQ = false;
+    home.addEventListener('pointermove', function(e){
+      q = e; if(homeQ) return; homeQ = true;
+      requestAnimationFrame(function(){
+        homeQ = false; var ev = q, tgt = ev.target;
+        var s = tgt.closest && tgt.closest('.hx-spotlight, .hx-tilt');
+        if(s){ var r = s.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width, y = (ev.clientY - r.top) / r.height;
+          s.style.setProperty('--x', (x * 100).toFixed(1) + '%'); s.style.setProperty('--y', (y * 100).toFixed(1) + '%');
+          if(s.classList.contains('hx-tilt') && s.classList.contains('in')){ s.style.setProperty('--rx', ((.5 - y) * 6).toFixed(2) + 'deg'); s.style.setProperty('--ry', ((x - .5) * 7).toFixed(2) + 'deg'); }
+        }
+        var m = tgt.closest && tgt.closest('.hx-mag');
+        if(m){ var mr = m.getBoundingClientRect();
+          m.style.setProperty('--mx', ((ev.clientX - mr.left - mr.width / 2) * 0.22).toFixed(1) + 'px');
+          m.style.setProperty('--my', ((ev.clientY - mr.top - mr.height / 2) * 0.32).toFixed(1) + 'px'); }
+      });
+    }, { passive: true });
+    home.addEventListener('pointerout', function(e){
+      var from = e.target.closest && e.target.closest('.hx-tilt, .hx-mag');
+      if(!from || (e.relatedTarget && from.contains(e.relatedTarget))) return;
+      ['--rx','--ry'].forEach(function(p){ from.style.setProperty(p, '0deg'); });
+      ['--mx','--my'].forEach(function(p){ from.style.setProperty(p, '0px'); });
+    });
+  }
+
+  /* ---------- live data ---------- */
+  var _ringPct = null, _jarIdx = 7;
+  window.hxVaultUpdate = function(pct){
+    pct = Math.max(0, Math.min(100, Math.round(pct || 0)));
+    _ringPct = pct;
+    var t = document.getElementById('hxVaultPct'); if(t) t.textContent = pct;
+    var b = document.getElementById('hxVaultBar'); if(b) b.style.width = Math.max(pct, 2) + '%';
+    var v = home.querySelector('.hx-vault'); if(v && v.classList.contains('in')) hxRingDraw();
+    var idx = Math.max(1, Math.min(8, Math.ceil((pct / 100) * 8) || 1));
+    if(idx !== _jarIdx){ var src = document.getElementById('homeJarSource'), vid = document.getElementById('homeJarVideo');
+      if(src && vid){ _jarIdx = idx; src.src = 'vault-jar-' + idx + '.mp4.webm'; vid.load(); vid.play().catch(function(){}); } }
+  };
+  function hxRingDraw(){
+    if(_ringPct == null) return;
+    var arc = document.getElementById('hxRingArc'), num = document.getElementById('hxRingPct');
+    if(arc) arc.setAttribute('stroke-dasharray', Math.max(_ringPct, 0.5) + ' 100');
+    if(num && num.dataset.v !== String(_ringPct)){
+      var to = _ringPct, from = +num.textContent || 0, t0 = performance.now(); num.dataset.v = String(to);
+      (function step(n){ var k = Math.min(1, (n - t0) / 2000), e = 1 - Math.pow(1 - k, 3);
+        num.textContent = Math.round(from + (to - from) * e); if(k < 1) requestAnimationFrame(step); })(t0);
+    }
+  }
+  window.hxKick = function(live, viewers){
+    var dot = document.getElementById('hxKickDot'), txt = document.getElementById('hxKickText');
+    if(dot) dot.classList.toggle('on', !!live);
+    if(txt) txt.textContent = live ? ('Live now · ' + Number(viewers || 0).toLocaleString() + ' watching') : (live === false ? 'Offline · follow for alerts' : 'Watch on Kick');
+    var sd = document.getElementById('kickStatusDot'); if(sd) sd.classList.toggle('on', !!live);
+    var st = document.getElementById('kickStatusText'); if(st && live == null && /Checking/.test(st.textContent)) st.textContent = 'Streams most evenings';
+  };
+  setTimeout(function(){ var t = document.getElementById('hxKickText'); if(t && /Checking/.test(t.textContent)) window.hxKick(null); }, 8000);
+  function hxKickRace(){
+    var el = document.getElementById('hxRaceCd'); if(!el || typeof currentPowerwinPeriod !== 'function') return;
+    var ms = Math.max(0, currentPowerwinPeriod().end - Date.now());
+    var d = Math.floor(ms / 864e5), h = Math.floor(ms / 36e5) % 24, m = Math.floor(ms / 6e4) % 60;
+    el.innerHTML = '<b>' + d + '</b>d <b>' + String(h).padStart(2, '0') + '</b>h <b>' + String(m).padStart(2, '0') + '</b>m';
+  }
+  hxKickRace(); setInterval(hxKickRace, 20000);
+  window.hxCopyCode = function(btn){
+    try{ navigator.clipboard && navigator.clipboard.writeText('JAMMMY'); }catch(e){}
+    var c = btn.querySelector('.hx-code-c'); btn.classList.add('done'); c.textContent = 'Copied ✓';
+    setTimeout(function(){ btn.classList.remove('done'); c.textContent = 'Copy'; }, 1600);
+  };
+})();
+</script>
 </body>
 </html>
 <!-- INJECTED STYLES -->
