@@ -8,6 +8,12 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-27 — RustMafia removed
+- **Site:** removed the RustMafia partner card (home), leaderboard preview card, leaderboard tab, bonus-code card, footer logo, vault player filter, profile claim card, "Redeem via RustMafia" option, the RustMafia prize table and all related styles. Added the missing Power.win filter to the vault players list.
+- **Worker:** removed `fetchRustMafia` and RustMafia from the partner lists, so it's no longer fetched by the leaderboard proxy, the wager/vault sync, claim approval or the verify list. Redemptions to RustMafia are refused ("no longer available"). Verify Players, the pending badge, the duplicate-accounts check and the Users list now only consider current partners (Power.win, DegenCity).
+- **Kept on purpose:** the display name "RustMafia" is still used to label *old* records (past redemptions, activity log), so history reads properly. No database rows were deleted; past coins, claims and redemptions are untouched.
+- Optional: delete the `RUSTMAFIA_API_KEY` secret in Cloudflare and `rustmafia.png` / `share-rustmafia.png` from the repo.
+
 ## 2026-09-27 — Users list: verified accounts only
 - Admin → Users now shows only **verified (approved) accounts on current partners** (Power.win, DegenCity, RustMafia) as "✓ Casino: username" badges tinted per partner. Pending/rejected claims and retired casinos (Upgrader, RustMagic) are no longer listed; users with none show "No verified casino accounts". Filtered in the worker (`/api/admin/users`) and in the page. Nothing is deleted from the database.
 

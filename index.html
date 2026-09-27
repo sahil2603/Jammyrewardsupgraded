@@ -1155,7 +1155,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .lbt img{height:36px;max-width:120px;object-fit:contain;filter:grayscale(.6);opacity:.7;transition:filter .2s,opacity .2s}
 .lbt.active{border-color:#d97706;background:rgba(217,119,6,.12);color:#fde68a}
 .lbt.active img{filter:none;opacity:1}
-/* Phones: keep all three casino tabs on ONE row (was wrapping RustMafia onto its own line). */
+/* Phones: keep the casino tabs on ONE row. */
 @media (max-width:560px){
   .lb-casino-tabs{flex-wrap:nowrap;gap:8px}
   .lbt{flex:1 1 0;min-width:0;padding:10px 6px}
@@ -1435,7 +1435,6 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .rd-casino.powerwin{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.45)}
 .rd-casino.powerwin img{height:46px;mix-blend-mode:screen;filter:none;margin:-4px 0}
 .rd-casino.degencity{background:rgba(244,114,182,.10);border-color:rgba(244,114,182,.42)}
-.rd-casino.rustmafia{background:rgba(248,113,113,.10);border-color:rgba(248,113,113,.42)}
 .rd-amt{text-align:right}
 .rd-amt b{display:block;font:800 1.6rem/1 'Poppins';color:#4ade80;letter-spacing:-.01em}
 .rd-amt span{display:block;margin-top:4px;font-size:.82rem;color:var(--faint)}
@@ -1483,7 +1482,6 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .admin-tag.vlink b{color:#fff;font-weight:600}
 .admin-tag.vlink.powerwin{border-color:rgba(192,132,252,.45);background:rgba(192,132,252,.12)}
 .admin-tag.vlink.degencity{border-color:rgba(244,114,182,.42);background:rgba(244,114,182,.10)}
-.admin-tag.vlink.rustmafia{border-color:rgba(248,113,113,.42);background:rgba(248,113,113,.10)}
 .audit-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:14px}
 .audit-filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
 .audit-filters .pf-select{width:auto;min-width:170px;margin:0}
@@ -3109,22 +3107,6 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
 
 
-        <!-- RUSTMAFIA -->
-        <div class="vp-card">
-          <div class="vp-logo-wrap" style="background:linear-gradient(160deg,#150826,#0a0512)">
-            <img src="rustmafia.png" alt="RustMafia" class="vp-logo" style="width:75%;height:auto;object-fit:contain">
-          </div>
-          <div class="vp-body">
-            <div class="vp-cas">RustMafia</div>
-            <div class="vp-tag-s" style="color:#a78bfa">Live Wager Race</div>
-            <ul class="vp-feats">
-              <li>🏆 Leaderboard Prizes</li>
-              <li>⚡ Instant Cashouts</li>
-            </ul>
-            <button class="vp-btn vp-btn-radium" style="animation-delay:.9s" onclick="go('https://rustmafia.com/leaderboards/JAMMMY')">Claim Bonus &rsaquo;</button>
-          </div>
-        </div>
-
       </div>
     </div>
 
@@ -3140,14 +3122,6 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <h3 style="font-family:'Lilita One',sans-serif;font-size:1.2rem;margin-bottom:8px">DegenCity Leaderboard</h3>
           <p style="color:var(--faint);font-size:.9rem;margin-bottom:20px">Compete for prizes and climb the ranks in the DegenCity leaderboard.</p>
           <button onclick="goToLeaderboard('degencity')" style="background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#fff;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer">View Leaderboard &rarr;</button>
-        </div>
-        <div class="lb-preview-card" style="background:rgba(20,20,30,.6);border:1px solid rgba(139,92,246,.25);border-top:3px solid #8b5cf6;border-radius:16px;padding:28px">
-          <div style="width:110px;height:44px;border-radius:10px;background:rgba(139,92,246,.12);display:flex;align-items:center;justify-content:center;margin-bottom:16px;padding:6px 10px">
-            <img src="rustmafia.png" alt="RustMafia" style="width:100%;height:100%;object-fit:contain">
-          </div>
-          <h3 style="font-family:'Lilita One',sans-serif;font-size:1.2rem;margin-bottom:8px">RustMafia Leaderboard</h3>
-          <p style="color:var(--faint);font-size:.9rem;margin-bottom:20px">Compete for prizes and climb the ranks in the RustMafia leaderboard.</p>
-          <button onclick="goToLeaderboard('rustmafia')" style="background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#fff;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer">View Leaderboard &rarr;</button>
         </div>
         <div class="lb-preview-card" style="background:rgba(20,20,30,.6);border:1px solid rgba(192,132,252,.25);border-top:3px solid #c084fc;border-radius:16px;padding:28px;position:relative">
           <div style="width:110px;height:44px;border-radius:10px;background:rgba(192,132,252,.12);display:flex;align-items:center;justify-content:center;margin-bottom:16px;padding:6px 10px">
@@ -3209,7 +3183,6 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
       <div class="lb-casino-tabs">
         <button class="lbt active" onclick="lbTab(this,'powerwin')"><img src="powerwin.png" alt="Power.win" style="height:30px;width:auto;object-fit:contain"></button>
         <button class="lbt" onclick="lbTab(this,'degencity')"><img src="degencity.png" alt="DegenCity" style="height:26px;width:auto;object-fit:contain"></button>
-        <button class="lbt" onclick="lbTab(this,'rustmafia')"><img src="rustmafia.png" alt="RustMafia" style="height:26px;width:auto;object-fit:contain"></button>
       </div>
       <div class="lb-updated">Last updated · <span id="lbUpdatedTime"></span></div>
 
@@ -3420,12 +3393,6 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <div class="codebox"><div class="code"><span style="color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em">Code</span><span class="cv">JAMMMY</span></div><button class="copybtn" onclick="copy(this,'JAMMMY')">Copy</button></div>
           <div class="feats"><span>💰 10% Cashback for 7 days</span><span>⚡ Instant Cashouts</span><span>🎁 Tip &amp; Giveaways</span><span>✨ Daily Promo Codes</span></div>
           <button class="claim" onclick="go('https://degencity.com')">Claim Bonus</button>
-        </div>
-        <div class="bcard">
-          <div class="top"><span class="cas"><img src="rustmafia.png" alt="RustMafia">RustMafia</span><span class="ribbon" style="background:#7c3aed">Live Wager Race</span></div>
-          <div class="codebox"><div class="code"><span style="color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em">Code</span><span class="cv">JAMMMY</span></div><button class="copybtn" onclick="copy(this,'JAMMMY')">Copy</button></div>
-          <div class="feats"><span>🎁 5% Bonus Match on Every Deposit</span><span>🏆 $300 Bi-Weekly Leaderboard</span><span>💸 10% Weekly Lossback VIP</span><span>💰 5% Rakeback</span></div>
-          <button class="claim" onclick="go('https://rustmafia.com/leaderboards/JAMMMY')">Claim Bonus</button>
         </div>
         <div class="bcard">
           <div class="top"><span class="cas"><img src="powerwin.png" alt="Power.win" style="height:42px">Power.win</span><span class="ribbon" style="background:#7e22ce">Coming Soon</span></div>
@@ -3640,10 +3607,8 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         </div>
         <div class="vpp-tabs">
           <button class="vpp-tab active" data-casino="">All</button>
+          <button class="vpp-tab" data-casino="powerwin">Power.win</button>
           <button class="vpp-tab" data-casino="degencity">DegenCity</button>
-
-
-          <button class="vpp-tab" data-casino="rustmafia">RustMafia</button>
         </div>
         <div class="vpp-col-head">
           <div>Rank</div>
@@ -3700,7 +3665,6 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
               <button type="button" class="pf-redeem-method active" data-method="crypto" onclick="setRedeemMethod('crypto')">Crypto</button>
               <button type="button" class="pf-redeem-method" data-method="degencity" onclick="setRedeemMethod('degencity')">DegenCity</button>
 
-              <button type="button" class="pf-redeem-method" data-method="rustmafia" onclick="setRedeemMethod('rustmafia')">RustMafia</button>
               <button type="button" class="pf-redeem-method" data-method="powerwin" onclick="setRedeemMethod('powerwin')">Power.win</button>
             </div>
 
@@ -4223,7 +4187,6 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <a class="foot-partner-row" onclick="go('https://degencity.com')"><img loading="lazy" class="foot-partner-logo" src="degencity.png" alt="DegenCity"></a>
 
 
-        <a class="foot-partner-row" onclick="go('https://rustmafia.com/leaderboards/JAMMMY')"><img loading="lazy" class="foot-partner-logo" src="rustmafia.png" alt="RustMafia"></a>
       </div>
     </div>
 
@@ -4527,7 +4490,7 @@ function lbTab(btn,casino){
   CURRENT_LB_CASINO = casino;
   var lbl=document.getElementById('lb-cd-label');
   if(lbl)lbl.textContent=((typeof CASINO_DISPLAY_NAMES!=='undefined' && CASINO_DISPLAY_NAMES[casino]) || casino).toUpperCase();
-  _realPeriodOverride = null; /* clear whatever the previous casino's real dates were (if any) -- otherwise the immediate lbcd2() call below could briefly show RustMafia's dates while switching to Upgrader, before loadLeaderboard's fetch resolves and corrects it */
+  _realPeriodOverride = null; /* clear whatever the previous casino's real dates were (if any) -- otherwise the immediate lbcd2() call below could briefly show the previous casino's dates while switching to Upgrader, before loadLeaderboard's fetch resolves and corrects it */
   lbcd2(); /* reflect the right period type (monthly vs bi-weekly) immediately, not after up to 1s of delay */
   loadLeaderboard(casino);
 }
@@ -4587,7 +4550,7 @@ lbcd2();setInterval(lbcd2,1000);
 var LB_PROXY_URL = 'https://jammy-lb-proxy.sahil-sah2603.workers.dev';
 
 var lbRequestSeq = 0;
-var _realPeriodOverride = null; /* set when the casino's own API returns real start/end dates (currently only RustMafia does) -- used instead of the generic assumed bi-weekly formula so the countdown reflects their actual schedule, not a guess */
+var _realPeriodOverride = null; /* set when the casino's own API returns real start/end dates (if the casino's API provides them) -- used instead of the generic assumed bi-weekly formula so the countdown reflects their actual schedule, not a guess */
 async function loadLeaderboard(casino){
   /* Guards against rapid tab-switching causing an older, slower request to resolve AFTER
      a newer one and overwrite it with the wrong casino's data — which would look like lag
@@ -4623,13 +4586,8 @@ async function loadLeaderboard(casino){
       }
       throw new Error(data.error);
     }
-    /* Was silently discarding this -- fetchRustMafia() has always returned its leaderboard's
-       real startDate/endDate from RustMafia's own API, but nothing ever read it, so the
-       displayed countdown and date range used the same generic assumed 14-day-from-Jan-4
-       formula for every casino except DegenCity, RustMafia included. If their actual cycle
-       ever drifts from that assumption even slightly, the dates and countdown shown would
-       just be wrong. Use the real dates when the API actually provides them; only fall back
-       to the generic formula for casinos whose API doesn't return real ones. */
+    /* If the casino's API returns its leaderboard's real start/end dates, use them for the
+       countdown and date range; otherwise fall back to the generic assumed cycle. */
     _realPeriodOverride = (data.meta && data.meta.startDate && data.meta.endDate)
       ? { start: new Date(data.meta.startDate), end: new Date(data.meta.endDate) }
       : null;
@@ -4653,14 +4611,6 @@ function renderLeaderboardRows(wagers, rewards){
      (RustMagic/DegenCity don't expose a reward structure) */
   var prizeByRank = {};
   (rewards||[]).forEach(function(r){ prizeByRank[r.place] = r.winnings; });
-
-  /* RustMafia's leaderboard has its own fixed prize structure ($125/$75/$45/$36/$34 for
-     ranks 1-5), separate from the generic podium-snapshot fallback used for casinos with
-     no reward data of their own. */
-  var RUSTMAFIA_PRIZES = {1:125, 2:75, 3:45, 4:36, 5:34};
-  if(CURRENT_LB_CASINO === 'rustmafia'){
-    prizeByRank = RUSTMAFIA_PRIZES;
-  }
 
   /* Static baseline prizes ($200/$100/$50 etc, configured directly in the podium HTML) —
      reused as the fallback for both the podium and the full list below when a casino's API
@@ -4880,8 +4830,9 @@ function fmtCoins(n){
   return (Math.round((+n||0) * 100) / 100).toLocaleString(undefined, {maximumFractionDigits: 2});
 }
 
-var CASINO_DISPLAY_NAMES = {upgrader:'Upgrader', rustmagic:'RustMagic', degencity:'DegenCity', rustmafia:'RustMafia', powerwin:'Power.win'};
-var KNOWN_CASINOS_DISPLAY_LIST = ['degencity', 'rustmafia', 'powerwin'];
+/* includes former partners so OLD records (past claims/redemptions) still show a proper name */
+var CASINO_DISPLAY_NAMES = {upgrader:'Upgrader', rustmagic:'RustMagic', rustmafia:'RustMafia', degencity:'DegenCity', powerwin:'Power.win'};
+var KNOWN_CASINOS_DISPLAY_LIST = ['degencity', 'powerwin'];
 var _vaultPlayersData = [];
 var _vaultPlayerCasinoFilter = '';
 
@@ -4979,7 +4930,6 @@ function renderUnclaimedCard(data){
 
   var CASINO_LOGOS = {
     degencity: '<img src="degencity.png" alt="DegenCity" style="max-height:28px;max-width:100%;width:auto;object-fit:contain">',
-    rustmafia: '<img src="rustmafia.png" alt="RustMafia" style="max-height:22px;max-width:100%;width:auto;object-fit:contain">',
     powerwin: '<img src="powerwin.png" alt="Power.win" style="max-height:22px;max-width:100%;width:auto;object-fit:contain">',
   };
 
@@ -5758,7 +5708,7 @@ trackPageView(location.hash ? location.hash.slice(1) : 'home'); /* showPage() on
 /* ══════════════════════════════════════════════════════════════════════════
    PROFILE PAGE
    ══════════════════════════════════════════════════════════════════════════ */
-var KNOWN_CASINOS_DISPLAY = {degencity:'DegenCity', rustmafia:'RustMafia', powerwin:'Power.win'};
+var KNOWN_CASINOS_DISPLAY = {degencity:'DegenCity', powerwin:'Power.win'};
 
 async function loadProfile(){
   var token = localStorage.getItem('jammy_session_token');
@@ -5848,7 +5798,7 @@ function renderProfile(data){
     approved: '<span class="admin-pill admin-pill-profit">✓ Approved</span>',
     pending: '<span class="admin-pill" style="background:rgba(251,191,36,.14);color:#fbbf24;border:1px solid rgba(251,191,36,.35)">⏳ Pending review</span>',
   };
-  var CASINO_GLOW = {degencity:'244,114,182', rustmafia:'168,85,247', powerwin:'192,132,252'};
+  var CASINO_GLOW = {degencity:'244,114,182', powerwin:'192,132,252'};
   var html = '';
   Object.keys(KNOWN_CASINOS_DISPLAY).forEach(function(key){
     var status = linksByStatus[key];
@@ -5949,7 +5899,7 @@ function txLabel(t, TX_LABELS){
     var m = note.match(/^Redeemed via (.+?) \((JR-[^)]+)\)$/);
     if(m){
       var pm = m[1].match(/^(degencity|rustmafia|powerwin) \((.*)\)$/i);
-      if(pm) return { main: 'Redeemed to ' + (PLATFORM_LABELS[pm[1].toLowerCase()] || pm[1]), sub: m[2] };
+      if(pm) return { main: 'Redeemed to ' + (CASINO_DISPLAY_NAMES[pm[1].toLowerCase()] || pm[1]), sub: m[2] };
       return { main: 'Redeemed for crypto', sub: m[1].split(' ')[0] + ' · ' + m[2] };
     }
     return { main: 'Redeemed' };
@@ -6227,7 +6177,7 @@ function updateNetworkOptions(){
 
 var _pfRedeemMethod = 'crypto';
 var _pfVerified = {};
-var PLATFORM_LABELS = {degencity:'DegenCity', rustmafia:'RustMafia', powerwin:'Power.win'};
+var PLATFORM_LABELS = {degencity:'DegenCity', powerwin:'Power.win'};
 var _redeemMinCrypto = 10000, _redeemMinPlatform = 1000, _redeemBalance = 0;
 function updateRedeemEligibilityNote(){
   var min = _pfRedeemMethod === 'crypto' ? _redeemMinCrypto : _redeemMinPlatform;
@@ -6557,7 +6507,7 @@ async function loadAdminUsers(){
     document.getElementById('adminUsersTotal').textContent = data.total_users + ' total users' + (q ? ' (showing filtered results)' : '');
     if(!data.users.length){ listEl.innerHTML = adminEmptyState('👥', 'No users found', 'Try a different search, or check back once people sign up.'); return; }
     listEl.innerHTML = data.users.map(function(u, i){
-      var VERIFIED_OK = { powerwin:1, degencity:1, rustmafia:1 };
+      var VERIFIED_OK = { powerwin:1, degencity:1 };
       var vLinks = (u.casino_links || []).filter(function(l){ return VERIFIED_OK[l.casino]; });
       var linksHtml = vLinks.length
         ? vLinks.map(function(l){ return '<span class="admin-tag vlink '+pccEsc(l.casino)+'"><i>✓</i>'+pccEsc(CASINO_DISPLAY_NAMES[l.casino]||l.casino)+': <b>'+pccEsc(l.username)+'</b></span>'; }).join(' ')
@@ -6788,7 +6738,7 @@ async function loadAdminRedemptions(status){
   }
 }
 
-var RD_LOGOS = { powerwin:'powerwin.png', degencity:'degencity.png', rustmafia:'rustmafia.png' };
+var RD_LOGOS = { powerwin:'powerwin.png', degencity:'degencity.png' };
 function rdCopy(btn, v){
   var done = function(){ btn.textContent = 'Copied ✓'; btn.classList.add('ok'); setTimeout(function(){ btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 1500); };
   var txt = document.createElement('textarea'); txt.innerHTML = v; v = txt.value;
