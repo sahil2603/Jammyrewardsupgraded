@@ -8,6 +8,13 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-27 — Redemptions: readable payout queue
+- Admin **Redemptions** now use the same queue layout as slot/battle requests. Pending view is sorted oldest first and numbered, with a header like "3 to pay · $120.30 total".
+- Each card: player name large, "⏱ 18h ago" + exact time + transaction ID, and the **dollar amount big and green** on the right (coins underneath).
+- Payout details as labelled tiles: casino payouts show **PAY ON** (Power.win / DegenCity / RustMafia) + **TO USERNAME**; crypto shows **SEND** (USDT…), **NETWORK** (TRC20…) and the full **TO WALLET** address. Username and wallet each have a **Copy** button.
+- The PAY ON tile shows the partner's logo (Power.win, DegenCity, RustMafia) tinted in that partner's colour; Power.win's black background is blended out so it sits cleanly on the card.
+- Actions: green "✓ Mark Paid", "Reject & refund", Delete as a small outline button on the right. Paid/rejected cards say so instead of showing buttons.
+
 ## 2026-09-27 — Slot & battle requests: readable queue
 - Admin **Slot Requests** and **Battle Requests** redesigned as a numbered queue (oldest first, "N in queue" counter) so Jammmy can read them at a glance on stream.
 - Slot cards: queue number, the slot's catalog picture, big slot name, "from <user> · provider · ⏱ 2h 5m ago", and the player's note in a clear quote box ("NOTE FROM …"). Result badge on the right ("Not played yet" / Profit · $420 / coins awarded).

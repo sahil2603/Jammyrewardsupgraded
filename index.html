@@ -1415,7 +1415,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .rq-status{align-self:start}
 .rq-specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:0 18px 14px 20px}
 .rq-spec{padding:9px 12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)}
-.rq-spec span{display:block;font-size:.68rem;letter-spacing:.14em;color:var(--faint);font-weight:700}
+.rq-spec > span{display:block;font-size:.68rem;letter-spacing:.14em;color:var(--faint);font-weight:700}
 .rq-spec b{display:block;font-size:1.05rem;color:#fff;margin-top:2px;word-break:break-word}
 .rq-spec.yes{background:rgba(251,146,60,.12);border-color:rgba(251,146,60,.4)}
 .rq-spec.yes b{color:#fdba74}
@@ -1428,6 +1428,27 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .rq-ctrl .save{padding:8px 16px}
 .rq-ctrl .del{margin-left:auto;background:transparent;border:1px solid rgba(248,113,113,.45);color:#f87171;border-radius:8px;padding:7px 12px;font:600 .82rem 'Poppins';cursor:pointer}
 .rq-ctrl .del:hover{background:rgba(248,113,113,.12)}
+.rd-who{min-width:0;grid-column:span 2}
+.rd-amt .admin-pill{display:inline-flex;width:auto}
+.rd-casino b{min-height:40px;display:flex;align-items:center}
+.rd-casino img{height:38px;width:auto;max-width:100%;object-fit:contain;display:block;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4))}
+.rd-casino.powerwin{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.45)}
+.rd-casino.powerwin img{height:46px;mix-blend-mode:screen;filter:none;margin:-4px 0}
+.rd-casino.degencity{background:rgba(244,114,182,.10);border-color:rgba(244,114,182,.42)}
+.rd-casino.rustmafia{background:rgba(248,113,113,.10);border-color:rgba(248,113,113,.42)}
+.rd-amt{text-align:right}
+.rd-amt b{display:block;font:800 1.6rem/1 'Poppins';color:#4ade80;letter-spacing:-.01em}
+.rd-amt span{display:block;margin-top:4px;font-size:.82rem;color:var(--faint)}
+.rd-pay{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin:0 18px 14px 20px}
+.rd-pay .rq-spec b{display:flex;align-items:center;gap:8px}
+.rd-pay .mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.95rem;word-break:break-all}
+.rd-copy{flex:none;background:rgba(255,255,255,.07);border:1px solid var(--line);color:#e9e3ff;border-radius:7px;padding:3px 9px;font:600 .72rem 'Poppins';cursor:pointer;letter-spacing:.04em}
+.rd-copy:hover{border-color:var(--purple)}
+.rd-copy.ok{color:#4ade80;border-color:rgba(74,222,128,.5)}
+.rd-id{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--faint);font-size:.82rem}
+.rq-ctrl .pay{background:linear-gradient(135deg,#22c55e,#15803d);border:0;color:#fff;border-radius:8px;padding:8px 16px;font:700 .85rem 'Poppins';cursor:pointer}
+.rq-ctrl .rej{background:rgba(255,255,255,.06);border:1px solid var(--line);color:#fff;border-radius:8px;padding:8px 14px;font:600 .85rem 'Poppins';cursor:pointer}
+@media (max-width:640px){.rd-who{grid-column:auto}.rd-amt{text-align:left;grid-column:1/-1}.rq-num{justify-self:start}.rd-amt b{font-size:1.35rem}.rd-pay{margin-left:16px;margin-right:14px}}
 /* big "read it on stream" view */
 .rq-list.big .rq-ctrl{display:none}
 .rq-list.big .rq-title{font-size:1.9rem}
@@ -3980,12 +4001,15 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
         <!-- REDEMPTIONS TAB -->
         <div id="adminRedemptionsTab" class="admin-tab-panel" style="display:none">
-          <div style="display:flex;gap:8px;margin-bottom:18px">
-            <button class="admin-btn-secondary admin-redemption-filter" data-status="" onclick="loadAdminRedemptions('')">All</button>
-            <button class="admin-btn-secondary admin-redemption-filter active" data-status="pending" onclick="loadAdminRedemptions('pending')">Pending</button>
-            <button class="admin-btn-secondary admin-redemption-filter" data-status="paid" onclick="loadAdminRedemptions('paid')">Paid</button>
+          <div class="rq-bar">
+            <div style="display:flex;gap:8px">
+              <button class="admin-filter-pill admin-redemption-filter" data-status="" onclick="loadAdminRedemptions('')">All</button>
+              <button class="admin-filter-pill admin-redemption-filter active" data-status="pending" onclick="loadAdminRedemptions('pending')">⏳ Pending</button>
+              <button class="admin-filter-pill admin-redemption-filter" data-status="paid" onclick="loadAdminRedemptions('paid')">✓ Paid</button>
+            </div>
+            <div class="rq-right"><span class="rq-count" id="redQueueCount"></span></div>
           </div>
-          <div id="adminRedemptionsList"></div>
+          <div id="adminRedemptionsList" class="rq-list"></div>
         </div>
 
         <!-- ANALYTICS TAB -->
@@ -6657,39 +6681,41 @@ async function loadAdminRedemptions(status){
     var data = await res.json();
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load redemptions.'; return; }
     if(!data.redemptions.length){ listEl.innerHTML = adminEmptyState('💸', 'No redemptions here', 'Nothing to review right now -- check back once someone redeems.'); return; }
-    listEl.innerHTML = data.redemptions.map(function(r, i){
-      var isPending = r.status === 'pending';
-      var isRejected = r.status === 'rejected';
-      var glow = isPending ? '251,191,36' : isRejected ? '248,113,113' : '74,222,128';
+    var cnt = document.getElementById('redQueueCount');
+    if(cnt){ var pend = data.redemptions.filter(function(r){ return r.status === 'pending'; }), tot = pend.reduce(function(a,r){ return a + (r.usd_value||0); }, 0);
+      cnt.innerHTML = status === 'pending' ? '<b>'+pend.length+'</b> to pay · <b>$'+tot.toFixed(2)+'</b> total · oldest first' : '<b>'+data.redemptions.length+'</b> redemptions'; }
+    var rows = data.redemptions.slice();
+    if(status === 'pending') rows.sort(function(a,b){ return (parseWhen(a.created_at)||0) - (parseWhen(b.created_at)||0); });
+    listEl.innerHTML = rows.map(function(r, i){
+      var isPending = r.status === 'pending', isRejected = r.status === 'rejected';
+      var acc = isPending ? '251,191,36' : isRejected ? '248,113,113' : '74,222,128';
       var isPlatform = r.redeem_method && r.redeem_method !== 'crypto';
-      var methodHtml = isPlatform
-        ? '<span class="admin-tag" style="border-color:rgba(192,132,252,.4);color:#c084fc;background:rgba(192,132,252,.14)">'+(CASINO_DISPLAY_NAMES[r.redeem_method]||r.redeem_method)+'</span>'
-          + '<span class="admin-tag">Username: '+r.platform_username+'</span>'
-        : '<span class="admin-tag">'+r.crypto_currency+'</span>'
-          + '<span class="admin-tag" style="font-family:monospace">'+r.wallet_address+'</span>';
       var statusPill = isPending
         ? '<span class="admin-pill" style="background:rgba(251,191,36,.14);color:#fbbf24;border:1px solid rgba(251,191,36,.35)">⏳ Pending</span>'
-        : isRejected
-        ? '<span class="admin-pill admin-pill-loss">✕ Rejected — coins refunded</span>'
-        : '<span class="admin-pill admin-pill-profit">✓ Paid</span>';
-      return '<div class="battle-card" style="animation-delay:'+(Math.min(i,10)*0.04)+'s;--glow:'+glow+'">'
-        + '<div class="battle-card-topbar" style="background:linear-gradient(90deg,rgb('+glow+'),rgba('+glow+',.4))"></div>'
-        + '<div style="display:flex;gap:14px;padding:16px 18px">'
-          + '<div class="admin-card-icon" style="background:linear-gradient(135deg,rgb('+glow+'),rgba('+glow+',.6))">💸</div>'
-          + '<div style="flex:1;min-width:0">'
-            + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-start">'
-              + '<div><b style="font-size:1.02rem;font-family:monospace">'+r.id+'</b><br>'
-              + '<span style="color:var(--muted);font-size:.85rem">'+r.username+' · '+r.coin_amount.toLocaleString()+' coins · $'+r.usd_value.toFixed(2)+'</span><br>'
-              + adminWhenChip('Requested', r.created_at) + (r.paid_at ? adminWhenChip('Paid', r.paid_at) : '') + '</div>'
-              + statusPill
-            + '</div>'
-            + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">'+methodHtml+'</div>'
-            + '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">'
-              + (isPending ? '<button class="admin-btn-row-action" onclick="adminMarkPaid(\''+r.id+'\')">Mark Paid</button>'
-                  + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#6b7280,#4b5563)" onclick="adminRejectRedemption(\''+r.id+'\')">Reject</button>' : '')
-              + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminDeleteRedemption(\''+r.id+'\')">🗑️ Delete</button>'
-            + '</div>'
-          + '</div>'
+        : isRejected ? '<span class="admin-pill admin-pill-loss">✕ Rejected · refunded</span>' : '<span class="admin-pill admin-pill-profit">✓ Paid</span>';
+      var copyBtn = function(v){ return '<button class="rd-copy" onclick="rdCopy(this,\''+pccEsc(String(v||'')).replace(/'/g,'&#39;')+'\')">Copy</button>'; };
+      var pay;
+      if(isPlatform){
+        var logo = RD_LOGOS[r.redeem_method], cname = CASINO_DISPLAY_NAMES[r.redeem_method]||r.redeem_method;
+        pay = '<div class="rq-spec rd-casino '+pccEsc(r.redeem_method)+'"><span>PAY ON</span><b>'+(logo ? '<img src="'+logo+'" alt="'+pccEsc(cname)+'" title="'+pccEsc(cname)+'">' : pccEsc(cname))+'</b></div>'
+          + '<div class="rq-spec"><span>TO USERNAME</span><b><span style="word-break:break-all">'+pccEsc(r.platform_username||'—')+'</span>'+copyBtn(r.platform_username)+'</b></div>';
+      } else {
+        var cc = String(r.crypto_currency||''), m = cc.match(/^(\S+)\s*\((.+)\)$/);
+        pay = '<div class="rq-spec" style="border-color:rgba(96,165,250,.45);background:rgba(96,165,250,.12)"><span>SEND</span><b>'+pccEsc(m ? m[1] : (cc||'Crypto'))+'</b></div>'
+          + '<div class="rq-spec"><span>NETWORK</span><b>'+pccEsc(m ? m[2] : '—')+'</b></div>'
+          + '<div class="rq-spec wide"><span>TO WALLET</span><b><span class="mono">'+pccEsc(r.wallet_address||'—')+'</span>'+copyBtn(r.wallet_address)+'</b></div>';
+      }
+      return '<div class="rq" style="--acc:'+acc+';animation-delay:'+Math.min(i*0.04,.4)+'s">'
+        + '<div class="rq-main">'
+          + (isPending && status === 'pending' ? '<div class="rq-num">#'+(i+1)+'</div>' : '<div class="rq-num" style="font-size:1rem">💸</div>')
+          + '<div class="rd-who"><div class="rq-title">'+pccEsc(r.username)+'</div>'
+            + '<div class="rq-sub"><span class="ago">⏱ '+rqAgo(r.created_at)+'</span><span>'+formatWhen(r.created_at)+'</span>'+(r.paid_at ? '<span style="color:#4ade80">Paid '+formatWhen(r.paid_at)+'</span>' : '')+'<span class="rd-id">'+pccEsc(r.id)+'</span></div></div>'
+          + '<div class="rd-amt"><b>$'+Number(r.usd_value||0).toFixed(2)+'</b><span>'+Number(r.coin_amount||0).toLocaleString()+' coins</span><div style="margin-top:8px">'+statusPill+'</div></div>'
+        + '</div>'
+        + '<div class="rd-pay">'+pay+'</div>'
+        + '<div class="rq-ctrl">'
+          + (isPending ? '<button class="pay" onclick="adminMarkPaid(\''+r.id+'\')">✓ Mark Paid</button><button class="rej" onclick="adminRejectRedemption(\''+r.id+'\')">Reject &amp; refund</button>' : '<span class="lbl">'+(isRejected ? 'REJECTED — COINS WERE REFUNDED' : 'PAID')+'</span>')
+          + '<button class="del" onclick="adminDeleteRedemption(\''+r.id+'\')">🗑 Delete</button>'
         + '</div>'
       + '</div>';
     }).join('');
@@ -6699,8 +6725,16 @@ async function loadAdminRedemptions(status){
   }
 }
 
+var RD_LOGOS = { powerwin:'powerwin.png', degencity:'degencity.png', rustmafia:'rustmafia.png' };
+function rdCopy(btn, v){
+  var done = function(){ btn.textContent = 'Copied ✓'; btn.classList.add('ok'); setTimeout(function(){ btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 1500); };
+  var txt = document.createElement('textarea'); txt.innerHTML = v; v = txt.value;
+  if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(v).then(done, function(){});
+  else { var t = document.createElement('textarea'); t.value = v; document.body.appendChild(t); t.select(); try{ document.execCommand('copy'); done(); }catch(e){} t.remove(); }
+}
+
 async function adminMarkPaid(txId){
-  if(!confirm('Mark ' + txId + ' as paid? Only do this after you\'ve actually sent the crypto.')) return;
+  if(!confirm('Mark ' + txId + ' as paid? Only do this after you\'ve actually sent the payment.')) return;
   var token = localStorage.getItem('jammy_session_token');
   try{
     var res = await fetch(AUTH_API + '/api/admin/mark-paid', {
