@@ -1932,7 +1932,7 @@ html.lenis{scroll-behavior:auto!important}
 .hx-stat-num{font-family:'Lilita One',sans-serif;font-size:clamp(1.8rem,3vw,2.5rem);line-height:1;color:#fff;white-space:nowrap}
 .hx-stat-lbl{margin-top:8px;font:600 .72rem 'Poppins',system-ui;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5)}
 .hx-spotlight::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(420px circle at var(--x,50%) var(--y,-40%),rgba(var(--c,168,85,247),.16),transparent 45%);opacity:0;transition:opacity .4s}
-.hx-spotlight:hover::after{opacity:1}
+.hx-spotlight:hover::after{opacity:0} /* cursor glow removed on request */
 
 /* ---------- SECTION HEAD ---------- */
 .hx-head{text-align:center;max-width:720px;margin:0 auto 46px}
@@ -3615,7 +3615,6 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
       <div class="hx-hero-bg" aria-hidden="true">
         <div class="hx-mesh" data-hx-par="-0.12"><i></i><i></i><i></i><i></i></div>
         <div class="hx-grid"></div>
-        <div class="hx-spot"></div>
       </div>
 
       <div class="hx-hero-c">
@@ -9347,7 +9346,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   /* ---------- pointer effects (desktop) ---------- */
   if(FINE && !RM){
     var mouseEls = [].slice.call(home.querySelectorAll('[data-hx-mouse]'));
-    var spot = home.querySelector('.hx-spot'), pend = null, heroQ = false;
+    var spot = null, pend = null, heroQ = false;
     hero && hero.addEventListener('pointermove', function(e){
       pend = e; if(heroQ) return; heroQ = true;
       requestAnimationFrame(function(){
