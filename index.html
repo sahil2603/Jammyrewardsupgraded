@@ -1632,8 +1632,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   background:rgba(255,255,255,.015);opacity:0;animation:pwFadeUp .5s cubic-bezier(.22,1,.36,1) forwards}
 .admin-empty-icon{font-size:2.4rem;margin-bottom:14px;display:inline-block;animation:adminEmptyFloat 3s ease-in-out infinite}
 .redeem-timing-note{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.35);
-  border-radius:10px;padding:10px 14px;color:#fde68a;font-size:.85rem;margin:0 0 14px;
-  display:flex;align-items:center;gap:8px}
+  border-radius:10px;padding:10px 14px;color:#fde68a;font-size:.85rem;margin:0 0 14px;line-height:1.5}
 .redeem-timing-note b{color:#fbbf24}
 @keyframes adminEmptyFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 /* Active/Awarded filter pills for Slot & Battle Requests -- a smooth sliding highlight
@@ -1923,6 +1922,19 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .rb-chip-no{border:1.5px solid rgba(248,113,113,.4)}
 .rb-chip-no.selected{background:rgba(248,113,113,.22);border-color:#f87171;color:#fee2e2;box-shadow:0 0 16px -4px rgba(248,113,113,.6)}
 
+.pf-verified-acct{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;margin-bottom:8px;border:1px solid rgba(74,222,128,.35);background:rgba(74,222,128,.07)}
+.pf-verified-acct .va-ic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(74,222,128,.18);color:#4ade80;font-weight:800;flex:none}
+.pf-verified-acct b{display:block;color:#fff;font-size:.98rem;overflow-wrap:anywhere}
+.pf-verified-acct small{color:#86efac;font-size:.76rem;letter-spacing:.04em}
+.pf-verified-acct > div{flex:1;min-width:0}
+.pf-verified-acct.locked{border-color:rgba(248,113,113,.35);background:rgba(248,113,113,.06);flex-wrap:wrap}
+.pf-verified-acct.locked > div{flex:1 1 calc(100% - 46px)}
+.pf-verified-acct.locked .va-go{margin-left:42px}
+.pf-verified-acct.locked .va-ic{background:rgba(248,113,113,.16);color:#f87171}
+.pf-verified-acct.locked small{color:#fca5a5}
+.pf-verified-acct .va-go{margin-left:auto;background:rgba(255,255,255,.06);border:1px solid var(--line);color:#fff;border-radius:9px;padding:7px 12px;font:600 .8rem 'Poppins';cursor:pointer}
+.pf-verified-acct .va-go:hover{border-color:var(--purple)}
+.pf-redeem-method .lk{font-size:.75em;margin-left:5px;opacity:.8}
 .pf-redeem-method{background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--muted);
   padding:9px 16px;border-radius:10px;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .18s}
 .pf-redeem-method.active{background:linear-gradient(135deg,#a855f7,#6366f1);border-color:transparent;color:#fff}
@@ -3583,9 +3595,9 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
             </div>
 
             <div id="pfRedeemPlatformFields" style="display:none">
-              <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px" id="pfPlatformUsernameLabel">Your username</label>
-              <input id="pfPlatformUsername" type="text" placeholder="Your username on that platform" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;margin-bottom:6px;box-sizing:border-box">
-              <div class="redeem-timing-note">⏳ Funds are credited within <b>1–7 days</b>. Thanks for your patience!</div>
+              <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:6px" id="pfPlatformUsernameLabel">Paid to your verified account</label>
+              <div id="pfVerifiedAcct" class="pf-verified-acct"></div>
+              <div class="redeem-timing-note" id="pfPlatformTiming">⏳ Funds are credited within <b>1–7 days</b>. Thanks for your patience!</div>
             </div>
 
             <div id="pfRedeemEligibilityNote" style="font-size:.85rem;margin-bottom:10px"></div>
@@ -5606,6 +5618,17 @@ function renderProfile(data){
     locked.textContent = '🔒 Collect ' + needed.toLocaleString() + ' more coin' + (needed === 1 ? '' : 's') + ' to unlock redeeming (platform min: ' + data.min_redeem_coins_platform.toLocaleString() + ', address min: ' + data.min_redeem_coins_crypto.toLocaleString() + ')';
   }
 
+  /* Only APPROVED casino accounts can receive platform redemptions -- the Redeem card shows
+     the verified username (no free typing) and the worker enforces the same rule. */
+  _pfVerified = {};
+  (data.casino_links||[]).forEach(function(l){ if(l.status === 'approved') _pfVerified[l.casino] = l.casino_username; });
+  document.querySelectorAll('.pf-redeem-method').forEach(function(b){
+    var m = b.dataset.method; if(m === 'crypto') return;
+    var old = b.querySelector('.lk'); if(old) old.remove();
+    if(!_pfVerified[m]){ var k = document.createElement('span'); k.className = 'lk'; k.textContent = '🔒'; k.title = 'Verify your account first'; b.appendChild(k); }
+  });
+  if(_pfRedeemMethod !== 'crypto') setRedeemMethod(_pfRedeemMethod);
+
   var linksByName = {};
   var linksByStatus = {};
   (data.casino_links||[]).forEach(function(l){
@@ -5970,6 +5993,7 @@ function updateNetworkOptions(){
 }
 
 var _pfRedeemMethod = 'crypto';
+var _pfVerified = {};
 var PLATFORM_LABELS = {degencity:'DegenCity', rustmafia:'RustMafia', powerwin:'Power.win'};
 var _redeemMinCrypto = 10000, _redeemMinPlatform = 1000, _redeemBalance = 0;
 function updateRedeemEligibilityNote(){
@@ -5977,18 +6001,19 @@ function updateRedeemEligibilityNote(){
   var btn = document.getElementById('pfRedeemBtn');
   var noteEl = document.getElementById('pfRedeemEligibilityNote');
   if(!btn) return;
+  var unverified = _pfRedeemMethod !== 'crypto' && !_pfVerified[_pfRedeemMethod];
+  var blocked = unverified || _redeemBalance < min;
   if(_redeemBalance < min){
     var needed = min - _redeemBalance;
     if(noteEl) noteEl.innerHTML = '<span style="color:#f87171">🔒 Need '+needed.toLocaleString()+' more coins for this method (minimum '+min.toLocaleString()+').</span>';
-    btn.disabled = true;
-    btn.style.opacity = '.5';
-    btn.style.cursor = 'not-allowed';
-  } else {
-    if(noteEl) noteEl.innerHTML = '';
-    btn.disabled = false;
-    btn.style.opacity = '1';
-    btn.style.cursor = 'pointer';
-  }
+  } else if(noteEl) noteEl.innerHTML = '';
+  btn.disabled = blocked;
+  btn.style.opacity = blocked ? '.5' : '1';
+  btn.style.cursor = blocked ? 'not-allowed' : 'pointer';
+}
+function goToCasinoAccounts(){
+  var el = document.getElementById('pfCasinoLinks');
+  if(el) el.scrollIntoView({ behavior:'smooth', block:'center' });
 }
 function setRedeemMethod(method){
   _pfRedeemMethod = method;
@@ -5997,8 +6022,17 @@ function setRedeemMethod(method){
   document.getElementById('pfRedeemCryptoFields').style.display = isCrypto ? 'block' : 'none';
   document.getElementById('pfRedeemPlatformFields').style.display = isCrypto ? 'none' : 'block';
   if(!isCrypto){
-    document.getElementById('pfPlatformUsernameLabel').textContent = 'Your '+PLATFORM_LABELS[method]+' username';
-    document.getElementById('pfPlatformUsername').placeholder = 'Your '+PLATFORM_LABELS[method]+' username';
+    var label = PLATFORM_LABELS[method], acct = _pfVerified[method], box = document.getElementById('pfVerifiedAcct');
+    document.getElementById('pfPlatformUsernameLabel').textContent = acct ? 'Paid to your verified '+label+' account' : label+' account';
+    document.getElementById('pfPlatformTiming').style.display = acct ? '' : 'none';
+    if(acct){
+      box.className = 'pf-verified-acct';
+      box.innerHTML = '<span class="va-ic">✓</span><div><b>'+pccEsc(acct)+'</b><small>VERIFIED '+label.toUpperCase()+' ACCOUNT</small></div>';
+    } else {
+      box.className = 'pf-verified-acct locked';
+      box.innerHTML = '<span class="va-ic">🔒</span><div><b>No verified '+label+' account</b><small>Claim your '+label+' username in Casino Accounts and wait for approval to redeem here.</small></div>'
+        + '<button type="button" class="va-go" onclick="goToCasinoAccounts()">Verify account</button>';
+    }
   }
   updateRedeemEligibilityNote();
 }
@@ -6019,8 +6053,8 @@ async function submitRedeem(){
     payload.wallet_address = wallet;
     timingNote = 'Funds will be credited within 1-7 days.';
   } else {
-    var platformUsername = document.getElementById('pfPlatformUsername').value.trim();
-    if(!platformUsername){ alert('Please enter your '+PLATFORM_LABELS[_pfRedeemMethod]+' username.'); return; }
+    var platformUsername = _pfVerified[_pfRedeemMethod];
+    if(!platformUsername){ alert('You need a verified '+PLATFORM_LABELS[_pfRedeemMethod]+' account to redeem there. Claim your username in Casino accounts and wait for approval.'); return; }
     payload.platform_username = platformUsername;
     timingNote = 'Funds will be credited on '+PLATFORM_LABELS[_pfRedeemMethod]+' within 1-7 days.';
   }

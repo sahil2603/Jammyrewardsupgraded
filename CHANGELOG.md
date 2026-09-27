@@ -8,6 +8,16 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-27 — Redeem only to verified casino accounts
+- **Profile → Redeem Coins:** DegenCity / RustMafia / Power.win redemptions now pay out only to the player's own **verified** (admin-approved) account on that casino. The free-text username box is gone; the card shows the verified username instead ("✓ JammmyFan_77 · Verified Power.win account").
+- Casinos without a verified account show a 🔒 on their button and a "No verified … account" note with a **Verify account** button that scrolls to Casino Accounts; Redeem stays disabled for that method. Crypto redemptions are unchanged.
+- **Worker:** `/api/redeem` ignores any username sent by the browser for platform payouts, looks up the player's approved `casino_links` row for that casino, and refuses with 403 if there isn't one, so it can't be bypassed by calling the API directly.
+- Fixed the "Funds are credited within 1–7 days" note splitting into columns.
+
+## 2026-09-26 (night, cont.) — Old reviews removed
+- Removed the 7 hand-written review cards (Jiggy's Pot O'Gold, Soaked by Seamen, Fury of Anubis, Pirots 5, Viva Lock Vegas, Kicker Mania, Triple Launch Fortune Wild). The Reviews page is now just the Slot Library.
+- Removed the duplicate top search bar (the library has its own) and rewrote the page intro to match.
+
 ## 2026-09-26 (night) — Slot Library on the Reviews page
 - **Slot Library** added under Jammmy's own reviews: all 557 slots from `slots-catalog.json` with search (name or provider), provider / volatility filters, sort (full review first, A→Z, biggest max win) and "Show more" paging (24 at a time).
 - Each card shows facts from our own catalog only (name, provider, volatility, max win, image when the catalog has one) and links out to Slot-Streamers: **Read review ↗** goes straight to the review for slots that have one (verified once and stored as `"ss"` in the catalog); others get **Find review ↗**, which opens their search for that name. No text or images are copied from Slot-Streamers.
