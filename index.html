@@ -1390,6 +1390,62 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   color:#7dd3fc;
 }
 /* Admin dashboard tabs */
+/* ===== Request queue (admin Slot / Battle requests) -- built to be read at a glance mid-stream ===== */
+.rq-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.rq-bar .rq-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.rq-count{color:var(--muted);font-size:.9rem;margin-right:4px}
+.rq-count b{color:#fff}
+.rq-bigbtn{background:rgba(255,255,255,.05);border:1px solid var(--line);color:#fff;border-radius:10px;padding:9px 14px;font:600 .85rem 'Poppins';cursor:pointer}
+.rq-bigbtn.on{background:linear-gradient(135deg,#a855f7,#6366f1);border-color:transparent}
+.rq-list{display:flex;flex-direction:column;gap:12px}
+.rq{position:relative;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.09);overflow:hidden;animation:rqIn .35s cubic-bezier(.16,1,.3,1) both}
+.rq::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:rgb(var(--acc,168,85,247))}
+@keyframes rqIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.rq-main{display:grid;grid-template-columns:auto auto 1fr auto;gap:16px;align-items:center;padding:16px 18px 14px 20px}
+.rq-num{min-width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font:800 1.1rem 'Poppins';color:#fff;background:rgba(var(--acc,168,85,247),.18);border:1px solid rgba(var(--acc,168,85,247),.45)}
+.rq-thumb{width:96px;height:60px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,rgba(var(--acc,168,85,247),.5),rgba(var(--acc,168,85,247),.15));display:grid;place-items:center;font-size:1.6rem;flex:none}
+.rq-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.rq-title{font:800 1.3rem/1.2 'Poppins';color:#fff;letter-spacing:-.005em;word-break:break-word}
+.rq-sub{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px;font-size:.9rem;color:#cfc8e8}
+.rq-sub .who b{color:#fff}
+.rq-sub .ago{color:#fbbf24;font-weight:600}
+.rq-sub .prov{color:#a5b4fc}
+.rq-note{margin:0 18px 14px 20px;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.05);border-left:3px solid rgba(var(--acc,168,85,247),.9);color:#f1edff;font-size:1rem;line-height:1.5;word-break:break-word}
+.rq-note small{display:block;font-size:.7rem;letter-spacing:.14em;color:var(--faint);margin-bottom:2px;font-weight:700}
+.rq-status{align-self:start}
+.rq-specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:0 18px 14px 20px}
+.rq-spec{padding:9px 12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)}
+.rq-spec span{display:block;font-size:.68rem;letter-spacing:.14em;color:var(--faint);font-weight:700}
+.rq-spec b{display:block;font-size:1.05rem;color:#fff;margin-top:2px;word-break:break-word}
+.rq-spec.yes{background:rgba(251,146,60,.12);border-color:rgba(251,146,60,.4)}
+.rq-spec.yes b{color:#fdba74}
+.rq-spec.no b{color:var(--faint);font-weight:600}
+.rq-spec.wide{grid-column:1/-1}
+.rq-ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 18px 12px 20px;background:rgba(0,0,0,.22);border-top:1px solid rgba(255,255,255,.06)}
+.rq-ctrl .lbl{font-size:.74rem;letter-spacing:.12em;color:var(--faint);font-weight:700;margin-right:4px}
+.rq-ctrl select,.rq-ctrl input{padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:#fff;font:500 .84rem 'Poppins';margin:0}
+.rq-ctrl input.coins{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.35);color:#fbbf24}
+.rq-ctrl .save{padding:8px 16px}
+.rq-ctrl .del{margin-left:auto;background:transparent;border:1px solid rgba(248,113,113,.45);color:#f87171;border-radius:8px;padding:7px 12px;font:600 .82rem 'Poppins';cursor:pointer}
+.rq-ctrl .del:hover{background:rgba(248,113,113,.12)}
+/* big "read it on stream" view */
+.rq-list.big .rq-ctrl{display:none}
+.rq-list.big .rq-title{font-size:1.9rem}
+.rq-list.big .rq-sub{font-size:1.05rem}
+.rq-list.big .rq-note{font-size:1.25rem}
+.rq-list.big .rq-spec b{font-size:1.3rem}
+.rq-list.big .rq-num{min-width:56px;height:56px;font-size:1.4rem}
+.rq-list.big .rq-thumb{width:128px;height:80px}
+@media (max-width:640px){
+  .rq-main{grid-template-columns:auto 1fr;gap:10px 12px;padding:14px 14px 12px 16px}
+  .rq-thumb{display:none}
+  .rq-status{grid-column:1/-1}
+  .rq-title{font-size:1.12rem}
+  .rq-note,.rq-specs{margin-left:16px;margin-right:14px}
+  .rq-ctrl{padding:10px 14px}
+  .rq-ctrl .del{margin-left:0}
+  .rq-list.big .rq-title{font-size:1.4rem}
+}
 .audit-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:14px}
 .audit-filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
 .audit-filters .pf-select{width:auto;min-width:170px;margin:0}
@@ -4001,26 +4057,34 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
         <!-- SLOT REQUESTS TAB -->
         <div id="adminSlotsTab" class="admin-tab-panel" style="display:none">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+          <div class="rq-bar">
             <div style="display:flex;gap:8px">
               <button class="admin-filter-pill active admin-slot-filter" data-filter="active" onclick="loadAdminSlots('active')">Active</button>
               <button class="admin-filter-pill admin-slot-filter" data-filter="awarded" onclick="loadAdminSlots('awarded')">🪙 Awarded</button>
             </div>
-            <button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminDeleteAllSlotRequests()">🗑️ Delete All</button>
+            <div class="rq-right">
+              <span class="rq-count" id="slotQueueCount"></span>
+              <button class="rq-bigbtn" id="slotBigBtn" onclick="toggleRqBig('adminSlotsList','slotBigBtn')">📺 Big view</button>
+              <button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminDeleteAllSlotRequests()">🗑️ Delete All</button>
+            </div>
           </div>
-          <div id="adminSlotsList">Loading…</div>
+          <div id="adminSlotsList" class="rq-list">Loading…</div>
         </div>
 
         <!-- BATTLE REQUESTS TAB -->
         <div id="adminBattlesTab" class="admin-tab-panel" style="display:none">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+          <div class="rq-bar">
             <div style="display:flex;gap:8px">
               <button class="admin-filter-pill active admin-battle-filter" data-filter="active" onclick="loadAdminBattles('active')">Active</button>
               <button class="admin-filter-pill admin-battle-filter" data-filter="awarded" onclick="loadAdminBattles('awarded')">🪙 Awarded</button>
             </div>
-            <button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminDeleteAllBattleRequests()">🗑️ Delete All</button>
+            <div class="rq-right">
+              <span class="rq-count" id="battleQueueCount"></span>
+              <button class="rq-bigbtn" id="battleBigBtn" onclick="toggleRqBig('adminBattlesList','battleBigBtn')">📺 Big view</button>
+              <button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminDeleteAllBattleRequests()">🗑️ Delete All</button>
+            </div>
           </div>
-          <div id="adminBattlesList">Loading…</div>
+          <div id="adminBattlesList" class="rq-list">Loading…</div>
         </div>
 
         <!-- ACTIVITY LOG TAB (admins only) -->
@@ -7132,6 +7196,40 @@ var PROVIDER_COLORS = {
   'Microgaming': '96,165,250', 'Wazdan': '251,146,60',
 };
 var _currentSlotFilter = null, _currentBattleFilter = null;
+/* ---- request queue helpers ---- */
+function rqAgo(raw){
+  var d = parseWhen(raw); if(!d) return '';
+  var m = Math.max(0, Math.round((Date.now() - d.getTime())/60000));
+  if(m < 1) return 'just now'; if(m < 60) return m + 'm ago';
+  var h = Math.floor(m/60); if(h < 24) return h + 'h ' + (m%60 ? (m%60)+'m ' : '') + 'ago';
+  var dd = Math.floor(h/24); return dd + 'd ago';
+}
+function rqStatusBadge(r){
+  if(!r.profit_status) return '<span class="admin-pill admin-pill-none">Not played yet</span>';
+  var t = { profit:'Profit', loss:'Loss', no_play:'Didn\'t play' }[r.profit_status] || r.profit_status;
+  return '<span class="admin-pill admin-pill-'+r.profit_status+'">'+t+(r.profit_amount!=null ? ' · $'+Number(r.profit_amount).toLocaleString() : '')+'</span>';
+}
+function rqResultSelect(id, cur){
+  return '<select id="'+id+'" class="pf-select" style="width:auto">'
+    + '<option value="">No result yet</option>'
+    + '<option value="profit"'+(cur==='profit'?' selected':'')+'>Profit</option>'
+    + '<option value="loss"'+(cur==='loss'?' selected':'')+'>Loss</option>'
+    + '<option value="no_play"'+(cur==='no_play'?' selected':'')+'>Didn\'t play it</option>'
+  + '</select>';
+}
+function setRqCount(id, n, filter){
+  var el = document.getElementById(id); if(!el) return;
+  el.innerHTML = filter === 'awarded' ? '<b>'+n+'</b> awarded' : '<b>'+n+'</b> in queue · oldest first';
+}
+function toggleRqBig(listId, btnId){
+  var list = document.getElementById(listId), btn = document.getElementById(btnId);
+  var on = !list.classList.contains('big');
+  list.classList.toggle('big', on); btn.classList.toggle('on', on);
+  btn.textContent = on ? '✕ Exit big view' : '📺 Big view';
+  try{ localStorage.setItem('rq_big_'+listId, on ? '1' : ''); }catch(e){}
+}
+(function(){ try{ ['adminSlotsList','adminBattlesList'].forEach(function(id){ if(localStorage.getItem('rq_big_'+id)){ var l=document.getElementById(id); if(l){ l.classList.add('big'); var b=document.getElementById(id==='adminSlotsList'?'slotBigBtn':'battleBigBtn'); if(b){ b.classList.add('on'); b.textContent='✕ Exit big view'; } } } }); }catch(e){} })();
+
 async function loadAdminSlots(filter){
   filter = filter || _currentSlotFilter || 'active';
   _currentSlotFilter = filter;
@@ -7146,39 +7244,27 @@ async function loadAdminSlots(filter){
     var data = await res.json();
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load.'; return; }
     if(!data.requests.length){ listEl.innerHTML = filter === 'awarded' ? adminEmptyState('🪙', 'No awarded requests yet', 'Once you award coins on a slot call, it shows up here.') : adminEmptyState('🎰', 'No active slot requests', 'All caught up -- new suggestions will appear here.'); return; }
+    setRqCount('slotQueueCount', data.requests.length, filter);
     listEl.innerHTML = data.requests.map(function(r, i){
-      var catalogMatch = (_slotCatalog || []).find(function(s){ return s.name && s.name.toLowerCase() === r.slot_name.toLowerCase(); });
+      var catalogMatch = (_slotCatalog || []).find(function(s){ return s.name && s.name.toLowerCase() === String(r.slot_name||'').toLowerCase(); });
       var provider = catalogMatch ? catalogMatch.provider : null;
-      var glow = (provider && PROVIDER_COLORS[provider]) || '251,146,60';
-      var profitBadge = r.profit_status
-        ? '<span class="admin-pill admin-pill-'+r.profit_status+'">'+(r.profit_status.charAt(0).toUpperCase()+r.profit_status.slice(1).replace('_',' '))+(r.profit_amount!=null ? ' · $'+r.profit_amount.toLocaleString() : '')+'</span>'
-        : '<span class="admin-pill admin-pill-none">Not recorded yet</span>';
-      var awardedBadge = r.coins_awarded ? '<span class="admin-pill admin-pill-profit" style="margin-left:6px">🪙 Awarded '+r.coins_awarded.toLocaleString()+' Coins</span>' : '';
-      return '<div class="battle-card" style="animation-delay:'+(i*0.06)+'s;--glow:'+glow+'">'
-        + '<div class="battle-card-topbar" style="background:linear-gradient(90deg,rgb('+glow+'),rgba('+glow+',.4))"></div>'
-        + '<div style="display:flex;gap:14px;padding:16px 18px">'
-          + '<div class="admin-card-icon battle-icon-shimmer" style="background:linear-gradient(135deg,rgb('+glow+'),rgba('+glow+',.6))">🎰</div>'
-          + '<div style="flex:1;min-width:0">'
-            + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-start">'
-              + '<div><b style="font-size:1.05rem">'+r.slot_name+'</b><br>'
-              + '<span style="color:var(--muted);font-size:.85rem">requested by '+r.username+(provider ? ' · '+provider : '')+'</span><br>'
-              + adminWhenChip('Requested', r.created_at) + '</div>'
-              + '<div>'+profitBadge+awardedBadge+'</div>'
-            + '</div>'
-            + (r.note ? '<div style="color:var(--muted);font-size:.85rem;margin-top:8px;font-style:italic">"'+r.note+'"</div>' : '')
-            + '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center">'
-              + '<select id="slotProfitStatus_'+r.id+'" class="pf-select" style="width:auto;margin-bottom:0;padding:8px 10px;font-size:.82rem">'
-                + '<option value="">No result yet</option>'
-                + '<option value="profit"'+(r.profit_status==='profit'?' selected':'')+'>Profit</option>'
-                + '<option value="loss"'+(r.profit_status==='loss'?' selected':'')+'>Loss</option>'
-                + '<option value="no_play"'+(r.profit_status==='no_play'?' selected':'')+'>Didn\'t play it</option>'
-              + '</select>'
-              + '<input type="number" id="slotProfitAmount_'+r.id+'" placeholder="Amount ($)" value="'+(r.profit_amount!=null?r.profit_amount:'')+'" style="width:110px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-size:.82rem">'
-              + '<input type="number" id="slotCoinsAward_'+r.id+'" placeholder="🪙 Award coins" value="'+(r.coins_awarded!=null?r.coins_awarded:'')+'" style="width:130px;padding:8px 10px;border-radius:8px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.35);color:#fbbf24;font-size:.82rem">'
-              + '<button class="admin-btn-secondary" style="padding:8px 14px" onclick="adminUpdateSlotRequest('+r.id+')">Save</button>'
-              + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b);padding:8px 14px" onclick="adminDeleteSlotRequest('+r.id+')">Delete</button>'
-            + '</div>'
-          + '</div>'
+      var acc = (provider && PROVIDER_COLORS[provider]) || '251,146,60';
+      var thumb = catalogMatch && catalogMatch.image ? '<img src="'+pccEsc(catalogMatch.image)+'" alt="" loading="lazy" onerror="this.parentNode.textContent=\'🎰\'">' : '🎰';
+      return '<div class="rq" style="--acc:'+acc+';animation-delay:'+Math.min(i*0.04,.4)+'s">'
+        + '<div class="rq-main">'
+          + '<div class="rq-num">#'+(i+1)+'</div>'
+          + '<div class="rq-thumb">'+thumb+'</div>'
+          + '<div style="min-width:0"><div class="rq-title">'+pccEsc(r.slot_name)+'</div>'
+            + '<div class="rq-sub"><span class="who">from <b>'+pccEsc(r.username)+'</b></span>'+(provider ? '<span class="prov">'+pccEsc(provider)+'</span>' : '')+'<span class="ago">⏱ '+rqAgo(r.created_at)+'</span></div></div>'
+          + '<div class="rq-status">'+rqStatusBadge(r)+(r.coins_awarded ? '<div style="margin-top:6px">'+'<span class="admin-pill admin-pill-profit">🪙 '+Number(r.coins_awarded).toLocaleString()+' coins awarded</span></div>' : '')+'</div>'
+        + '</div>'
+        + (r.note ? '<div class="rq-note"><small>NOTE FROM '+pccEsc(String(r.username||'').toUpperCase())+'</small>'+pccEsc(r.note)+'</div>' : '')
+        + '<div class="rq-ctrl"><span class="lbl">RESULT</span>'
+          + rqResultSelect('slotProfitStatus_'+r.id, r.profit_status)
+          + '<input type="number" id="slotProfitAmount_'+r.id+'" placeholder="Amount ($)" value="'+(r.profit_amount!=null?r.profit_amount:'')+'" style="width:128px">'
+          + '<input type="number" class="coins" id="slotCoinsAward_'+r.id+'" placeholder="🪙 Award coins" value="'+(r.coins_awarded!=null?r.coins_awarded:'')+'" style="width:148px">'
+          + '<button class="admin-btn-secondary save" onclick="adminUpdateSlotRequest('+r.id+')">Save</button>'
+          + '<button class="del" onclick="adminDeleteSlotRequest('+r.id+')">🗑 Delete</button>'
         + '</div>'
       + '</div>';
     }).join('');
@@ -7257,48 +7343,32 @@ async function loadAdminBattles(filter){
       'Jackpot':  { grad:'#fbbf24,#b45309', glow:'251,191,36' },
       'Terminal': { grad:'#f87171,#b91c1c', glow:'248,113,113' },
     };
+    setRqCount('battleQueueCount', data.requests.length, filter);
     listEl.innerHTML = data.requests.map(function(r, i){
       var theme = MODE_THEME[r.game_mode] || MODE_THEME['Normal'];
-      var profitBadge = r.profit_status
-        ? '<span class="admin-pill admin-pill-'+r.profit_status+'">'+(r.profit_status.charAt(0).toUpperCase()+r.profit_status.slice(1).replace('_',' '))+(r.profit_amount!=null ? ' · $'+r.profit_amount.toLocaleString() : '')+'</span>'
-        : '<span class="admin-pill admin-pill-none">Not recorded yet</span>';
-      var specialFlags = (r.crazy_mode || r.borrow)
-        ? '<div style="display:flex;gap:6px;margin-top:8px">'
-          + (r.crazy_mode ? '<span class="admin-flag-pulse">🔥 Crazy Mode</span>' : '')
-          + (r.borrow ? '<span class="admin-flag-pulse" style="background:rgba(96,165,250,.14);border-color:rgba(96,165,250,.4);color:#60a5fa">🤝 Borrow</span>' : '')
-        + '</div>' : '';
-      return '<div class="battle-card" style="animation-delay:'+(i*0.06)+'s;--glow:'+theme.glow+'">'
-        + '<div class="battle-card-topbar" style="background:linear-gradient(90deg,'+theme.grad+')"></div>'
-        + '<div style="display:flex;gap:14px;padding:16px 18px">'
-          + '<div class="admin-card-icon battle-icon-shimmer" style="background:linear-gradient(135deg,'+theme.grad+')">⚔️</div>'
-          + '<div style="flex:1;min-width:0">'
-            + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-start">'
-              + '<div><b style="font-size:1.05rem">'+r.kick_discord_name+'</b><br>'
-              + '<span style="color:var(--muted);font-size:.85rem">requested by '+r.username+'</span><br>'
-              + adminWhenChip('Requested', r.created_at) + '</div>'
-              + profitBadge
-            + '</div>'
-            + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">'
-              + '<span class="admin-tag" style="border-color:rgba('+theme.glow+',.4);color:#fff;background:rgba('+theme.glow+',.14)">'+r.game_mode+'</span>'
-              + '<span class="admin-tag">'+r.match_type+'</span>'
-              + (r.position ? '<span class="admin-tag">📍 '+r.position+'</span>' : '')
-            + '</div>'
-            + specialFlags
-            + '<div style="color:var(--muted);font-size:.85rem;margin-top:10px">🎁 <b>Cases:</b> '+r.cases+'</div>'
-            + '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center">'
-              + '<select id="battleProfitStatus_'+r.id+'" class="pf-select" style="width:auto;margin-bottom:0;padding:8px 10px;font-size:.82rem">'
-                + '<option value="">No result yet</option>'
-                + '<option value="profit"'+(r.profit_status==='profit'?' selected':'')+'>Profit</option>'
-                + '<option value="loss"'+(r.profit_status==='loss'?' selected':'')+'>Loss</option>'
-                + '<option value="no_play"'+(r.profit_status==='no_play'?' selected':'')+'>Didn\'t play it</option>'
-              + '</select>'
-              + '<input type="number" id="battleProfitAmount_'+r.id+'" placeholder="Amount ($)" value="'+(r.profit_amount!=null?r.profit_amount:'')+'" style="width:110px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-size:.82rem">'
-              + '<button class="admin-btn-secondary" style="padding:8px 14px" onclick="adminUpdateBattleRequest('+r.id+')">Save</button>'
-              + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b);padding:8px 14px" onclick="adminDeleteBattleRequest('+r.id+')">Delete</button>'
-          + '</div>'
+      var yesNo = function(label, on){ return '<div class="rq-spec '+(on?'yes':'no')+'"><span>'+label+'</span><b>'+(on?'✔ Yes':'No')+'</b></div>'; };
+      return '<div class="rq" style="--acc:'+theme.glow+';animation-delay:'+Math.min(i*0.04,.4)+'s">'
+        + '<div class="rq-main">'
+          + '<div class="rq-num">#'+(i+1)+'</div>'
+          + '<div class="rq-thumb" style="width:60px">⚔️</div>'
+          + '<div style="min-width:0"><div style="font-size:.7rem;letter-spacing:.14em;color:var(--faint);font-weight:700">BATTLE WITH</div><div class="rq-title">'+pccEsc(r.kick_discord_name)+'</div>'
+            + '<div class="rq-sub"><span class="who">requested by <b>'+pccEsc(r.username)+'</b></span><span class="ago">⏱ '+rqAgo(r.created_at)+'</span></div></div>'
+          + '<div class="rq-status">'+rqStatusBadge(r)+'</div>'
         + '</div>'
-      + '</div>'
-    + '</div>';
+        + '<div class="rq-specs">'
+          + '<div class="rq-spec" style="border-color:rgba('+theme.glow+',.45);background:rgba('+theme.glow+',.12)"><span>MODE</span><b>'+pccEsc(r.game_mode||'—')+'</b></div>'
+          + '<div class="rq-spec"><span>FORMAT</span><b>'+pccEsc(r.match_type||'—')+'</b></div>'
+          + (r.position ? '<div class="rq-spec"><span>POSITION</span><b>'+pccEsc(r.position)+'</b></div>' : '')
+          + yesNo('CRAZY MODE', !!r.crazy_mode) + yesNo('BORROW', !!r.borrow)
+          + '<div class="rq-spec wide"><span>CASES</span><b>'+pccEsc(r.cases||'—')+'</b></div>'
+        + '</div>'
+        + '<div class="rq-ctrl"><span class="lbl">RESULT</span>'
+          + rqResultSelect('battleProfitStatus_'+r.id, r.profit_status)
+          + '<input type="number" id="battleProfitAmount_'+r.id+'" placeholder="Amount ($)" value="'+(r.profit_amount!=null?r.profit_amount:'')+'" style="width:128px">'
+          + '<button class="admin-btn-secondary save" onclick="adminUpdateBattleRequest('+r.id+')">Save</button>'
+          + '<button class="del" onclick="adminDeleteBattleRequest('+r.id+')">🗑 Delete</button>'
+        + '</div>'
+      + '</div>';
     }).join('');
   }catch(e){
     console.error('Failed to load battle requests:', e);

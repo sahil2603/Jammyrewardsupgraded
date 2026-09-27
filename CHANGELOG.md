@@ -8,6 +8,14 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-27 — Slot & battle requests: readable queue
+- Admin **Slot Requests** and **Battle Requests** redesigned as a numbered queue (oldest first, "N in queue" counter) so Jammmy can read them at a glance on stream.
+- Slot cards: queue number, the slot's catalog picture, big slot name, "from <user> · provider · ⏱ 2h 5m ago", and the player's note in a clear quote box ("NOTE FROM …"). Result badge on the right ("Not played yet" / Profit · $420 / coins awarded).
+- Battle cards: "BATTLE WITH <name>" as the headline, then labelled tiles: Mode, Format, Position, Crazy mode (Yes/No), Borrow (Yes/No), Cases, instead of small chips.
+- Admin controls (result, amount, award coins, Save, Delete) moved to a quieter strip at the bottom of each card; Delete is now a subtle outline button on the far right so it isn't hit by accident.
+- **📺 Big view** toggle on both tabs: hides the controls and enlarges everything for reading during a stream; remembered per browser.
+- Same element IDs and API calls as before; no worker change.
+
 ## 2026-09-27 — Staff activity log, mandatory coin notes, clearer activity
 - **Admin → 🧾 Activity Log (admins only; mods don't see the tab and the API refuses them):** every successful staff action is recorded with who did it (ADMIN/MOD badge), what happened, to whom, and when: claim approve / reject / revoke (single and bulk, incl. revoke-all), coin add/deduct (with the note and balance before → after), redemption paid / rejected / deleted (with refunds), slot & battle request reviews/deletes (result, coins awarded, note), admin/mod role changes, vault edits, live notifications and manual wager syncs. Filters: person, category, free-text search; grouped by day; "Load older" paging.
 - Logging happens centrally in the worker router, so it can't be skipped by any screen, and a logging failure never blocks the action itself. Failed/refused attempts aren't logged.
