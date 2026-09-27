@@ -8,6 +8,19 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-27: Leaderboard, Power.win page and Slot Library refresh
+
+- **Leaderboard redesigned:** animated partner tabs, prize-pool tile, a segmented countdown with a race progress bar, and a code-copy/Join tile. The top 3 now sit on a podium with a crown and glow. Full standings show wager bars and prize column, search ("Find your name"), and a show-all toggle (first 10 visible).
+- **Power.win (New) page redesigned:** aurora hero with a spinning logo ring, one-tap code copy, and a Sign up button. Also added a stat strip, an animated 0→30x "unlock" track for the cash match, a lossback medallion, "More ways to win" cards, race prize ladders, the $1,000 bounty card and a 3-step "How to get started". All offer text is unchanged.
+- **Slot Library:** added 228 recently launched and upcoming slots from 24 providers (catalog now 785) with images and release dates. It now defaults to a "Newest releases" sort, has All / New releases / Coming soon / Full reviews chips, and shows NEW / SOON badges. Upcoming slots show their release date instead of a Request button and are left out of the request autocomplete.
+
+---
+
+## 2026-09-27 — Partner cards, Power.win bonus, partner count
+- Verified Partners cards are compact again: max 340px each and centred (they stretched across the page once there were only two); max 420px, centred, on tablets/phones.
+- Bonuses page: Power.win card is live. Ribbon "Newest Partner" and a working **Claim Bonus** button to https://power.win/?aff=jammmy (was a disabled "Coming Soon").
+- Home stats: "Verified casinos" now counts **2 partners**.
+
 ## 2026-09-27 — RustMafia removed
 - **Site:** removed the RustMafia partner card (home), leaderboard preview card, leaderboard tab, bonus-code card, footer logo, vault player filter, profile claim card, "Redeem via RustMafia" option, the RustMafia prize table and all related styles. Added the missing Power.win filter to the vault players list.
 - **Worker:** removed `fetchRustMafia` and RustMafia from the partner lists, so it's no longer fetched by the leaderboard proxy, the wager/vault sync, claim approval or the verify list. Redemptions to RustMafia are refused ("no longer available"). Verify Players, the pending badge, the duplicate-accounts check and the Users list now only consider current partners (Power.win, DegenCity).

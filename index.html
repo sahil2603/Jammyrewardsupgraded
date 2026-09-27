@@ -651,6 +651,21 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 .sl-body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:8px;flex:1}
 .sl-name{font-weight:700;font-size:.98rem;line-height:1.25;color:#fff}
 .sl-prov{color:var(--faint);font-size:.8rem}
+.sl-chips{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 4px}
+.sl-chips button{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--muted);font:600 .8rem 'Poppins',system-ui;padding:8px 14px;border-radius:999px;cursor:pointer;transition:.25s}
+.sl-chips button:hover{color:#fff;border-color:rgba(255,255,255,.25)}
+.sl-chips button.on{color:#fff;background:linear-gradient(135deg,rgba(168,85,247,.35),rgba(236,72,153,.25));border-color:rgba(236,72,153,.55);box-shadow:0 6px 20px -8px rgba(236,72,153,.6)}
+.sl-chips em{font-style:normal;font-size:.7rem;opacity:.75;background:rgba(0,0,0,.3);border-radius:999px;padding:1px 7px}
+.sl-dot{width:7px;height:7px;border-radius:50%;background:#3ddc84;box-shadow:0 0 0 0 rgba(61,220,132,.7);animation:slPulse 1.8s infinite}
+@keyframes slPulse{70%{box-shadow:0 0 0 7px rgba(61,220,132,0)}100%{box-shadow:0 0 0 0 rgba(61,220,132,0)}}
+.sl-new{position:absolute;top:8px;right:8px;z-index:2;font:800 .64rem 'Poppins',system-ui;letter-spacing:.08em;padding:4px 8px;border-radius:7px;color:#062512;background:linear-gradient(135deg,#6ef3a5,#2fd67a);box-shadow:0 4px 14px -4px rgba(61,220,132,.8);overflow:hidden}
+.sl-new::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.7) 50%,transparent 70%);transform:translateX(-120%);animation:slShine 3.2s ease-in-out infinite}
+@keyframes slShine{60%,100%{transform:translateX(120%)}}
+.sl-new.soon{color:#1c1200;background:linear-gradient(135deg,#ffd66b,#f5a524);box-shadow:0 4px 14px -4px rgba(245,165,36,.8)}
+.sl-facts .rel{color:#9fe8c0;background:rgba(61,220,132,.08)}
+.sl-facts .rel.soon{color:#ffd66b;background:rgba(245,165,36,.1)}
+.sl-soon-note{flex:1;text-align:center;font:600 .74rem 'Poppins',system-ui;color:#ffd66b;border:1px dashed rgba(245,165,36,.45);border-radius:9px;padding:8px 6px;white-space:nowrap}
+.sl-card.is-soon .sl-thumb img{filter:saturate(.85) brightness(.9)}
 .sl-facts{display:flex;gap:6px;flex-wrap:wrap}
 .sl-facts span{font-size:.72rem;font-weight:600;border-radius:7px;padding:3px 8px;background:rgba(255,255,255,.06);color:var(--muted)}
 .sl-facts .v-low{color:#3ddc84;background:rgba(61,220,132,.12)}
@@ -671,6 +686,7 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 .sl-more:hover{border-color:var(--purple)}
 .sl-note{color:var(--faint);font-size:.78rem;text-align:center;margin:18px auto 0;max-width:640px}
 @media (max-width:1100px){.sl-grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:780px){.sl-chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;max-width:100%}.sl-chips::-webkit-scrollbar{display:none}.sl-chips button{flex:0 0 auto}}
 @media (max-width:780px){.sl-grid{grid-template-columns:repeat(2,1fr);gap:12px}.sl-controls{width:100%}.sl-controls input{width:100%;flex:1 1 100%}.sl-controls select{flex:1 1 0}.sl-title{font-size:1.6rem}.sl-wrap{margin-top:26px}}
 @media (max-width:420px){.sl-actions{flex-direction:column}.sl-body{padding:10px 11px 12px}.sl-name{font-size:.9rem}}
 @media (prefers-reduced-motion:reduce){.sl-card{animation:none}.sl-card:hover{transform:none}}
@@ -875,8 +891,8 @@ nav{position:sticky;top:0;z-index:62;transform:translateZ(0);
 .vp-title{font-family:'Lilita One','Arial Black',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:1.5px;color:#fff}
 .vp-sub{color:var(--muted);font-size:.95rem}
 .vp-line{width:180px;height:4px;border-radius:4px;background:var(--rainbow);background-size:200%;}
-.vp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
-@media(max-width:980px){.vp-grid{grid-template-columns:repeat(2,1fr)}}
+.vp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,340px));justify-content:center;gap:22px}
+@media(max-width:980px){.vp-grid{grid-template-columns:repeat(2,minmax(0,340px))}}
 @media(max-width:560px){.vp-grid{grid-template-columns:1fr}}
 /* Leaderboard preview cards (below Verified Partners) had no hover feedback at all --
    plain divs with inline styles only. Matching the same lift+brighten pattern used on
@@ -1482,6 +1498,256 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .admin-tag.vlink b{color:#fff;font-weight:600}
 .admin-tag.vlink.powerwin{border-color:rgba(192,132,252,.45);background:rgba(192,132,252,.12)}
 .admin-tag.vlink.degencity{border-color:rgba(244,114,182,.42);background:rgba(244,114,182,.10)}
+/* partner cards: keep them compact now there are only two */
+@media(max-width:860px){.vp-grid{grid-template-columns:minmax(0,420px)!important;justify-content:center}}
+/* ===================== LEADERBOARD (lbx) ===================== */
+.lbx{max-width:1100px;margin:0 auto;padding:34px 20px 20px}
+.lbx-head{text-align:center;animation:lbxUp .7s cubic-bezier(.16,1,.3,1) both}
+.lbx-kicker{display:inline-flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 10px;font:700 .78rem/1 'Poppins';letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.lbx-live{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.4);color:#4ade80;letter-spacing:.14em}
+.lbx-live i{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,.7);animation:lbxPing 1.6s infinite}
+@keyframes lbxPing{70%,100%{box-shadow:0 0 0 8px rgba(74,222,128,0)}}
+.lbx-title{font-family:'Lilita One','Arial Black',sans-serif;font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.05;margin:14px 0 8px;letter-spacing:.01em}
+.lbx-sub{color:var(--muted);max-width:560px;margin:0 auto;font-size:.98rem}
+.lbx-sub b{color:#fbbf24}
+.lbx-tabs{position:relative;display:inline-flex;gap:6px;padding:6px;margin:24px auto 0;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09)}
+.lbx-tabs .lbt{position:relative;z-index:1;height:56px;min-width:170px;padding:0 22px;border:0!important;background:transparent!important;border-radius:13px;cursor:pointer;display:grid;place-items:center;opacity:.6;transition:opacity .3s,transform .3s;box-shadow:none!important}
+.lbx-tabs .lbt img{height:26px;width:auto;object-fit:contain;display:block}
+.lbx-tabs .lbt img.pw{height:34px}
+.lbx-tabs .lbt:hover{opacity:.9}
+.lbx-tabs .lbt.active{opacity:1}
+.lbx-tab-ind{position:absolute;top:6px;bottom:6px;left:6px;width:0;border-radius:13px;background:linear-gradient(180deg,rgba(168,85,247,.28),rgba(168,85,247,.12));border:1px solid rgba(192,132,252,.55);box-shadow:0 0 24px rgba(168,85,247,.35),inset 0 1px 0 rgba(255,255,255,.12);transition:left .45s cubic-bezier(.65,0,.35,1),width .45s cubic-bezier(.65,0,.35,1)}
+
+.lbx-info{display:grid!important;grid-template-columns:1fr 1.6fr 1fr;gap:14px;margin:30px 0 8px;animation:lbxUp .7s .08s cubic-bezier(.16,1,.3,1) both}
+.lbx-tile{position:relative;overflow:hidden;border-radius:20px;padding:20px 22px;background:linear-gradient(180deg,rgba(30,20,52,.8),rgba(14,9,26,.9));border:1px solid rgba(255,255,255,.08);box-shadow:0 18px 40px -20px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.06);display:flex;flex-direction:column;justify-content:center}
+.lbx-lbl{font:700 .7rem/1 'Poppins';letter-spacing:.2em;color:var(--faint);text-transform:uppercase}
+.lbx-pool b{font:400 2.6rem/1 'Lilita One',sans-serif;margin:10px 0 4px;background:linear-gradient(180deg,#fff7c2,#fbbf24 55%,#d97706);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 18px rgba(251,191,36,.35))}
+.lbx-pool small,.lbx-dates{color:var(--muted);font-size:.84rem}
+.lbx-pool::after{content:'';position:absolute;right:-30px;top:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(closest-side,rgba(251,191,36,.25),transparent)}
+.lbx-cd{align-items:center;text-align:center}
+.lbx-segs{display:flex;align-items:flex-start;gap:8px;margin:12px 0 12px}
+.lbx-segs div{min-width:64px;padding:10px 6px 8px;border-radius:14px;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.07)}
+.lbx-segs b{display:block;font:400 2rem/1 'Lilita One',sans-serif;color:#fff;font-variant-numeric:tabular-nums}
+.lbx-segs small{display:block;margin-top:4px;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+.lbx-segs i{font-style:normal;color:rgba(255,255,255,.3);font:400 1.6rem/2.2 'Lilita One',sans-serif}
+.lbx-prog{width:100%;height:6px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;margin-bottom:10px}
+.lbx-prog span{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#a855f7,#ec4899,#fbbf24);box-shadow:0 0 12px rgba(236,72,153,.6);transition:width 1s linear}
+.lbx-cta{gap:10px}
+.lbx-code{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:11px 14px;border-radius:12px;border:1px dashed rgba(251,191,36,.5);background:rgba(251,191,36,.07);cursor:pointer;color:#fff;margin-top:6px}
+.lbx-code b{font:800 1.25rem/1 'Poppins';letter-spacing:.14em;color:#fcd34d}
+.lbx-code span{font:600 .75rem 'Poppins';color:var(--muted)}
+.lbx-join{display:flex;align-items:center;justify-content:center;gap:9px;padding:12px 14px;border-radius:12px;text-decoration:none;color:#fff;font:700 .92rem 'Poppins';background:linear-gradient(135deg,#9333ea,#db2777);box-shadow:0 10px 26px -8px rgba(219,39,119,.6);transition:transform .2s,box-shadow .2s}
+.lbx-join:hover{transform:translateY(-2px);box-shadow:0 16px 32px -8px rgba(219,39,119,.75)}
+.lbx-join img{height:20px;width:auto;mix-blend-mode:screen}
+
+/* podium */
+.lbx-podium{display:grid!important;grid-template-columns:1fr 1.15fr 1fr;gap:16px;align-items:end;max-width:900px;margin:44px auto 0}
+.lbx-pod{position:relative;text-align:center;animation:lbxRise .8s cubic-bezier(.16,1,.3,1) both}
+.lbx-pod.p2{animation-delay:.18s}.lbx-pod.p1{animation-delay:.05s}.lbx-pod.p3{animation-delay:.3s}
+@keyframes lbxRise{from{opacity:0;transform:translateY(40px) scale(.96)}to{opacity:1;transform:none}}
+.lbx-card{position:relative;border-radius:22px 22px 0 0;padding:26px 16px 18px;background:linear-gradient(180deg,rgba(var(--c),.16),rgba(14,9,26,.92) 70%);border:1px solid rgba(var(--c),.45);border-bottom:0;box-shadow:0 -10px 40px -18px rgba(var(--c),.7);overflow:hidden}
+.lbx-card::before{content:'';position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.08) 50%,transparent 65%);transform:translateX(-120%);animation:lbxShine 5s ease-in-out infinite}
+.p1 .lbx-card::before{animation-delay:1s}.p3 .lbx-card::before{animation-delay:2s}
+@keyframes lbxShine{0%,60%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+.lbx-crown{font-size:1.9rem;display:block;margin:-6px auto 4px;filter:drop-shadow(0 4px 10px rgba(251,191,36,.6));animation:lbxBob 3s ease-in-out infinite}
+@keyframes lbxBob{50%{transform:translateY(-6px) rotate(-4deg)}}
+.lbx-av{position:relative;width:84px;height:84px;margin:0 auto 12px;border-radius:50%}
+.p1 .lbx-av{width:104px;height:104px}
+.lbx-av::before{content:'';position:absolute;inset:-4px;border-radius:50%;background:conic-gradient(from 0deg,rgba(var(--c),1),rgba(255,255,255,.9),rgba(var(--c),.6),rgba(var(--c),1));animation:lbxSpin 6s linear infinite}
+.lbx-av::after{content:'';position:absolute;inset:-14px;border-radius:50%;background:radial-gradient(closest-side,rgba(var(--c),.45),transparent);z-index:-1}
+@keyframes lbxSpin{to{transform:rotate(360deg)}}
+.lbx-av span{position:absolute;inset:0;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:linear-gradient(135deg,rgba(var(--c),1),rgba(var(--c),.55));font:400 2rem/1 'Lilita One',sans-serif;color:#1a1026;border:3px solid #120b20}
+.lbx-av span img{width:100%;height:100%;object-fit:cover}
+.lbx-rank{position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);z-index:2;min-width:34px;height:26px;padding:0 8px;border-radius:99px;display:grid;place-items:center;font:800 .8rem 'Poppins';color:#1a1026;background:rgb(var(--c));box-shadow:0 4px 12px rgba(0,0,0,.5)}
+.lbx-name{font:700 1.08rem 'Poppins';color:#fff;margin-top:6px;word-break:break-word;line-height:1.25}
+.p1 .lbx-name{font-size:1.22rem}
+.lbx-wag{color:var(--muted);font-size:.84rem;margin-top:3px}
+.lbx-wag b{color:#e9e3ff;font-weight:600}
+.lbx-step{border-radius:0 0 16px 16px;background:linear-gradient(180deg,rgba(var(--c),.22),rgba(var(--c),.06));border:1px solid rgba(var(--c),.35);border-top:1px solid rgba(var(--c),.6);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.p1 .lbx-step{height:104px}.p2 .lbx-step{height:78px}.p3 .lbx-step{height:62px}
+.lbx-step small{font:700 .64rem 'Poppins';letter-spacing:.2em;color:rgba(255,255,255,.55)}
+.lbx-step b{font:400 1.9rem/1 'Lilita One',sans-serif;color:rgb(var(--c));text-shadow:0 0 18px rgba(var(--c),.55)}
+.p1 .lbx-step b{font-size:2.5rem}
+.lbx-pod.p1{--c:251,191,36}.lbx-pod.p2{--c:203,213,225}.lbx-pod.p3{--c:224,145,92}
+.lbx-pod.empty .lbx-name{color:var(--faint);font-weight:600}
+.lbx-pod.empty .lbx-av span{filter:grayscale(.6);opacity:.6}
+
+/* board */
+.lbx-board{display:block!important;max-height:none!important;overflow:visible!important;margin:34px auto 0;border-radius:22px;background:linear-gradient(180deg,rgba(24,16,42,.85),rgba(12,8,22,.92));border:1px solid rgba(255,255,255,.08);box-shadow:0 30px 60px -30px rgba(0,0,0,.8);padding:8px 8px 12px;animation:lbxUp .7s .15s cubic-bezier(.16,1,.3,1) both}
+.lbx-board-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 14px 12px}
+.lbx-board-top h3{margin:0;font:400 1.4rem 'Lilita One',sans-serif}
+.lbx-upd{font-size:.78rem;color:var(--faint)}
+.lbx-tools{display:flex!important;gap:8px;align-items:center;margin:0!important}
+.lbx-tools input{width:210px;padding:10px 13px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:#fff;font:500 .88rem 'Poppins';outline:none}
+.lbx-tools input:focus{border-color:var(--purple)}
+.lbx-x{display:inline-flex;align-items:center;gap:7px;padding:10px 14px;border-radius:11px;background:#000;border:1px solid rgba(255,255,255,.25);color:#fff;font:700 .85rem 'Poppins';cursor:pointer}
+.lbx-row{display:grid;grid-template-columns:70px 1fr 160px 100px;align-items:center;gap:10px;padding:0 14px;min-height:58px;border-radius:14px;position:relative}
+.lbx-row-head{min-height:36px;font:700 .68rem 'Poppins';letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+.lbx-row .w,.lbx-row .p{text-align:right}
+#lbFullRows .lbx-row{background:rgba(255,255,255,.02);margin-top:6px;border:1px solid transparent;transition:background .2s,border-color .2s,transform .2s;animation:lbxRow .5s cubic-bezier(.16,1,.3,1) both}
+#lbFullRows .lbx-row:hover{background:rgba(168,85,247,.08);border-color:rgba(168,85,247,.3);transform:translateX(3px)}
+@keyframes lbxRow{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.lbx-rk{font:800 .95rem 'Poppins';color:var(--muted)}
+.lbx-rk.t{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;color:#1a1026;background:rgb(var(--c));box-shadow:0 0 16px rgba(var(--c),.45)}
+.lbx-pl{display:flex;align-items:center;gap:12px;min-width:0}
+.lbx-pl .a{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;overflow:hidden;font:700 .82rem 'Poppins';color:#fff;background:linear-gradient(135deg,#a855f7,#22d3ee)}
+.lbx-pl .a img{width:100%;height:100%;object-fit:cover}
+.lbx-pl .n{min-width:0;flex:1;display:block}
+.lbx-pl .n b{display:block;font:600 .95rem 'Poppins';color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lbx-bar{display:block;height:4px;border-radius:99px;background:rgba(255,255,255,.06);margin-top:6px;overflow:hidden;max-width:260px}
+.lbx-bar span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#a855f7,#22d3ee);transform-origin:left;animation:lbxBar 1s .2s cubic-bezier(.16,1,.3,1) both}
+@keyframes lbxBar{from{transform:scaleX(0)}}
+.lbx-row .w{font:600 .95rem 'Poppins';color:#fff;font-variant-numeric:tabular-nums}
+.lbx-row .p{font:700 .95rem 'Poppins';color:var(--faint)}
+.lbx-row .p.win{color:#4ade80}
+.lbx-row.lbx-row-head .w,.lbx-row.lbx-row-head .p{font:inherit;color:inherit}
+#lbFullRows .lbx-row.top{background:linear-gradient(90deg,rgba(var(--c),.12),rgba(255,255,255,.02) 60%);border-color:rgba(var(--c),.25)}
+#lbFullRows .lbx-row.r1{--c:251,191,36}#lbFullRows .lbx-row.r2{--c:203,213,225}#lbFullRows .lbx-row.r3{--c:224,145,92}
+#lbFullRows .lbx-row.hl{border-color:rgba(251,191,36,.6);background:rgba(251,191,36,.1)}
+.lbx-empty{padding:34px;text-align:center;color:var(--faint)}
+.lbx-more{display:block;margin:12px auto 4px;padding:11px 22px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:#fff;font:600 .88rem 'Poppins';cursor:pointer}
+.lbx-more:hover{border-color:var(--purple)}
+.lbx-notes{max-width:760px;margin:26px auto 0;display:flex;flex-direction:column;gap:12px}
+.lbx-note{display:flex;gap:10px;align-items:flex-start;padding:15px 18px;border-radius:14px;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.28)}
+.lbx-note p{margin:0;color:var(--muted);font-size:.87rem}.lbx-note b{color:#f59e0b}
+.lbx-note.cyan{background:rgba(34,211,238,.07);border-color:rgba(34,211,238,.28)}.lbx-note.cyan b{color:#22d3ee}
+@keyframes lbxUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@media (max-width:900px){.lbx-info{grid-template-columns:1fr 1fr}.lbx-cd{grid-column:1/-1;order:-1}}
+@media (max-width:640px){
+  .lbx{padding:22px 14px 10px}
+  .lbx-kicker{font-size:.7rem;letter-spacing:.14em}.lbx-live{white-space:nowrap}
+  .lbx-tabs .lbt{min-width:0;flex:1;padding:0 14px;height:50px}.lbx-tabs{display:flex!important;width:100%}
+  .lbx-info{grid-template-columns:1fr}
+  .lbx-segs div{min-width:0;flex:1}.lbx-segs{width:100%;gap:5px}.lbx-segs b{font-size:1.6rem}
+  .lbx-podium{grid-template-columns:1fr 1fr;gap:10px;margin-top:30px}
+  .lbx-pod.p1{grid-column:1/-1;order:-1;max-width:320px;width:100%;margin:0 auto}
+  .lbx-av{width:68px;height:68px}.p1 .lbx-av{width:88px;height:88px}
+  .lbx-name{font-size:.95rem}.p1 .lbx-name{font-size:1.1rem}
+  .p1 .lbx-step{height:84px}.p2 .lbx-step,.p3 .lbx-step{height:64px}
+  .lbx-step b{font-size:1.5rem}.p1 .lbx-step b{font-size:2rem}
+  .lbx-row{grid-template-columns:44px 1fr 96px;padding:0 10px}
+  .lbx-row .p{display:none}
+  .lbx-row .w{font-size:.86rem}
+  .lbx-tools{width:100%}.lbx-tools input{flex:1;width:auto;min-width:0}
+}
+@media (prefers-reduced-motion:reduce){.lbx *,.lbx{animation:none!important}}
+/* ===== POWER.WIN PAGE (pwx) ===== */
+.pwx{position:relative;max-width:980px;margin:0 auto;padding:56px 20px 110px;isolation:isolate}
+.pwx-aurora{position:absolute;inset:0 0 auto;height:620px;z-index:-1;overflow:hidden;pointer-events:none;mask-image:linear-gradient(#000 55%,transparent)}
+.pwx-aurora i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;animation:pwxFloat 14s ease-in-out infinite alternate}
+.pwx-aurora i:nth-child(1){width:420px;height:420px;left:8%;top:-80px;background:radial-gradient(circle,rgba(168,85,247,.55),transparent 65%)}
+.pwx-aurora i:nth-child(2){width:380px;height:380px;right:4%;top:20px;background:radial-gradient(circle,rgba(236,72,153,.45),transparent 65%);animation-duration:18s;animation-delay:-5s}
+.pwx-aurora i:nth-child(3){width:320px;height:320px;left:38%;top:180px;background:radial-gradient(circle,rgba(56,189,248,.28),transparent 65%);animation-duration:22s;animation-delay:-9s}
+@keyframes pwxFloat{to{transform:translate(40px,30px) scale(1.12)}}
+@keyframes pwxUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.pwx-hero{text-align:center;margin-bottom:46px}
+.pwx-hero>*{animation:pwxUp .8s cubic-bezier(.16,1,.3,1) both}
+.pwx-hero>*:nth-child(2){animation-delay:.08s}.pwx-hero>*:nth-child(3){animation-delay:.16s}.pwx-hero>*:nth-child(4){animation-delay:.24s}.pwx-hero>*:nth-child(5){animation-delay:.32s}.pwx-hero>*:nth-child(6){animation-delay:.42s}
+.pwx-pill{display:inline-flex;align-items:center;gap:8px;font:700 .7rem 'Poppins',system-ui;letter-spacing:.14em;text-transform:uppercase;color:#e9d5ff;background:rgba(192,132,252,.1);border:1px solid rgba(192,132,252,.35);padding:6px 14px;border-radius:99px;backdrop-filter:blur(6px)}
+.pwx-live{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,.7);animation:slPulse 1.8s infinite}
+.pwx-logo-wrap{position:relative;width:max-content;margin:26px auto 18px;padding:18px 34px}
+.pwx-ring{position:absolute;inset:0;border-radius:24px;padding:1.5px;background:conic-gradient(from var(--pwxa,0deg),rgba(192,132,252,0),#c084fc,#f472b6,rgba(192,132,252,0) 40%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:pwxSpin 5s linear infinite}
+.pwx-logo-wrap::before{content:"";position:absolute;inset:0;border-radius:24px;background:rgba(16,10,31,.55);border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(8px)}
+@property --pwxa{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes pwxSpin{to{--pwxa:360deg}}
+.pwx-logo{position:relative;height:62px;width:auto;display:block;filter:drop-shadow(0 6px 22px rgba(192,132,252,.45))}
+.pwx-h1{font-family:'Lilita One',sans-serif;font-size:clamp(2rem,5.6vw,3.4rem);line-height:1.06;margin:0 0 14px;letter-spacing:.01em}
+.pwx-grad{background:linear-gradient(100deg,#c084fc,#f472b6 45%,#fbbf24 90%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:pwxShift 6s ease-in-out infinite alternate}
+@keyframes pwxShift{to{background-position:100% center}}
+.pwx-lead{color:var(--muted);max-width:560px;margin:0 auto 26px;line-height:1.65;font-size:1rem}
+.pwx-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.pwx-code{position:relative;display:inline-flex;align-items:center;gap:12px;cursor:pointer;background:rgba(16,10,31,.8);border:1px dashed rgba(244,114,182,.6);border-radius:14px;padding:12px 14px 12px 18px;color:#fff;font:600 .8rem 'Poppins',system-ui;transition:.25s;overflow:hidden}
+.pwx-code:hover{border-style:solid;transform:translateY(-2px);box-shadow:0 12px 30px -12px rgba(244,114,182,.7)}
+.pwx-code-l{color:var(--faint);text-transform:uppercase;letter-spacing:.12em;font-size:.66rem}
+.pwx-code b{font-size:1.2rem;letter-spacing:.12em;color:#f9a8d4}
+.pwx-code-c{background:rgba(244,114,182,.16);color:#f9a8d4;border-radius:8px;padding:5px 10px;font-size:.72rem;transition:.2s}
+.pwx-code.done .pwx-code-c{background:#4ade80;color:#052e16}
+.pwx-go{display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:14px;font:700 .95rem 'Poppins',system-ui;color:#fff;text-decoration:none;background:linear-gradient(135deg,#a855f7,#ec4899);box-shadow:0 14px 34px -12px rgba(236,72,153,.8),inset 0 1px 0 rgba(255,255,255,.25);transition:.25s;position:relative;overflow:hidden}
+.pwx-go::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.35) 50%,transparent 65%);transform:translateX(-120%);animation:slShine 3.6s ease-in-out infinite}
+.pwx-go:hover{transform:translateY(-2px) scale(1.02)}
+.pwx-go span{transition:.25s}.pwx-go:hover span{transform:translateX(4px)}
+.pwx-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin:38px auto 0;max-width:760px;border-radius:18px;overflow:hidden;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07)}
+.pwx-stats div{background:rgba(12,8,24,.85);padding:16px 10px;backdrop-filter:blur(6px)}
+.pwx-stats b{display:block;font-family:'Lilita One',sans-serif;font-size:1.45rem;background:linear-gradient(180deg,#fff,#d8b4fe);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pwx-stats span{font-size:.72rem;color:var(--faint);font-weight:600}
+.pwx-rv{opacity:0;transform:translateY(26px) scale(.985);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1)}
+.pwx-rv.in{opacity:1;transform:none}
+.pwx-card{position:relative;background:linear-gradient(160deg,rgba(var(--a),.09),rgba(16,10,31,.92) 45%);border:1px solid rgba(var(--a),.24);border-radius:22px;padding:30px;margin-bottom:22px;overflow:hidden;transition:transform .35s,border-color .35s,box-shadow .35s}
+.pwx-card:hover{border-color:rgba(var(--a),.5);box-shadow:0 22px 50px -24px rgba(var(--a),.55)}
+.pwx-card-glow{position:absolute;width:340px;height:340px;right:-120px;top:-160px;border-radius:50%;background:radial-gradient(circle,rgba(var(--a),.28),transparent 65%);pointer-events:none;transition:.6s}
+.pwx-card:hover .pwx-card-glow{transform:translate(-30px,20px) scale(1.1)}
+.pwx-card h2{font-family:'Lilita One',sans-serif;font-size:1.55rem;margin:6px 0 4px;line-height:1.15}
+.pwx-tag{display:inline-block;font:800 .64rem 'Poppins',system-ui;letter-spacing:.12em;text-transform:uppercase;color:#d8b4fe;background:rgba(192,132,252,.12);border:1px solid rgba(192,132,252,.32);padding:3px 10px;border-radius:99px}
+.pwx-tag.pink{color:#f9a8d4;background:rgba(244,114,182,.12);border-color:rgba(244,114,182,.35)}
+.pwx-tag.green{color:#86efac;background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.35)}
+.pwx-p{color:var(--muted);line-height:1.7;margin:0}
+.pwx-p b{color:#fff}.pwx-p .pk{color:#f472b6}.pwx-p .gr{color:#4ade80}
+.pwx-green{color:#4ade80;font-weight:700;margin:0}
+.pwx-feat-top{display:flex;gap:18px;align-items:center;margin-bottom:16px}
+.pwx-ico{flex:none;width:62px;height:62px;border-radius:18px;display:grid;place-items:center;font-size:1.8rem;background:linear-gradient(135deg,rgba(var(--a),.9),rgba(var(--a),.35));box-shadow:0 12px 26px -10px rgba(var(--a),.8),inset 0 1px 0 rgba(255,255,255,.3);animation:pwxBob 4s ease-in-out infinite}
+@keyframes pwxBob{50%{transform:translateY(-4px) rotate(-3deg)}}
+.pwx-track{position:relative;margin:26px 0 22px;padding:14px 0 30px}
+.pwx-track-bar{height:12px;border-radius:99px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);overflow:hidden}
+.pwx-track-bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#a855f7,#ec4899,#fbbf24);box-shadow:0 0 18px rgba(236,72,153,.6);position:relative;transition:width 2.4s cubic-bezier(.45,0,.2,1)}
+.pwx-track-bar i::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-45deg,rgba(255,255,255,.18) 0 8px,transparent 8px 16px);animation:pwxStripe 1s linear infinite}
+@keyframes pwxStripe{to{background-position:22px 0}}
+.pwx-track.in .pwx-track-bar i{width:100%}
+.pwx-track-marks{position:relative;height:0}
+.pwx-track-marks span{position:absolute;top:8px;transform:translateX(-50%);font:600 .68rem 'Poppins',system-ui;color:var(--faint)}
+.pwx-track-marks span:first-child{transform:none}.pwx-track-marks span:last-child{transform:translateX(-100%)}
+.pwx-track-pct{position:absolute;right:0;top:-12px;font:600 .75rem 'Poppins',system-ui;color:var(--muted)}
+.pwx-track-pct b{font-family:'Lilita One',sans-serif;font-size:1.1rem;color:#fff}
+.pwx-bullets{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pwx-bullets div{display:flex;gap:12px;align-items:center;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:12px 14px}
+.pwx-bullets b{font-family:'Lilita One',sans-serif;font-size:1.25rem;color:#d8b4fe;min-width:44px}
+.pwx-bullets span{color:var(--muted);font-size:.85rem;line-height:1.45}
+.pwx-roller{display:flex;gap:28px;align-items:center}
+.pwx-roller-num{flex:none;position:relative;width:150px;height:150px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 25%,rgba(244,114,182,.35),rgba(16,10,31,.9) 70%);border:1px solid rgba(244,114,182,.4);box-shadow:0 0 0 8px rgba(244,114,182,.05),0 20px 40px -18px rgba(244,114,182,.7)}
+.pwx-roller-num::before{content:"";position:absolute;inset:-9px;border-radius:50%;border:1.5px dashed rgba(244,114,182,.4);animation:pwxSpinR 22s linear infinite}
+@keyframes pwxSpinR{to{transform:rotate(360deg)}}
+.pwx-roller-num b{font-family:'Lilita One',sans-serif;font-size:3.2rem;line-height:.9;color:#fff}
+.pwx-roller-num span{position:absolute;top:40px;right:26px;font-family:'Lilita One',sans-serif;font-size:1.3rem;color:#f9a8d4}
+.pwx-roller-num em{font-style:normal;text-align:center;font:700 .62rem 'Poppins',system-ui;letter-spacing:.12em;text-transform:uppercase;color:#f9a8d4;margin-top:6px;line-height:1.3}
+.pwx-sec{text-align:center;margin:52px 0 20px}
+.pwx-sec span{font:700 .68rem 'Poppins',system-ui;letter-spacing:.18em;text-transform:uppercase;color:#c084fc}
+.pwx-sec h3{font-family:'Lilita One',sans-serif;font-size:clamp(1.5rem,3.6vw,2rem);margin:6px 0 0}
+.pwx-mini{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.pwx-m{position:relative;background:linear-gradient(180deg,rgba(var(--a),.08),rgba(16,10,31,.9) 60%);border:1px solid rgba(var(--a),.22);border-radius:18px;padding:22px 16px;text-align:center;transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .3s,opacity .75s}
+.pwx-m:hover{transform:translateY(-6px);border-color:rgba(var(--a),.55);box-shadow:0 18px 36px -18px rgba(var(--a),.7)}
+.pwx-m-ico{width:50px;height:50px;margin:0 auto 12px;border-radius:15px;display:grid;place-items:center;font-size:1.45rem;background:rgba(var(--a),.14);border:1px solid rgba(var(--a),.3);transition:.35s}
+.pwx-m:hover .pwx-m-ico{transform:scale(1.12) rotate(-6deg);background:rgba(var(--a),.28)}
+.pwx-m b{display:block;color:rgb(var(--a));font-size:.98rem;margin-bottom:6px}
+.pwx-m p{color:var(--faint);font-size:.78rem;line-height:1.5;margin:0}
+.pwx-races{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.pwx-race{margin:0;padding:24px}
+.pwx-race h4{font-family:'Lilita One',sans-serif;font-size:1.2rem;margin:10px 0 4px}
+.pwx-race>p{color:var(--faint);font-size:.82rem;margin:0 0 16px}
+.pwx-prize{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px}
+.pwx-prize li{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.05);font-size:.88rem;color:var(--muted);transition:.25s}
+.pwx-prize li:hover{background:rgba(var(--a),.1);transform:translateX(4px)}
+.pwx-prize li b{color:#fff}
+.pwx-prize li span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:10px;background:rgba(255,255,255,.25);vertical-align:middle}
+.pwx-prize .g1{background:linear-gradient(90deg,rgba(251,191,36,.14),rgba(251,191,36,.02));border-color:rgba(251,191,36,.3)}
+.pwx-prize .g1 b{color:#fbbf24}.pwx-prize .g1 span::before{background:#fbbf24;box-shadow:0 0 10px #fbbf24}
+.pwx-prize .g2 b{color:#e5e7eb}.pwx-prize .g2 span::before{background:#e5e7eb}
+.pwx-prize .g3 b{color:#f59e0b}.pwx-prize .g3 span::before{background:#d97706}
+.pwx-fine{color:var(--faint);font-size:.78rem;text-align:center;margin:14px 0 0}
+.pwx-bounty{display:flex;gap:28px;align-items:center;margin-top:44px;background:linear-gradient(120deg,rgba(74,222,128,.12),rgba(16,10,31,.94) 55%)}
+.pwx-bounty-amt{flex:none;text-align:center;padding:10px 6px}
+.pwx-bounty-amt small{display:block;font:700 .66rem 'Poppins',system-ui;letter-spacing:.16em;text-transform:uppercase;color:#86efac}
+.pwx-bounty-amt b{font-family:'Lilita One',sans-serif;font-size:3.1rem;line-height:1;background:linear-gradient(180deg,#bbf7d0,#22c55e);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 6px 20px rgba(74,222,128,.45))}
+.pwx-bounty-txt .pwx-p{margin:10px 0 18px}
+.pwx-bounty-cta{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:12px;font:700 .88rem 'Poppins',system-ui;text-decoration:none;color:#052e16;background:linear-gradient(135deg,#86efac,#22c55e);box-shadow:0 12px 28px -12px rgba(34,197,94,.8);transition:.25s}
+.pwx-bounty-cta:hover{transform:translateY(-2px)}
+.pwx-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;counter-reset:s;position:relative}
+.pwx-step{position:relative;background:rgba(16,10,31,.8);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:22px 20px}
+.pwx-step i{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;font:800 .95rem 'Poppins',system-ui;font-style:normal;color:#fff;background:linear-gradient(135deg,#a855f7,#ec4899);margin-bottom:12px;box-shadow:0 8px 18px -8px rgba(236,72,153,.8)}
+.pwx-step b{display:block;margin-bottom:4px}
+.pwx-step p{color:var(--faint);font-size:.82rem;line-height:1.5;margin:0}
+.pwx-step a{color:#f9a8d4}
+@media (max-width:860px){.pwx-mini{grid-template-columns:repeat(2,1fr)}.pwx-mini .pwx-m:last-child{grid-column:1/-1}.pwx-races,.pwx-steps,.pwx-bullets{grid-template-columns:1fr}.pwx-stats{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:620px){.pwx{padding:34px 16px 90px}.pwx-card{padding:22px 18px;border-radius:18px}.pwx-roller,.pwx-bounty{flex-direction:column;text-align:center;gap:18px}.pwx-roller-num{width:130px;height:130px}.pwx-roller-num span{top:32px;right:20px}.pwx-feat-top{align-items:flex-start}.pwx-ico{width:52px;height:52px;font-size:1.5rem}.pwx-card h2{font-size:1.3rem}.pwx-go,.pwx-code{width:100%;justify-content:center}.pwx-logo{height:48px}.pwx-logo-wrap{padding:14px 26px}}
+@media (prefers-reduced-motion:reduce){.pwx-rv{opacity:1;transform:none}.pwx-track-bar i{width:100%}}
 .audit-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:14px}
 .audit-filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
 .audit-filters .pf-select{width:auto;min-width:170px;margin:0}
@@ -2977,7 +3243,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div class="lstat-div"></div>
         <div class="lstat">
           <svg class="lstat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3.2 19 6v5.4c0 4.5-2.9 7.7-7 8.4-4.1-.7-7-3.9-7-8.4V6z" stroke-linejoin="round"/><path d="m8.6 12.1 2.3 2.3 4.5-4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div class="lstat-num display" data-count="3" data-suffix=" partners">0</div>
+          <div class="lstat-num display" data-count="2" data-suffix=" partners">0</div>
           <div class="lstat-label">Verified casinos</div>
         </div>
       </div>
@@ -3178,72 +3444,69 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
   <!-- LEADERBOARDS -->
   <section class="page" id="leaderboards">
-    <div style="padding:40px 0 10px">
-      <!-- Casino tabs -->
-      <div class="lb-casino-tabs">
-        <button class="lbt active" onclick="lbTab(this,'powerwin')"><img src="powerwin.png" alt="Power.win" style="height:30px;width:auto;object-fit:contain"></button>
-        <button class="lbt" onclick="lbTab(this,'degencity')"><img src="degencity.png" alt="DegenCity" style="height:26px;width:auto;object-fit:contain"></button>
-      </div>
-      <div class="lb-updated">Last updated · <span id="lbUpdatedTime"></span></div>
-
-      <!-- Podium -->
-      <div class="lb2-podium reveal">
-        <div class="lb2-pod">
-          <div class="lb2-rank">🥈</div>
-          <div class="lb2-name">Awaiting Player</div>
-          <div class="lb2-avatar" style="background:linear-gradient(135deg,#94a3b8,#64748b);width:64px;height:64px;border-radius:50%;margin:10px auto;display:grid;place-items:center;font-family:'Lilita One',sans-serif;font-size:1.4rem;color:#fff">?</div>
-          <div class="lb2-prize-label">PRIZE</div>
-          <div class="lb2-prize">$100</div>
-        </div>
-        <div class="lb2-pod center">
-          <div class="lb2-trophy">🏆</div>
-          <div class="lb2-rank" style="font-size:1.1rem;color:var(--neon-gold)">🥇 #1</div>
-          <div class="lb2-name">Awaiting Player</div>
-          <div class="lb2-avatar" style="background:linear-gradient(135deg,#fbbf24,#b45309);width:64px;height:64px;border-radius:50%;margin:10px auto;display:grid;place-items:center;font-family:'Lilita One',sans-serif;font-size:1.4rem;color:#fff">?</div>
-          <div class="lb2-prize-label">PRIZE</div>
-          <div class="lb2-prize gold">$200</div>
-        </div>
-        <div class="lb2-pod">
-          <div class="lb2-rank">🥉</div>
-          <div class="lb2-name">Awaiting Player</div>
-          <div class="lb2-avatar" style="background:linear-gradient(135deg,#f4b27c,#cd7f4f);width:64px;height:64px;border-radius:50%;margin:10px auto;display:grid;place-items:center;font-family:'Lilita One',sans-serif;font-size:1.4rem;color:#fff">?</div>
-          <div class="lb2-prize-label">PRIZE</div>
-          <div class="lb2-prize" style="color:#fba96a">$50</div>
+    <div class="lbx">
+      <!-- header -->
+      <div class="lbx-head">
+        <div class="lbx-kicker"><span class="lbx-live"><i></i>LIVE RACE</span><span id="lbxCasinoName">Power.win</span> wager race</div>
+        <h1 class="lbx-title">Climb the <span class="g">Leaderboard</span></h1>
+        <p class="lbx-sub">Wager under code <b>JAMMMY</b>, climb the ranks and win a share of the prize pool. Updated live.</p>
+        <div class="lbx-tabs" id="lbxTabs">
+          <span class="lbx-tab-ind" id="lbxTabInd"></span>
+          <button class="lbt active" onclick="lbTab(this,'powerwin')"><img src="powerwin.png" alt="Power.win" class="pw"></button>
+          <button class="lbt" onclick="lbTab(this,'degencity')"><img src="degencity.png" alt="DegenCity"></button>
         </div>
       </div>
 
-      <!-- Date range + countdown -->
-      <div class="lb2-range reveal">
-        <div class="lb2-dates" id="lb2-dates">Loading period&hellip;</div>
-        <div class="lb2-countdown">&#x23F0; <span id="lb-cd-label">POWER.WIN</span> COMPETITION ENDS IN &nbsp;<b id="lb-cd2">--</b></div>
-        <a id="lbJoinPowerwin" class="lb-join-btn" href="https://power.win/?aff=jammmy" target="_blank" rel="noopener">
-          <img src="powerwin.png" alt="" aria-hidden="true"> Join Power.win <span aria-hidden="true">↗</span>
-        </a>
-      </div>
-
-      <div style="text-align:center;margin-top:26px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap" id="lbActionButtons">
-        <button onclick="document.getElementById('lb-full-list').classList.toggle('lb-full-open');this.textContent=document.getElementById('lb-full-list').classList.contains('lb-full-open')?'Hide Full Leaderboard ↑':'Full Leaderboard ↗'" style="background:transparent;border:1.5px solid rgba(74,222,128,.5);color:#4ade80;font-weight:800;padding:13px 30px;border-radius:12px;cursor:pointer;font-family:'Lilita One',sans-serif;letter-spacing:.02em;box-shadow:0 0 16px rgba(74,222,128,.15)">Full Leaderboard &#x2197;</button>
-        <button onclick="shareLeaderboardOnX()" style="background:#000;border:1.5px solid rgba(255,255,255,.35);color:#fff;font-weight:800;padding:13px 26px;border-radius:12px;cursor:pointer;font-family:'Lilita One',sans-serif;letter-spacing:.02em;display:inline-flex;align-items:center;gap:9px">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          Share on X
-        </button>
-      </div>
-
-      <!-- Full ranked list (ranks 4+), hidden until "Full Leaderboard" is clicked -->
-      <div id="lb-full-list" class="lb-full-list">
-        <div class="lb-full-row-head">
-          <span>Rank</span><span>Player</span><span>Wagered</span><span>Prize</span>
+      <!-- race info -->
+      <div class="lbx-info" id="lbxInfo">
+        <div class="lbx-tile lbx-pool">
+          <span class="lbx-lbl">PRIZE POOL</span>
+          <b id="lbxPool">$350</b>
+          <small>Top 3 paid</small>
         </div>
-        <div id="lbFullRows"><div style="padding:30px;text-align:center;color:var(--faint)">Connecting to live leaderboard&hellip;</div></div>
+        <div class="lbx-tile lbx-cd">
+          <span class="lbx-lbl"><span id="lb-cd-label">POWER.WIN</span> RACE ENDS IN</span>
+          <div class="lbx-segs">
+            <div><b id="lbxD">--</b><small>days</small></div><i>:</i>
+            <div><b id="lbxH">--</b><small>hrs</small></div><i>:</i>
+            <div><b id="lbxM">--</b><small>min</small></div><i>:</i>
+            <div><b id="lbxS">--</b><small>sec</small></div>
+          </div>
+          <div class="lbx-prog"><span id="lbxProg"></span></div>
+          <div class="lbx-dates" id="lb2-dates">Loading period&hellip;</div>
+          <span id="lb-cd2" hidden>--</span>
+        </div>
+        <div class="lbx-tile lbx-cta">
+          <span class="lbx-lbl">USE CODE</span>
+          <button class="lbx-code" onclick="copy(this.querySelector('b'),'JAMMMY')"><b>JAMMMY</b><span>Copy</span></button>
+          <a id="lbJoinPowerwin" class="lbx-join" href="https://power.win/?aff=jammmy" target="_blank" rel="noopener"><img src="powerwin.png" alt="" aria-hidden="true">Join Power.win <span aria-hidden="true">↗</span></a>
+        </div>
       </div>
 
-      <div class="lb-note reveal" style="max-width:760px;margin:34px auto 0;display:flex;gap:10px;align-items:flex-start;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:14px;padding:18px 22px;text-align:left">
-        <span style="font-size:1.1rem">⚠️</span>
-        <span style="color:var(--faint);font-size:.88rem"><b style="color:#f59e0b">Note:</b> Users must deposit more than the placement prize. If the deposit is less than the prize, the prize will be voided.</span>
+      <!-- podium -->
+      <div class="lbx-podium" id="lbxPodium">
+        <div class="lbx-pod p2" data-rank="2"></div>
+        <div class="lbx-pod p1" data-rank="1"></div>
+        <div class="lbx-pod p3" data-rank="3"></div>
       </div>
-      <div id="lbDegenCityNote" class="lb-note reveal" style="display:none;max-width:760px;margin:14px auto 0;display:flex;gap:10px;align-items:flex-start;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.3);border-radius:14px;padding:18px 22px;text-align:left">
-        <span style="font-size:1.1rem">🎰</span>
-        <span style="color:var(--faint);font-size:.88rem"><b style="color:#22d3ee">Note:</b> On DegenCity, only slot wagers count toward the leaderboard.</span>
+
+      <!-- table -->
+      <div class="lbx-board" id="lb-full-list">
+        <div class="lbx-board-top">
+          <div><h3>Full standings</h3><span class="lbx-upd">Last updated · <span id="lbUpdatedTime"></span></span></div>
+          <div class="lbx-tools" id="lbActionButtons">
+            <input id="lbxSearch" type="search" placeholder="Find your name…" oninput="lbxFilter()" aria-label="Find a player">
+            <button class="lbx-x" onclick="shareLeaderboardOnX()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Share</button>
+          </div>
+        </div>
+        <div class="lbx-row lbx-row-head" id="lbxHeadRow"><span>Rank</span><span>Player</span><span class="w">Wagered</span><span class="p">Prize</span></div>
+        <div id="lbFullRows"><div class="lbx-empty">Connecting to live leaderboard&hellip;</div></div>
+        <button class="lbx-more" id="lbxMore" onclick="lbxShowAll()" hidden></button>
+      </div>
+
+      <div class="lbx-notes">
+        <div class="lbx-note"><span>⚠️</span><p><b>Note:</b> Users must deposit more than the placement prize. If the deposit is less than the prize, the prize will be voided.</p></div>
+        <div class="lbx-note cyan" id="lbDegenCityNote" style="display:none"><span>🎰</span><p><b>Note:</b> On DegenCity, only slot wagers count toward the leaderboard.</p></div>
       </div>
     </div>
   </section>
@@ -3257,129 +3520,122 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
   <!-- NEW: POWER.WIN SHOWCASE -->
   <section class="page" id="new">
-    <div class="wrap" style="max-width:900px;margin:0 auto;padding:60px 20px 100px">
+    <div class="pwx">
+      <div class="pwx-aurora" aria-hidden="true"><i></i><i></i><i></i></div>
 
-      <div class="reveal" style="text-align:center;margin-bottom:40px">
-        <span style="display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:.1em;color:#c084fc;background:rgba(192,132,252,.12);border:1px solid rgba(192,132,252,.35);padding:5px 14px;border-radius:99px;margin-bottom:18px;animation:pwFadeUp .6s ease both">NEW PARTNER</span><br>
-        <img src="powerwin.png" alt="Power.win" style="height:70px;width:auto;object-fit:contain;margin-bottom:20px;animation:pwFadeUp .6s .1s ease both">
-        <h1 style="font-family:'Lilita One',sans-serif;font-size:clamp(1.8rem,5vw,2.8rem);line-height:1.15;margin:0 0 24px;animation:pwFadeUp .6s .2s ease both">The most rewarding<br>gambling site</h1>
-        <div class="pw-code-box" style="animation:pwFadeUp .6s .3s ease both, pwCodeGlow 2.8s ease-in-out infinite">
-          <div class="pw-code-shine"></div>
-          <span style="color:var(--muted);font-size:.9rem;position:relative;z-index:1">Use Code</span>
-          <a href="https://power.win/?aff=jammmy" target="_blank" rel="noopener" class="pw-code-link">JAMMMY</a>
-          <span class="pw-code-spark">✨</span>
+      <!-- HERO -->
+      <header class="pwx-hero">
+        <span class="pwx-pill"><span class="pwx-live"></span>Official partner · Newest</span>
+        <div class="pwx-logo-wrap">
+          <div class="pwx-ring" aria-hidden="true"></div>
+          <img src="powerwin.png" alt="Power.win" class="pwx-logo">
         </div>
-      </div>
+        <h1 class="pwx-h1">The most <span class="pwx-grad">rewarding</span><br>gambling site</h1>
+        <p class="pwx-lead">Real cash matched on your first deposit, rakeback on every bet and weekly races. All unlocked with one code.</p>
+        <div class="pwx-cta-row">
+          <button type="button" class="pwx-code" onclick="pwxCopy(this)" aria-label="Copy code JAMMMY">
+            <span class="pwx-code-l">Code</span><b>JAMMMY</b><span class="pwx-code-c">Copy</span>
+          </button>
+          <a class="pwx-go" href="https://power.win/?aff=jammmy" target="_blank" rel="noopener">Sign up on Power.win <span>→</span></a>
+        </div>
+        <div class="pwx-stats">
+          <div><b>100%</b><span>Cash match</span></div>
+          <div><b>25%</b><span>High-roller lossback</span></div>
+          <div><b>Weekly</b><span>Live races</span></div>
+          <div><b>$1,000</b><span>Referral bounty</span></div>
+        </div>
+      </header>
 
-      <!-- Offer 1 -->
-      <div class="pw-card" style="--pw-glow:192,132,252;animation-delay:.1s">
-        <div class="pw-card-topbar"></div>
-        <div style="display:flex;gap:16px;padding:30px">
-          <div class="pw-icon-badge">💰</div>
-          <div style="flex:1">
-            <h2 style="font-family:'Lilita One',sans-serif;font-size:1.35rem;margin:0 0 6px">100% First Deposit Cash Match</h2>
-            <p style="color:#4ade80;font-weight:700;font-size:.95rem;margin:0 0 14px">Real cash. Not bonus money.</p>
-            <p style="color:var(--muted);line-height:1.6;margin:0 0 16px">Get 100% of your first deposit matched as cash, unlocked progressively as you play.</p>
-            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px">
-              <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:#c084fc">•</span> <span>Every 1.5&times; wagered unlocks 5% of your bonus.</span></li>
-              <li style="display:flex;gap:10px;align-items:flex-start"><span style="color:#c084fc">•</span> <span>30&times; wagered = 100% unlocked.</span></li>
-            </ul>
+      <!-- OFFER 1: cash match with unlock track -->
+      <article class="pwx-card pwx-feature pwx-rv" style="--a:192,132,252">
+        <div class="pwx-card-glow" aria-hidden="true"></div>
+        <div class="pwx-feat-top">
+          <div class="pwx-ico">💰</div>
+          <div>
+            <span class="pwx-tag">Welcome offer</span>
+            <h2>100% First Deposit Cash Match</h2>
+            <p class="pwx-green">Real cash. Not bonus money.</p>
           </div>
         </div>
-      </div>
-
-      <!-- Offer 2 -->
-      <div class="pw-card" style="--pw-glow:244,114,182;animation-delay:.2s">
-        <div class="pw-card-topbar"></div>
-        <div style="display:flex;gap:16px;padding:30px">
-          <div class="pw-icon-badge" style="background:linear-gradient(135deg,#f472b6,#be185d)">🎯</div>
-          <div style="flex:1">
-            <span style="display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.06em;color:#f472b6;background:rgba(244,114,182,.12);border:1px solid rgba(244,114,182,.35);padding:3px 10px;border-radius:99px;margin-bottom:12px">CODE JAMMMY HIGH ROLLERS ONLY</span>
-            <h2 style="font-family:'Lilita One',sans-serif;font-size:1.35rem;margin:0 0 12px">25% Session Lossback</h2>
-            <p style="color:var(--muted);line-height:1.6;margin:0">If you make a deposit of $1,000, we can offer you 25% Lossback for that session, exclusively arranged for you.</p>
+        <p class="pwx-p">Get 100% of your first deposit matched as cash, unlocked progressively as you play.</p>
+        <div class="pwx-track" aria-label="Unlock progress: every 1.5x wagered unlocks 5%, 30x unlocks 100%">
+          <div class="pwx-track-bar"><i></i></div>
+          <div class="pwx-track-marks">
+            <span style="left:0">0×</span><span style="left:25%">7.5×</span><span style="left:50%">15×</span><span style="left:75%">22.5×</span><span style="left:100%">30×</span>
           </div>
+          <div class="pwx-track-pct"><b data-pwx-to="100">0</b>% unlocked</div>
         </div>
+        <div class="pwx-bullets">
+          <div><b>1.5×</b><span>Every 1.5× wagered unlocks 5% of your bonus</span></div>
+          <div><b>30×</b><span>30× wagered = 100% unlocked</span></div>
+        </div>
+      </article>
+
+      <!-- OFFER 2 -->
+      <article class="pwx-card pwx-roller pwx-rv" style="--a:244,114,182">
+        <div class="pwx-card-glow" aria-hidden="true"></div>
+        <div class="pwx-roller-num"><b>25</b><span>%</span><em>Session<br>Lossback</em></div>
+        <div class="pwx-roller-txt">
+          <span class="pwx-tag pink">Code JAMMMY high rollers only</span>
+          <h2>25% Session Lossback</h2>
+          <p class="pwx-p">If you make a deposit of <b>$1,000</b>, we can offer you 25% Lossback for that session, exclusively arranged for you.</p>
+        </div>
+      </article>
+
+      <!-- MORE WAYS -->
+      <div class="pwx-sec pwx-rv"><span>Always on</span><h3>More ways to win</h3></div>
+      <div class="pwx-mini">
+        <div class="pwx-m pwx-rv" style="--a:96,165,250"><div class="pwx-m-ico">💵</div><b>Rakeback</b><p>Activated automatically. Earn back a share of every wager, all the time.</p></div>
+        <div class="pwx-m pwx-rv" style="--a:248,113,113"><div class="pwx-m-ico">📉</div><b>Lossback</b><p>Get a share of net losses back, session after session.</p></div>
+        <div class="pwx-m pwx-rv" style="--a:251,191,36"><div class="pwx-m-ico">⚡</div><b>Cashboost</b><p>A boost drops after every 5th deposit.</p></div>
+        <div class="pwx-m pwx-rv" style="--a:74,222,128"><div class="pwx-m-ico">📅</div><b>Weekly Bonus</b><p>A fresh bonus lands every week just for playing.</p></div>
+        <div class="pwx-m pwx-rv" style="--a:192,132,252"><div class="pwx-m-ico">👑</div><b>VIP Bonus</b><p>The more you play, the bigger the perks that unlock.</p></div>
       </div>
 
-      <!-- More Ways to Win -->
-      <h3 class="reveal" style="font-family:'Lilita One',sans-serif;font-size:1.15rem;text-align:center;margin:44px 0 20px;color:var(--muted);letter-spacing:.02em">More Ways to Win</h3>
-      <div class="pw-mini-grid">
-        <div class="pw-mini-card" style="--pw-glow:96,165,250;animation-delay:.1s">
-          <div class="pw-mini-icon">💵</div>
-          <div class="pw-mini-title">Rakeback</div>
-          <div class="pw-mini-desc">Activated automatically — earn back a share of every wager, all the time.</div>
+      <!-- RACES -->
+      <div class="pwx-sec pwx-rv"><span>Every week</span><h3>🏁 Live races</h3></div>
+      <div class="pwx-races">
+        <div class="pwx-card pwx-race pwx-rv" style="--a:124,58,237">
+          <span class="pwx-tag">Weekly</span>
+          <h4>Highest Wagering on Originals</h4>
+          <p>Ranked by total wagered on Power.win Originals</p>
+          <ol class="pwx-prize">
+            <li class="g1"><span>1st</span><b>10 USDT</b></li><li class="g2"><span>2nd</span><b>5 USDT</b></li>
+            <li class="g3"><span>3rd</span><b>3 USDT</b></li><li><span>4th</span><b>2 USDT</b></li>
+          </ol>
         </div>
-        <div class="pw-mini-card" style="--pw-glow:248,113,113;animation-delay:.18s">
-          <div class="pw-mini-icon">📉</div>
-          <div class="pw-mini-title">Lossback</div>
-          <div class="pw-mini-desc">Get a share of net losses back, session after session.</div>
-        </div>
-        <div class="pw-mini-card" style="--pw-glow:251,191,36;animation-delay:.26s">
-          <div class="pw-mini-icon">⚡</div>
-          <div class="pw-mini-title">Cashboost</div>
-          <div class="pw-mini-desc">A boost drops after every 5th deposit.</div>
-        </div>
-        <div class="pw-mini-card" style="--pw-glow:74,222,128;animation-delay:.34s">
-          <div class="pw-mini-icon">📅</div>
-          <div class="pw-mini-title">Weekly Bonus</div>
-          <div class="pw-mini-desc">A fresh bonus lands every week just for playing.</div>
-        </div>
-        <div class="pw-mini-card" style="--pw-glow:192,132,252;animation-delay:.42s">
-          <div class="pw-mini-icon">👑</div>
-          <div class="pw-mini-title">VIP Bonus</div>
-          <div class="pw-mini-desc">The more you play, the bigger the perks that unlock.</div>
+        <div class="pwx-card pwx-race pwx-rv" style="--a:236,72,153">
+          <span class="pwx-tag pink">Weekly</span>
+          <h4>Highest Win Multiplier</h4>
+          <p>Ranked by the biggest single-spin win multiplier</p>
+          <ol class="pwx-prize">
+            <li class="g1"><span>1st</span><b>10 USDT</b></li><li class="g2"><span>2nd</span><b>5 USDT</b></li>
+            <li class="g3"><span>3rd</span><b>3 USDT</b></li><li><span>4th</span><b>2 USDT</b></li>
+          </ol>
         </div>
       </div>
+      <p class="pwx-fine">New races every week. Check power.win for current standings and time remaining.</p>
 
-      <!-- Live Races -->
-      <h3 class="reveal" style="font-family:'Lilita One',sans-serif;font-size:1.15rem;text-align:center;margin:44px 0 20px;color:var(--muted);letter-spacing:.02em">🏁 Weekly Live Races</h3>
-      <div class="pw-race-grid">
-        <div class="pw-card" style="--pw-glow:124,58,237;animation-delay:.1s;margin-bottom:0">
-          <div class="pw-card-topbar"></div>
-          <div style="padding:24px">
-            <span style="display:inline-block;font-size:.65rem;font-weight:800;letter-spacing:.06em;color:#c084fc;background:rgba(124,58,237,.14);border:1px solid rgba(124,58,237,.4);padding:2px 9px;border-radius:99px;margin-bottom:10px">WEEKLY</span>
-            <h4 style="font-family:'Lilita One',sans-serif;font-size:1.1rem;margin:0 0 4px">Highest Wagering on Originals</h4>
-            <p style="color:var(--faint);font-size:.82rem;margin:0 0 16px">Ranked by total wagered on Power.win Originals</p>
-            <div style="display:flex;flex-direction:column;gap:8px">
-              <div class="pw-race-row"><span>🥇 1st</span><b style="color:#fbbf24">10 USDT</b></div>
-              <div class="pw-race-row"><span>🥈 2nd</span><b style="color:#e5e7eb">5 USDT</b></div>
-              <div class="pw-race-row"><span>🥉 3rd</span><b style="color:#d97706">3 USDT</b></div>
-              <div class="pw-race-row"><span>4th</span><b>2 USDT</b></div>
-            </div>
-          </div>
+      <!-- BOUNTY -->
+      <article class="pwx-card pwx-bounty pwx-rv" style="--a:74,222,128">
+        <div class="pwx-card-glow" aria-hidden="true"></div>
+        <div class="pwx-bounty-amt"><small>You get</small><b>$1,000</b></div>
+        <div class="pwx-bounty-txt">
+          <span class="pwx-tag green">High roller referral bounty</span>
+          <p class="pwx-p">Bring in a high roller under code <b class="pk">JAMMMY</b> who wagers <b>$500,000</b> in any 30-day window, with a minimum deposit of <b>$10,000</b>, and you get <b class="gr">$1,000</b>.</p>
+          <a href="https://discord.gg/jammmy" target="_blank" rel="noopener" class="pwx-bounty-cta">Message Jammmy on Discord →</a>
         </div>
-        <div class="pw-card" style="--pw-glow:236,72,153;animation-delay:.2s;margin-bottom:0">
-          <div class="pw-card-topbar"></div>
-          <div style="padding:24px">
-            <span style="display:inline-block;font-size:.65rem;font-weight:800;letter-spacing:.06em;color:#f472b6;background:rgba(236,72,153,.14);border:1px solid rgba(236,72,153,.4);padding:2px 9px;border-radius:99px;margin-bottom:10px">WEEKLY</span>
-            <h4 style="font-family:'Lilita One',sans-serif;font-size:1.1rem;margin:0 0 4px">Highest Win Multiplier</h4>
-            <p style="color:var(--faint);font-size:.82rem;margin:0 0 16px">Ranked by the biggest single-spin win multiplier</p>
-            <div style="display:flex;flex-direction:column;gap:8px">
-              <div class="pw-race-row"><span>🥇 1st</span><b style="color:#fbbf24">10 USDT</b></div>
-              <div class="pw-race-row"><span>🥈 2nd</span><b style="color:#e5e7eb">5 USDT</b></div>
-              <div class="pw-race-row"><span>🥉 3rd</span><b style="color:#d97706">3 USDT</b></div>
-              <div class="pw-race-row"><span>4th</span><b>2 USDT</b></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <p class="reveal" style="color:var(--faint);font-size:.78rem;text-align:center;margin-top:14px">New races every week — check power.win for current standings and time remaining.</p>
+      </article>
 
-      <div style="margin-top:44px"></div>
-
-      <!-- High Roller Referral Bounty -->
-      <div class="pw-card pw-bounty-card" style="--pw-glow:74,222,128;animation-delay:.3s">
-        <div class="pw-card-topbar"></div>
-        <div style="padding:30px;text-align:center">
-          <div class="pw-icon-badge" style="background:linear-gradient(135deg,#4ade80,#15803d);margin:0 auto 14px">🎁</div>
-          <h2 style="font-family:'Lilita One',sans-serif;font-size:1.35rem;margin:0 0 14px">High Roller Referral Bounty</h2>
-          <p style="color:var(--muted);line-height:1.7;max-width:620px;margin:0 auto 22px">Bring in a high roller under code <b style="color:#f472b6">JAMMMY</b> who wagers <b style="color:#fff">$500,000</b> in any 30-day window, with a minimum deposit of <b style="color:#fff">$10,000</b> — you get <b style="color:#4ade80">$1,000</b>.</p>
-          <a href="https://discord.gg/jammmy" target="_blank" rel="noopener" class="pw-bounty-cta">Message Jammmy on Discord &rarr;</a>
-        </div>
+      <!-- HOW TO -->
+      <div class="pwx-sec pwx-rv"><span>Takes two minutes</span><h3>How to get started</h3></div>
+      <div class="pwx-steps">
+        <div class="pwx-step pwx-rv"><i>1</i><b>Sign up</b><p>Create your account through <a href="https://power.win/?aff=jammmy" target="_blank" rel="noopener">our Power.win link</a>.</p></div>
+        <div class="pwx-step pwx-rv"><i>2</i><b>Use code JAMMMY</b><p>Make sure the code is on your account so every perk above applies.</p></div>
+        <div class="pwx-step pwx-rv"><i>3</i><b>Verify on your Profile</b><p>Link your Power.win username here to show up on the leaderboard and claim rewards.</p></div>
       </div>
 
-      <p class="reveal" style="color:var(--faint);font-size:.8rem;text-align:center;margin-top:28px">Poker and extremely low-risk, low-variance bets excluded.</p>
-
+      <p class="pwx-fine">Poker and extremely low-risk, low-variance bets excluded.</p>
     </div>
   </section>
 
@@ -3395,10 +3651,10 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <button class="claim" onclick="go('https://degencity.com')">Claim Bonus</button>
         </div>
         <div class="bcard">
-          <div class="top"><span class="cas"><img src="powerwin.png" alt="Power.win" style="height:42px">Power.win</span><span class="ribbon" style="background:#7e22ce">Coming Soon</span></div>
+          <div class="top"><span class="cas"><img src="powerwin.png" alt="Power.win" style="height:42px">Power.win</span><span class="ribbon" style="background:#7e22ce">Newest Partner</span></div>
           <div class="codebox"><div class="code"><span style="color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em">Code</span><span class="cv">JAMMMY</span></div><button class="copybtn" onclick="copy(this,'JAMMMY')">Copy</button></div>
           <div class="feats"><span>💰 100% First Deposit Cash Match</span><span>💵 Rakeback Activated</span><span>📉 High Roller Lossback</span><span>🏁 Weekly Live Races</span></div>
-          <button class="claim" disabled style="opacity:.5;cursor:not-allowed">Coming Soon</button>
+          <button class="claim" onclick="go('https://power.win/?aff=jammmy')">Claim Bonus</button>
         </div>
       </div>
     </div>
@@ -3407,7 +3663,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
   <!-- REVIEWS -->
   <section class="page" id="reviews">
     <div class="sec-head"><h2>Slot Game <span class="g">Reviews</span></h2><p>Find your next slot: facts, full reviews and one-tap requests.</p></div>
-    <p class="intro">Browse 550+ slots with provider, volatility and max-win at a glance. Tap <b>Read review</b> for the full breakdown, or <b>Request</b> to get Jammmy to play it on stream.</p>
+    <p class="intro">Browse 780+ slots, including this month's new releases and what's coming next, with provider, volatility and max-win at a glance. Tap <b>Read review</b> for the full breakdown, or <b>Request</b> to get Jammmy to play it on stream.</p>
     <!-- SLOT LIBRARY: built from slots-catalog.json. Facts only (name, provider, volatility, max win);
          the full review lives on Slot-Streamers and is linked out, never copied here. -->
     <div class="inner sl-wrap" id="slotLibrary">
@@ -3423,9 +3679,15 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
             <option value="">Any volatility</option><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option><option value="extreme">Extreme</option>
           </select>
           <select id="slSort" aria-label="Sort">
-            <option value="review">Full review first</option><option value="az">A → Z</option><option value="max">Biggest max win</option>
+            <option value="new">Newest releases</option><option value="review">Full review first</option><option value="az">A → Z</option><option value="max">Biggest max win</option>
           </select>
         </div>
+      </div>
+      <div class="sl-chips" id="slChips" role="tablist" aria-label="Show">
+        <button type="button" class="on" data-f="">All slots</button>
+        <button type="button" data-f="new"><span class="sl-dot"></span>New releases <em id="slNewN"></em></button>
+        <button type="button" data-f="soon">⏳ Coming soon <em id="slSoonN"></em></button>
+        <button type="button" data-f="review">★ Full reviews <em id="slRevN"></em></button>
       </div>
       <div class="sl-grid" id="slGrid"><div class="sl-empty">Loading slots…</div></div>
       <div class="sl-more-row"><button class="sl-more" id="slMore" type="button" hidden>Show more slots</button></div>
@@ -4245,6 +4507,7 @@ function showPage(id){
   requestAnimationFrame(()=>requestAnimationFrame(()=>window.scrollTo(0,0)));
   runReveals();runCounts();
   if(id==='vault'){initVaultBars();setTimeout(()=>{document.querySelectorAll('#vault .reveal').forEach(el=>el.classList.add('in'));document.querySelectorAll('#vault [data-count]').forEach(function(el){delete el.dataset.done;});runCounts();},200);}
+  if(id==='new'){setTimeout(pwxInit,60);}
   if(id==='bonuses'||id==='home'){initKickStream();setTimeout(()=>{document.querySelectorAll('#'+id+' .reveal').forEach(el=>el.classList.add('in'));},100);}
 }
 /* nav() is the public entry point used by onclick handlers — it updates the page AND pushes
@@ -4401,7 +4664,7 @@ var _lastLbWagers = []; /* raw wager data for the currently-displayed leaderboar
    a casino whose API doesn't provide its own reward data, we can reset back to that
    baseline instead of either leaving a stale value from whatever casino was shown last, or
    blanking it to "—". */
-document.querySelectorAll('.lb2-prize').forEach(function(el){ el.dataset.staticPrize = el.textContent; });
+var LB_STATIC_PRIZES = {1:'$200', 2:'$100', 3:'$50'}; /* shown when a casino's API has no reward data */
 /* Used by the leaderboard preview cards on Home -- was trying to find the matching tab
    button via a CSS attribute selector embedded directly inside the onclick HTML attribute
    string, which needed nested quotes that the HTML entity-escaping approach actually
@@ -4484,9 +4747,16 @@ function closeShareXModal(){
   if(el) el.remove();
 }
 
+function lbxMoveInd(){
+  var ind = document.getElementById('lbxTabInd'), act = document.querySelector('#lbxTabs .lbt.active');
+  if(ind && act){ ind.style.left = act.offsetLeft + 'px'; ind.style.width = act.offsetWidth + 'px'; }
+}
+window.addEventListener('resize', lbxMoveInd);
 function lbTab(btn,casino){
   document.querySelectorAll('.lbt').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
+  lbxMoveInd();
+  var cn = document.getElementById('lbxCasinoName'); if(cn) cn.textContent = (typeof CASINO_DISPLAY_NAMES!=='undefined' && CASINO_DISPLAY_NAMES[casino]) || casino;
   CURRENT_LB_CASINO = casino;
   var lbl=document.getElementById('lb-cd-label');
   if(lbl)lbl.textContent=((typeof CASINO_DISPLAY_NAMES!=='undefined' && CASINO_DISPLAY_NAMES[casino]) || casino).toUpperCase();
@@ -4532,6 +4802,11 @@ function lbcd2(){
   var s = Math.max(0, Math.floor((period.end - n)/1000));
   var el = document.getElementById('lb-cd2');
   if(el) el.textContent = s<=0 ? 'ENDED' : Math.floor(s/86400)+'d '+Math.floor(s/3600)%24+'h '+Math.floor(s/60)%60+'m';
+  var pad = function(v){ return (v<10?'0':'')+v; };
+  var seg = { lbxD: Math.floor(s/86400), lbxH: Math.floor(s/3600)%24, lbxM: Math.floor(s/60)%60, lbxS: s%60 };
+  Object.keys(seg).forEach(function(k){ var e = document.getElementById(k); if(e){ var v = k==='lbxD' ? String(seg[k]) : pad(seg[k]); if(e.textContent !== v) e.textContent = v; } });
+  var pr = document.getElementById('lbxProg');
+  if(pr){ var tot = period.end - period.start; pr.style.width = Math.min(100, Math.max(0, (n - period.start) / tot * 100)).toFixed(2) + '%'; }
   var datesEl = document.getElementById('lb2-dates');
   if(datesEl){
     var opts = {month:'short', day:'numeric', year:'numeric'};
@@ -4558,11 +4833,11 @@ async function loadLeaderboard(casino){
      most recent one is allowed to actually update the page. */
   var myRequest = ++lbRequestSeq;
   var rowsEl = document.getElementById('lbFullRows');
-  var podiumEl = document.querySelector('.lb2-podium');
+  var podiumEl = document.getElementById('lbxPodium');
   var actionBtnsEl = document.getElementById('lbActionButtons');
   var fullListEl = document.getElementById('lb-full-list');
-  var countdownEl = document.querySelector('.lb2-countdown');
-  var tableHeadEl = document.querySelector('.lb-full-row-head');
+  var countdownEl = document.getElementById('lbxInfo');
+  var tableHeadEl = document.getElementById('lbxHeadRow');
   var degenCityNoteEl = document.getElementById('lbDegenCityNote');
   if(degenCityNoteEl) degenCityNoteEl.style.display = (casino === 'degencity') ? 'flex' : 'none';
   var joinPwEl = document.getElementById('lbJoinPowerwin');
@@ -4571,8 +4846,7 @@ async function loadLeaderboard(casino){
   if(actionBtnsEl) actionBtnsEl.style.display = '';
   if(countdownEl) countdownEl.style.display = '';
   if(tableHeadEl) tableHeadEl.style.display = '';
-  if(fullListEl) fullListEl.classList.remove('lb-full-open');
-  if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Connecting to live leaderboard&hellip;</div>';
+  if(rowsEl) rowsEl.innerHTML = '<div class="lbx-empty">Connecting to live leaderboard&hellip;</div>';
   try{
     var apiUrl = LB_PROXY_URL + '?casino=' + casino;
     var res = await fetch(apiUrl);
@@ -4600,113 +4874,77 @@ async function loadLeaderboard(casino){
     console.error('Leaderboard fetch failed:', e);
   }
 }
+var _lbxAll = [], _lbxShowAll = false, LBX_VISIBLE = 10;
+function lbxMoney(v){ return '$' + Number(v||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function renderLeaderboardRows(wagers, rewards){
   var rowsEl = document.getElementById('lbFullRows');
   if(!rowsEl) return;
-  if(!wagers || !wagers.length){
-    rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">No wagers recorded for this period yet.</div>';
-    return;
-  }
-  /* rank -> prize lookup, built from the casino's real configured rewards when available
-     (RustMagic/DegenCity don't expose a reward structure) */
   var prizeByRank = {};
   (rewards||[]).forEach(function(r){ prizeByRank[r.place] = r.winnings; });
-
-  /* Static baseline prizes ($200/$100/$50 etc, configured directly in the podium HTML) —
-     reused as the fallback for both the podium and the full list below when a casino's API
-     doesn't provide its own reward data, read once via the snapshot taken at page load so
-     there's a single source of truth rather than duplicating these numbers in JS. */
-  var staticPrizeByRank = {};
-  var podsForStatic = document.querySelectorAll('.lb2-pod');
-  if(podsForStatic.length >= 3){
-    var silverPrize = podsForStatic[0].querySelector('.lb2-prize');
-    var goldPrize = podsForStatic[1].querySelector('.lb2-prize');
-    var bronzePrize = podsForStatic[2].querySelector('.lb2-prize');
-    if(goldPrize) staticPrizeByRank[1] = goldPrize.dataset.staticPrize;
-    if(silverPrize) staticPrizeByRank[2] = silverPrize.dataset.staticPrize;
-    if(bronzePrize) staticPrizeByRank[3] = bronzePrize.dataset.staticPrize;
+  var prizeFor = function(rank){ var p = prizeByRank[rank]; return p ? ('$'+Number(p).toLocaleString()) : (LB_STATIC_PRIZES[rank] || null); };
+  /* prize pool tile */
+  var poolEl = document.getElementById('lbxPool');
+  if(poolEl){
+    var pool = 0;
+    if((rewards||[]).length) (rewards||[]).forEach(function(r){ pool += Number(r.winnings)||0; });
+    else Object.keys(LB_STATIC_PRIZES).forEach(function(k){ pool += Number(String(LB_STATIC_PRIZES[k]).replace(/[^0-9.]/g,''))||0; });
+    poolEl.textContent = '$' + pool.toLocaleString();
   }
-
-  /* Populate podium (top 3) */
-  var podOrder = [1,0,2]; /* visual order: 2nd, 1st, 3rd */
-  var pods = document.querySelectorAll('.lb2-pod');
-  if(pods.length >= 3){
-    podOrder.forEach(function(dataIdx, podIdx){
-      var w = wagers[dataIdx];
-      var pod = pods[podIdx];
-      var nameEl = pod.querySelector('.lb2-name');
-      var wagerEl = pod.querySelector('.lb2-wager, .lb2-wagered');
-      var avatarEl = pod.querySelector('.lb2-avatar');
-      var prizeEl = pod.querySelector('.lb2-prize');
-      if(!w){
-        /* No player at this podium rank for the currently-selected casino (e.g. DegenCity
-           sometimes has only 1-2 wagers this period) -- reset to the original empty state
-           instead of silently leaving whichever casino was shown before this one, which is
-           exactly what was happening: switching TO a sparser leaderboard left stale rows
-           from the PREVIOUS casino's data sitting in the empty slots. */
-        if(nameEl) nameEl.textContent = 'Awaiting Player';
-        if(wagerEl) wagerEl.textContent = '$0 wagered';
-        if(avatarEl){ avatarEl.innerHTML = '?'; avatarEl.title = ''; }
-        if(prizeEl){
-          var emptyRank = dataIdx+1;
-          var ep = prizeByRank[emptyRank];
-          prizeEl.textContent = ep ? ('$'+Number(ep).toLocaleString()) : (staticPrizeByRank[emptyRank] || '—');
-        }
-        return;
-      }
-      if(nameEl) nameEl.textContent = w.name || '—';
-      if(wagerEl) wagerEl.textContent = '$' + Number(w.wager||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + ' wagered';
-      if(avatarEl){
-        if(w.avatarUrl){
-          avatarEl.innerHTML = '<img src="'+w.avatarUrl+'" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
-        } else {
-          avatarEl.textContent = (w.name||'?').charAt(0).toUpperCase();
-        }
-        avatarEl.title = w.name || '';
-      }
-      var prizeEl = pod.querySelector('.lb2-prize');
-      if(prizeEl){
-        /* Only Upgrader's API actually provides reward data — RustMagic/DegenCity are
-           pure wager data with no concept of Jammy's promotional prize tiers. Reset to
-           the originally-configured static value (snapshotted at page load) rather than
-           either leaving a stale number from whichever casino was shown previously, or
-           blanking it to "—". */
-        var p = prizeByRank[w.rank];
-        prizeEl.textContent = p ? ('$'+Number(p).toLocaleString()) : (staticPrizeByRank[w.rank] || '—');
-      }
-    });
+  /* podium */
+  [1,2,3].forEach(function(rank){
+    var pod = document.querySelector('#lbxPodium .lbx-pod[data-rank="'+rank+'"]'); if(!pod) return;
+    var w = (wagers||[])[rank-1];
+    var av = w && w.avatarUrl ? '<img src="'+pccEsc(w.avatarUrl)+'" alt="">' : (w ? pccEsc((w.name||'?').charAt(0).toUpperCase()) : '?');
+    pod.classList.toggle('empty', !w);
+    pod.innerHTML = '<div class="lbx-card">'
+        + (rank === 1 ? '<span class="lbx-crown">👑</span>' : '')
+        + '<div class="lbx-av"><span>'+av+'</span><em class="lbx-rank">#'+rank+'</em></div>'
+        + '<div class="lbx-name">'+(w ? pccEsc(w.name||'—') : 'Awaiting player')+'</div>'
+        + '<div class="lbx-wag">'+(w ? '<b>'+lbxMoney(w.wager)+'</b> wagered' : 'Could be you')+'</div>'
+      + '</div>'
+      + '<div class="lbx-step"><small>PRIZE</small><b>'+(prizeFor(rank) || '—')+'</b></div>';
+  });
+  if(!wagers || !wagers.length){
+    rowsEl.innerHTML = '<div class="lbx-empty">No wagers recorded for this period yet. Be the first on the board!</div>';
+    _lbxAll = []; lbxUpdateMore(0); return;
   }
-  /* Full list (all players) — top 3 get a subtle tier-colored left accent tying back to
-     the podium above (gold/silver/bronze), real player avatars are used when the casino
-     provides one (RustMagic's Steam avatars) instead of always falling back to a plain
-     initial circle, and wagers/prizes are formatted consistently to 2 decimal places. */
-  var tierAccent = {1:'rgba(251,191,36,.7)', 2:'rgba(203,213,225,.6)', 3:'rgba(205,127,79,.6)'};
-  var tierGlow   = {1:'rgba(251,191,36,.12)', 2:'rgba(203,213,225,.08)', 3:'rgba(205,127,79,.08)'};
-  rowsEl.innerHTML = wagers.map(function(w){
-    var initial = (w.name||'?').charAt(0).toUpperCase();
-    var wagerAmt = (w.wager && w.wager > 0)
-      ? '$'+Number(w.wager).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})
-      : '—';
-    var prize = prizeByRank[w.rank];
-    var prizeAmt = prize ? '$'+Number(prize).toLocaleString() : (staticPrizeByRank[w.rank] || '—');
-    var accent = tierAccent[w.rank];
-    var rowStyle = accent
-      ? 'border-left:3px solid '+accent+';background:'+tierGlow[w.rank]+';padding-left:17px'
-      : '';
-    var avatarInner = w.avatarUrl
-      ? '<img src="'+w.avatarUrl+'" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">'
-      : initial;
-    return '<div class="lb-full-row" style="'+rowStyle+'">'
-      +'<span style="color:var(--purple);font-weight:700">#'+w.rank+'</span>'
-      +'<span style="display:flex;align-items:center;gap:8px">'
-        +'<span style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;flex:none;overflow:hidden">'+avatarInner+'</span>'
-        +(w.name||'—')
-      +'</span>'
-      +'<span>'+wagerAmt+'</span>'
-      +'<span>'+prizeAmt+'</span>'
-    +'</div>';
-  }).join('');
+  var top = Number(wagers[0].wager) || 1;
+  _lbxAll = wagers.map(function(w){
+    var rank = w.rank || 0, prize = prizeFor(rank);
+    var initial = pccEsc((w.name||'?').charAt(0).toUpperCase());
+    var tone = rank === 1 ? '251,191,36' : rank === 2 ? '203,213,225' : rank === 3 ? '224,145,92' : '';
+    var pct = Math.max(2, Math.min(100, (Number(w.wager)||0) / top * 100));
+    return { name: String(w.name||'').toLowerCase(), html:
+      '<div class="lbx-row'+(tone ? ' top r'+rank : '')+'">'
+        + '<span>'+(tone ? '<span class="lbx-rk t">'+rank+'</span>' : '<span class="lbx-rk">#'+rank+'</span>')+'</span>'
+        + '<span class="lbx-pl"><span class="a">'+(w.avatarUrl ? '<img src="'+pccEsc(w.avatarUrl)+'" alt="">' : initial)+'</span>'
+          + '<span class="n"><b>'+pccEsc(w.name||'—')+'</b><span class="lbx-bar"><span style="width:'+pct.toFixed(1)+'%"></span></span></span></span>'
+        + '<span class="w">'+((w.wager && w.wager > 0) ? lbxMoney(w.wager) : '—')+'</span>'
+        + '<span class="p'+(prize ? ' win' : '')+'">'+(prize || '—')+'</span>'
+      + '</div>' };
+  });
+  _lbxShowAll = false;
+  var q = document.getElementById('lbxSearch'); if(q) q.value = '';
+  lbxDraw();
 }
+function lbxDraw(){
+  var rowsEl = document.getElementById('lbFullRows'); if(!rowsEl) return;
+  var q = ((document.getElementById('lbxSearch')||{}).value || '').trim().toLowerCase();
+  var list = q ? _lbxAll.filter(function(r){ return r.name.indexOf(q) !== -1; }) : _lbxAll;
+  var shown = (q || _lbxShowAll) ? list : list.slice(0, LBX_VISIBLE);
+  rowsEl.innerHTML = shown.length
+    ? shown.map(function(r, i){ return r.html.replace('<div class="lbx-row', '<div style="animation-delay:'+Math.min(i*0.035,.5)+'s" class="lbx-row'+(q ? ' hl' : '')); }).join('')
+    : '<div class="lbx-empty">No player matching “'+pccEsc(q)+'” on this leaderboard.</div>';
+  lbxUpdateMore(q ? 0 : list.length);
+}
+function lbxUpdateMore(total){
+  var b = document.getElementById('lbxMore'); if(!b) return;
+  if(total > LBX_VISIBLE){ b.hidden = false; b.textContent = _lbxShowAll ? 'Show top ' + LBX_VISIBLE + ' only ↑' : 'Show all ' + total + ' players ↓'; }
+  else b.hidden = true;
+}
+function lbxShowAll(){ _lbxShowAll = !_lbxShowAll; lbxDraw(); }
+function lbxFilter(){ lbxDraw(); }
+setTimeout(lbxMoveInd, 60);
 loadLeaderboard('powerwin');
 
 
@@ -5029,12 +5267,59 @@ function filterReviews(q){
 }
 
 /* ============================================================
+   POWER.WIN PAGE (pwx): scroll reveals, unlock-track counter, code copy
+============================================================ */
+function pwxCopy(btn){
+  try{ navigator.clipboard && navigator.clipboard.writeText('JAMMMY'); }catch(e){}
+  var c = btn.querySelector('.pwx-code-c'); btn.classList.add('done'); c.textContent = 'Copied ✓';
+  setTimeout(function(){ btn.classList.remove('done'); c.textContent = 'Copy'; }, 1600);
+}
+var _pwxObs = null;
+function pwxInit(){
+  var root = document.querySelector('#new .pwx'); if(!root) return;
+  var els = root.querySelectorAll('.pwx-rv, .pwx-track');
+  function show(el){
+    if(el.classList.contains('in')) return;
+    el.classList.add('in');
+    var t = el.classList.contains('pwx-track') ? el : el.querySelector('.pwx-track');
+    if(t){ t.classList.add('in'); pwxCount(t.querySelector('[data-pwx-to]')); }
+  }
+  if(!('IntersectionObserver' in window)){ els.forEach(show); return; }
+  if(!_pwxObs) _pwxObs = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ show(e.target); _pwxObs.unobserve(e.target); } });
+  }, {threshold:.15, rootMargin:'0px 0px -40px 0px'});
+  var idx = 0;
+  els.forEach(function(el){
+    if(el.classList.contains('pwx-m') || el.classList.contains('pwx-step') || el.classList.contains('pwx-race')) el.style.transitionDelay = ((idx++ % 5) * 0.07) + 's';
+    _pwxObs.observe(el);
+  });
+}
+function pwxCount(el){
+  if(!el || el.dataset.done) return; el.dataset.done = 1;
+  var to = +el.getAttribute('data-pwx-to'), t0 = null, dur = 2400;
+  function step(ts){ if(!t0) t0 = ts; var p = Math.min(1, (ts - t0) / dur); var e = p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2)/2;
+    /* snap to the real 5% unlock steps (every 1.5x wagered) */
+    el.textContent = Math.round(e * to / 5) * 5; if(p < 1) requestAnimationFrame(step); }
+  requestAnimationFrame(step);
+}
+/* ============================================================
    SLOT LIBRARY (Reviews page)
    Built from our own slots-catalog.json. Each slot links out to its full review on
    Slot-Streamers: straight to the review page when the entry has a verified "ss" slug,
    otherwise to their search for that name. No review text or images are copied from them.
 ============================================================ */
-var SL_PAGE = 24, _slShown = SL_PAGE, _slBound = false;
+var SL_PAGE = 24, _slShown = SL_PAGE, _slBound = false, _slChip = '';
+/* Release helpers: "released" is an ISO date (YYYY-MM-DD) or just a year ("2026") when the
+   studio hasn't published the exact day yet. Future dates = announced but not playable yet. */
+var SL_TODAY = new Date().toISOString().slice(0,10);
+function slIsSoon(s){ return !!(s.released && s.released.length === 10 && s.released > SL_TODAY); }
+function slIsNew(s){
+  if(!s.released || slIsSoon(s)) return false;
+  if(s.released.length === 4) return +s.released >= new Date().getFullYear();
+  return (Date.now() - Date.parse(s.released)) / 864e5 <= 120;
+}
+function slFmtDate(d){ var t = new Date(d + 'T12:00:00Z'); return t.toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'UTC'}); }
+function slRelKey(s){ return s.released ? (s.released.length === 4 ? s.released + '-00-00' : s.released) : ''; }
 var SL_GRADS = ['linear-gradient(135deg,#1f7a3d,#0c3d1e)','linear-gradient(135deg,#2aa6d6,#123a6b)','linear-gradient(135deg,#c9962e,#5a3210)','linear-gradient(135deg,#e0913a,#7a3d12)','linear-gradient(135deg,#7a3d9e,#2a1340)','linear-gradient(135deg,#a855f7,#3d1a6b)','linear-gradient(135deg,#dc2626,#4a0e0e)','linear-gradient(135deg,#0891b2,#083344)'];
 function slEsc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 function slGrad(name){ var h = 0; for(var i=0;i<name.length;i++) h = (h*31 + name.charCodeAt(i)) >>> 0; return SL_GRADS[h % SL_GRADS.length]; }
@@ -5059,6 +5344,14 @@ async function loadSlotLibrary(){
     Object.keys(provs).sort(function(a,b){ return a.localeCompare(b); }).forEach(function(p){
       var o = document.createElement('option'); o.value = p; o.textContent = p + ' (' + provs[p] + ')'; sel.appendChild(o);
     });
+    var nN=0,nS=0,nR=0; list.forEach(function(s){ if(slIsNew(s)) nN++; if(slIsSoon(s)) nS++; if(s.ss) nR++; });
+    document.getElementById('slNewN').textContent = nN; document.getElementById('slSoonN').textContent = nS; document.getElementById('slRevN').textContent = nR;
+    document.getElementById('slChips').addEventListener('click', function(e){
+      var b = e.target.closest('button'); if(!b) return;
+      _slChip = b.getAttribute('data-f');
+      this.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); });
+      _slShown = SL_PAGE; renderSlotLibrary();
+    });
     ['slSearch','slProvider','slVol','slSort'].forEach(function(id){
       document.getElementById(id).addEventListener(id === 'slSearch' ? 'input' : 'change', function(){ _slShown = SL_PAGE; renderSlotLibrary(); });
     });
@@ -5076,11 +5369,22 @@ function renderSlotLibrary(appending){
     if(prov && s.provider !== prov) return false;
     if(vol && (s.volatility||'') !== vol) return false;
     if(q && (s.name + ' ' + (s.provider||'')).toLowerCase().indexOf(q) === -1) return false;
+    if(_slChip === 'new' && !slIsNew(s)) return false;
+    if(_slChip === 'soon' && !slIsSoon(s)) return false;
+    if(_slChip === 'review' && !s.ss) return false;
     return true;
   });
   rows.sort(function(a,b){
     if(sort === 'max') return (b.max_win||0) - (a.max_win||0) || a.name.localeCompare(b.name);
     if(sort === 'review' && !!a.ss !== !!b.ss) return a.ss ? -1 : 1;
+    if(sort === 'new'){
+      /* out now (newest first) -> announced but undated -> coming soon (soonest first) -> the rest */
+      var ga = slIsSoon(a) ? 2 : (a.released ? (a.released.length === 4 ? 1 : 0) : 3),
+          gb = slIsSoon(b) ? 2 : (b.released ? (b.released.length === 4 ? 1 : 0) : 3);
+      if(ga !== gb) return ga - gb;
+      var ka = slRelKey(a), kb = slRelKey(b);
+      if(ka !== kb) return ga === 2 ? (ka < kb ? -1 : 1) : (ka < kb ? 1 : -1);
+    }
     return a.name.localeCompare(b.name);
   });
   document.getElementById('slCount').textContent = rows.length === list.length ? list.length : rows.length + ' of ' + list.length;
@@ -5090,14 +5394,19 @@ function renderSlotLibrary(appending){
     var n = slEsc(s.name);
     var v = s.volatility ? '<span class="v-' + slEsc(s.volatility) + '">● ' + slEsc(s.volatility.charAt(0).toUpperCase() + s.volatility.slice(1)) + '</span>' : '';
     var mw = s.max_win ? '<span class="mw">Max <b>' + Number(s.max_win).toLocaleString('en-US') + 'x</b></span>' : '';
-    return '<div class="sl-card" style="animation-delay:' + Math.min(i*0.03, 0.5) + 's">'
+    var soon = slIsSoon(s), isNew = slIsNew(s);
+    var rel = s.released ? (s.released.length === 10 ? '<span class="rel' + (soon ? ' soon' : '') + '">' + (soon ? 'Out ' : '') + slFmtDate(s.released) + '</span>' : (isNew ? '<span class="rel">New in ' + s.released + '</span>' : '')) : '';
+    var rtp = s.rtp ? '<span>RTP <b>' + s.rtp + '%</b></span>' : '';
+    return '<div class="sl-card' + (soon ? ' is-soon' : '') + '" style="animation-delay:' + Math.min(i*0.03, 0.5) + 's">'
       + '<div class="sl-thumb fallback" style="background:' + slGrad(s.name) + '">' + (s.ss ? '<span class="sl-badge">Full review</span>' : '')
+      + (soon ? '<span class="sl-new soon">SOON</span>' : (isNew ? '<span class="sl-new">NEW</span>' : ''))
       + '<div class="sl-art"><i>' + slIcon(s.name) + '</i>' + slSparks(s.name) + '</div><b>' + n + '</b>'
       + (s.image ? '<img loading="lazy" alt="' + n + '" src="' + slEsc(s.image) + '" onload="this.parentNode.classList.remove(\'fallback\')" onerror="this.remove()">' : '') + '</div>'
       + '<div class="sl-body"><div><div class="sl-name">' + n + '</div><div class="sl-prov">' + slEsc(s.provider || 'Unknown provider') + '</div></div>'
-      + '<div class="sl-facts">' + v + mw + '</div>'
-      + '<div class="sl-actions"><a class="sl-read' + (s.ss ? '' : ' search') + '" href="' + slReviewUrl(s) + '" target="_blank" rel="noopener">' + (s.ss ? 'Read review ↗' : 'Find review ↗') + '</a>'
-      + '<button class="sl-req" type="button" data-slot="' + n + '">Request</button></div></div></div>';
+      + '<div class="sl-facts">' + rel + v + mw + rtp + '</div>'
+      + (soon ? '<div class="sl-actions"><span class="sl-soon-note">⏳ Releases ' + slFmtDate(s.released) + '</span></div>'
+      : '<div class="sl-actions"><a class="sl-read' + (s.ss ? '' : ' search') + '" href="' + slReviewUrl(s) + '" target="_blank" rel="noopener">' + (s.ss ? 'Read review ↗' : 'Find review ↗') + '</a>'
+      + '<button class="sl-req" type="button" data-slot="' + n + '">Request</button></div>') + '</div></div>';
   }).join('');
   if(appending) grid.insertAdjacentHTML('beforeend', html);
   else grid.innerHTML = html || '<div class="sl-empty">No slots match that. Try a different name or clear the filters.</div>';
@@ -7740,7 +8049,7 @@ function setupSlotAutocomplete(){
   input.addEventListener('input', function(){
     var q = input.value.trim().toLowerCase();
     if(!q || !_slotCatalog || !_slotCatalog.length){ dropdown.style.display='none'; return; }
-    var matches = _slotCatalog.filter(function(s){ return s.name && s.name.toLowerCase().indexOf(q) !== -1; }).slice(0, 8);
+    var matches = _slotCatalog.filter(function(s){ return s.name && !slIsSoon(s) && s.name.toLowerCase().indexOf(q) !== -1; }).slice(0, 8);
     if(!matches.length){ dropdown.style.display='none'; return; }
     dropdown.innerHTML = matches.map(function(s){
       var provider = s.provider || s.provider_slug || '';
