@@ -8,6 +8,13 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-29: Masked leaderboard names + one slot request at a time
+
+- **Masked names:** both leaderboards (Power.win and DegenCity) now show masked usernames on the podium and in the table: the first 2 characters, stars, and the last 2 on longer names (SAHIL2603 → SA****03, ruly → ru**). The Share on X text uses the same masking. The search box still matches real names so players can find themselves, but results show masked. The Vault player list is unchanged, since players need their real name there to claim it.
+- **One slot request at a time:** a player can have only one open slot request. It stays open until Jammmy awards coins on it or deletes it (the same rule as his admin Active list). The Cloudflare worker enforces it in a single SQL statement, so double-clicks or two tabs can't get around it; a blocked attempt gets a 409 with the waiting slot's name. On the page, the form locks with a "Your request is in the queue" banner naming the waiting slot.
+
+---
+
 ## 2026-09-28: Power.win $1,000 bi-weekly prize pool
 
 - The Power.win leaderboard now pays the top 10 out of a **$1,000** pool: 1st $300, 2nd $200, 3rd $130, 4th $100, 5th $75, 6th $55, 7th $45, 8th $35, 9th $30, 10th $30. The table lives in `LB_CASINO_PRIZES.powerwin` and overrides whatever prizes Power.win's API reports.

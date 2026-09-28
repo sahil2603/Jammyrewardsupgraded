@@ -2697,6 +2697,14 @@ html.lenis{scroll-behavior:auto!important}
 .rsx-submit:hover{transform:translateY(-2px);box-shadow:0 18px 40px -10px rgba(192,38,211,.95),inset 0 1px 0 rgba(255,255,255,.3)}
 .rsx-submit:disabled{opacity:.6;cursor:wait;transform:none}
 .rsx-login{text-align:center;padding:10px}
+.rsx-lock{display:flex;gap:14px;align-items:flex-start;margin:0 0 18px;padding:14px 16px;border-radius:14px;background:linear-gradient(135deg,rgba(251,191,36,.12),rgba(232,121,249,.08));border:1px solid rgba(251,191,36,.35)}
+.rsx-lock[hidden]{display:none}
+.rsx-lock-ic{flex:none;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:1.2rem;background:rgba(251,191,36,.15)}
+.rsx-lock b{display:block;color:#fde68a;font-size:.95rem}
+.rsx-lock p{margin:3px 0 0;color:var(--muted);font-size:.84rem;line-height:1.45}
+.rsx-lock p span{color:#fff;font-weight:700}
+.rsx-locked .rsx-sec{opacity:.45;pointer-events:none}
+.rsx-locked .rsx-submit:disabled{cursor:not-allowed}
 .rsx-login-ic{font-size:2.2rem}
 .rsx-login h3{margin:8px 0 4px}
 .rsx-login p{color:#c4b5fd;margin:0 0 12px}
@@ -4526,6 +4534,11 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
             <button class="rsx-submit" style="max-width:280px;margin:6px auto 0" onclick="startDiscordLogin()">Login with Discord</button>
           </div>
           <div id="rsForm">
+            <div id="rsLock" class="rsx-lock" hidden>
+              <div class="rsx-lock-ic">⏳</div>
+              <div><b>Your request is in the queue</b>
+                <p>You suggested <span id="rsLockSlot">a slot</span>. You can send a new one once Jammmy rewards it or clears it.</p></div>
+            </div>
             <div class="rsx-sec">
               <div class="rsx-sec-h"><span class="rsx-num">01</span> Which slot?</div>
               <div style="position:relative">
@@ -5192,9 +5205,15 @@ function goToLeaderboard(casino){
    it on any device, via long-press or right-click, regardless of whether the download
    attribute itself is honored), plus a clear close button and a separate step to continue
    to X once the image is saved. */
+/* Leaderboard privacy: public boards show masked names (first 2 characters, stars, and the
+   last 2 on longer names), e.g. SAHIL2603 -> SA****03, ruly -> ru**. Players can still find
+   themselves -- the search box matches their real name, but results are shown masked too. */
 function maskUsername(name){
-  if(!name || name.length <= 3) return name || 'Player';
-  return name.slice(0,3) + 'XXX' + (name.length > 6 ? name.slice(-2) : '');
+  name = String(name || '').trim();
+  if(!name) return 'Player';
+  if(name.length <= 2) return name.charAt(0) + '*';
+  if(name.length <= 5) return name.slice(0,2) + '*'.repeat(name.length - 2);
+  return name.slice(0,2) + '****' + name.slice(-2);
 }
 function shareLeaderboardOnX(){
   var casino = CURRENT_LB_CASINO;
@@ -5395,7 +5414,7 @@ function renderLeaderboardRows(wagers, rewards){
     pod.innerHTML = '<div class="lbx-card">'
         + (rank === 1 ? '<span class="lbx-crown">👑</span>' : '')
         + '<div class="lbx-av"><span>'+av+'</span><em class="lbx-rank">#'+rank+'</em></div>'
-        + '<div class="lbx-name">'+(w ? pccEsc(w.name||'—') : 'Awaiting player')+'</div>'
+        + '<div class="lbx-name">'+(w ? pccEsc(maskUsername(w.name)) : 'Awaiting player')+'</div>'
         + '<div class="lbx-wag">'+(w ? '<b>'+lbxMoney(w.wager)+'</b> wagered' : 'Could be you')+'</div>'
       + '</div>'
       + '<div class="lbx-step"><small>PRIZE</small><b>'+(prizeFor(rank) || '—')+'</b></div>';
@@ -5414,7 +5433,7 @@ function renderLeaderboardRows(wagers, rewards){
       '<div class="lbx-row'+(tone ? ' top r'+rank : '')+'">'
         + '<span>'+(tone ? '<span class="lbx-rk t">'+rank+'</span>' : '<span class="lbx-rk">#'+rank+'</span>')+'</span>'
         + '<span class="lbx-pl"><span class="a">'+(w.avatarUrl ? '<img src="'+pccEsc(w.avatarUrl)+'" alt="">' : initial)+'</span>'
-          + '<span class="n"><b>'+pccEsc(w.name||'—')+'</b><span class="lbx-bar"><span style="width:'+pct.toFixed(1)+'%"></span></span></span></span>'
+          + '<span class="n"><b>'+pccEsc(maskUsername(w.name))+'</b><span class="lbx-bar"><span style="width:'+pct.toFixed(1)+'%"></span></span></span></span>'
         + '<span class="w">'+((w.wager && w.wager > 0) ? lbxMoney(w.wager) : '—')+'</span>'
         + '<span class="p'+(prize ? ' win' : '')+'">'+(prize || '—')+'</span>'
       + '</div>' };
@@ -8581,6 +8600,17 @@ function selectSlotOption(el){
   document.getElementById('rsSlotDropdown').style.display = 'none';
 }
 
+/* One open request at a time (enforced by the server too): while the player has a request
+   that hasn't been rewarded or deleted, the form is locked and says which slot is waiting. */
+function setSlotRequestLock(open){
+  var lock = document.getElementById('rsLock'); if(!lock) return;
+  var on = !!open;
+  lock.hidden = !on;
+  if(on){ var sl = document.getElementById('rsLockSlot'); if(sl) sl.textContent = open.slot_name || 'a slot'; }
+  ['rsSlotName','rsNote','rsSubmitBtn'].forEach(function(id){ var el = document.getElementById(id); if(el) el.disabled = on; });
+  var form = document.getElementById('rsForm'); if(form) form.classList.toggle('rsx-locked', on);
+  var btn = document.getElementById('rsSubmitBtn'); if(btn) btn.textContent = on ? '🔒 One request at a time' : '🎰 Suggest This Slot';
+}
 async function loadMySlotRequests(){
   var wrap = document.getElementById('rsMyRequestsWrap');
   var listEl = document.getElementById('rsMyRequests');
@@ -8589,6 +8619,7 @@ async function loadMySlotRequests(){
   try{
     var res = await fetch(AUTH_API + '/api/my-slot-requests', { headers: { 'Authorization': 'Bearer ' + token }, cache: 'no-store' });
     var data = await res.json();
+    if(res.ok) setSlotRequestLock((data.requests || []).filter(function(r){ return !r.coins_awarded; })[0] || null);
     if(!res.ok || !data.requests || !data.requests.length){ wrap.style.display = 'none'; return; }
     wrap.style.display = 'block';
     var STATUS_INFO = {
@@ -8630,6 +8661,7 @@ async function submitSlotRequest(){
     if(res.ok){
       resultEl.style.color = '#4ade80';
       resultEl.textContent = '✓ Sent! Jammmy will see this in his requested slots.';
+      setSlotRequestLock({ slot_name: slotName });
       celebrateFrom(btn, 'coins');
       document.querySelectorAll('#rsFeatured .rsx-picked').forEach(function(c){ c.classList.remove('rsx-picked'); });
       document.getElementById('rsSlotName').value = '';
@@ -8638,14 +8670,16 @@ async function submitSlotRequest(){
     } else {
       resultEl.style.color = '#f87171';
       resultEl.textContent = data.error || 'Failed to send — please try again.';
+      if(res.status === 409) setSlotRequestLock(data.pending || { slot_name: '' });
     }
   }catch(e){
     console.error('Slot request failed:', e);
     resultEl.style.color = '#f87171';
     resultEl.textContent = 'Network error — please try again.';
   }
-  btn.textContent = '🎰 Suggest This Slot';
-  btn.disabled = false;
+  var locked = !document.getElementById('rsLock').hidden;
+  btn.textContent = locked ? '🔒 One request at a time' : '🎰 Suggest This Slot';
+  btn.disabled = locked;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
