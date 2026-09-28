@@ -22,16 +22,16 @@
 <meta property="og:url" content="https://jammmyrewards.com/">
 <meta property="og:title" content="JammmyRewards — Community Casino Rewards">
 <meta property="og:description" content="Exclusive casino bonuses, leaderboards, raffles and loyalty rewards. Sign up under JAMMMY to unlock everything.">
-<meta property="og:image" content="https://jammmyrewards.com/og-share.jpg">
+<meta property="og:image" content="https://jammmyrewards.com/og-share.jpg?v=3">
 <meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="800">
+<meta property="og:image:height" content="630">
 <meta property="og:site_name" content="JammmyRewards">
 
 <!-- Twitter/X card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="JammmyRewards — Community Casino Rewards">
 <meta name="twitter:description" content="Exclusive casino bonuses, leaderboards, raffles and loyalty rewards. Sign up under JAMMMY to unlock everything.">
-<meta name="twitter:image" content="https://jammmyrewards.com/og-share.jpg">
+<meta name="twitter:image" content="https://jammmyrewards.com/og-share.jpg?v=3">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1732,6 +1732,19 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .pwx-prize .g2 b{color:#e5e7eb}.pwx-prize .g2 span::before{background:#e5e7eb}
 .pwx-prize .g3 b{color:#f59e0b}.pwx-prize .g3 span::before{background:#d97706}
 .pwx-fine{color:var(--faint);font-size:.78rem;text-align:center;margin:14px 0 0}
+/* bi-weekly leaderboard card */
+.pwx-tag.gold{color:#fde68a;background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.4)}
+.pwx-lb{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:30px;align-items:center;cursor:pointer;background:linear-gradient(120deg,rgba(251,191,36,.13),rgba(16,10,31,.94) 58%)}
+.pwx-lb-amt{font-family:'Lilita One',sans-serif;font-size:clamp(3.2rem,8vw,4.6rem);line-height:1;margin:12px 0 6px;background:linear-gradient(180deg,#fff7d1,#fbbf24 55%,#d97706);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 8px 24px rgba(251,191,36,.4))}
+.pwx-lb-sub{color:var(--muted);font-size:.9rem;line-height:1.55;margin:0 0 16px}.pwx-lb-sub b{color:#fff}
+.pwx-lb-cd{display:inline-flex;align-items:center;gap:8px;font:600 .82rem 'Poppins',system-ui;color:var(--muted);padding:7px 14px;border-radius:99px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);margin-bottom:18px}
+.pwx-lb-cd b{color:#fde68a;font-variant-numeric:tabular-nums}
+.pwx-lb-btn{display:flex;align-items:center;gap:8px;padding:12px 20px;border:0;border-radius:12px;cursor:pointer;font:700 .88rem 'Poppins',system-ui;color:#2a1800;background:linear-gradient(135deg,#fde68a,#f59e0b);box-shadow:0 12px 28px -12px rgba(245,158,11,.8);transition:.25s}
+.pwx-lb-btn:hover{transform:translateY(-2px)}.pwx-lb-btn span{transition:.25s}.pwx-lb-btn:hover span{transform:translateX(4px)}
+.pwx-lb-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pwx-lb-list li{padding:10px 13px}
+.pwx-lb-list li.g1 span::before,.pwx-lb-list li.g2 span::before,.pwx-lb-list li.g3 span::before{display:none}
+@media (max-width:620px){.pwx-lb{grid-template-columns:1fr;gap:20px;text-align:center}.pwx-lb-btn{width:100%;justify-content:center}.pwx-lb-list li{font-size:.82rem;padding:9px 11px}.pwx-lb-list li span::before{margin-right:6px}}
 .pwx-bounty{display:flex;gap:28px;align-items:center;margin-top:44px;background:linear-gradient(120deg,rgba(74,222,128,.12),rgba(16,10,31,.94) 55%)}
 .pwx-bounty-amt{flex:none;text-align:center;padding:10px 6px}
 .pwx-bounty-amt small{display:block;font:700 .66rem 'Poppins',system-ui;letter-spacing:.16em;text-transform:uppercase;color:#86efac}
@@ -3652,7 +3665,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <div class="hx-fc hx-fc-race" data-hx-mouse="2.2" onclick="goToLeaderboard('powerwin')">
             <div class="hx-fc-top"><img src="powerwin.png" alt="" class="hx-fc-pw"><span>Race ends in</span></div>
             <div class="hx-fc-cd" id="hxRaceCd"><b>--</b>d <b>--</b>h <b>--</b>m</div>
-            <div class="hx-fc-sub"><b>$350</b> prize pool</div>
+            <div class="hx-fc-sub"><b>$1,000</b> prize pool</div>
           </div>
           <div class="hx-fc hx-fc-kick" data-hx-mouse="1.6" onclick="window.open('https://kick.com/jammmyslots','_blank')">
             <span class="hx-kick-dot" id="hxKickDot"></span>
@@ -3917,7 +3930,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
       <div class="lbx-info" id="lbxInfo">
         <div class="lbx-tile lbx-pool">
           <span class="lbx-lbl">PRIZE POOL</span>
-          <b id="lbxPool">$350</b>
+          <b id="lbxPool">$1,000</b>
           <small>Top 3 paid</small>
         </div>
         <div class="lbx-tile lbx-cd">
@@ -4047,6 +4060,26 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div class="pwx-m pwx-rv" style="--a:74,222,128"><div class="pwx-m-ico">📅</div><b>Weekly Bonus</b><p>A fresh bonus lands every week just for playing.</p></div>
         <div class="pwx-m pwx-rv" style="--a:192,132,252"><div class="pwx-m-ico">👑</div><b>VIP Bonus</b><p>The more you play, the bigger the perks that unlock.</p></div>
       </div>
+
+      <!-- BI-WEEKLY LEADERBOARD -->
+      <div class="pwx-sec pwx-rv"><span>Every 2 weeks</span><h3>🏆 Bi-weekly leaderboard</h3></div>
+      <article class="pwx-card pwx-lb pwx-rv" style="--a:251,191,36" onclick="goToLeaderboard('powerwin')">
+        <div class="pwx-card-glow" aria-hidden="true"></div>
+        <div class="pwx-lb-main">
+          <span class="pwx-tag gold">Bi-weekly leaderboard</span>
+          <div class="pwx-lb-amt">$1,000</div>
+          <p class="pwx-lb-sub">Top 10 Power.win wagerers split <b>$1,000</b> every two weeks. Wager under code <b>JAMMMY</b> to get on the board.</p>
+          <div class="pwx-lb-cd"><span class="pwx-live"></span>Ends in <b id="pwxLbCd">--d --h --m</b></div>
+          <button type="button" class="pwx-lb-btn" onclick="event.stopPropagation();goToLeaderboard('powerwin')">View leaderboard <span>→</span></button>
+        </div>
+        <ol class="pwx-prize pwx-lb-list">
+          <li class="g1"><span>🥇 1st</span><b>$300</b></li><li><span>6th</span><b>$55</b></li>
+          <li class="g2"><span>🥈 2nd</span><b>$200</b></li><li><span>7th</span><b>$45</b></li>
+          <li class="g3"><span>🥉 3rd</span><b>$130</b></li><li><span>8th</span><b>$35</b></li>
+          <li><span>4th</span><b>$100</b></li><li><span>9th</span><b>$30</b></li>
+          <li><span>5th</span><b>$75</b></li><li><span>10th</span><b>$30</b></li>
+        </ol>
+      </article>
 
       <!-- RACES -->
       <div class="pwx-sec pwx-rv"><span>Every week</span><h3>🏁 Live races</h3></div>
@@ -5121,6 +5154,11 @@ var _lastLbWagers = []; /* raw wager data for the currently-displayed leaderboar
    baseline instead of either leaving a stale value from whatever casino was shown last, or
    blanking it to "—". */
 var LB_STATIC_PRIZES = {1:'$200', 2:'$100', 3:'$50'}; /* shown when a casino's API has no reward data */
+/* Fixed prize tables set by Jammy -- these win over whatever the casino's API reports.
+   Power.win bi-weekly race: $1,000 total, top 10 paid. */
+var LB_CASINO_PRIZES = {
+  powerwin: {1:300, 2:200, 3:130, 4:100, 5:75, 6:55, 7:45, 8:35, 9:30, 10:30}
+};
 /* Used by the leaderboard preview cards on Home -- was trying to find the matching tab
    button via a CSS attribute selector embedded directly inside the onclick HTML attribute
    string, which needed nested quotes that the HTML entity-escaping approach actually
@@ -5335,6 +5373,8 @@ function lbxMoney(v){ return '$' + Number(v||0).toLocaleString(undefined,{minimu
 function renderLeaderboardRows(wagers, rewards){
   var rowsEl = document.getElementById('lbFullRows');
   if(!rowsEl) return;
+  var fixedPrizes = LB_CASINO_PRIZES[CURRENT_LB_CASINO];
+  if(fixedPrizes) rewards = Object.keys(fixedPrizes).map(function(k){ return {place:Number(k), winnings:fixedPrizes[k]}; });
   var prizeByRank = {};
   (rewards||[]).forEach(function(r){ prizeByRank[r.place] = r.winnings; });
   var prizeFor = function(rank){ var p = prizeByRank[rank]; return p ? ('$'+Number(p).toLocaleString()) : (LB_STATIC_PRIZES[rank] || null); };
@@ -9458,6 +9498,15 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     var c = btn.querySelector('.hx-code-c'); btn.classList.add('done'); c.textContent = 'Copied ✓';
     setTimeout(function(){ btn.classList.remove('done'); c.textContent = 'Copy'; }, 1600);
   };
+})();
+</script>
+<script>
+/* New page: bi-weekly leaderboard countdown (same cycle as the Power.win leaderboard) */
+(function(){
+  function t(){ var el=document.getElementById('pwxLbCd'); if(!el||typeof currentPowerwinPeriod!=='function') return;
+    var s=Math.max(0,Math.floor((currentPowerwinPeriod().end-Date.now())/1000));
+    el.textContent=Math.floor(s/86400)+'d '+(Math.floor(s/3600)%24)+'h '+(Math.floor(s/60)%60)+'m'; }
+  t(); setInterval(t,30000);
 })();
 </script>
 </body>

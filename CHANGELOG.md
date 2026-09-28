@@ -8,6 +8,15 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-28: Power.win $1,000 bi-weekly prize pool
+
+- The Power.win leaderboard now pays the top 10 out of a **$1,000** pool: 1st $300, 2nd $200, 3rd $130, 4th $100, 5th $75, 6th $55, 7th $45, 8th $35, 9th $30, 10th $30. The table lives in `LB_CASINO_PRIZES.powerwin` and overrides whatever prizes Power.win's API reports.
+- The prize pool tile and the home page race card now say $1,000 (previously $350).
+- New link-preview image (`og-share.jpg`, now 1200×630, supplied by Sahil): JAMMMYREWARDS wordmark, "$1,000 bi-weekly leaderboard" with Power.win, the jar mascot with Jammmy coins, code JAMMMY and the partner logos. Replaces the old "$10,000 given away" image.
+- The New (Power.win) page has a new "Bi-weekly leaderboard" card above Live races. It shows $1,000, a live countdown to the end of the current 2-week cycle, all 10 prizes and a button to the leaderboard.
+
+---
+
 ## 2026-09-27: Home hero v2 (wordmark back)
 
 - The hero is centered on the big **JAMMMYREWARDS** wordmark again. It uses the rainbow gradient, letters flip in one by one, and a soft glow and a gentle wave run through the letters afterwards. Under it is "Wager · Climb · Get paid" and the original tagline.
