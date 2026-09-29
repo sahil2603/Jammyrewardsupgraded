@@ -1619,6 +1619,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .lbx-empty{padding:34px;text-align:center;color:var(--faint)}
 .lbx-more{display:block;margin:12px auto 4px;padding:11px 22px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:#fff;font:600 .88rem 'Poppins';cursor:pointer}
 .lbx-more:hover{border-color:var(--purple)}
+.lbx-more[hidden]{display:none} /* the display:block above was overriding the hidden attribute, so the button stayed up with the previous casino's count */
 .lbx-notes{max-width:760px;margin:26px auto 0;display:flex;flex-direction:column;gap:12px}
 .lbx-note{display:flex;gap:10px;align-items:flex-start;padding:15px 18px;border-radius:14px;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.28)}
 .lbx-note p{margin:0;color:var(--muted);font-size:.87rem}.lbx-note b{color:#f59e0b}
@@ -5469,7 +5470,7 @@ function lbxDraw(){
 function lbxUpdateMore(total){
   var b = document.getElementById('lbxMore'); if(!b) return;
   if(total > LBX_VISIBLE){ b.hidden = false; b.textContent = _lbxShowAll ? 'Show top ' + LBX_VISIBLE + ' only ↑' : 'Show all ' + total + ' players ↓'; }
-  else b.hidden = true;
+  else { b.hidden = true; b.textContent = ''; }
 }
 function lbxShowAll(){ _lbxShowAll = !_lbxShowAll; lbxDraw(); }
 function lbxFilter(){ lbxDraw(); }

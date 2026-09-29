@@ -8,6 +8,13 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-29: Leaderboard "Show all" button fix
+
+- The "Show all N players" / "Show top 10 only" button stayed on screen after switching to a leaderboard with 10 or fewer players (DegenCity), still showing the previous casino's count, e.g. "Show all 86 players" from Power.win. The code did hide it, but `.lbx-more{display:block}` overrode the `hidden` attribute. Added `.lbx-more[hidden]{display:none}` and the label is cleared when hidden.
+- Checked the live data: DegenCity's feed really has 10 players with wagers this month, so the DegenCity board itself was already complete.
+
+---
+
 ## 2026-09-29: Faster admin actions
 
 **Worker (server):**
