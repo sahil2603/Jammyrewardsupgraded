@@ -8,6 +8,40 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-29: Faster admin actions
+
+**Worker (server):**
+- **Approve / Bulk approve** no longer fetch both casinos' live leaderboards and rebuild the whole Vault ledger before answering; that step made Approve take seconds. Approval only marks the claim verified (crediting is done by the vault pool anyway), so the vault check is left to the cron, which is nudged (`last_vault_sync = 0`) to run it on its next tick, within 1-2 minutes. This also means vault payouts only ever run from the cron, so two can't overlap. Bulk approve also dropped a casino fetch whose result was never used.
+- **Push notifications** (Add Coins, redemption refunds, slot-request rewards) and **Activity Log writes** now happen after the response is sent (`ctx.waitUntil`), so the button gets its answer without waiting for them. They still always run.
+- The session/login lookup is done once per request instead of twice.
+- Measured locally against SQLite with casino APIs taking 1.5s: Approve went from 1.7s to 0.12s, and Add Coins from 0.17s to 0.08s (more in real use, since phone notifications are no longer waited on).
+
+**Page:**
+- Clicking any admin action shows "…" on the button and fades its row immediately. On success, removing actions (approve, reject, revoke, mark paid, delete) slide the row out straight away. On failure, the row and button are restored.
+- Lists refresh quietly after an action: old rows stay visible while the new ones load, with no "Loading…" flash and no replayed fade-in.
+
+---
+
+## 2026-09-29: Live search in the admin/mod Users tab
+
+- The Users search now filters as you type (300ms after the last keystroke), and Enter searches immediately; the Search button still works. The old results stay on screen, dimmed, while the new ones load instead of flashing "Loading…", and only the newest search is allowed to show, so a slow earlier response can't replace the results for what's typed now.
+
+---
+
+## 2026-09-29: DegenCity leaderboard reads every page
+
+- The DegenCity leaderboard only ever showed 10 players because the Cloudflare worker read just the first page of DegenCity's API. `fetchDegenCity` now keeps requesting `?page=2, 3, …` (up to 15 pages) until a page brings no new players, comes back shorter than the first, or the response says it was the last page. Players are de-duplicated by user id, so if DegenCity ignores `page` nothing is double-counted. Page 1 is requested exactly as before.
+- The same function feeds the Vault sync, so verified DegenCity players outside the top 10 now have their wagering counted too.
+
+---
+
+## 2026-09-29: Mod panel fix + read-only request queues for mods
+
+- **Blank mod/admin lists fixed:** the admin cards (users, claims, empty states, overview tiles) start invisible and fade in with an animation. On computers with animations turned off (Windows "Animation effects" off, i.e. reduced motion), the site switches all animations off, so those cards stayed invisible. The panel looked empty even though the data had loaded. They now show immediately when animations are off.
+- **Mods can view Slot and Battle requests (read-only):** the Mod Panel now has Slot Requests and Battle Requests tabs. Mods see the full queue (Active/Awarded, notes, results, Big view) but no Save, Award, Delete or Delete All controls, and a "View only" note explains why. In the Cloudflare worker, only the two list endpoints moved from admin-only to staff (admin or mod); saving, awarding and deleting are still admin-only on the server.
+
+---
+
 ## 2026-09-29: Masked leaderboard names + one slot request at a time
 
 - **Masked names:** both leaderboards (Power.win and DegenCity) now show masked usernames on the podium and in the table: the first 2 characters, stars, and the last 2 on longer names (SAHIL2603 → SA****03, ruly → ru**). The Share on X text uses the same masking. The search box still matches real names so players can find themselves, but results show masked. The Vault player list is unchanged, since players need their real name there to claim it.

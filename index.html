@@ -1159,6 +1159,10 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   .lbt{min-width:100px;padding:10px 14px}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+/* Anything that starts invisible and fades in with an animation must be shown outright when
+   animations are off (Windows "Animation effects" off / reduced motion) -- otherwise it stays
+   at opacity 0 forever. This is what blanked the mod/admin panel lists for some staff. */
+@media(prefers-reduced-motion:reduce){.battle-card,.admin-empty-state,.admin-overview-card,.pw-card,.pw-mini-card{opacity:1!important;transform:none!important}}
 /* ===== LEADERBOARD v2 ===== */
 .lb-casino-tabs{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}
 .lbt{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 22px;cursor:pointer;
@@ -1414,6 +1418,14 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .rq-bigbtn{background:rgba(255,255,255,.05);border:1px solid var(--line);color:#fff;border-radius:10px;padding:9px 14px;font:600 .85rem 'Poppins';cursor:pointer}
 .rq-bigbtn.on{background:linear-gradient(135deg,#a855f7,#6366f1);border-color:transparent}
 .rq-list{display:flex;flex-direction:column;gap:12px}
+.adm-ro-note{display:none;margin:0 0 14px;padding:10px 14px;border-radius:12px;font-size:.85rem;color:#bfdbfe;background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.28)}
+.adm-ro .adm-ro-note{display:block}
+.adm-busy{opacity:.55;transition:opacity .15s}
+.adm-quiet .battle-card,.adm-quiet .rq,.adm-quiet .admin-empty-state,.adm-quiet .admin-row{animation:none!important;opacity:1}
+.adm-row-busy{opacity:.5;pointer-events:none;transition:opacity .15s}
+.adm-row-gone{opacity:0!important;height:0!important;min-height:0!important;margin-top:0!important;margin-bottom:0!important;padding-top:0!important;padding-bottom:0!important;border-width:0!important;overflow:hidden;transition:opacity .2s,height .28s .1s,margin .28s .1s,padding .28s .1s}
+.adm-btn-busy{cursor:progress!important}
+.adm-ro [data-admin-only],.adm-ro .rq-ctrl{display:none!important}
 .rq{position:relative;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.09);overflow:hidden;animation:rqIn .35s cubic-bezier(.16,1,.3,1) both}
 .rq::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:rgb(var(--acc,168,85,247))}
 @keyframes rqIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -4737,7 +4749,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <!-- USERS TAB -->
         <div id="adminUsersTab" class="admin-tab-panel" style="display:none">
           <div style="display:flex;gap:10px;margin-bottom:18px">
-            <input type="text" id="userSearchInput" placeholder="Search by username or Discord ID…" style="flex:1;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff">
+            <input type="search" id="userSearchInput" autocomplete="off" oninput="clearTimeout(window._userSearchT);window._userSearchT=setTimeout(loadAdminUsers,300)" onkeydown="if(event.key==='Enter'){clearTimeout(window._userSearchT);loadAdminUsers()}" placeholder="Search by username or Discord ID…" style="flex:1;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff">
             <button class="admin-btn-secondary" onclick="loadAdminUsers()">Search</button>
           </div>
           <div id="adminUsersTotal" style="color:var(--muted);font-size:.85rem;margin-bottom:12px"></div>
@@ -4834,9 +4846,10 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
             <div class="rq-right">
               <span class="rq-count" id="slotQueueCount"></span>
               <button class="rq-bigbtn" id="slotBigBtn" onclick="toggleRqBig('adminSlotsList','slotBigBtn')">📺 Big view</button>
-              <button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminDeleteAllSlotRequests()">🗑️ Delete All</button>
+              <button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminDeleteAllSlotRequests()" data-admin-only>🗑️ Delete All</button>
             </div>
           </div>
+          <div class="adm-ro-note">👀 View only. Jammmy or an admin marks results, awards coins and clears requests.</div>
           <div id="adminSlotsList" class="rq-list">Loading…</div>
         </div>
 
@@ -4850,9 +4863,10 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
             <div class="rq-right">
               <span class="rq-count" id="battleQueueCount"></span>
               <button class="rq-bigbtn" id="battleBigBtn" onclick="toggleRqBig('adminBattlesList','battleBigBtn')">📺 Big view</button>
-              <button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminDeleteAllBattleRequests()">🗑️ Delete All</button>
+              <button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminDeleteAllBattleRequests()" data-admin-only>🗑️ Delete All</button>
             </div>
           </div>
+          <div class="adm-ro-note">👀 View only. Jammmy or an admin marks results, awards coins and clears requests.</div>
           <div id="adminBattlesList" class="rq-list">Loading…</div>
         </div>
 
@@ -7241,10 +7255,12 @@ async function loadAdminDashboard(){
   }
   denied.style.display = 'none';
   content.style.display = 'block';
-  /* Mods (not admins) get a trimmed panel: Verify Players + a read-only Users list. The Worker
-     enforces the same split (requireStaff vs requireAdmin), so hiding here is just UX. */
+  /* Mods (not admins) get a trimmed panel: Verify Players, a read-only Users list and read-only
+     Slot/Battle request queues. The Worker enforces the same split (requireStaff vs requireAdmin),
+     so hiding the controls here is just UX -- a mod can't save, award or delete even if they try. */
   _adminModOnly = !isAdminCached;
-  var MOD_TABS = ['adminVerifyTab', 'adminUsersTab'];
+  content.classList.toggle('adm-ro', _adminModOnly);
+  var MOD_TABS = ['adminVerifyTab', 'adminUsersTab', 'adminSlotsTab', 'adminBattlesTab'];
   document.querySelectorAll('.admin-tab').forEach(function(b){
     b.style.display = (_adminModOnly && MOD_TABS.indexOf(b.dataset.tab) === -1) ? 'none' : '';
   });
@@ -7321,16 +7337,73 @@ async function saveVaultSettings(){
   if(btn) btn.textContent = 'Save Changes';
 }
 
+var _userSearchSeq = 0;
+/* ══════════ Admin speed/feel ══════════
+   adminSoftLoading: when a list already has content, refreshing it keeps the old rows on screen
+   (dimmed) and swaps in the new ones without replaying the fade-in -- instead of wiping to
+   "Loading…" after every action. A MutationObserver clears the dim as soon as new content lands.
+   Admin action feedback: every admin POST marks the button you clicked ("…") and fades its row
+   straight away; if the action removes the row (approve/reject/revoke/paid/delete) and succeeds,
+   the row slides out immediately while the list refreshes quietly behind it. On failure the
+   row is restored. Done with one fetch wrapper so every existing admin button gets it. */
+function adminSoftLoading(el){
+  if(!el) return;
+  if(!el._admMo){
+    el._admMo = new MutationObserver(function(){
+      el.classList.remove('adm-busy');
+      clearTimeout(el._admQuietT); el._admQuietT = setTimeout(function(){ el.classList.remove('adm-quiet'); }, 700);
+    });
+    el._admMo.observe(el, { childList: true });
+  }
+  if(el.children.length){ el.classList.add('adm-busy', 'adm-quiet'); }
+  else el.innerHTML = 'Loading…';
+}
+var _admLastBtn = null;
+document.addEventListener('click', function(e){
+  var b = e.target && e.target.closest ? e.target.closest('#adminContent button, #coinModal button') : null;
+  if(b) _admLastBtn = { el: b, t: Date.now() };
+}, true);
+var ADM_ROW_SEL = '.battle-card, .rq, .admin-row';
+var ADM_REMOVES = /\/api\/admin\/(approve-claim|reject-claim|revoke-claim|mark-paid|reject-redemption|delete-redemption|delete-slot-request|delete-battle-request)$/;
+(function(){
+  var _fetch = window.fetch;
+  window.fetch = function(input, init){
+    var url = typeof input === 'string' ? input : (input && input.url) || '';
+    var isAdminAction = init && String(init.method || '').toUpperCase() === 'POST' && url.indexOf(AUTH_API + '/api/admin/') === 0;
+    if(!isAdminAction) return _fetch.apply(this, arguments);
+    var btn = _admLastBtn && (Date.now() - _admLastBtn.t < 60000) ? _admLastBtn.el : null;
+    _admLastBtn = null;
+    var row = btn ? btn.closest(ADM_ROW_SEL) : null;
+    var label = btn ? btn.innerHTML : null;
+    if(btn){ btn.disabled = true; btn.classList.add('adm-btn-busy'); if(!/Saving/.test(btn.textContent)) btn.textContent = '…'; }
+    if(row) row.classList.add('adm-row-busy');
+    var restore = function(){ if(btn){ btn.disabled = false; btn.classList.remove('adm-btn-busy'); if(btn.textContent === '…') btn.innerHTML = label; } if(row) row.classList.remove('adm-row-busy'); };
+    return _fetch.apply(this, arguments).then(function(res){
+      if(res.ok && row && ADM_REMOVES.test(url.split('?')[0])){
+        row.style.height = row.offsetHeight + 'px';
+        void row.offsetHeight;
+        row.classList.add('adm-row-gone');
+      } else restore();
+      return res;
+    }, function(err){ restore(); throw err; });
+  };
+})();
+
 async function loadAdminUsers(){
   var token = localStorage.getItem('jammy_session_token');
   if(!token) return;
   var q = document.getElementById('userSearchInput').value.trim();
   var listEl = document.getElementById('adminUsersList');
-  listEl.innerHTML = 'Loading…';
+  /* Search runs as you type (debounced 300ms in the input's oninput). Only the newest search is
+     allowed to paint, so a slow earlier response can't overwrite the results for what's typed now.
+     While typing, the old results stay up (dimmed) instead of flashing "Loading…" every keystroke. */
+  var mySeq = ++_userSearchSeq;
+  adminSoftLoading(listEl);
   try{
     var url = AUTH_API + '/api/admin/users' + (q ? ('?q=' + encodeURIComponent(q)) : '');
     var res = await fetch(url, { headers: { 'Authorization': 'Bearer ' + token } });
     var data = await res.json();
+    if(mySeq !== _userSearchSeq) return;
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load users.'; return; }
     document.getElementById('adminUsersTotal').textContent = data.total_users + ' total users' + (q ? ' (showing filtered results)' : '');
     if(!data.users.length){ listEl.innerHTML = adminEmptyState('👥', 'No users found', 'Try a different search, or check back once people sign up.'); return; }
@@ -7366,6 +7439,7 @@ async function loadAdminUsers(){
       + '</div>';
     }).join('');
   }catch(e){
+    if(mySeq !== _userSearchSeq) return;
     console.error('Failed to load admin users:', e);
     listEl.innerHTML = 'Network error — try again.';
   }
@@ -7515,7 +7589,7 @@ async function loadAdminRedemptions(status){
   if(!token) return;
   document.querySelectorAll('.admin-redemption-filter').forEach(function(b){ b.classList.toggle('active', b.dataset.status === status); });
   var listEl = document.getElementById('adminRedemptionsList');
-  listEl.innerHTML = 'Loading…';
+  adminSoftLoading(listEl);
   try{
     var url = AUTH_API + '/api/admin/redemptions' + (status ? ('?status=' + status) : '');
     var res = await fetch(url, { headers: { 'Authorization': 'Bearer ' + token } });
@@ -7852,7 +7926,7 @@ async function loadAdminVerifyList(status){
         ? 'Already-approved claims. If one looks wrong, tell an admin -- only admins can revoke, since it takes coins back.'
         : 'Already-approved claims. If one turns out to be the wrong person, revoke it — this claws back any coins already distributed to them and resets their vault progress.');
   if(bulkBar) bulkBar.style.display = status === 'pending' ? 'flex' : 'none';
-  listEl.innerHTML = 'Loading…';
+  adminSoftLoading(listEl);
   try{
     var res = await fetch(AUTH_API + '/api/admin/pending-claims?status=' + status, { headers: { 'Authorization': 'Bearer ' + token } });
     var data = await res.json();
@@ -8112,7 +8186,7 @@ async function loadAdminSlots(filter){
   var token = localStorage.getItem('jammy_session_token');
   var listEl = document.getElementById('adminSlotsList');
   if(!token || !listEl) return;
-  listEl.innerHTML = 'Loading…';
+  adminSoftLoading(listEl);
   await ensureSlotCatalog(); /* so requests can show their real provider, same catalog the user-facing autocomplete uses */
   try{
     var res = await fetch(AUTH_API + '/api/admin/slot-requests?filter=' + filter, { headers: { 'Authorization': 'Bearer ' + token } });
@@ -8200,7 +8274,7 @@ async function loadAdminBattles(filter){
   var token = localStorage.getItem('jammy_session_token');
   var listEl = document.getElementById('adminBattlesList');
   if(!token || !listEl) return;
-  listEl.innerHTML = 'Loading…';
+  adminSoftLoading(listEl);
   try{
     var res = await fetch(AUTH_API + '/api/admin/battle-requests?filter=' + filter, { headers: { 'Authorization': 'Bearer ' + token } });
     var data = await res.json();
