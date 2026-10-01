@@ -8,6 +8,24 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-02: DegenCity removed
+
+- **Site:** removed DegenCity everywhere a visitor sees it:
+  - **Home page:** the "Official partners" logo strip, the cashback chip in the Bonuses tile and the partner card. The partner count now reads "1 partner · Verified casino".
+  - **Other pages:** the DegenCity leaderboard tab and its slots-only note, the DegenCity bonus card, the vault players filter, the profile claim card, "Redeem via DegenCity" and the footer logo.
+  - The single remaining partner card, bonus card and leaderboard tab are centred so nothing looks half-empty.
+- **Worker:**
+  - Removed `fetchDegenCity` and DegenCity from every partner list. It's no longer fetched by the leaderboard proxy, the wager/vault sync, claim approval or Verify Players.
+  - Redemptions to DegenCity are refused ("no longer available").
+  - Verify Players, the pending badge, the duplicate-accounts check and the Users list now only consider Power.win.
+- **Kept on purpose:**
+  - The DegenCity name and logo still label *old* records (past redemptions, the Redemptions queue, the activity log), so history reads properly.
+  - No database rows were deleted.
+  - DegenCity wagering that was already banked in the vault before today still pays out at the next vault payout. New DegenCity wagering no longer counts.
+- Optional: delete the `DEGENCITY_API_KEY` secret in Cloudflare and `share-degencity.png` from the repo. **Keep `degencity.png`**, since old redemptions still show it.
+
+---
+
 ## 2026-10-02: A request unlocks once Jammmy responds, plus simpler request cards
 
 **One request at a time, now released by Jammmy's response**

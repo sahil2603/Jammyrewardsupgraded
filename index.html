@@ -2079,6 +2079,10 @@ html.lenis{scroll-behavior:auto!important}
 
 /* ---------- PARTNERS ---------- */
 .hx-partners{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:980px;margin:0 auto}
+.hx-partners.solo{grid-template-columns:minmax(0,520px);justify-content:center}
+.hx-bonus-art.solo .hx-chip-card.c1{left:50%;top:30px;transform:translateX(-50%) rotate(-5deg)}
+.grid2.solo{grid-template-columns:minmax(0,560px);justify-content:center}
+.lbx-tabs.solo .lbt{cursor:default;opacity:1}.lbx-tabs.solo .lbx-tab-ind{display:none}
 .hx-p{--rx:0deg;--ry:0deg;position:relative;border-radius:28px;padding:1px;overflow:hidden;background:rgba(255,255,255,.08);transform:perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));transition:transform .6s var(--hx-ease),box-shadow .35s,opacity 1s var(--hx-ease)}
 .hx-p.hx-rv:not(.in){transform:perspective(1000px) translate3d(0,40px,0) scale(.98)}
 .hx-p:hover{box-shadow:0 34px 70px -34px rgba(var(--c),.7)}
@@ -3727,7 +3731,6 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <div class="hx-trust">
             <span>Official partners</span>
             <img src="powerwin.png" alt="Power.win" class="hx-trust-pw">
-            <img src="degencity.png" alt="DegenCity" class="hx-trust-dc">
           </div>
         </div>
       </div>
@@ -3767,8 +3770,8 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         </div>
         <div class="hx-stat hx-spotlight">
           <div class="hx-stat-ico" style="--c:74,222,128"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3.2 19 6v5.4c0 4.5-2.9 7.7-7 8.4-4.1-.7-7-3.9-7-8.4V6z" stroke-linejoin="round"/><path d="m8.6 12.1 2.3 2.3 4.5-4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="hx-stat-num display" data-count="2" data-suffix=" partners">0</div>
-          <div class="hx-stat-lbl">Verified casinos</div>
+          <div class="hx-stat-num display" data-count="1" data-suffix=" partner">0</div>
+          <div class="hx-stat-lbl">Verified casino</div>
         </div>
       </div>
 
@@ -3787,9 +3790,8 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
             <p>Hand-picked deposit matches, rakeback and cashback from our verified partners. Sign up under <b>JAMMMY</b> to unlock everything.</p>
             <span class="hx-b-link">View bonuses <em>→</em></span>
           </div>
-          <div class="hx-b-art hx-bonus-art" aria-hidden="true">
+          <div class="hx-b-art hx-bonus-art solo" aria-hidden="true">
             <div class="hx-chip-card c1"><img src="powerwin.png" alt=""><b>100%</b><small>Cash match</small></div>
-            <div class="hx-chip-card c2"><img src="degencity.png" alt=""><b>10%</b><small>Cashback · 7 days</small></div>
           </div>
         </article>
 
@@ -3877,7 +3879,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <span class="hx-kicker">Verified partners</span>
         <h2 class="hx-h2">Hand-picked <span class="hx-grad">casino partners</span></h2>
       </div>
-      <div class="hx-partners">
+      <div class="hx-partners solo">
         <article class="hx-p hx-rv hx-tilt" style="--c:192,132,252">
           <div class="hx-p-beam" aria-hidden="true"></div>
           <div class="hx-p-logo"><img src="powerwin.png" alt="Power.win"></div>
@@ -3892,23 +3894,6 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
             <div class="hx-p-btns">
               <button type="button" class="hx-btn hx-btn-p sm" onclick="nav('new')"><span>View all offers</span></button>
               <button type="button" class="hx-btn hx-btn-g sm" onclick="goToLeaderboard('powerwin')"><span>Leaderboard</span></button>
-            </div>
-          </div>
-        </article>
-        <article class="hx-p hx-rv hx-tilt" style="--c:96,165,250;--d:.1s">
-          <div class="hx-p-beam" aria-hidden="true"></div>
-          <div class="hx-p-logo"><img src="degencity.png" alt="DegenCity"></div>
-          <div class="hx-p-body">
-            <div class="hx-p-name">DegenCity <span class="hx-p-badge blue">10% cashback · 7 days</span></div>
-            <ul class="hx-p-feats">
-              <li><i>💰</i>10% Cashback for 7 days</li>
-              <li><i>⚡</i>Instant Cashouts</li>
-              <li><i>🎁</i>Tip &amp; Giveaways</li>
-              <li><i>✨</i>Daily Promo Codes</li>
-            </ul>
-            <div class="hx-p-btns">
-              <button type="button" class="hx-btn hx-btn-p sm blue" onclick="go('https://degencity.com')"><span>Claim bonus</span></button>
-              <button type="button" class="hx-btn hx-btn-g sm" onclick="goToLeaderboard('degencity')"><span>Leaderboard</span></button>
             </div>
           </div>
         </article>
@@ -3960,10 +3945,9 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div class="lbx-kicker"><span class="lbx-live"><i></i>LIVE RACE</span><span id="lbxCasinoName">Power.win</span> wager race</div>
         <h1 class="lbx-title">Climb the <span class="g">Leaderboard</span></h1>
         <p class="lbx-sub">Wager under code <b>JAMMMY</b>, climb the ranks and win a share of the prize pool. Updated live.</p>
-        <div class="lbx-tabs" id="lbxTabs">
+        <div class="lbx-tabs solo" id="lbxTabs">
           <span class="lbx-tab-ind" id="lbxTabInd"></span>
           <button class="lbt active" onclick="lbTab(this,'powerwin')"><img src="powerwin.png" alt="Power.win" class="pw"></button>
-          <button class="lbt" onclick="lbTab(this,'degencity')"><img src="degencity.png" alt="DegenCity"></button>
         </div>
       </div>
 
@@ -4016,7 +4000,6 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
       <div class="lbx-notes">
         <div class="lbx-note"><span>⚠️</span><p><b>Note:</b> Users must deposit more than the placement prize. If the deposit is less than the prize, the prize will be voided.</p></div>
-        <div class="lbx-note cyan" id="lbDegenCityNote" style="display:none"><span>🎰</span><p><b>Note:</b> On DegenCity, only slot wagers count toward the leaderboard.</p></div>
       </div>
     </div>
   </section>
@@ -4173,13 +4156,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
   <section class="page" id="bonuses">
     <div class="sec-head"><h2>Casino <span class="g">Bonuses</span></h2><p>Hand-picked offers from our live partners. Sign up under JAMMMY to unlock leaderboard prizes and vault share.</p></div>
     <div class="inner">
-      <div class="grid2 reveal">
-        <div class="bcard">
-          <div class="top"><span class="cas"><img src="degencity.png" alt="DegenCity">DegenCity</span><span class="ribbon" style="background:#0e7490">10% Cashback for 7 Days</span></div>
-          <div class="codebox"><div class="code"><span style="color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em">Code</span><span class="cv">JAMMMY</span></div><button class="copybtn" onclick="copy(this,'JAMMMY')">Copy</button></div>
-          <div class="feats"><span>💰 10% Cashback for 7 days</span><span>⚡ Instant Cashouts</span><span>🎁 Tip &amp; Giveaways</span><span>✨ Daily Promo Codes</span></div>
-          <button class="claim" onclick="go('https://degencity.com')">Claim Bonus</button>
-        </div>
+      <div class="grid2 solo reveal">
         <div class="bcard">
           <div class="top"><span class="cas"><img src="powerwin.png" alt="Power.win" style="height:42px">Power.win</span><span class="ribbon" style="background:#7e22ce">Newest Partner</span></div>
           <div class="codebox"><div class="code"><span style="color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em">Code</span><span class="cv">JAMMMY</span></div><button class="copybtn" onclick="copy(this,'JAMMMY')">Copy</button></div>
@@ -4400,7 +4377,6 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div class="vpp-tabs">
           <button class="vpp-tab active" data-casino="">All</button>
           <button class="vpp-tab" data-casino="powerwin">Power.win</button>
-          <button class="vpp-tab" data-casino="degencity">DegenCity</button>
         </div>
         <div class="vpp-col-head">
           <div>Rank</div>
@@ -4455,8 +4431,6 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
             <label style="display:block;font-size:.82rem;color:var(--faint);margin-bottom:8px">Redeem via</label>
             <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
               <button type="button" class="pf-redeem-method active" data-method="crypto" onclick="setRedeemMethod('crypto')">Crypto</button>
-              <button type="button" class="pf-redeem-method" data-method="degencity" onclick="setRedeemMethod('degencity')">DegenCity</button>
-
               <button type="button" class="pf-redeem-method" data-method="powerwin" onclick="setRedeemMethod('powerwin')">Power.win</button>
             </div>
 
@@ -4988,7 +4962,6 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
       <h4>Partners</h4>
       <div class="foot-partners">
         <a class="foot-partner-row" onclick="nav('new')"><img loading="lazy" class="foot-partner-logo" src="powerwin.png" alt="Power.win" style="height:38px;margin-top:-6px"></a>
-        <a class="foot-partner-row" onclick="go('https://degencity.com')"><img loading="lazy" class="foot-partner-logo" src="degencity.png" alt="DegenCity"></a>
 
 
       </div>
@@ -5348,9 +5321,7 @@ function currentPowerwinPeriod(){
 }
 function lbcd2(){
   var period = _realPeriodOverride
-    || (CURRENT_LB_CASINO === 'degencity' ? currentMonthlyPeriod()
-      : CURRENT_LB_CASINO === 'powerwin' ? currentPowerwinPeriod()
-      : currentLbPeriod());
+    || (CURRENT_LB_CASINO === 'powerwin' ? currentPowerwinPeriod() : currentLbPeriod());
   var n = new Date();
   var s = Math.max(0, Math.floor((period.end - n)/1000));
   var el = document.getElementById('lb-cd2');
@@ -5391,8 +5362,6 @@ async function loadLeaderboard(casino){
   var fullListEl = document.getElementById('lb-full-list');
   var countdownEl = document.getElementById('lbxInfo');
   var tableHeadEl = document.getElementById('lbxHeadRow');
-  var degenCityNoteEl = document.getElementById('lbDegenCityNote');
-  if(degenCityNoteEl) degenCityNoteEl.style.display = (casino === 'degencity') ? 'flex' : 'none';
   var joinPwEl = document.getElementById('lbJoinPowerwin');
   if(joinPwEl) joinPwEl.style.display = (casino === 'powerwin') ? '' : 'none';
   if(podiumEl) podiumEl.style.display = '';
@@ -5626,9 +5595,9 @@ function fmtCoins(n){
   return (Math.round((+n||0) * 100) / 100).toLocaleString(undefined, {maximumFractionDigits: 2});
 }
 
-/* includes former partners so OLD records (past claims/redemptions) still show a proper name */
+/* includes former partners (RustMafia, DegenCity...) so OLD records (past claims/redemptions) still show a proper name */
 var CASINO_DISPLAY_NAMES = {upgrader:'Upgrader', rustmagic:'RustMagic', rustmafia:'RustMafia', degencity:'DegenCity', powerwin:'Power.win'};
-var KNOWN_CASINOS_DISPLAY_LIST = ['degencity', 'powerwin'];
+var KNOWN_CASINOS_DISPLAY_LIST = ['powerwin'];
 var _vaultPlayersData = [];
 var _vaultPlayerCasinoFilter = '';
 
@@ -5725,7 +5694,6 @@ function renderUnclaimedCard(data){
   if(estEl) estEl.textContent = Math.round(potentialCoins).toLocaleString()+' Coins';
 
   var CASINO_LOGOS = {
-    degencity: '<img src="degencity.png" alt="DegenCity" style="max-height:28px;max-width:100%;width:auto;object-fit:contain">',
     powerwin: '<img src="powerwin.png" alt="Power.win" style="max-height:22px;max-width:100%;width:auto;object-fit:contain">',
   };
 
@@ -6576,7 +6544,7 @@ trackPageView(location.hash ? location.hash.slice(1) : 'home'); /* showPage() on
 /* ══════════════════════════════════════════════════════════════════════════
    PROFILE PAGE
    ══════════════════════════════════════════════════════════════════════════ */
-var KNOWN_CASINOS_DISPLAY = {degencity:'DegenCity', powerwin:'Power.win'};
+var KNOWN_CASINOS_DISPLAY = {powerwin:'Power.win'};
 
 async function loadProfile(){
   var token = localStorage.getItem('jammy_session_token');
@@ -7045,7 +7013,7 @@ function updateNetworkOptions(){
 
 var _pfRedeemMethod = 'crypto';
 var _pfVerified = {};
-var PLATFORM_LABELS = {degencity:'DegenCity', powerwin:'Power.win'};
+var PLATFORM_LABELS = {powerwin:'Power.win'};
 var _redeemMinCrypto = 10000, _redeemMinPlatform = 1000, _redeemBalance = 0;
 function updateRedeemEligibilityNote(){
   var min = _pfRedeemMethod === 'crypto' ? _redeemMinCrypto : _redeemMinPlatform;
@@ -7434,7 +7402,7 @@ async function loadAdminUsers(){
     document.getElementById('adminUsersTotal').textContent = data.total_users + ' total users' + (q ? ' (showing filtered results)' : '');
     if(!data.users.length){ listEl.innerHTML = adminEmptyState('👥', 'No users found', 'Try a different search, or check back once people sign up.'); return; }
     listEl.innerHTML = data.users.map(function(u, i){
-      var VERIFIED_OK = { powerwin:1, degencity:1 };
+      var VERIFIED_OK = { powerwin:1 };
       var vLinks = (u.casino_links || []).filter(function(l){ return VERIFIED_OK[l.casino]; });
       var linksHtml = vLinks.length
         ? vLinks.map(function(l){ return '<span class="admin-tag vlink '+pccEsc(l.casino)+'"><i>✓</i>'+pccEsc(CASINO_DISPLAY_NAMES[l.casino]||l.casino)+': <b>'+pccEsc(l.username)+'</b></span>'; }).join(' ')
