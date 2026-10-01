@@ -8,6 +8,33 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-02: A request unlocks once Jammmy responds, plus simpler request cards
+
+**One request at a time, now released by Jammmy's response**
+- Before, a player's open slot or battle request blocked them from sending another until it was *deleted*. Now it also unblocks the moment Jammmy (or an admin) clicks **Save** on it, after marking Profit / Loss / Didn't play or awarding coins. Deleting still unblocks too.
+- An open request means `status` is not `'reviewed'`. Save sets `status = 'reviewed'`.
+- Worker: both `/api/slot-request` and `/api/battle-request` check for an open request and insert in one atomic `INSERT … SELECT … WHERE NOT EXISTS`, so a double-click can't sneak two through. A blocked request gets a 409 with `code: 'request_pending'`, and battles also return which battle is pending.
+- Worker: new `GET /api/my-battle-requests`, which returns the player's pending battle (or null). `/api/my-slot-requests` now includes `status`.
+- Request a Battle now shows the same lock banner as Request a Slot ("Your battle request is with Jammmy…"), both when the page loads and if a send is refused. The form greys out and the button reads "🔒 One request at a time".
+- No database change needed.
+
+**Simpler admin request cards (Slot + Battle Requests)**
+- The tabs are now just **⏳ To review** (open requests, oldest first) and **✓ Done** (saved ones, newest first).
+- The result dropdown became three one-tap chips: 🎉 Profit · 😬 Loss · 💤 Didn't play. Next to them are an optional $ amount, 🪙 coins (slots only), ✓ Save and 🗑.
+- A hint line on each card explains that Save closes it and lets the player send a new one. Clicking Save with nothing picked shakes the chips instead of saving an empty result.
+- After Save, the card slides out of To review into Done. On Done the button reads "✓ Update", for fixing a result later.
+- Mods still see these lists read-only, with no controls.
+
+---
+
+## 2026-09-30: Power.win race counts wagering from 10 Sep
+
+- For the current Power.win race (shown on the site as **24 Sep → 8 Oct**), the public leaderboard now counts wagering from **10 Sep → 8 Oct** (both 2-week cycles combined). The worker's new `fetchPowerWinRace` asks Power.win for `from=2026-09-10&to=2026-10-08` but sends the site the display dates (24 Sep → 8 Oct), so the dates and countdown shown are unchanged. `meta.fetchWindow` records what was actually counted.
+- Controlled by `POWERWIN_FETCH_OVERRIDES` in the worker (keyed by the race's display start date). Races without an entry use the normal `period=BIWEEKLY` feed, so the next race (8 Oct →) goes back to normal automatically. If Power.win rejects the custom dates, the leaderboard falls back to the normal feed instead of going empty.
+- Only the public leaderboard uses this. The Vault and the claim/verify checks still use the normal feed, so vault accounting is unchanged.
+
+---
+
 ## 2026-09-29: Leaderboard "Show all" button fix
 
 - The "Show all N players" / "Show top 10 only" button stayed on screen after switching to a leaderboard with 10 or fewer players (DegenCity), still showing the previous casino's count, e.g. "Show all 86 players" from Power.win. The code did hide it, but `.lbx-more{display:block}` overrode the `hidden` attribute. Added `.lbx-more[hidden]{display:none}` and the label is cleared when hidden.

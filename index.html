@@ -1449,7 +1449,22 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .rq-spec.yes b{color:#fdba74}
 .rq-spec.no b{color:var(--faint);font-weight:600}
 .rq-spec.wide{grid-column:1/-1}
-.rq-ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 18px 12px 20px;background:rgba(0,0,0,.22);border-top:1px solid rgba(255,255,255,.06)}
+.rq-ctrl{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:12px 18px 12px 20px;background:rgba(0,0,0,.22);border-top:1px solid rgba(255,255,255,.06)}
+.rq-chips{display:flex;gap:6px;flex-wrap:wrap}
+.rq-chip{padding:8px 13px;border-radius:99px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:#e9e3ff;font:600 .84rem 'Poppins';cursor:pointer;transition:background .15s,border-color .15s,color .15s,transform .1s}
+.rq-chip:hover{border-color:rgba(255,255,255,.3)}
+.rq-chip:active{transform:scale(.96)}
+.rq-chip.profit.on{background:rgba(74,222,128,.18);border-color:#4ade80;color:#4ade80}
+.rq-chip.loss.on{background:rgba(248,113,113,.18);border-color:#f87171;color:#f87171}
+.rq-chip.no_play.on{background:rgba(148,163,184,.2);border-color:#94a3b8;color:#e2e8f0}
+.rq-inputs{display:flex;gap:8px;flex:1 1 260px;min-width:0}
+.rq-inputs input{flex:1 1 0;min-width:0}
+.rq-actions{display:flex;gap:8px;align-items:center;margin-left:auto}
+.rq-ctrl .rq-actions .del{margin-left:0;padding:7px 11px}
+.rq-hint{flex-basis:100%;font-size:.76rem;color:var(--faint);line-height:1.4}
+.rq-hint.err{color:#fca5a5}
+.rq-need .rq-chips{animation:rqShake .35s}
+@keyframes rqShake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
 .rq-ctrl .lbl{font-size:.74rem;letter-spacing:.12em;color:var(--faint);font-weight:700;margin-right:4px}
 .rq-ctrl select,.rq-ctrl input{padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:#fff;font:500 .84rem 'Poppins';margin:0}
 .rq-ctrl input.coins{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.35);color:#fbbf24}
@@ -1492,6 +1507,9 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
   .rq-note,.rq-specs{margin-left:16px;margin-right:14px}
   .rq-ctrl{padding:10px 14px}
   .rq-ctrl .del{margin-left:0}
+  .rq-inputs{flex-basis:100%}
+  .rq-actions{width:100%;margin-left:0}
+  .rq-actions .save{flex:1}
   .rq-list.big .rq-title{font-size:1.4rem}
 }
 .login-err-toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:9500;width:min(460px,calc(100% - 32px));display:flex;flex-direction:column;gap:6px;
@@ -2718,6 +2736,8 @@ html.lenis{scroll-behavior:auto!important}
 .rsx-lock p span{color:#fff;font-weight:700}
 .rsx-locked .rsx-sec{opacity:.45;pointer-events:none}
 .rsx-locked .rsx-submit:disabled{cursor:not-allowed}
+.rbx-locked .rbx-sec{opacity:.45;pointer-events:none}
+.rbx-locked .rbx-submit:disabled{cursor:not-allowed;opacity:.7}
 .rsx-login-ic{font-size:2.2rem}
 .rsx-login h3{margin:8px 0 4px}
 .rsx-login p{color:#c4b5fd;margin:0 0 12px}
@@ -4550,7 +4570,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
             <div id="rsLock" class="rsx-lock" hidden>
               <div class="rsx-lock-ic">⏳</div>
               <div><b>Your request is in the queue</b>
-                <p>You suggested <span id="rsLockSlot">a slot</span>. You can send a new one once Jammmy rewards it or clears it.</p></div>
+                <p>You suggested <span id="rsLockSlot">a slot</span>. You can send a new one once Jammmy responds to it.</p></div>
             </div>
             <div class="rsx-sec">
               <div class="rsx-sec-h"><span class="rsx-num">01</span> Which slot?</div>
@@ -4608,6 +4628,11 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
             <button class="rbx-submit" style="max-width:280px;margin:6px auto 0" onclick="startDiscordLogin()">Login with Discord</button>
           </div>
           <div id="rbForm">
+            <div id="rbLock" class="rsx-lock" hidden>
+              <div class="rsx-lock-ic">⏳</div>
+              <div><b>Your battle request is with Jammmy</b>
+                <p>You challenged him to <span id="rbLockWhat">a battle</span>. You can send another once Jammmy responds to it.</p></div>
+            </div>
             <div class="rbx-sec">
               <div class="rbx-sec-h"><span class="rbx-num">01</span> Who's challenging?</div>
               <div class="rbx-two">
@@ -4841,8 +4866,8 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div id="adminSlotsTab" class="admin-tab-panel" style="display:none">
           <div class="rq-bar">
             <div style="display:flex;gap:8px">
-              <button class="admin-filter-pill active admin-slot-filter" data-filter="active" onclick="loadAdminSlots('active')">Active</button>
-              <button class="admin-filter-pill admin-slot-filter" data-filter="awarded" onclick="loadAdminSlots('awarded')">🪙 Awarded</button>
+              <button class="admin-filter-pill active admin-slot-filter" data-filter="active" onclick="loadAdminSlots('active')">⏳ To review</button>
+              <button class="admin-filter-pill admin-slot-filter" data-filter="done" onclick="loadAdminSlots('done')">✓ Done</button>
             </div>
             <div class="rq-right">
               <span class="rq-count" id="slotQueueCount"></span>
@@ -4858,8 +4883,8 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div id="adminBattlesTab" class="admin-tab-panel" style="display:none">
           <div class="rq-bar">
             <div style="display:flex;gap:8px">
-              <button class="admin-filter-pill active admin-battle-filter" data-filter="active" onclick="loadAdminBattles('active')">Active</button>
-              <button class="admin-filter-pill admin-battle-filter" data-filter="awarded" onclick="loadAdminBattles('awarded')">🪙 Awarded</button>
+              <button class="admin-filter-pill active admin-battle-filter" data-filter="active" onclick="loadAdminBattles('active')">⏳ To review</button>
+              <button class="admin-filter-pill admin-battle-filter" data-filter="done" onclick="loadAdminBattles('done')">✓ Done</button>
             </div>
             <div class="rq-right">
               <span class="rq-count" id="battleQueueCount"></span>
@@ -8159,17 +8184,52 @@ function rqStatusBadge(r){
   var t = { profit:'Profit', loss:'Loss', no_play:'Didn\'t play' }[r.profit_status] || r.profit_status;
   return '<span class="admin-pill admin-pill-'+r.profit_status+'">'+t+(r.profit_amount!=null ? ' · $'+Number(r.profit_amount).toLocaleString() : '')+'</span>';
 }
+/* Simplified result picker: three one-tap chips instead of a dropdown. The chosen value lives in a
+   hidden input with the same id the old <select> had, so the save functions read it the same way. */
 function rqResultSelect(id, cur){
-  return '<select id="'+id+'" class="pf-select" style="width:auto">'
-    + '<option value="">No result yet</option>'
-    + '<option value="profit"'+(cur==='profit'?' selected':'')+'>Profit</option>'
-    + '<option value="loss"'+(cur==='loss'?' selected':'')+'>Loss</option>'
-    + '<option value="no_play"'+(cur==='no_play'?' selected':'')+'>Didn\'t play it</option>'
-  + '</select>';
+  var opt = function(v, t){ return '<button type="button" class="rq-chip '+v+(cur===v?' on':'')+'" data-v="'+v+'" onclick="rqPick(this)">'+t+'</button>'; };
+  return '<div class="rq-chips"><input type="hidden" id="'+id+'" value="'+(cur||'')+'">'
+    + opt('profit','🎉 Profit') + opt('loss','😬 Loss') + opt('no_play','💤 Didn\'t play') + '</div>';
+}
+function rqPick(b){
+  var wrap = b.parentNode, inp = wrap.querySelector('input'), on = !b.classList.contains('on');
+  wrap.querySelectorAll('.rq-chip').forEach(function(c){ c.classList.remove('on'); });
+  if(on) b.classList.add('on');
+  inp.value = on ? b.dataset.v : '';
+  var ctrl = b.closest('.rq-ctrl'); if(ctrl){ ctrl.classList.remove('rq-need'); var h = ctrl.querySelector('.rq-hint'); if(h) h.classList.remove('err'); }
+}
+function rqCtrl(kind, r, hasCoins){
+  var P = kind === 'slot' ? 'slot' : 'battle';
+  var done = r.status === 'reviewed';
+  return '<div class="rq-ctrl">'
+    + rqResultSelect(P+'ProfitStatus_'+r.id, r.profit_status)
+    + '<div class="rq-inputs">'
+      + '<input type="number" inputmode="decimal" id="'+P+'ProfitAmount_'+r.id+'" placeholder="$ amount" value="'+(r.profit_amount!=null?r.profit_amount:'')+'">'
+      + (hasCoins ? '<input type="number" inputmode="numeric" class="coins" id="slotCoinsAward_'+r.id+'" placeholder="🪙 Coins to award" value="'+(r.coins_awarded!=null?r.coins_awarded:'')+'">' : '')
+    + '</div>'
+    + '<div class="rq-actions">'
+      + '<button class="admin-btn-secondary save" onclick="'+(kind==='slot'?'adminUpdateSlotRequest':'adminUpdateBattleRequest')+'('+r.id+')">'+(done ? '✓ Update' : '✓ Save')+'</button>'
+      + '<button class="del" title="Delete request" onclick="'+(kind==='slot'?'adminDeleteSlotRequest':'adminDeleteBattleRequest')+'('+r.id+')">🗑</button>'
+    + '</div>'
+    + '<div class="rq-hint">'+(done ? 'Already done · changes update what '+pccEsc(r.username||'the player')+' sees.' : 'Pick a result'+(hasCoins?' and/or coins':'')+', then Save. That closes it and lets '+pccEsc(r.username||'them')+' send a new request.')+'</div>'
+  + '</div>';
+}
+/* After Save on the To review tab the card slides out, then the list reloads. */
+function rqAfterSave(id, reload, filter){
+  var inp = document.getElementById(id), row = inp && inp.closest('.rq');
+  if(row && filter !== 'done'){
+    row.style.height = row.offsetHeight + 'px'; void row.offsetHeight; row.classList.add('adm-row-gone');
+    setTimeout(reload, 380);
+  } else reload();
+}
+function rqNeedResult(id){
+  var inp = document.getElementById(id), ctrl = inp && inp.closest('.rq-ctrl'); if(!ctrl) return;
+  ctrl.classList.remove('rq-need'); void ctrl.offsetWidth; ctrl.classList.add('rq-need');
+  var h = ctrl.querySelector('.rq-hint'); if(h){ h.classList.add('err'); }
 }
 function setRqCount(id, n, filter){
   var el = document.getElementById(id); if(!el) return;
-  el.innerHTML = filter === 'awarded' ? '<b>'+n+'</b> awarded' : '<b>'+n+'</b> in queue · oldest first';
+  el.innerHTML = filter === 'done' ? '<b>'+n+'</b> done · newest first' : '<b>'+n+'</b> to review · oldest first';
 }
 function toggleRqBig(listId, btnId){
   var list = document.getElementById(listId), btn = document.getElementById(btnId);
@@ -8193,7 +8253,7 @@ async function loadAdminSlots(filter){
     var res = await fetch(AUTH_API + '/api/admin/slot-requests?filter=' + filter, { headers: { 'Authorization': 'Bearer ' + token } });
     var data = await res.json();
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load.'; return; }
-    if(!data.requests.length){ listEl.innerHTML = filter === 'awarded' ? adminEmptyState('🪙', 'No awarded requests yet', 'Once you award coins on a slot call, it shows up here.') : adminEmptyState('🎰', 'No active slot requests', 'All caught up -- new suggestions will appear here.'); return; }
+    if(!data.requests.length){ setRqCount('slotQueueCount', 0, filter); listEl.innerHTML = filter === 'done' ? adminEmptyState('✓', 'Nothing done yet', 'Requests you Save move here.') : adminEmptyState('🎰', 'All caught up', 'New slot suggestions will appear here.'); return; }
     setRqCount('slotQueueCount', data.requests.length, filter);
     listEl.innerHTML = data.requests.map(function(r, i){
       var catalogMatch = (_slotCatalog || []).find(function(s){ return s.name && s.name.toLowerCase() === String(r.slot_name||'').toLowerCase(); });
@@ -8209,13 +8269,7 @@ async function loadAdminSlots(filter){
           + '<div class="rq-status">'+rqStatusBadge(r)+(r.coins_awarded ? '<div style="margin-top:6px">'+'<span class="admin-pill admin-pill-profit">🪙 '+Number(r.coins_awarded).toLocaleString()+' coins awarded</span></div>' : '')+'</div>'
         + '</div>'
         + (r.note ? '<div class="rq-note"><small>NOTE FROM '+pccEsc(String(r.username||'').toUpperCase())+'</small>'+pccEsc(r.note)+'</div>' : '')
-        + '<div class="rq-ctrl"><span class="lbl">RESULT</span>'
-          + rqResultSelect('slotProfitStatus_'+r.id, r.profit_status)
-          + '<input type="number" id="slotProfitAmount_'+r.id+'" placeholder="Amount ($)" value="'+(r.profit_amount!=null?r.profit_amount:'')+'" style="width:128px">'
-          + '<input type="number" class="coins" id="slotCoinsAward_'+r.id+'" placeholder="🪙 Award coins" value="'+(r.coins_awarded!=null?r.coins_awarded:'')+'" style="width:148px">'
-          + '<button class="admin-btn-secondary save" onclick="adminUpdateSlotRequest('+r.id+')">Save</button>'
-          + '<button class="del" onclick="adminDeleteSlotRequest('+r.id+')">🗑 Delete</button>'
-        + '</div>'
+        + rqCtrl('slot', r, true)
       + '</div>';
     }).join('');
   }catch(e){
@@ -8229,6 +8283,8 @@ async function adminUpdateSlotRequest(id){
   var statusEl = document.getElementById('slotProfitStatus_'+id);
   var amountEl = document.getElementById('slotProfitAmount_'+id);
   var coinsEl = document.getElementById('slotCoinsAward_'+id);
+  if(!statusEl.value && !coinsEl.value){ rqNeedResult('slotProfitStatus_'+id); return; }
+  var filter = _currentSlotFilter;
   try{
     var res = await fetch(AUTH_API + '/api/admin/update-slot-request', {
       method: 'POST',
@@ -8236,7 +8292,7 @@ async function adminUpdateSlotRequest(id){
       body: JSON.stringify({ id: id, profit_status: statusEl.value || null, profit_amount: amountEl.value || null, coins_to_award: coinsEl.value || null })
     });
     var data = await res.json();
-    if(res.ok){ loadAdminSlots(); } else { alert(data.error || 'Failed to save.'); }
+    if(res.ok){ rqAfterSave('slotProfitStatus_'+id, function(){ loadAdminSlots(); }, filter); } else { alert(data.error || 'Failed to save.'); }
   }catch(e){ console.error('Update slot request failed:', e); alert('Network error — try again.'); }
 }
 
@@ -8280,7 +8336,7 @@ async function loadAdminBattles(filter){
     var res = await fetch(AUTH_API + '/api/admin/battle-requests?filter=' + filter, { headers: { 'Authorization': 'Bearer ' + token } });
     var data = await res.json();
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load.'; return; }
-    if(!data.requests.length){ listEl.innerHTML = filter === 'awarded' ? adminEmptyState('🪙', 'No awarded requests yet', 'Once you mark a call as profit, it shows up here.') : adminEmptyState('⚔️', 'No active battle requests', 'All caught up -- new requests will appear here.'); return; }
+    if(!data.requests.length){ setRqCount('battleQueueCount', 0, filter); listEl.innerHTML = filter === 'done' ? adminEmptyState('✓', 'Nothing done yet', 'Requests you Save move here.') : adminEmptyState('⚔️', 'All caught up', 'New battle requests will appear here.'); return; }
     /* Was one flat blue color for every request regardless of game mode -- each mode now
        gets its own accent (glow, icon-badge gradient, and top border), so a Jackpot request
        reads differently from a Terminal one at a glance instead of everything looking the
@@ -8312,12 +8368,7 @@ async function loadAdminBattles(filter){
           + yesNo('CRAZY MODE', !!r.crazy_mode) + yesNo('BORROW', !!r.borrow)
           + '<div class="rq-spec wide"><span>CASES</span><b>'+pccEsc(r.cases||'—')+'</b></div>'
         + '</div>'
-        + '<div class="rq-ctrl"><span class="lbl">RESULT</span>'
-          + rqResultSelect('battleProfitStatus_'+r.id, r.profit_status)
-          + '<input type="number" id="battleProfitAmount_'+r.id+'" placeholder="Amount ($)" value="'+(r.profit_amount!=null?r.profit_amount:'')+'" style="width:128px">'
-          + '<button class="admin-btn-secondary save" onclick="adminUpdateBattleRequest('+r.id+')">Save</button>'
-          + '<button class="del" onclick="adminDeleteBattleRequest('+r.id+')">🗑 Delete</button>'
-        + '</div>'
+        + rqCtrl('battle', r, false)
       + '</div>';
     }).join('');
   }catch(e){
@@ -8330,6 +8381,8 @@ async function adminUpdateBattleRequest(id){
   var token = localStorage.getItem('jammy_session_token');
   var statusEl = document.getElementById('battleProfitStatus_'+id);
   var amountEl = document.getElementById('battleProfitAmount_'+id);
+  if(!statusEl.value){ rqNeedResult('battleProfitStatus_'+id); return; }
+  var filter = _currentBattleFilter;
   try{
     var res = await fetch(AUTH_API + '/api/admin/update-battle-request', {
       method: 'POST',
@@ -8337,7 +8390,7 @@ async function adminUpdateBattleRequest(id){
       body: JSON.stringify({ id: id, profit_status: statusEl.value || null, profit_amount: amountEl.value || null })
     });
     var data = await res.json();
-    if(res.ok){ loadAdminBattles(); } else { alert(data.error || 'Failed to save.'); }
+    if(res.ok){ rqAfterSave('battleProfitStatus_'+id, function(){ loadAdminBattles(); }, filter); } else { alert(data.error || 'Failed to save.'); }
   }catch(e){ console.error('Update battle request failed:', e); alert('Network error — try again.'); }
 }
 
@@ -8676,7 +8729,7 @@ function selectSlotOption(el){
 }
 
 /* One open request at a time (enforced by the server too): while the player has a request
-   that hasn't been rewarded or deleted, the form is locked and says which slot is waiting. */
+   Jammmy hasn't responded to yet (clicked Save on, or deleted), the form is locked and says which slot is waiting. */
 function setSlotRequestLock(open){
   var lock = document.getElementById('rsLock'); if(!lock) return;
   var on = !!open;
@@ -8694,7 +8747,7 @@ async function loadMySlotRequests(){
   try{
     var res = await fetch(AUTH_API + '/api/my-slot-requests', { headers: { 'Authorization': 'Bearer ' + token }, cache: 'no-store' });
     var data = await res.json();
-    if(res.ok) setSlotRequestLock((data.requests || []).filter(function(r){ return !r.coins_awarded; })[0] || null);
+    if(res.ok) setSlotRequestLock((data.requests || []).filter(function(r){ return r.status !== 'reviewed'; })[0] || null);
     if(!res.ok || !data.requests || !data.requests.length){ wrap.style.display = 'none'; return; }
     wrap.style.display = 'block';
     var STATUS_INFO = {
@@ -8838,13 +8891,32 @@ function startBattleSparks(){
   requestAnimationFrame(frame);
 }
 document.addEventListener('visibilitychange', function(){ if(!document.hidden && location.hash === '#requestbattle') startBattleSparks(); });
+/* Same one-at-a-time rule as slot requests: locked until Jammmy clicks Save on it (or deletes it). */
+var RB_BTN_LABEL = '⚔️ Send Battle Request';
+function setBattleRequestLock(open){
+  var lock = document.getElementById('rbLock'); if(!lock) return;
+  var on = !!open;
+  lock.hidden = !on;
+  if(on){ var w = document.getElementById('rbLockWhat'); if(w) w.textContent = [open.match_type, open.game_mode].filter(Boolean).join(' ') || 'a battle'; }
+  var form = document.getElementById('rbForm'); if(form) form.classList.toggle('rbx-locked', on);
+  var btn = document.getElementById('rbSubmitBtn'); if(btn){ btn.disabled = on; btn.textContent = on ? '🔒 One request at a time' : RB_BTN_LABEL; }
+}
+async function loadMyBattleRequest(){
+  var token = localStorage.getItem('jammy_session_token'); if(!token) return;
+  try{
+    var res = await fetch(AUTH_API + '/api/my-battle-requests', { headers: { 'Authorization': 'Bearer ' + token }, cache: 'no-store' });
+    if(!res.ok) return;
+    var data = await res.json();
+    setBattleRequestLock(data.pending || null);
+  }catch(e){ console.error('Failed to load my battle request:', e); }
+}
 function loadRequestBattlePage(){
   setTimeout(startBattleSparks, 60);
   var token = localStorage.getItem('jammy_session_token');
   var loggedOut = document.getElementById('rbLoggedOut');
   var form = document.getElementById('rbForm');
   if(!loggedOut || !form) return;
-  if(token){ loggedOut.style.display='none'; form.style.display='block'; }
+  if(token){ loggedOut.style.display='none'; form.style.display='block'; loadMyBattleRequest(); }
   else { loggedOut.style.display='block'; form.style.display='none'; }
 }
 
@@ -8889,6 +8961,7 @@ async function submitBattleRequest(){
     if(res.ok){
       resultEl.style.color = '#4ade80';
       resultEl.textContent = '✓ Sent! Jammmy will see this in his requested battles.';
+      setBattleRequestLock({ game_mode: gameModeEl.dataset.val, match_type: matchTypeEl.dataset.val });
       celebrateFrom(btn, 'sparks');
       document.getElementById('rbKickDiscord').value = '';
       document.getElementById('rbPosition').value = '';
@@ -8897,14 +8970,16 @@ async function submitBattleRequest(){
     } else {
       resultEl.style.color = '#f87171';
       resultEl.textContent = data.error || 'Failed to send — please try again.';
+      if(res.status === 409) setBattleRequestLock(data.pending || {});
     }
   }catch(e){
     console.error('Battle request failed:', e);
     resultEl.style.color = '#f87171';
     resultEl.textContent = 'Network error — please try again.';
   }
-  btn.textContent = '⚔️ Submit Battle Request';
-  btn.disabled = false;
+  var locked = !document.getElementById('rbLock').hidden;
+  btn.textContent = locked ? '🔒 One request at a time' : RB_BTN_LABEL;
+  btn.disabled = locked;
 }
 
 /* Scroll progress bar + back-to-top button, adapted from the same pattern already used on
