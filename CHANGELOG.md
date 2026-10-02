@@ -8,6 +8,13 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-02: Leaderboard prizes visible on phones
+
+- On phones (640px and narrower) the leaderboard hid its whole Prize column to save space, so only the top 3 podium cards showed a prize. Now every paid rank (Power.win: 1st–10th) shows its prize in green with a 🏆 under the wagered amount. Unpaid ranks just show the wager, vertically centred. The header reads "Wagered / prize".
+- Desktop is unchanged. Tested at 360px and 390px wide with no sideways scrolling.
+
+---
+
 ## 2026-10-02: DegenCity removed
 
 - **Site:** removed DegenCity everywhere a visitor sees it:
