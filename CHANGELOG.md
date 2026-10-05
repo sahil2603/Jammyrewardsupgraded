@@ -8,6 +8,92 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-05: Reasons for rejected claims
+
+- **Admin/Mod → Verify Players:** "Reject" (and "Reject Selected") now opens a dialog instead of a plain confirm box.
+  - Five quick-pick reasons: screenshot doesn't show the username, username doesn't match, not signed up under code JAMMMY, blurry or cropped screenshot, belongs to someone else.
+  - A free-text box (up to 300 characters) for anything else.
+  - A reason is optional; the button reads "Reject without reason" when the box is empty.
+  - Bulk reject sends the same reason to every selected player.
+- **Player's Profile:** a rejected claim now shows a red "✕ Rejected" badge and a notice: "Your claim for ALICE99 was rejected", the reason from Jammmy, and "Fix it and submit again below". The claim form underneath stays open as before.
+- **Activity Log:** rejections now record the reason.
+- **Worker:**
+  - `reject-claim` and `bulk-reject-claims` accept `reason` and store it in a new `casino_links.reject_reason` column.
+  - The column adds itself the first time it's needed, so **no D1 console step is needed**.
+  - `/api/profile` returns the reason.
+  - Submitting a new claim clears the old reason.
+
+---
+
+## 2026-10-05: Power.win race cards redesigned
+
+- Each race card is now styled like power.win's own race banners:
+  - A big heading in the site's display font: **$70 DAILY RACE**, **$1,075 WEEKLY RACE**, **$5,290 MONTHLY RACE** (the current pools).
+  - Above the cards, a headline banner reads **$10,000 MONTHLY RACE** (Power.win's advertised race) in shimmering gold, with checkered flags and speed lines. It replaces the old "🏁 Live races" heading.
+  - A **live countdown** to that race's reset: daily 00:00 UTC, weekly Monday 00:00 UTC, monthly the 1st 00:00 UTC. These times match power.win/races, so no API is needed.
+  - A colour per race: green daily, purple weekly, gold monthly.
+- Effects:
+  - a waving checkered flag
+  - streaking speed lines
+  - a glowing border that runs around the card on hover (always on for Monthly)
+  - a shine sweep on 1st place
+  - a gold shimmer on the $10,000 heading
+  - a bobbing trophy on Monthly
+  - lift-on-hover rows
+- Animations switch off for visitors who have "reduce motion" turned on.
+- Layout: three across on desktop, two plus Monthly full-width on tablets, stacked on phones.
+- Each card links to "Live standings ↗" on power.win/races.
+
+---
+
+## 2026-10-05: Power.win races + share image
+
+- **Power.win page:** the "Live races" section now shows Power.win's three site-wide races as static cards. This replaces the two weekly USDT cards (Originals / Win Multiplier). The prizes come from power.win/races and there's no live data, so update them here if Power.win changes them.
+  - **Daily ($70):** 15 / 12 / 10 / 8 / 5 USDT
+  - **Weekly ($1,075):** 250 / 175 / 150 / 125 / 100 USDT
+  - **Monthly ($5,290):** 1,000 / 750 / 600 / 450 / 350 USDT
+  - Each card shows the top 5 places plus "+ more places paid", and the fine print links to power.win/races for live standings.
+  - Three columns on desktop, two plus one on mid-size screens, and stacked on phones.
+- **Share on X:** added `share-powerwin.png` (Jammmy's "I'm on the leaderboard" Power.win image). The share button already looks for `share-<casino>.png`, so it works with no code change.
+
+---
+
+## 2026-10-05: Previous race, send coins to everyone, Active Users
+
+**Leaderboard: Current race / Previous race**
+- A toggle under the Power.win tab switches between the live board and the **final standings of the race before it**.
+- Previous mode shows a grey "FINAL RESULTS" pill, "RACE ENDED", the old race's dates, and "final standings" instead of a live time. Share on X then posts "FINAL RESULTS".
+- **Worker:** `?casino=powerwin&race=previous` fetches the previous 14-day cycle from Power.win with its exact from/to dates, using the same count-from override if that race had one. The numbers don't move once a race is over, so the result is edge-cached for 10 minutes.
+- The prize pool tile now says "Top 10 paid" (it said Top 3).
+
+**Admin → Users: 🎁 Send coins to everyone**
+- One button opens a dialog: coins per player (quick picks 50–1,000), a required note, and a live total ("100 × 523 players = 52,300 coins").
+- Send needs two taps; the first spells out exactly what will happen.
+- **Worker:** `POST /api/admin/bulk-coins` with `{mode:'all'|'ids', amount, note, discord_ids}`.
+  - Adds coins only, never deducts, with a maximum of 100,000 each.
+  - Writes one transaction row per player with the note, all in a single D1 batch.
+  - Sends a coins notification to subscribed phones and records the action in the Activity Log ("Sent 100 coins to ALL 523 users").
+
+**Admin → 🔥 Active Users (new tab, admins only)**
+- Ranks players for Today / 7 days / 30 days by:
+  - 🔴 days on the site while Jammmy was live (×10)
+  - 📅 active days (×5)
+  - slot + battle requests (×4)
+  - daily claims (×2)
+- Each row also shows ⏱ live time, balance and last seen.
+- **Sending coins:** "+ Coins" on any row sends to that one player. Checkboxes plus "Send to selected" or "Send to all listed" use the same bulk dialog.
+- **Tracking:** logged-in page views now include the session, and logged-in players send a 5-minute heartbeat while the tab is visible.
+  - **Worker:** `recordActivity` stores one row per player per UTC day in `user_activity` (visits, live visits, pings, live pings), counting whether Jammmy was live from the existing `kick_live` state.
+  - Heartbeats count at most once every 4 minutes per player, so they can't be spammed.
+  - The table creates itself on first use, so **no D1 console step is needed**.
+- Kick chat itself isn't readable from here, so "live" means on the site while Jammmy is streaming.
+
+**Not done yet**
+- The Power.win daily/weekly/monthly races page needs Power.win's races data feed. Their site is behind a Cloudflare human check, and the feed isn't part of the affiliate API.
+- The Power.win "Share on X" image (`share-powerwin.png`) hasn't been received yet.
+
+---
+
 ## 2026-10-02: Leaderboard prizes visible on phones
 
 - On phones (640px and narrower) the leaderboard hid its whole Prize column to save space, so only the top 3 podium cards showed a prize. Now every paid rank (Power.win: 1st–10th) shows its prize in green with a 🏆 under the wagered amount. Unpaid ranks just show the wager, vertically centred. The header reads "Wagered / prize".

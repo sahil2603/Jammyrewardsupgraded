@@ -1760,6 +1760,97 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .pwx-m b{display:block;color:rgb(var(--a));font-size:.98rem;margin-bottom:6px}
 .pwx-m p{color:var(--faint);font-size:.78rem;line-height:1.5;margin:0}
 .pwx-races{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.pwx-races.three{grid-template-columns:repeat(3,1fr)}
+/* ===== Power.win races (static cards styled like power.win's race banners) ===== */
+.prc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+.prc-banner{--a:251,191,36;--b:217,119,6;position:relative;overflow:hidden;text-align:center;margin:52px 0 22px;padding:30px 20px 26px;border-radius:26px;
+  background:radial-gradient(70% 120% at 50% 0%,rgba(251,191,36,.22),transparent 60%),radial-gradient(60% 90% at 0% 100%,rgba(124,58,237,.35),transparent 60%),radial-gradient(60% 90% at 100% 100%,rgba(236,72,153,.25),transparent 60%),linear-gradient(135deg,#1d1036,#110a20);
+  border:1px solid rgba(251,191,36,.35);box-shadow:0 30px 70px -36px rgba(217,119,6,.9),inset 0 1px 0 rgba(255,255,255,.06)}
+.prc-banner .prc-flag{right:-20px;top:-14px;width:190px;height:130px;opacity:.14}
+.prc-banner .prc-flag.l{right:auto;left:-20px;transform:rotate(14deg) skewX(8deg) scaleX(-1);animation-delay:-1.6s}
+.prc-banner-title{margin:14px 0 8px;font-family:'Lilita One','Arial Black',Impact,sans-serif;font-weight:400;line-height:.9;text-transform:uppercase;transform:skewX(-6deg)}
+.prc-banner-title b{display:block;font-weight:400;font-size:clamp(3.2rem,9vw,5.6rem);letter-spacing:1px;
+  background:linear-gradient(100deg,#fde68a 20%,#fff 40%,#fbbf24 55%,#fde68a 80%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 6px 26px rgba(251,191,36,.45));animation:prcShine 4s linear infinite}
+.prc-banner-title span{display:block;font-size:clamp(1.6rem,4.2vw,2.5rem);color:#fff;letter-spacing:2px;margin-top:6px;text-shadow:0 3px 0 rgba(124,58,237,.9),0 0 26px rgba(251,191,36,.3)}
+.prc-banner p{margin:10px 0 0;color:var(--muted);font-size:.9rem}
+.prc-banner>*{position:relative;z-index:1}.prc-banner .prc-flag,.prc-banner .prc-speed{z-index:0;position:absolute}
+
+.prc{--a:192,132,252;--b:124,58,237;position:relative;display:flex;flex-direction:column;border-radius:24px;padding:1.5px;isolation:isolate;
+  background:linear-gradient(160deg,rgba(var(--a),.7),rgba(var(--b),.15) 40%,rgba(255,255,255,.06) 70%,rgba(var(--a),.45));
+  transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s;box-shadow:0 30px 60px -34px rgba(var(--b),.8)}
+.prc>*:not(.prc-glow){position:relative;z-index:1}
+.prc::before{content:"";position:absolute;inset:1.5px;border-radius:22.5px;background:linear-gradient(180deg,#140c26,#0c0718 60%);z-index:0}
+.prc-glow{position:absolute;inset:-1px;border-radius:25px;z-index:-1;padding:2px;overflow:hidden;opacity:.0;transition:opacity .45s}
+.prc-glow::before{content:"";position:absolute;inset:-60%;background:conic-gradient(from 0deg,transparent 0 62%,rgba(var(--a),1) 72%,#fff 75%,rgba(var(--a),1) 78%,transparent 88%);animation:prcSpin 4.5s linear infinite}
+.prc:hover{transform:translateY(-6px);box-shadow:0 40px 80px -30px rgba(var(--b),1),0 0 0 1px rgba(var(--a),.35)}
+.prc:hover .prc-glow,.prc-monthly .prc-glow{opacity:1}
+@keyframes prcSpin{to{transform:rotate(1turn)}}
+.prc-daily{--a:74,222,128;--b:5,150,105}
+.prc-weekly{--a:192,132,252;--b:109,40,217}
+.prc-monthly{--a:251,191,36;--b:217,119,6}
+
+.prc-hero{position:relative;overflow:hidden;border-radius:22.5px 22.5px 0 0;padding:22px 22px 18px;min-height:210px;
+  background:radial-gradient(120% 90% at 100% 0%,rgba(var(--a),.35),transparent 55%),radial-gradient(90% 80% at 0% 100%,rgba(var(--b),.4),transparent 60%),linear-gradient(135deg,#1d1036,#120a22)}
+.prc-hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(var(--a),.7),transparent)}
+/* checkered flag, waving in the corner */
+.prc-flag{position:absolute;right:-30px;top:-18px;width:150px;height:110px;opacity:.16;transform:rotate(-14deg) skewX(-8deg);
+  background:conic-gradient(#fff 25%,transparent 0 50%,#fff 0 75%,transparent 0) 0 0/22px 22px;
+  -webkit-mask:linear-gradient(200deg,#000 30%,transparent 85%);mask:linear-gradient(200deg,#000 30%,transparent 85%);animation:prcWave 3.2s ease-in-out infinite}
+@keyframes prcWave{50%{transform:rotate(-10deg) skewX(-2deg) translateY(4px)}}
+/* speed streaks */
+.prc-speed{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.prc-speed i{position:absolute;right:-40%;height:2px;width:38%;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(var(--a),.9));opacity:0;animation:prcStreak 2.8s linear infinite}
+.prc-speed i:nth-child(1){top:28%;animation-delay:0s}.prc-speed i:nth-child(2){top:46%;width:24%;animation-delay:.7s}
+.prc-speed i:nth-child(3){top:63%;animation-delay:1.3s}.prc-speed i:nth-child(4){top:80%;width:30%;animation-delay:1.9s}.prc-speed i:nth-child(5){top:14%;width:20%;animation-delay:2.3s}
+@keyframes prcStreak{0%{transform:translateX(0);opacity:0}15%{opacity:.85}100%{transform:translateX(-380%);opacity:0}}
+
+.prc-kick{display:inline-flex;align-items:center;gap:7px;padding:5px 11px;border-radius:999px;font:700 .64rem 'Poppins',system-ui;letter-spacing:.12em;text-transform:uppercase;
+  color:rgb(var(--a));background:rgba(var(--a),.1);border:1px solid rgba(var(--a),.35);backdrop-filter:blur(4px)}
+.prc-kick i{width:7px;height:7px;border-radius:50%;background:rgb(var(--a));box-shadow:0 0 10px rgb(var(--a));animation:lbxPulse 1.6s infinite}
+.prc-title{margin:14px 0 16px;font-family:'Lilita One','Arial Black',Impact,sans-serif;font-weight:400;line-height:.92;text-transform:uppercase;transform:skewX(-6deg);transform-origin:left}
+.prc-title b{display:block;font-weight:400;font-size:clamp(2.4rem,4.2vw,3.1rem);letter-spacing:.5px;
+  background:linear-gradient(180deg,#fff 30%,rgb(var(--a)) 140%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 4px 18px rgba(var(--a),.45))}
+.prc-title span{display:block;font-size:clamp(1.35rem,2.3vw,1.7rem);color:#fff;letter-spacing:1px;margin-top:4px;text-shadow:0 2px 0 rgba(var(--b),.9),0 0 22px rgba(var(--a),.3)}
+.prc-monthly .prc-title b{background:linear-gradient(100deg,#fde68a 20%,#fff 40%,#fbbf24 55%,#fde68a 80%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;animation:prcShine 4s linear infinite}
+@keyframes prcShine{to{background-position:-250% 0}}
+
+.prc-cd{display:flex;gap:7px}
+.prc-cd div{min-width:52px;padding:7px 4px 6px;text-align:center;border-radius:11px;background:rgba(10,6,22,.65);border:1px solid rgba(var(--a),.32);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.prc-cd b{display:block;font:700 1.15rem 'Poppins',system-ui;color:#fff;font-variant-numeric:tabular-nums;line-height:1.1}
+.prc-cd small{font:700 .56rem 'Poppins',system-ui;letter-spacing:.1em;text-transform:uppercase;color:rgba(var(--a),.9)}
+
+.prc-list{list-style:none;margin:0;padding:16px 16px 6px;display:flex;flex-direction:column;gap:7px;flex:1}
+.prc-list li{position:relative;display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:13px;overflow:hidden;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);transition:transform .25s,background .25s,border-color .25s}
+.prc-list li:hover{transform:translateX(4px);background:rgba(var(--a),.08);border-color:rgba(var(--a),.3)}
+.prc-pl{display:flex;align-items:center;gap:10px;font:600 .9rem 'Poppins',system-ui;color:var(--muted)}
+.prc-pl i{font-style:normal;width:26px;height:26px;display:grid;place-items:center;border-radius:8px;font-size:.95rem;background:rgba(255,255,255,.05);color:var(--faint);font-weight:700}
+.prc-list li b{font:700 1rem 'Poppins',system-ui;color:#fff;font-variant-numeric:tabular-nums}
+.prc-list li b small{font-size:.62rem;margin-left:4px;color:var(--faint);letter-spacing:.06em}
+.prc-list li.r1{background:linear-gradient(90deg,rgba(251,191,36,.2),rgba(251,191,36,.03));border-color:rgba(251,191,36,.45)}
+.prc-list li.r1 b{color:#fbbf24;font-size:1.12rem}.prc-list li.r1 .prc-pl{color:#fde68a}
+.prc-list li.r1::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);animation:prcSweep 3.6s ease-in-out infinite}
+@keyframes prcSweep{0%,55%{left:-60%}100%{left:130%}}
+.prc-list li.r2 b{color:#e5e7eb}.prc-list li.r3 b{color:#f59e0b}
+.prc-list li.r2,.prc-list li.r3{border-color:rgba(255,255,255,.1)}
+.prc-pl i:not(:empty){background:transparent}
+.prc-pl i:empty::before{content:"";width:7px;height:7px;border-radius:50%;background:rgba(var(--a),.55)}
+.prc-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 16px 18px;font-size:.74rem;color:var(--faint);white-space:nowrap}
+.prc-foot a{white-space:nowrap;font:700 .76rem 'Poppins',system-ui;color:rgb(var(--a));text-decoration:none;padding:7px 12px;border-radius:999px;border:1px solid rgba(var(--a),.35);background:rgba(var(--a),.08);transition:background .25s,transform .25s}
+.prc-foot a:hover{background:rgba(var(--a),.2);transform:translateY(-1px)}
+.prc-monthly .prc-hero::before{content:"🏆";position:absolute;right:18px;top:66px;font-size:2.6rem;filter:drop-shadow(0 6px 16px rgba(251,191,36,.6));animation:prcBob 3s ease-in-out infinite}
+@keyframes prcBob{50%{transform:translateY(-6px) rotate(-6deg)}}
+@media (max-width:1060px) and (min-width:700px){.prc-grid{grid-template-columns:1fr 1fr}.prc-monthly{grid-column:1/-1}}
+@media (max-width:699px){.prc-grid{grid-template-columns:1fr;gap:16px}.prc-hero{min-height:0}.prc-cd div{flex:1;min-width:0}}
+@media (prefers-reduced-motion:reduce){.prc *,.prc *::before,.prc *::after,.prc .prc-glow::before,.prc-banner *{animation:none!important}.prc-speed{display:none}}
+
+.pwx-race-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pwx-race-pool{font-family:'Lilita One',sans-serif;font-size:1.5rem;line-height:1;color:rgb(var(--a));text-shadow:0 0 18px rgba(var(--a),.45)}
+.pwx-race-more{margin-top:10px;text-align:center;font-size:.74rem;color:var(--faint)}
+.pwx-fine a{color:#c084fc}
+@media (max-width:980px) and (min-width:861px){.pwx-races.three{grid-template-columns:1fr 1fr}.pwx-races.three .pwx-race:last-child{grid-column:1/-1}}
 .pwx-race{margin:0;padding:24px}
 .pwx-race h4{font-family:'Lilita One',sans-serif;font-size:1.2rem;margin:10px 0 4px}
 .pwx-race>p{color:var(--faint);font-size:.82rem;margin:0 0 16px}
@@ -1799,7 +1890,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .pwx-step b{display:block;margin-bottom:4px}
 .pwx-step p{color:var(--faint);font-size:.82rem;line-height:1.5;margin:0}
 .pwx-step a{color:#f9a8d4}
-@media (max-width:860px){.pwx-mini{grid-template-columns:repeat(2,1fr)}.pwx-mini .pwx-m:last-child{grid-column:1/-1}.pwx-races,.pwx-steps,.pwx-bullets{grid-template-columns:1fr}.pwx-stats{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:860px){.pwx-mini{grid-template-columns:repeat(2,1fr)}.pwx-mini .pwx-m:last-child{grid-column:1/-1}.pwx-races,.pwx-races.three,.pwx-steps,.pwx-bullets{grid-template-columns:1fr}.pwx-stats{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:620px){.pwx{padding:34px 16px 90px}.pwx-card{padding:22px 18px;border-radius:18px}.pwx-roller,.pwx-bounty{flex-direction:column;text-align:center;gap:18px}.pwx-roller-num{width:130px;height:130px}.pwx-roller-num span{top:32px;right:20px}.pwx-feat-top{align-items:flex-start}.pwx-ico{width:52px;height:52px;font-size:1.5rem}.pwx-card h2{font-size:1.3rem}.pwx-go,.pwx-code{width:100%;justify-content:center}.pwx-logo{height:48px}.pwx-logo-wrap{padding:14px 26px}}
 @media (prefers-reduced-motion:reduce){.pwx-rv{opacity:1;transform:none}.pwx-track-bar i{width:100%}}
 /* =====================================================================
@@ -2092,7 +2183,17 @@ html.lenis{scroll-behavior:auto!important}
 .hx-partners.solo{grid-template-columns:minmax(0,520px);justify-content:center}
 .hx-bonus-art.solo .hx-chip-card.c1{left:50%;top:30px;transform:translateX(-50%) rotate(-5deg)}
 .grid2.solo{grid-template-columns:minmax(0,560px);justify-content:center}
-.lbx-tabs.solo .lbt{cursor:default;opacity:1}.lbx-tabs.solo .lbx-tab-ind{display:none}
+.lbx-tabs.solo .lbt{cursor:default;opacity:1}
+.lbx-race-tog{display:inline-flex;gap:4px;margin:14px auto 0;padding:4px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09)}
+.lbx-race-tog button{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border:0;border-radius:999px;background:transparent;color:var(--muted);font:600 .86rem 'Poppins';cursor:pointer;transition:background .25s,color .25s}
+.lbx-race-tog button:hover{color:#fff}
+.lbx-race-tog button.on{background:linear-gradient(135deg,rgba(168,85,247,.35),rgba(34,211,238,.2));color:#fff;box-shadow:inset 0 0 0 1px rgba(168,85,247,.45)}
+.lbx-race-tog .dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:lbxPulse 1.6s infinite}
+@keyframes lbxPulse{50%{opacity:.35}}
+.lbx-live.ended{background:rgba(148,163,184,.12)!important;border-color:rgba(148,163,184,.35)!important;color:#cbd5e1!important}
+.lbx-live.ended i{background:#94a3b8!important;box-shadow:none!important;animation:none!important}
+.lbx-prev .lbx-prog span{background:linear-gradient(90deg,#94a3b8,#64748b)!important}
+@media (max-width:640px){.lbx-race-tog{display:flex;width:100%}.lbx-race-tog button{flex:1;justify-content:center;padding:10px 8px}}.lbx-tabs.solo .lbx-tab-ind{display:none}
 .hx-p{--rx:0deg;--ry:0deg;position:relative;border-radius:28px;padding:1px;overflow:hidden;background:rgba(255,255,255,.08);transform:perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));transition:transform .6s var(--hx-ease),box-shadow .35s,opacity 1s var(--hx-ease)}
 .hx-p.hx-rv:not(.in){transform:perspective(1000px) translate3d(0,40px,0) scale(.98)}
 .hx-p:hover{box-shadow:0 34px 70px -34px rgba(var(--c),.7)}
@@ -2247,6 +2348,63 @@ html.lenis{scroll-behavior:auto!important}
 .adm-input{width:100%;box-sizing:border-box;padding:11px 12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font-family:'Poppins';font-size:.95rem;resize:vertical}
 .adm-input:focus{outline:none;border-color:var(--purple)}
 .adm-err{min-height:18px;margin-top:8px;font-size:.8rem;color:#f87171}
+.adm-err.ok{color:#4ade80}
+.rej-presets{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
+.rej-presets button{padding:7px 11px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);font:600 .76rem 'Poppins';cursor:pointer;text-align:left;transition:all .2s}
+.rej-presets button:hover{color:#fff;border-color:rgba(248,113,113,.45)}
+.rej-presets button.on{color:#fecaca;background:rgba(248,113,113,.14);border-color:rgba(248,113,113,.55)}
+.rej-count{text-align:right;font-size:.7rem;color:var(--faint);margin-top:4px}
+.rej-go{background:linear-gradient(135deg,#ef4444,#b91c1c)!important}
+.pcc-rej{margin:0 0 14px;padding:12px 14px;border-radius:12px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);font-size:.84rem;color:var(--muted)}
+.pcc-rej b{display:block;color:#fca5a5;font-size:.88rem}.pcc-rej b em{font-style:normal;color:#fff}
+.pcc-rej-why{margin:8px 0;padding:9px 11px;border-radius:9px;background:rgba(0,0,0,.25);border-left:3px solid #f87171;color:#fff}
+.pcc-rej-why small{display:block;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:#f87171;margin-bottom:2px}
+.pcc-rej>span{font-size:.78rem;color:var(--faint)}
+/* bulk coins */
+.bulk-card{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:16px 18px;margin-bottom:18px;border-radius:16px;background:linear-gradient(135deg,rgba(251,191,36,.12),rgba(168,85,247,.08));border:1px solid rgba(251,191,36,.3)}
+.bulk-ico{font-size:1.7rem;width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:rgba(251,191,36,.14);flex:none}
+.bulk-txt{flex:1;min-width:200px}.bulk-txt b{display:block;font-size:1rem}.bulk-txt small{color:var(--muted);font-size:.83rem}
+.bulk-go{width:auto!important;flex:none;padding:11px 18px!important}
+.bulk-quick{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 4px}
+.bulk-quick button{padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);font:600 .8rem 'Poppins';cursor:pointer}
+.bulk-quick button:hover{color:#fff;border-color:rgba(251,191,36,.5)}
+.bulk-total{margin-top:10px;font-size:.88rem;color:var(--muted)}.bulk-total b{color:#fbbf24}
+#bulkSave.armed{background:linear-gradient(135deg,#f59e0b,#d97706)!important;color:#1a1026}
+/* active users */
+.act-help{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0 0 16px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--line);font-size:.78rem;color:var(--faint)}
+.act-help b{color:var(--muted);font-weight:600}.act-help em{flex-basis:100%;font-style:normal;color:var(--faint)}
+.act-list{display:flex;flex-direction:column;gap:8px;padding-bottom:90px}
+.act-list .act-row{display:grid;flex-wrap:nowrap;margin:0;grid-template-columns:28px 44px 46px minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--panel);border:1px solid var(--line);animation:lbxRow .45s cubic-bezier(.16,1,.3,1) both;transition:border-color .2s,background .2s}
+.act-list .act-row.picked{border-color:rgba(251,191,36,.55);background:rgba(251,191,36,.06)}
+.act-pick input,.act-all input{width:18px;height:18px;accent-color:#fbbf24;cursor:pointer}
+.act-rank{font:800 .95rem 'Poppins';color:var(--muted);text-align:center}
+.act-av{width:42px;height:42px;border-radius:50%;overflow:hidden;display:grid;place-items:center;font:700 .9rem 'Poppins';color:#fff;background:linear-gradient(135deg,#a855f7,#22d3ee)}
+.act-av img{width:100%;height:100%;object-fit:cover}
+.act-name{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.act-name b{font-size:.98rem}
+.act-seen{font-size:.74rem;color:var(--faint)}
+.act-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.act-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:999px;font-size:.74rem;color:var(--faint);background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+.act-chip b{color:var(--muted)}.act-chip i{font-style:normal}
+.act-chip.on b{color:#fff}.act-chip.live.on{border-color:rgba(248,113,113,.45);background:rgba(248,113,113,.1)}.act-chip.live.on b{color:#fca5a5}
+.act-meter{height:4px;border-radius:99px;background:rgba(255,255,255,.06);margin-top:8px;max-width:340px;overflow:hidden}
+.act-meter span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#f87171,#fbbf24)}
+.act-side{display:flex;align-items:center;gap:14px}
+.act-score{text-align:center;min-width:46px}.act-score b{display:block;font:400 1.4rem 'Lilita One',sans-serif;color:#fbbf24;line-height:1}.act-score small{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.act-bal{font-weight:700;color:#fbbf24;white-space:nowrap;font-size:.9rem}
+.act-give{padding:8px 12px!important;white-space:nowrap}
+.act-bar{position:sticky;bottom:12px;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:-78px;padding:12px 14px;border-radius:16px;background:rgba(20,13,36,.92);backdrop-filter:blur(10px);border:1px solid var(--line);box-shadow:0 18px 40px -12px rgba(0,0,0,.7)}
+.act-bar.has-sel{border-color:rgba(251,191,36,.55)}
+.act-all{display:flex;align-items:center;gap:8px;font-size:.88rem;color:var(--muted);cursor:pointer}
+.act-bar-btns{display:flex;gap:8px;flex-wrap:wrap}.act-bar-btns button{width:auto;padding:10px 14px}
+.act-bar-btns .admin-btn-primary:disabled{opacity:.45;cursor:not-allowed}
+@media (max-width:640px){
+  .act-list .act-row{grid-template-columns:24px 30px 40px minmax(0,1fr);gap:9px;padding:12px}
+  .act-av{width:38px;height:38px}
+  .act-side{grid-column:1/-1;justify-content:space-between;padding-top:8px;border-top:1px solid rgba(255,255,255,.05)}
+  .act-chip i{display:none}
+  .act-bar{bottom:76px}
+  .act-bar-btns{width:100%}.act-bar-btns button{flex:1}
+}
 .coin-dir{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .coin-dir button{padding:10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--muted);font:700 .9rem 'Poppins';cursor:pointer}
 .coin-dir button.active[data-dir="1"]{background:rgba(74,222,128,.14);border-color:rgba(74,222,128,.5);color:#4ade80}
@@ -3952,12 +4110,16 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
     <div class="lbx">
       <!-- header -->
       <div class="lbx-head">
-        <div class="lbx-kicker"><span class="lbx-live"><i></i>LIVE RACE</span><span id="lbxCasinoName">Power.win</span> wager race</div>
+        <div class="lbx-kicker"><span class="lbx-live" id="lbxLivePill"><i></i><span id="lbxLiveTxt">LIVE RACE</span></span><span id="lbxCasinoName">Power.win</span> wager race</div>
         <h1 class="lbx-title">Climb the <span class="g">Leaderboard</span></h1>
-        <p class="lbx-sub">Wager under code <b>JAMMMY</b>, climb the ranks and win a share of the prize pool. Updated live.</p>
+        <p class="lbx-sub" id="lbxSub">Wager under code <b>JAMMMY</b>, climb the ranks and win a share of the prize pool. Updated live.</p>
         <div class="lbx-tabs solo" id="lbxTabs">
           <span class="lbx-tab-ind" id="lbxTabInd"></span>
           <button class="lbt active" onclick="lbTab(this,'powerwin')"><img src="powerwin.png" alt="Power.win" class="pw"></button>
+        </div>
+        <div class="lbx-race-tog" id="lbxRaceTog" role="tablist" aria-label="Which race">
+          <button type="button" class="on" data-r="current" onclick="lbRace('current')"><i class="dot"></i>Current race</button>
+          <button type="button" data-r="previous" onclick="lbRace('previous')">🏁 Previous race</button>
         </div>
       </div>
 
@@ -3966,10 +4128,10 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div class="lbx-tile lbx-pool">
           <span class="lbx-lbl">PRIZE POOL</span>
           <b id="lbxPool">$1,000</b>
-          <small>Top 3 paid</small>
+          <small id="lbxPaidN">Top 10 paid</small>
         </div>
         <div class="lbx-tile lbx-cd">
-          <span class="lbx-lbl"><span id="lb-cd-label">POWER.WIN</span> RACE ENDS IN</span>
+          <span class="lbx-lbl"><span id="lb-cd-label">POWER.WIN</span> <span id="lbxCdWord">RACE ENDS IN</span></span>
           <div class="lbx-segs">
             <div><b id="lbxD">--</b><small>days</small></div><i>:</i>
             <div><b id="lbxH">--</b><small>hrs</small></div><i>:</i>
@@ -4115,29 +4277,60 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         </ol>
       </article>
 
-      <!-- RACES -->
-      <div class="pwx-sec pwx-rv"><span>Every week</span><h3>🏁 Live races</h3></div>
-      <div class="pwx-races">
-        <div class="pwx-card pwx-race pwx-rv" style="--a:124,58,237">
-          <span class="pwx-tag">Weekly</span>
-          <h4>Highest Wagering on Originals</h4>
-          <p>Ranked by total wagered on Power.win Originals</p>
-          <ol class="pwx-prize">
-            <li class="g1"><span>1st</span><b>10 USDT</b></li><li class="g2"><span>2nd</span><b>5 USDT</b></li>
-            <li class="g3"><span>3rd</span><b>3 USDT</b></li><li><span>4th</span><b>2 USDT</b></li>
-          </ol>
-        </div>
-        <div class="pwx-card pwx-race pwx-rv" style="--a:236,72,153">
-          <span class="pwx-tag pink">Weekly</span>
-          <h4>Highest Win Multiplier</h4>
-          <p>Ranked by the biggest single-spin win multiplier</p>
-          <ol class="pwx-prize">
-            <li class="g1"><span>1st</span><b>10 USDT</b></li><li class="g2"><span>2nd</span><b>5 USDT</b></li>
-            <li class="g3"><span>3rd</span><b>3 USDT</b></li><li><span>4th</span><b>2 USDT</b></li>
-          </ol>
-        </div>
+      <!-- RACES (static: Power.win's own site-wide races, as listed on power.win/races) -->
+      <div class="prc-banner pwx-rv">
+        <div class="prc-flag" aria-hidden="true"></div>
+        <div class="prc-flag l" aria-hidden="true"></div>
+        <div class="prc-speed" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <span class="prc-kick"><i></i>Live races on Power.win</span>
+        <h3 class="prc-banner-title"><b>$10,000</b><span>Monthly race</span></h3>
+        <p>Plus daily and weekly races. Current prize pools are below.</p>
       </div>
-      <p class="pwx-fine">New races every week. Check power.win for current standings and time remaining.</p>
+      <div class="prc-grid">
+        <article class="prc prc-daily pwx-rv" data-race="daily">
+          <div class="prc-glow" aria-hidden="true"></div>
+          <div class="prc-hero">
+            <div class="prc-flag" aria-hidden="true"></div>
+            <div class="prc-speed" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+            <span class="prc-kick"><i></i>Resets daily · 00:00 UTC</span>
+            <h4 class="prc-title"><b>$70</b><span>Daily race</span></h4>
+            <div class="prc-cd" data-ends="daily" aria-label="Time left in this race">
+              <div><b data-u="d">--</b><small>Day</small></div><div><b data-u="h">--</b><small>Hour</small></div><div><b data-u="m">--</b><small>Min</small></div><div><b data-u="s">--</b><small>Sec</small></div>
+            </div>
+          </div>
+          <ol class="prc-list"><li class="r1"><span class="prc-pl"><i>🥇</i>1st</span><b>15<small>USDT</small></b></li><li class="r2"><span class="prc-pl"><i>🥈</i>2nd</span><b>12<small>USDT</small></b></li><li class="r3"><span class="prc-pl"><i>🥉</i>3rd</span><b>10<small>USDT</small></b></li><li class="r4"><span class="prc-pl"><i></i>4th</span><b>8<small>USDT</small></b></li><li class="r5"><span class="prc-pl"><i></i>5th</span><b>5<small>USDT</small></b></li></ol>
+          <div class="prc-foot"><span>+ more places paid</span><a href="https://power.win/races" target="_blank" rel="noopener">Live standings ↗</a></div>
+        </article>
+        <article class="prc prc-weekly pwx-rv" data-race="weekly">
+          <div class="prc-glow" aria-hidden="true"></div>
+          <div class="prc-hero">
+            <div class="prc-flag" aria-hidden="true"></div>
+            <div class="prc-speed" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+            <span class="prc-kick"><i></i>Resets Mondays · 00:00 UTC</span>
+            <h4 class="prc-title"><b>$1,075</b><span>Weekly race</span></h4>
+            <div class="prc-cd" data-ends="weekly" aria-label="Time left in this race">
+              <div><b data-u="d">--</b><small>Day</small></div><div><b data-u="h">--</b><small>Hour</small></div><div><b data-u="m">--</b><small>Min</small></div><div><b data-u="s">--</b><small>Sec</small></div>
+            </div>
+          </div>
+          <ol class="prc-list"><li class="r1"><span class="prc-pl"><i>🥇</i>1st</span><b>250<small>USDT</small></b></li><li class="r2"><span class="prc-pl"><i>🥈</i>2nd</span><b>175<small>USDT</small></b></li><li class="r3"><span class="prc-pl"><i>🥉</i>3rd</span><b>150<small>USDT</small></b></li><li class="r4"><span class="prc-pl"><i></i>4th</span><b>125<small>USDT</small></b></li><li class="r5"><span class="prc-pl"><i></i>5th</span><b>100<small>USDT</small></b></li></ol>
+          <div class="prc-foot"><span>+ more places paid</span><a href="https://power.win/races" target="_blank" rel="noopener">Live standings ↗</a></div>
+        </article>
+        <article class="prc prc-monthly pwx-rv" data-race="monthly">
+          <div class="prc-glow" aria-hidden="true"></div>
+          <div class="prc-hero">
+            <div class="prc-flag" aria-hidden="true"></div>
+            <div class="prc-speed" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+            <span class="prc-kick"><i></i>Resets on the 1st · 00:00 UTC</span>
+            <h4 class="prc-title"><b>$5,290</b><span>Monthly race</span></h4>
+            <div class="prc-cd" data-ends="monthly" aria-label="Time left in this race">
+              <div><b data-u="d">--</b><small>Day</small></div><div><b data-u="h">--</b><small>Hour</small></div><div><b data-u="m">--</b><small>Min</small></div><div><b data-u="s">--</b><small>Sec</small></div>
+            </div>
+          </div>
+          <ol class="prc-list"><li class="r1"><span class="prc-pl"><i>🥇</i>1st</span><b>1,000<small>USDT</small></b></li><li class="r2"><span class="prc-pl"><i>🥈</i>2nd</span><b>750<small>USDT</small></b></li><li class="r3"><span class="prc-pl"><i>🥉</i>3rd</span><b>600<small>USDT</small></b></li><li class="r4"><span class="prc-pl"><i></i>4th</span><b>450<small>USDT</small></b></li><li class="r5"><span class="prc-pl"><i></i>5th</span><b>350<small>USDT</small></b></li></ol>
+          <div class="prc-foot"><span>+ more places paid</span><a href="https://power.win/races" target="_blank" rel="noopener">Live standings ↗</a></div>
+        </article>
+      </div>
+      <p class="pwx-fine">Prizes are paid by Power.win in USDT. Check <a href="https://power.win/races" target="_blank" rel="noopener">power.win/races</a> for live standings and time remaining.</p>
 
       <!-- BOUNTY -->
       <article class="pwx-card pwx-bounty pwx-rv" style="--a:74,222,128">
@@ -4695,6 +4888,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <button class="admin-tab active" data-tab="adminOverviewTab" onclick="switchAdminTab('adminOverviewTab')">📊 Overview</button>
           <button class="admin-tab" data-tab="adminVaultTab" onclick="switchAdminTab('adminVaultTab')">🏦 Vault</button>
           <button class="admin-tab" data-tab="adminUsersTab" onclick="switchAdminTab('adminUsersTab')">👥 Users</button>
+          <button class="admin-tab" data-tab="adminActiveTab" onclick="switchAdminTab('adminActiveTab')">🔥 Active Users</button>
           <button class="admin-tab" data-tab="adminRedemptionsTab" onclick="switchAdminTab('adminRedemptionsTab')">💸 Redemptions <span class="admin-badge" id="badgeRedemptions"></span></button>
           <button class="admin-tab" data-tab="adminAnalyticsTab" onclick="switchAdminTab('adminAnalyticsTab')">📈 Analytics</button>
           <button class="admin-tab" data-tab="adminVerifyTab" onclick="switchAdminTab('adminVerifyTab')">✅ Verify Players <span class="admin-badge" id="badgeVerify"></span></button>
@@ -4758,12 +4952,41 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
         <!-- USERS TAB -->
         <div id="adminUsersTab" class="admin-tab-panel" style="display:none">
+          <div class="bulk-card" data-admin-only>
+            <div class="bulk-ico">🎁</div>
+            <div class="bulk-txt"><b>Send coins to everyone</b><small>Every registered player gets the same amount, with your note in their activity.</small></div>
+            <button class="admin-btn-primary bulk-go" onclick="openBulkCoins('all')">🪙 Send to all users</button>
+          </div>
           <div style="display:flex;gap:10px;margin-bottom:18px">
             <input type="search" id="userSearchInput" autocomplete="off" oninput="clearTimeout(window._userSearchT);window._userSearchT=setTimeout(loadAdminUsers,300)" onkeydown="if(event.key==='Enter'){clearTimeout(window._userSearchT);loadAdminUsers()}" placeholder="Search by username or Discord ID…" style="flex:1;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff">
             <button class="admin-btn-secondary" onclick="loadAdminUsers()">Search</button>
           </div>
           <div id="adminUsersTotal" style="color:var(--muted);font-size:.85rem;margin-bottom:12px"></div>
           <div id="adminUsersList"></div>
+        </div>
+
+        <!-- ACTIVE USERS TAB -->
+        <div id="adminActiveTab" class="admin-tab-panel" style="display:none">
+          <div class="rq-bar">
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="admin-filter-pill act-days" data-days="1" onclick="loadAdminActive(1)">Today</button>
+              <button class="admin-filter-pill act-days active" data-days="7" onclick="loadAdminActive(7)">7 days</button>
+              <button class="admin-filter-pill act-days" data-days="30" onclick="loadAdminActive(30)">30 days</button>
+            </div>
+            <div class="rq-right"><span class="rq-count" id="actCount"></span></div>
+          </div>
+          <div class="act-help">
+            <span><b>🔴 Live days</b> on the site while you were live</span><span><b>📅 Active days</b> visited the site</span><span><b>⏱ Live time</b> minutes the site was open during your streams</span><span><b>🎰 ⚔️ Requests</b></span><span><b>🎁 Daily claims</b></span>
+            <em>Ranked by score: live day ×10 · active day ×5 · request ×4 · daily claim ×2. Kick chat itself can't be read here, so “live” means on the site while you're streaming.</em>
+          </div>
+          <div id="adminActiveList" class="act-list"></div>
+          <div class="act-bar" id="actBar">
+            <label class="act-all"><input type="checkbox" id="actAllBox" onchange="actSelectAll(this.checked)"> <span id="actSelN">Select players</span></label>
+            <div class="act-bar-btns">
+              <button class="admin-btn-secondary" onclick="openBulkCoins('listed')">Send to all listed</button>
+              <button class="admin-btn-primary" id="actSendSel" onclick="openBulkCoins('selected')" disabled>🪙 Send to selected</button>
+            </div>
+          </div>
         </div>
 
         <!-- REDEMPTIONS TAB -->
@@ -4906,6 +5129,48 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <div style="text-align:center;margin-top:14px"><button id="auditMore" class="admin-btn-secondary" style="display:none;padding:9px 18px" onclick="loadAuditLog(false)">Load older</button></div>
         </div>
 
+        <!-- reject claim dialog (reason is shown to the player on their profile) -->
+        <div id="rejModal" class="adm-modal" style="display:none" onclick="if(event.target===this)closeRejModal()">
+          <div class="adm-modal-card">
+            <h3 id="rejTitle" style="margin:0 0 4px">Reject claim</h3>
+            <p id="rejSub" style="margin:0 0 14px;color:var(--faint);font-size:.86rem"></p>
+            <label class="adm-lbl">Reason <span style="color:var(--faint);font-weight:400">(the player sees this on their profile)</span></label>
+            <div class="rej-presets">
+              <button type="button" onclick="rejPreset(this)">Screenshot doesn't show this username</button>
+              <button type="button" onclick="rejPreset(this)">Username doesn't match the screenshot</button>
+              <button type="button" onclick="rejPreset(this)">Account isn't signed up under code JAMMMY</button>
+              <button type="button" onclick="rejPreset(this)">Screenshot is blurry or cropped</button>
+              <button type="button" onclick="rejPreset(this)">This account belongs to someone else</button>
+            </div>
+            <textarea id="rejReason" class="adm-input" rows="3" maxlength="300" placeholder="Pick one above or write your own…" oninput="rejSync()"></textarea>
+            <div class="rej-count"><span id="rejLen">0</span>/300</div>
+            <div id="rejErr" class="adm-err"></div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:10px">
+              <button class="admin-btn-secondary" onclick="closeRejModal()">Cancel</button>
+              <button id="rejSave" class="admin-btn-primary rej-go" onclick="submitRejModal()">Reject without reason</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- bulk coin dialog (everyone / selected / listed) -->
+        <div id="bulkCoinModal" class="adm-modal" style="display:none" onclick="if(event.target===this)closeBulkCoins()">
+          <div class="adm-modal-card">
+            <h3 style="margin:0 0 4px">🪙 Send coins</h3>
+            <p id="bulkSub" style="margin:0 0 16px;color:var(--faint);font-size:.86rem"></p>
+            <label class="adm-lbl">Coins per player</label>
+            <input id="bulkAmount" type="number" min="1" step="1" inputmode="numeric" class="adm-input" placeholder="e.g. 100" oninput="validateBulkCoins()">
+            <div class="bulk-quick"><button type="button" onclick="bulkQuick(50)">50</button><button type="button" onclick="bulkQuick(100)">100</button><button type="button" onclick="bulkQuick(250)">250</button><button type="button" onclick="bulkQuick(500)">500</button><button type="button" onclick="bulkQuick(1000)">1,000</button></div>
+            <label class="adm-lbl">Note <span style="color:#f87171">*</span> <span style="color:var(--faint);font-weight:400">(players see this in their activity)</span></label>
+            <textarea id="bulkNote" class="adm-input" rows="2" maxlength="200" placeholder="e.g. Thanks for watching the 5 Oct stream!" oninput="validateBulkCoins()"></textarea>
+            <div id="bulkTotal" class="bulk-total"></div>
+            <div id="bulkErr" class="adm-err"></div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px">
+              <button class="admin-btn-secondary" onclick="closeBulkCoins()">Cancel</button>
+              <button id="bulkSave" class="admin-btn-primary" onclick="submitBulkCoins()" disabled>Send</button>
+            </div>
+          </div>
+        </div>
+
         <!-- manual coin change dialog -->
         <div id="coinModal" class="adm-modal" style="display:none" onclick="if(event.target===this)closeCoinModal()">
           <div class="adm-modal-card">
@@ -5015,6 +5280,7 @@ function showPage(id){
   if(id==='requestbattle') loadRequestBattlePage();
   if(id==='home') loadHomeActivePlayers();
   if(id==='reviews') loadSlotLibrary();
+  if(id==='new' && typeof prcTick==='function') prcTick();
   trackPageView(id);
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('active',a.dataset.page===id));
   document.querySelectorAll('.mobbar-item').forEach(a=>a.classList.toggle('active',a.dataset.page===id));
@@ -5254,11 +5520,11 @@ function shareLeaderboardOnX(){
   var countdown = document.getElementById('lb-cd2') ? document.getElementById('lb-cd2').textContent : '';
   var leaderboardUrl = 'https://jammmyrewards.com/#leaderboards';
 
-  var caption = casinoLabel + ' LEADERBOARD \ud83c\udfc6\n\n'
+  var caption = casinoLabel + (LB_RACE === 'previous' ? ' LEADERBOARD \u2014 FINAL RESULTS \ud83c\udfc1\n\n' : ' LEADERBOARD \ud83c\udfc6\n\n')
     + 'CODE: JAMMMY\n'
     + lines + '\n\n'
     + (dates ? '\ud83d\udcc5 ' + dates + '\n' : '')
-    + (countdown && countdown !== 'ENDED' ? '\u23f0 Ends in ' + countdown + '\n' : '')
+    + (LB_RACE !== 'previous' && countdown && countdown !== 'ENDED' ? '\u23f0 Ends in ' + countdown + '\n' : '')
     + '\n' + leaderboardUrl;
 
   var imageUrl = 'https://www.jammmyrewards.com/share-' + casino + '.png';
@@ -5347,7 +5613,7 @@ function lbcd2(){
     datesEl.textContent = period.start.toLocaleDateString('en-US',opts)+' \u2192 '+period.end.toLocaleDateString('en-US',opts);
   }
   var updEl = document.getElementById('lbUpdatedTime');
-  if(updEl) updEl.textContent = n.toLocaleString('en-US');
+  if(updEl) updEl.textContent = LB_RACE === 'previous' ? 'final standings' : n.toLocaleString('en-US');
 }
 lbcd2();setInterval(lbcd2,1000);
 
@@ -5356,9 +5622,45 @@ lbcd2();setInterval(lbcd2,1000);
    instead of calling Upgrader/RustMagic/DegenCity directly from the browser —
    the proxy holds all three API keys privately server-side and does the real
    API calls there, so nothing sensitive ever ends up in the page source. */
+/* Power.win race countdowns. The races reset on a fixed UTC schedule (daily at 00:00, weekly
+   on Monday 00:00, monthly on the 1st 00:00 -- matches power.win/races), so no live data is needed. */
+function prcEnd(kind, now){
+  var d = new Date(now);
+  if(kind === 'daily') return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + 1);
+  if(kind === 'weekly'){ var dow = d.getUTCDay(); var add = ((8 - dow) % 7) || 7; return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + add); }
+  return Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1);
+}
+function prcTick(){
+  var page = document.getElementById('new'); if(!page || !page.classList.contains('show')) return;
+  var now = Date.now(), pad = function(v){ return (v < 10 ? '0' : '') + v; };
+  document.querySelectorAll('.prc-cd[data-ends]').forEach(function(cd){
+    var s = Math.max(0, Math.floor((prcEnd(cd.dataset.ends, now) - now) / 1000));
+    var v = { d: String(Math.floor(s / 86400)), h: pad(Math.floor(s / 3600) % 24), m: pad(Math.floor(s / 60) % 60), s: pad(s % 60) };
+    cd.querySelectorAll('b[data-u]').forEach(function(b){ var t = v[b.dataset.u]; if(b.textContent !== t) b.textContent = t; });
+  });
+}
+setInterval(prcTick, 1000);
 var LB_PROXY_URL = 'https://jammy-lb-proxy.sahil-sah2603.workers.dev';
 
 var lbRequestSeq = 0;
+/* Current race = live board. Previous race = the final standings of the race before it (the
+   worker fetches that race's exact dates from Power.win, so it's frozen once it ends). */
+var LB_RACE = 'current';
+function lbRace(r){
+  if(LB_RACE === r) return;
+  LB_RACE = r;
+  var prev = r === 'previous';
+  document.querySelectorAll('#lbxRaceTog button').forEach(function(b){ b.classList.toggle('on', b.dataset.r === r); b.setAttribute('aria-selected', b.dataset.r === r); });
+  var pill = document.getElementById('lbxLivePill'); if(pill) pill.classList.toggle('ended', prev);
+  var lt = document.getElementById('lbxLiveTxt'); if(lt) lt.textContent = prev ? 'FINAL RESULTS' : 'LIVE RACE';
+  var cw = document.getElementById('lbxCdWord'); if(cw) cw.textContent = prev ? 'RACE ENDED' : 'RACE ENDS IN';
+  var sub = document.getElementById('lbxSub'); if(sub) sub.innerHTML = prev ? 'Final standings of the last race. Wager under code <b>JAMMMY</b> to get on the current one.' : 'Wager under code <b>JAMMMY</b>, climb the ranks and win a share of the prize pool. Updated live.';
+  var lb = document.getElementById('leaderboards'); if(lb) lb.classList.toggle('lbx-prev', prev);
+  _realPeriodOverride = null;
+  if(prev){ var cur = currentPowerwinPeriod(), len = cur.end - cur.start; _realPeriodOverride = { start: new Date(cur.start - len), end: new Date(cur.start) }; }
+  lbcd2();
+  loadLeaderboard(CURRENT_LB_CASINO);
+}
 var _realPeriodOverride = null; /* set when the casino's own API returns real start/end dates (if the casino's API provides them) -- used instead of the generic assumed bi-weekly formula so the countdown reflects their actual schedule, not a guess */
 async function loadLeaderboard(casino){
   /* Guards against rapid tab-switching causing an older, slower request to resolve AFTER
@@ -5378,9 +5680,9 @@ async function loadLeaderboard(casino){
   if(actionBtnsEl) actionBtnsEl.style.display = '';
   if(countdownEl) countdownEl.style.display = '';
   if(tableHeadEl) tableHeadEl.style.display = '';
-  if(rowsEl) rowsEl.innerHTML = '<div class="lbx-empty">Connecting to live leaderboard&hellip;</div>';
+  if(rowsEl) rowsEl.innerHTML = '<div class="lbx-empty">'+(LB_RACE === 'previous' ? 'Loading the previous race&hellip;' : 'Connecting to live leaderboard&hellip;')+'</div>';
   try{
-    var apiUrl = LB_PROXY_URL + '?casino=' + casino;
+    var apiUrl = LB_PROXY_URL + '?casino=' + casino + (LB_RACE === 'previous' ? '&race=previous' : '');
     var res = await fetch(apiUrl);
     var data = await res.json();
     if(myRequest !== lbRequestSeq) return; /* a newer tab switch has already superseded this one */
@@ -5439,7 +5741,7 @@ function renderLeaderboardRows(wagers, rewards){
       + '<div class="lbx-step"><small>PRIZE</small><b>'+(prizeFor(rank) || '—')+'</b></div>';
   });
   if(!wagers || !wagers.length){
-    rowsEl.innerHTML = '<div class="lbx-empty">No wagers recorded for this period yet. Be the first on the board!</div>';
+    rowsEl.innerHTML = '<div class="lbx-empty">'+(LB_RACE === 'previous' ? 'No results recorded for the previous race.' : 'No wagers recorded for this period yet. Be the first on the board!')+'</div>';
     _lbxAll = []; lbxUpdateMore(0); return;
   }
   var top = Number(wagers[0].wager) || 1;
@@ -6093,15 +6395,28 @@ function getVisitorId(){
   if(!id){ id = 'v_' + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('jammy_visitor_id', id); }
   return id;
 }
+function trackHeaders(){
+  var h = { 'Content-Type': 'application/json' };
+  var t = localStorage.getItem('jammy_session_token'); if(t) h['Authorization'] = 'Bearer ' + t;
+  return h;
+}
 function trackPageView(path){
   try{
     fetch(AUTH_API + '/api/track', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: trackHeaders(),
       body: JSON.stringify({ path: '/' + path, visitor_id: getVisitorId(), referrer: document.referrer || '' })
     }).catch(function(){});
   }catch(e){}
 }
+/* Logged-in players send a tiny "still here" ping every 5 minutes while the site is open in a
+   visible tab. Feeds the admin Active Users tab (time on the site while Jammmy is live). */
+function activityPing(){
+  if(document.hidden || !localStorage.getItem('jammy_session_token')) return;
+  try{ fetch(AUTH_API + '/api/track', { method:'POST', headers: trackHeaders(), body: JSON.stringify({ kind:'ping', visitor_id: getVisitorId() }) }).catch(function(){}); }catch(e){}
+}
+setInterval(activityPing, 5 * 60 * 1000);
+setTimeout(activityPing, 20000);
 var DISCORD_CLIENT_ID = '1473817153059819650';
 var DISCORD_REDIRECT = 'https://jammmyrewards.com/';
 
@@ -6631,13 +6946,14 @@ function renderProfile(data){
 
   var linksByName = {};
   var linksByStatus = {};
+  var linksRejected = {};
   (data.casino_links||[]).forEach(function(l){
     /* A rejected claim showing "Save / ✕ Rejected — try again" next to an editable input was
        confusing UX (looks like a broken save, not an invitation to re-submit). Simplest fix
        for now: treat a rejected claim exactly like an unclaimed one -- don't prefill the old
        (rejected) username, and don't show any status badge, so it just reads as a normal,
        fresh row ready for a new attempt. */
-    if(l.status === 'rejected') return;
+    if(l.status === 'rejected'){ linksRejected[l.casino] = { name: l.casino_username, reason: l.reject_reason || '' }; return; }
     linksByName[l.casino] = l.casino_username; linksByStatus[l.casino] = l.status;
   });
   var STATUS_BADGES = {
@@ -6655,8 +6971,11 @@ function renderProfile(data){
       + '<div style="padding:18px 20px">'
         + '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px">'
           + '<b style="font-size:1rem">'+KNOWN_CASINOS_DISPLAY[key]+'</b>'
-          + (status ? (STATUS_BADGES[status] || '') : '<span style="color:var(--faint);font-size:.78rem">Not claimed yet</span>')
+          + (status ? (STATUS_BADGES[status] || '') : linksRejected[key] ? '<span class="admin-pill" style="background:rgba(248,113,113,.12);color:#f87171;border:1px solid rgba(248,113,113,.35)">✕ Rejected</span>' : '<span style="color:var(--faint);font-size:.78rem">Not claimed yet</span>')
         + '</div>'
+        + (!status && linksRejected[key] ? '<div class="pcc-rej"><b>Your claim'+(linksRejected[key].name ? ' for <em>'+pccEsc(linksRejected[key].name)+'</em>' : '')+' was rejected.</b>'
+            + (linksRejected[key].reason ? '<div class="pcc-rej-why"><small>Reason from Jammmy</small>'+pccEsc(linksRejected[key].reason)+'</div>' : '')
+            + '<span>Fix it and submit again below.</span></div>' : '')
         + '<label style="display:block;font-size:.78rem;color:var(--faint);margin-bottom:5px">Your username <span style="color:#f87171">*</span></label>'
         + '<div class="pcc-pick">'
           + '<input type="text" id="casinoInput_'+key+'" autocomplete="off" value="'+pccEsc(linksByName[key]||'')+'" placeholder="'+(isLocked?'':'Search your username')+'" '+(isLocked?'disabled':'onfocus="openClaimPicker(\''+key+'\')" oninput="onClaimPickerInput(\''+key+'\')" onblur="closeClaimPickerSoon(\''+key+'\')" onkeydown="onClaimPickerKey(event,\''+key+'\')"')+' style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,'+(isLocked?'.02':'.04')+');border:1px solid var(--line);color:'+(isLocked?'var(--faint)':'#fff')+';font-family:\'Poppins\';box-sizing:border-box'+(isLocked?';cursor:not-allowed':'')+'">'
@@ -7123,6 +7442,7 @@ function switchAdminTab(tabId){
   document.querySelectorAll('.admin-tab-panel').forEach(function(p){ p.style.display = (p.id === tabId) ? 'block' : 'none'; });
   if(tabId==='adminOverviewTab') loadAdminOverview();
   if(tabId==='adminUsersTab') loadAdminUsers();
+  if(tabId==='adminActiveTab') loadAdminActive();
   if(tabId==='adminRedemptionsTab') loadAdminRedemptions();
   if(tabId==='adminAnalyticsTab') loadAdminAnalytics();
   if(tabId==='adminVerifyTab') loadAdminVerifyList();
@@ -7410,6 +7730,7 @@ async function loadAdminUsers(){
     if(mySeq !== _userSearchSeq) return;
     if(!res.ok){ listEl.innerHTML = data.error || 'Failed to load users.'; return; }
     document.getElementById('adminUsersTotal').textContent = data.total_users + ' total users' + (q ? ' (showing filtered results)' : '');
+    _admTotalUsers = data.total_users;
     if(!data.users.length){ listEl.innerHTML = adminEmptyState('👥', 'No users found', 'Try a different search, or check back once people sign up.'); return; }
     listEl.innerHTML = data.users.map(function(u, i){
       var VERIFIED_OK = { powerwin:1 };
@@ -7493,15 +7814,147 @@ async function submitCoinModal(){
       body: JSON.stringify({ discord_id: _coinModal.id, amount: amt * _coinModal.dir, note: note })
     });
     var data = await res.json();
-    if(res.ok){ closeCoinModal(); loadAdminUsers(); }
+    if(res.ok){ closeCoinModal(); if(document.getElementById('adminActiveTab').style.display === 'block') loadAdminActive(); else loadAdminUsers(); }
     else { err.textContent = data.error || 'Failed to adjust coins.'; validateCoinModal(); }
   }catch(e){ console.error('Add coins failed:', e); err.textContent = 'Network error — try again.'; validateCoinModal(); }
+}
+
+/* ---- Active Users tab + bulk coins ---- */
+var _admTotalUsers = null, _actDays = 7, _actUsers = [], _actSeq = 0;
+async function loadAdminActive(days){
+  if(days) _actDays = days;
+  document.querySelectorAll('.act-days').forEach(function(b){ b.classList.toggle('active', Number(b.dataset.days) === _actDays); });
+  var listEl = document.getElementById('adminActiveList'); if(!listEl) return;
+  var token = localStorage.getItem('jammy_session_token'); if(!token) return;
+  var mySeq = ++_actSeq;
+  adminSoftLoading(listEl);
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/active-users?days=' + _actDays, { headers: { 'Authorization': 'Bearer ' + token }, cache: 'no-store' });
+    var data = await res.json();
+    if(mySeq !== _actSeq) return;
+    if(!res.ok){ listEl.innerHTML = pccEsc(data.error || 'Failed to load.'); return; }
+    _actUsers = data.users || [];
+    document.getElementById('actCount').innerHTML = '<b>'+_actUsers.length+'</b> active player'+(_actUsers.length===1?'':'s');
+    if(!_actUsers.length){ listEl.innerHTML = adminEmptyState('🔥', 'No activity yet', 'Players show up here once they log in and use the site.'); actSyncSel(); return; }
+    var max = _actUsers[0].score || 1;
+    listEl.innerHTML = _actUsers.map(function(u, i){
+      var chip = function(ico, n, lbl, cls){ return '<span class="act-chip'+(n ? ' on' : '')+(cls ? ' '+cls : '')+'" title="'+lbl+'">'+ico+' <b>'+n+'</b><i>'+lbl+'</i></span>'; };
+      var av = u.avatar ? '<img src="'+pccEsc(u.avatar)+'" alt="" loading="lazy">' : pccEsc((u.username||'?').charAt(0).toUpperCase());
+      var medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '#'+(i+1);
+      var safeName = String(u.username||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      return '<div class="act-row admin-row" style="animation-delay:'+Math.min(i*0.03,.4)+'s">'
+        + '<label class="act-pick"><input type="checkbox" class="act-cb" value="'+pccEsc(u.discord_id)+'" onchange="actSyncSel()"></label>'
+        + '<div class="act-rank">'+medal+'</div>'
+        + '<div class="act-av">'+av+'</div>'
+        + '<div class="act-main">'
+          + '<div class="act-name"><b>'+pccEsc(u.username)+'</b><span class="act-seen">'+(u.last_at ? 'seen '+rqAgo(u.last_at) : 'requests only')+'</span></div>'
+          + '<div class="act-chips">'
+            + chip('🔴', u.live_days, 'live days', 'live') + chip('📅', u.active_days, 'active days')
+            + chip('⏱', u.live_minutes >= 60 ? (Math.round(u.live_minutes/6)/10)+'h' : u.live_minutes+'m', 'live time', u.live_minutes ? 'live' : '')
+            + chip('🎰', u.slot_requests, 'slot req.') + chip('⚔️', u.battle_requests, 'battle req.') + chip('🎁', u.daily_claims, 'daily claims')
+          + '</div>'
+          + '<div class="act-meter"><span style="width:'+Math.max(4, Math.round(u.score/max*100))+'%"></span></div>'
+        + '</div>'
+        + '<div class="act-side">'
+          + '<div class="act-score"><b>'+u.score+'</b><small>score</small></div>'
+          + '<div class="act-bal"><img src="jammmy-coin.png" class="coin-icon" alt=""> '+fmtCoins(u.coin_balance)+'</div>'
+          + '<button class="admin-btn-row-action act-give" onclick="adminAddCoinsPrompt(\''+pccEsc(u.discord_id)+'\',\''+pccEsc(safeName)+'\',1)">+ Coins</button>'
+        + '</div>'
+      + '</div>';
+    }).join('');
+    actSyncSel();
+  }catch(e){
+    if(mySeq !== _actSeq) return;
+    console.error('Failed to load active users:', e);
+    listEl.innerHTML = 'Network error — try again.';
+  }
+}
+function actSelectedIds(){ return [].map.call(document.querySelectorAll('#adminActiveList .act-cb:checked'), function(c){ return c.value; }); }
+function actSyncSel(){
+  var n = actSelectedIds().length, total = document.querySelectorAll('#adminActiveList .act-cb').length;
+  document.getElementById('actSelN').textContent = n ? n + ' selected' : 'Select players';
+  document.getElementById('actSendSel').disabled = !n;
+  document.getElementById('actSendSel').textContent = n ? '🪙 Send to ' + n + ' selected' : '🪙 Send to selected';
+  var all = document.getElementById('actAllBox'); all.checked = total > 0 && n === total; all.indeterminate = n > 0 && n < total;
+  document.querySelectorAll('#adminActiveList .act-row').forEach(function(r){ r.classList.toggle('picked', r.querySelector('.act-cb').checked); });
+  document.getElementById('actBar').classList.toggle('has-sel', n > 0);
+}
+function actSelectAll(on){ document.querySelectorAll('#adminActiveList .act-cb').forEach(function(c){ c.checked = on; }); actSyncSel(); }
+
+var _bulk = { mode:'all', ids:[], n:0, armedNow:false };
+function openBulkCoins(kind){
+  var modal = document.getElementById('bulkCoinModal'); if(modal.parentNode !== document.body) document.body.appendChild(modal);
+  if(kind === 'all') _bulk = { mode:'all', ids:[], n:_admTotalUsers, armedNow:false };
+  else {
+    var ids = kind === 'selected' ? actSelectedIds() : _actUsers.map(function(u){ return u.discord_id; });
+    if(!ids.length){ return; }
+    _bulk = { mode:'ids', ids: ids, n: ids.length, armedNow:false };
+  }
+  var who = _bulk.mode === 'all' ? 'ALL registered players' + (_bulk.n ? ' (' + Number(_bulk.n).toLocaleString() + ')' : '')
+    : (kind === 'selected' ? _bulk.n + ' selected player' + (_bulk.n === 1 ? '' : 's') : 'all ' + _bulk.n + ' players in this list (' + (_actDays === 1 ? 'today' : 'last ' + _actDays + ' days') + ')');
+  document.getElementById('bulkSub').textContent = 'Goes to: ' + who;
+  document.getElementById('bulkAmount').value = '';
+  document.getElementById('bulkNote').value = '';
+  document.getElementById('bulkErr').textContent = '';
+  document.getElementById('bulkErr').classList.remove('ok');
+  validateBulkCoins();
+  modal.style.display = 'grid';
+  setTimeout(function(){ document.getElementById('bulkAmount').focus(); }, 60);
+}
+function closeBulkCoins(){ document.getElementById('bulkCoinModal').style.display = 'none'; }
+function bulkQuick(v){ document.getElementById('bulkAmount').value = v; validateBulkCoins(); }
+var _bulkArmT = null;
+function validateBulkCoins(keepArm){
+  if(!keepArm){ _bulk.armedNow = false; clearTimeout(_bulkArmT); }
+  var amt = parseInt(document.getElementById('bulkAmount').value, 10);
+  var note = document.getElementById('bulkNote').value.trim();
+  var okAmt = Number.isInteger(amt) && amt > 0;
+  var ok = okAmt && note.length >= 3;
+  var btn = document.getElementById('bulkSave');
+  btn.disabled = !ok;
+  if(keepArm) return ok;
+  btn.classList.remove('armed');
+  btn.textContent = 'Send' + (okAmt ? ' ' + amt.toLocaleString() + ' each' : '');
+  var tot = document.getElementById('bulkTotal');
+  tot.innerHTML = okAmt && _bulk.n ? amt.toLocaleString() + ' × ' + Number(_bulk.n).toLocaleString() + ' players = <b>' + (amt * _bulk.n).toLocaleString() + ' coins</b> in total' : '';
+  return ok;
+}
+async function submitBulkCoins(){
+  var err = document.getElementById('bulkErr'); err.classList.remove('ok');
+  if(!validateBulkCoins(true)){ err.textContent = 'Enter a whole number and a note (3+ characters).'; return; }
+  var amt = parseInt(document.getElementById('bulkAmount').value, 10);
+  var note = document.getElementById('bulkNote').value.trim();
+  var btn = document.getElementById('bulkSave');
+  /* Two taps: the first one arms the button and spells out exactly what will happen. */
+  if(!_bulk.armedNow){
+    _bulk.armedNow = true; btn.classList.add('armed');
+    btn.textContent = 'Tap again: ' + amt.toLocaleString() + ' coins → ' + (_bulk.mode === 'all' ? 'everyone' : _bulk.n + ' player' + (_bulk.n === 1 ? '' : 's'));
+    clearTimeout(_bulkArmT);
+    _bulkArmT = setTimeout(function(){ if(_bulk.armedNow){ _bulk.armedNow = false; validateBulkCoins(); } }, 5000);
+    return;
+  }
+  _bulk.armedNow = false; clearTimeout(_bulkArmT);
+  btn.disabled = true; btn.textContent = 'Sending…';
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/bulk-coins', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jammy_session_token'), 'Content-Type': 'application/json' },
+      body: JSON.stringify(_bulk.mode === 'all' ? { mode:'all', amount: amt, note: note } : { mode:'ids', discord_ids: _bulk.ids, amount: amt, note: note })
+    });
+    var data = await res.json();
+    if(res.ok){
+      err.classList.add('ok');
+      err.textContent = '✓ Sent ' + Number(data.amount).toLocaleString() + ' coins to ' + Number(data.count).toLocaleString() + ' player' + (data.count === 1 ? '' : 's') + '.';
+      btn.textContent = 'Done ✓';
+      setTimeout(function(){ closeBulkCoins(); if(document.getElementById('adminActiveTab').style.display === 'block') loadAdminActive(); else loadAdminUsers(); }, 1300);
+    } else { err.textContent = data.error || 'Failed to send coins.'; validateBulkCoins(); }
+  }catch(e){ console.error('Bulk coins failed:', e); err.textContent = 'Network error — nothing was sent. Try again.'; validateBulkCoins(); }
 }
 
 /* ---- Staff activity log (admins only) ---- */
 var _auditCat = '', _auditBefore = null, _auditActorsLoaded = false;
 var AUDIT_ICONS = { claims:'✅', coins:'🪙', redemptions:'💸', requests:'🎰', roles:'🛡', other:'⚙️' };
-var AUDIT_KEYS = { note:'Note', balance:'Balance', refund:'Refund', result:'Result', coins_awarded:'Coins awarded', message:'Message', queued:'Devices notified', target_amount:'Vault target', last_added_amount:'Last added', last_added_date:'Last added on' };
+var AUDIT_KEYS = { reason:'Reason', total:'Total', note:'Note', balance:'Balance', refund:'Refund', result:'Result', coins_awarded:'Coins awarded', message:'Message', queued:'Devices notified', target_amount:'Vault target', last_added_amount:'Last added', last_added_date:'Last added on' };
 function setAuditCat(btn){
   document.querySelectorAll('#auditCats .admin-filter-pill').forEach(function(b){ b.classList.toggle('active', b === btn); });
   _auditCat = btn.dataset.cat || '';
@@ -8005,26 +8458,11 @@ async function adminBulkApproveSelected(){
   }catch(e){ console.error('Bulk approve failed:', e); alert('Network error — try again.'); }
 }
 
-async function adminBulkRejectSelected(){
+function adminBulkRejectSelected(){
   var claims = getSelectedClaims();
   if(!claims.length){ alert('Select at least one claim first.'); return; }
-  if(!confirm('Reject '+claims.length+' selected claim(s)? No coins are awarded for these.')) return;
-  var token = localStorage.getItem('jammy_session_token');
-  try{
-    var res = await fetch(AUTH_API + '/api/admin/bulk-reject-claims', {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ claims: claims })
-    });
-    var data = await res.json();
-    if(res.ok){
-      alert('Rejected '+data.rejected+' claim(s).');
-      loadAdminVerifyList('pending');
-      loadAdminOverview();
-    } else {
-      alert(data.error || 'Bulk reject failed.');
-    }
-  }catch(e){ console.error('Bulk reject failed:', e); alert('Network error — try again.'); }
+  _rej = { mode:'bulk', userId:null, casino:null, claims:claims };
+  openRejModal('Reject ' + claims.length + ' claim' + (claims.length === 1 ? '' : 's'), 'The same reason goes to every selected player. No coins are awarded; they can submit again.');
 }
 
 async function adminRevokeClaim(userId, casino){
@@ -8085,18 +8523,57 @@ async function adminApproveClaim(userId, casino){
   }catch(e){ console.error('Approve failed:', e); alert('Network error — try again.'); }
 }
 
-async function adminRejectClaim(userId, casino){
-  if(!confirm('Reject this claim? No coins will be awarded.')) return;
+/* Reject = a small dialog with a reason (optional but encouraged). The player sees the reason
+   on their Profile, above a fresh claim form, so they know what to fix. */
+var _rej = { mode:'one', userId:null, casino:null, claims:[] };
+function adminRejectClaim(userId, casino){
+  _rej = { mode:'one', userId:userId, casino:casino, claims:[] };
+  openRejModal('Reject claim', 'Rejecting this ' + (CASINO_DISPLAY_NAMES[casino] || casino) + ' claim. No coins are awarded; the player can submit again.');
+}
+function openRejModal(title, sub){
+  var m = document.getElementById('rejModal'); if(m.parentNode !== document.body) document.body.appendChild(m);
+  document.getElementById('rejTitle').textContent = title;
+  document.getElementById('rejSub').textContent = sub;
+  document.getElementById('rejReason').value = '';
+  document.getElementById('rejErr').textContent = '';
+  document.querySelectorAll('.rej-presets button').forEach(function(b){ b.classList.remove('on'); });
+  rejSync();
+  m.style.display = 'grid';
+  setTimeout(function(){ document.getElementById('rejReason').focus(); }, 60);
+}
+function closeRejModal(){ document.getElementById('rejModal').style.display = 'none'; }
+function rejPreset(b){
+  var on = !b.classList.contains('on');
+  document.querySelectorAll('.rej-presets button').forEach(function(x){ x.classList.remove('on'); });
+  if(on) b.classList.add('on');
+  document.getElementById('rejReason').value = on ? b.textContent + '.' : '';
+  rejSync();
+}
+function rejSync(){
+  var v = document.getElementById('rejReason').value.trim();
+  document.getElementById('rejLen').textContent = v.length;
+  var n = _rej.mode === 'bulk' ? _rej.claims.length : 1;
+  document.getElementById('rejSave').disabled = false;
+  document.getElementById('rejSave').textContent = (v ? 'Reject' : 'Reject without reason') + (n > 1 ? ' (' + n + ')' : '');
+}
+async function submitRejModal(){
+  var reason = document.getElementById('rejReason').value.trim();
+  var err = document.getElementById('rejErr'), btn = document.getElementById('rejSave');
   var token = localStorage.getItem('jammy_session_token');
+  btn.disabled = true; btn.textContent = 'Rejecting…';
   try{
-    var res = await fetch(AUTH_API + '/api/admin/reject-claim', {
+    var bulk = _rej.mode === 'bulk';
+    var res = await fetch(AUTH_API + (bulk ? '/api/admin/bulk-reject-claims' : '/api/admin/reject-claim'), {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: userId, casino: casino })
+      body: JSON.stringify(bulk ? { claims: _rej.claims, reason: reason } : { user_id: _rej.userId, casino: _rej.casino, reason: reason })
     });
     var data = await res.json();
-    if(res.ok){ loadAdminVerifyList(); } else { alert(data.error || 'Failed to reject.'); }
-  }catch(e){ console.error('Reject failed:', e); alert('Network error — try again.'); }
+    if(res.ok){
+      closeRejModal();
+      if(bulk){ loadAdminVerifyList('pending'); loadAdminOverview(); } else setTimeout(function(){ loadAdminVerifyList(); }, 350);
+    } else { err.textContent = data.error || 'Failed to reject.'; rejSync(); }
+  }catch(e){ console.error('Reject failed:', e); err.textContent = 'Network error — try again.'; rejSync(); }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
