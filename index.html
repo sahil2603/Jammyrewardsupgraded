@@ -2432,7 +2432,7 @@ html.lenis{scroll-behavior:auto!important}
 .act-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
 .act-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:999px;font-size:.74rem;color:var(--faint);background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
 .act-chip b{color:var(--muted)}.act-chip i{font-style:normal}
-.act-chip.on b{color:#fff}.act-chip.live.on{border-color:rgba(248,113,113,.45);background:rgba(248,113,113,.1)}.act-chip.live.on b{color:#fca5a5}
+.act-chip.on b{color:#fff}.act-chip.money.on{border-color:rgba(74,222,128,.45);background:rgba(74,222,128,.1)}.act-chip.money.on b{color:#86efac}.act-chip.live.on{border-color:rgba(248,113,113,.45);background:rgba(248,113,113,.1)}.act-chip.live.on b{color:#fca5a5}
 .act-meter{height:4px;border-radius:99px;background:rgba(255,255,255,.06);margin-top:8px;max-width:340px;overflow:hidden}
 .act-meter span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#f87171,#fbbf24)}
 .act-side{display:flex;align-items:center;gap:14px}
@@ -3349,7 +3349,31 @@ nav{border-bottom:1px solid transparent!important;
 .vault-page-wrap{padding:40px 0 70px}
 .vp-hero{text-align:center;margin-bottom:36px}
 .vp-title{font-family:'Lilita One','Arial Black',sans-serif;font-size:clamp(2rem,5vw,3.4rem);margin:10px 0 12px;letter-spacing:.5px}
-.vp-desc{color:var(--muted);max-width:600px;margin:0 auto;font-size:.97rem;line-height:1.6}
+.vp-desc{color:var(--muted);max-width:640px;margin:0 auto;font-size:.97rem;line-height:1.6}.vp-desc b{color:#fbbf24}
+.vp-how{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:1000px;margin:22px auto 0;text-align:left}
+.vp-how>div{position:relative;padding:16px 16px 14px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07)}
+.vp-how i{position:absolute;top:-10px;left:14px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font:800 .74rem 'Poppins';font-style:normal;color:#0b0716;background:linear-gradient(135deg,#4ade80,#22d3ee)}
+.vp-how>div:last-child i{background:linear-gradient(135deg,#fbbf24,#f59e0b)}
+.vp-how b{display:block;font-size:.9rem;color:#fff;margin:4px 0 4px}.vp-how span{font-size:.8rem;color:var(--faint);line-height:1.45}
+@media (max-width:900px){.vp-how{grid-template-columns:1fr 1fr;gap:16px 12px}}
+.vp-sr-lbl small{color:var(--faint);font-size:.75rem;margin-left:4px}
+.vpp-st{display:inline-flex;align-items:center;gap:4px;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:999px;margin-right:6px}
+.vpp-st.ok{color:#4ade80;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3)}
+.vpp-st.wait{color:#fbbf24;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3)}
+.vpp-st.no{color:var(--faint);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+.vpp-st.no a{color:#c084fc;cursor:pointer;text-decoration:underline}
+.vpp-st.me{color:#1a1026;background:#fbbf24}
+.vpp-wager small{display:block;font:600 .7rem 'Poppins';color:var(--faint);margin-top:2px}
+.vpp-skel{height:62px;margin:8px 14px;border-radius:12px;background:linear-gradient(90deg,rgba(255,255,255,.03),rgba(255,255,255,.08),rgba(255,255,255,.03));background-size:200% 100%;animation:vppSkel 1.2s linear infinite}
+@keyframes vppSkel{to{background-position:-200% 0}}
+@media (max-width:640px){
+  .vp-mascot-panel{flex-direction:column!important;align-items:center!important;gap:6px}
+  .vp-mascot-img{width:170px!important}
+  .vp-mascot-panel .vpp-count{position:static!important}
+  .vpp-head{flex-wrap:wrap;gap:10px}
+  .vpp-head h3{flex:1 1 100%;white-space:nowrap;font-size:1.35rem}
+  .vpp-head .vpp-refresh{margin-left:auto}
+}
 
 /* ── Main layout: big card left, mascot panel right ── */
 .vp-main-grid{
@@ -4554,7 +4578,13 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
     <div class="vault-page-wrap">
       <div class="vp-hero">
         <h1 class="vp-title">Jammmy <span class="vv">Community Vault</span></h1>
-        <p class="vp-desc">Watch the jar fill up as the community wagers, while we surface live counts of players, coins, and average vault share.</p>
+        <p class="vp-desc">Every dollar wagered on Power.win under code <b>JAMMMY</b> adds 0.1 coins to the vault. When it hits the goal, verified players get their share paid out automatically.</p>
+        <div class="vp-how">
+          <div><i>1</i><b>Wager under JAMMMY</b><span>On Power.win. Every $10 wagered adds 1 coin to the vault.</span></div>
+          <div><i>2</i><b>Claim your username</b><span>On your Profile. Jammmy verifies it's you.</span></div>
+          <div><i>3</i><b>Vault fills → you get paid</b><span>At the goal, every verified player gets their share automatically.</span></div>
+          <div><i>4</i><b>Not claimed yet?</b><span>Your coins wait in the vault. Claim any time and they're paid at the next payout.</span></div>
+        </div>
       </div>
 
       <!-- MAIN: big card + mascot panel exactly like his site -->
@@ -4563,17 +4593,17 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <!-- LEFT: all stats -->
         <div class="vp-main-card">
           <div class="vp-prog-label">VAULT PROGRESS</div>
-          <div class="vp-prog-val display" id="vpProgVal" data-count="800" data-suffix=" Coins">0</div>
+          <div class="vp-prog-val display" id="vpProgVal" data-count="0" data-suffix=" Coins">—</div>
           <div class="vp-prog-goal">Goal: <b id="vpProgGoal">10,000 Coins</b></div>
 
           <div class="vp-bar"><div class="vp-bar-fill" id="vaultBar2"></div></div>
-          <div class="vp-bar-meta"><span class="vpct" id="vpPctText">80% complete</span><span id="vpRemainingText">200 Coins remaining</span></div>
+          <div class="vp-bar-meta"><span class="vpct" id="vpPctText">Loading…</span><span id="vpRemainingText"></span></div>
 
           <!-- PROGRESS + LAST DISTRIBUTED mini cards -->
           <div class="vp-mini-row">
             <div class="vp-mini">
               <div class="vp-mini-lbl">PROGRESS</div>
-              <div class="vp-mini-val" id="vpMiniPct" style="color:var(--neon-gold)">80%</div>
+              <div class="vp-mini-val" id="vpMiniPct" style="color:var(--neon-gold)">—</div>
             </div>
             <div class="vp-mini">
               <div class="vp-mini-lbl">LAST DISTRIBUTED</div>
@@ -4584,11 +4614,11 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
           <!-- clean stat rows -->
           <div class="vp-stat-rows">
-            <div class="vp-sr"><span class="vp-sr-lbl">All Leaderboards Wagered</span><span class="vp-sr-val" id="vpAllWagered">$0</span></div>
-            <div class="vp-sr"><span class="vp-sr-lbl">Claimed (Approved)</span><span class="vp-sr-val green" id="vpClaimedWagered">$0</span></div>
-            <div class="vp-sr"><span class="vp-sr-lbl">Unclaimed</span><span class="vp-sr-val gold" id="vpUnclaimedWagered">$0</span></div>
-            <div class="vp-sr"><span class="vp-sr-lbl">Active Players</span><span class="vp-sr-val" id="vpActivePlayers">0</span></div>
-            <div class="vp-sr"><span class="vp-sr-lbl">Live Leaderboards</span><span class="vp-sr-val" id="vpLiveLeaderboards">0</span></div>
+            <div class="vp-sr"><span class="vp-sr-lbl">Total wagered <small>since 10 Sep</small></span><span class="vp-sr-val" id="vpAllWagered">—</span></div>
+            <div class="vp-sr"><span class="vp-sr-lbl">By verified players</span><span class="vp-sr-val green" id="vpClaimedWagered">—</span></div>
+            <div class="vp-sr"><span class="vp-sr-lbl">By players who haven't claimed yet</span><span class="vp-sr-val gold" id="vpUnclaimedWagered">—</span></div>
+            <div class="vp-sr"><span class="vp-sr-lbl">Players</span><span class="vp-sr-val" id="vpActivePlayers">—</span></div>
+            <div class="vp-sr"><span class="vp-sr-lbl">Verified players</span><span class="vp-sr-val green" id="vpLiveLeaderboards">—</span></div>
           </div>
         </div>
 
@@ -4606,27 +4636,27 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div id="vplWarning" style="display:none;margin-bottom:14px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.35);border-radius:10px;padding:10px 14px;font-size:.82rem;color:#fbbf24"></div>
         <div class="vpl-head">
           <div>
-            <div class="vpl-title">Unclaimed wagering <button id="vplRefreshBtn" onclick="loadVaultPlayers()" title="Refresh live wagering data" aria-label="Refresh live wagering data" style="background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--faint);width:26px;height:26px;border-radius:8px;cursor:pointer;font-size:.85rem;vertical-align:middle;margin-left:4px;line-height:1">↻</button></div>
-            <div class="vpl-sub" id="vplSub">Loading unclaimed wagering&hellip;</div>
+            <div class="vpl-title">Coins waiting for their owners <button id="vplRefreshBtn" onclick="loadVaultPlayers()" title="Refresh live wagering data" aria-label="Refresh live wagering data" style="background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--faint);width:26px;height:26px;border-radius:8px;cursor:pointer;font-size:.85rem;vertical-align:middle;margin-left:4px;line-height:1">↻</button></div>
+            <div class="vpl-sub" id="vplSub">Loading&hellip;</div>
           </div>
-          <div class="vpl-est">Estimated unclaimed vault share: <b id="vplEst">—</b></div>
+          <div class="vpl-est">Waiting in the vault: <b id="vplEst">—</b></div>
         </div>
         <div class="vpl-casinos" id="vplCasinos">
           <div style="padding:14px;color:var(--faint);font-size:.85rem">Loading&hellip;</div>
         </div>
-        <button class="vpl-open-btn" onclick="nav('profile')">Open Settings</button>
       </div>
 
       <!-- Live players -->
       <div class="vp-players reveal">
         <div class="vpp-head">
-          <h3>Live Players</h3>
-          <span class="vpp-count">● 6 Players</span>
+          <h3>Players in the vault</h3>
+          <span class="vpp-count">● Loading…</span>
           <button class="vpp-refresh" onclick="refreshVaultPlayers()">↻ Refresh</button>
         </div>
         <div class="vpp-tabs">
           <button class="vpp-tab active" data-casino="">All</button>
-          <button class="vpp-tab" data-casino="powerwin">Power.win</button>
+          <button class="vpp-tab" data-casino="verified">✓ Verified</button>
+          <button class="vpp-tab" data-casino="unclaimed">Not claimed yet</button>
         </div>
         <div class="vpp-col-head">
           <div>Rank</div>
@@ -4634,7 +4664,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <div style="text-align:right">Wagered</div>
         </div>
         <div id="vaultPlayers" class="vpp-list">
-          <div style="padding:40px 20px;text-align:center;color:var(--faint)">Loading live players&hellip;</div>
+          <div class="vpp-skel"></div><div class="vpp-skel"></div><div class="vpp-skel"></div><div class="vpp-skel"></div>
         </div>
       </div>
 
@@ -5023,8 +5053,8 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
             <div class="rq-right"><span class="rq-count" id="actCount"></span></div>
           </div>
           <div class="act-help">
-            <span><b>🔴 Live days</b> on the site while you were live</span><span><b>📅 Active days</b> visited the site</span><span><b>⏱ Live time</b> minutes the site was open during your streams</span><span><b>🎰 ⚔️ Requests</b></span><span><b>🎁 Daily claims</b></span>
-            <em>Ranked by score: live day ×10 · active day ×5 · request ×4 · daily claim ×2. Kick chat itself can't be read here, so “live” means on the site while you're streaming.</em>
+            <span><b>🎰 Slot requests</b></span><span><b>⚔️ Battle requests</b></span><span><b>🎁 Free 5 claims</b></span><span><b>🌐 Site visits</b> days they visited (and total page views)</span><span><b>💰 Wagered</b> on Power.win in this period, verified accounts</span>
+            <em>Score: slot or battle request ×4 · free-coins claim ×2 · day visiting the site ×3 · +1 per $100 wagered. Visits count once per day, so refreshing the site doesn't boost anyone.</em>
           </div>
           <div id="adminActiveList" class="act-list"></div>
           <div class="act-bar" id="actBar">
@@ -6045,7 +6075,7 @@ async function loadVaultPlayers(){
   if(!listEl) return;
   var refreshBtn = document.getElementById('vplRefreshBtn');
   if(refreshBtn){ refreshBtn.disabled = true; refreshBtn.style.opacity = '.5'; refreshBtn.textContent = '…'; }
-  listEl.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--faint)">Loading live players&hellip;</div>';
+  if(!_casinoWagersData.length) listEl.innerHTML = '<div class="vpp-skel"></div><div class="vpp-skel"></div><div class="vpp-skel"></div><div class="vpp-skel"></div>';
   try{
     var token = localStorage.getItem('jammy_session_token');
     var headers = token ? { 'Authorization': 'Bearer ' + token } : {};
@@ -6083,7 +6113,7 @@ function renderVaultSummaryStats(){
   if(claimedEl) claimedEl.textContent = '$'+Math.round(claimedWagered).toLocaleString();
   if(unclaimedEl) unclaimedEl.textContent = '$'+Math.round(unclaimedWagered).toLocaleString();
   if(activeEl) activeEl.textContent = _casinoWagersData.length;
-  if(liveEl) liveEl.textContent = Object.keys(casinosSeen).length;
+  if(liveEl) liveEl.textContent = _casinoWagersData.filter(function(w){ return w.status === 'approved'; }).length;
 }
 
 /* "Unclaimed wagering" card — now reflects the real claim system: unclaimed + pending
@@ -6122,7 +6152,9 @@ function renderUnclaimedCard(data){
   var totalUnclaimed = Object.values(byCasino).reduce(function(s,c){ return s + c.wagered; }, 0);
   var potentialCoins = Math.min((data.vault_remaining || 0), totalUnclaimed * 0.1);
 
-  if(subEl) subEl.textContent = '$'+Math.round(totalUnclaimed).toLocaleString()+' not claimed yet. Claim your username from your Profile page — once approved, your wagering counts toward the vault, and coins are distributed automatically once it fills.';
+  var waitingPlayers = Object.values(byCasino).reduce(function(s,c){ return s + c.players; }, 0);
+  if(subEl){ subEl.innerHTML = '<b>'+waitingPlayers+' player'+(waitingPlayers===1?'':'s')+'</b> wagered <b>$'+Math.round(totalUnclaimed).toLocaleString()+'</b> but haven\'t claimed their username yet. Their coins stay in the vault until they do, then they\'re paid at the next payout. Is one of them you?'; }
+  if(false) subEl.textContent = '$'+Math.round(totalUnclaimed).toLocaleString()+' not claimed yet. Claim your username from your Profile page — once approved, your wagering counts toward the vault, and coins are distributed automatically once it fills.';
   if(estEl) estEl.textContent = Math.round(potentialCoins).toLocaleString()+' Coins';
 
   var CASINO_LOGOS = {
@@ -6133,8 +6165,8 @@ function renderUnclaimedCard(data){
     var c = byCasino[casino];
     return '<div class="vpl-cas">'
       + '<div class="vpl-logo-box">' + CASINO_LOGOS[casino] + '</div>'
-      + '<div><b>'+(CASINO_DISPLAY_NAMES[casino]||casino)+'</b><span>$'+Math.round(c.wagered).toLocaleString()+' unclaimed · '+c.players+' player'+(c.players===1?'':'s')+'</span></div>'
-      + '<button class="vpl-btn" onclick="nav(\'profile\')">Claim in Profile</button>'
+      + '<div><b>'+(CASINO_DISPLAY_NAMES[casino]||casino)+'</b><span>$'+Math.round(c.wagered).toLocaleString()+' unclaimed · '+c.players+' player'+(c.players===1?'':'s')+' · '+Math.round(c.wagered*0.1).toLocaleString()+' coins waiting</span></div>'
+      + '<button class="vpl-btn" onclick="nav(\'profile\')">Claim my username →</button>'
     + '</div>';
   }).join('');
 }
@@ -6142,15 +6174,17 @@ function renderUnclaimedCard(data){
 function renderVaultPlayers(){
   var listEl = document.getElementById('vaultPlayers');
   if(!listEl) return;
-  var filtered = _vaultPlayerCasinoFilter
-    ? _casinoWagersData.filter(function(w){ return w.casino === _vaultPlayerCasinoFilter; })
-    : _casinoWagersData;
+  var f = _vaultPlayerCasinoFilter;
+  var filtered = !f ? _casinoWagersData
+    : f === 'verified' ? _casinoWagersData.filter(function(w){ return w.status === 'approved'; })
+    : f === 'unclaimed' ? _casinoWagersData.filter(function(w){ return w.status !== 'approved'; })
+    : _casinoWagersData.filter(function(w){ return w.casino === f; });
 
   var countEl = document.querySelector('.vp-players .vpp-count');
   if(countEl) countEl.textContent = '● ' + _casinoWagersData.length + ' Player' + (_casinoWagersData.length===1?'':'s');
 
   if(!filtered.length){
-    listEl.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--faint)">No wagering found here yet.</div>';
+    listEl.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--faint)">'+(f === 'unclaimed' ? 'Everyone has claimed their username 🎉' : f === 'verified' ? 'No verified players yet.' : 'No wagering found here yet.')+'</div>';
     return;
   }
 
@@ -6169,10 +6203,14 @@ function renderVaultPlayers(){
       + '<div class="vpp-info">'
         + '<b>'+(w.name||'—')+'</b>'
         + '<div class="vpp-meta">'
-          + '<span>'+(CASINO_DISPLAY_NAMES[w.casino]||w.casino)+'</span>'
+          + (w.status === 'approved'
+              ? '<span class="vpp-st ok">✓ Verified'+(w.claimed_by ? ' · '+pccEsc(w.claimed_by) : '')+'</span>'
+              : w.status === 'pending' ? '<span class="vpp-st wait">⏳ Being verified</span>'
+              : '<span class="vpp-st no">Not claimed · <a onclick="nav(\'profile\')">is this you?</a></span>')
+          + (w.is_mine ? '<span class="vpp-st me">You</span>' : '')
         + '</div>'
       + '</div>'
-      + '<div class="vpp-wager"'+(isTop3 ? ' style="color:rgb('+topGlow+');font-size:1.15rem"' : '')+'>$'+Number(w.wager).toLocaleString(undefined,{maximumFractionDigits:0})+'</div>'
+      + '<div class="vpp-wager"'+(isTop3 ? ' style="color:rgb('+topGlow+');font-size:1.15rem"' : '')+'>$'+Number(w.wager).toLocaleString(undefined,{maximumFractionDigits:0})+'<small>'+Math.floor(w.wager*0.1).toLocaleString()+' coins</small></div>'
     + '</div>';
   }).join('');
 }
@@ -6535,8 +6573,7 @@ function activityPing(){
   if(document.hidden || !localStorage.getItem('jammy_session_token')) return;
   try{ fetch(AUTH_API + '/api/track', { method:'POST', headers: trackHeaders(), body: JSON.stringify({ kind:'ping', visitor_id: getVisitorId() }) }).catch(function(){}); }catch(e){}
 }
-setInterval(activityPing, 5 * 60 * 1000);
-setTimeout(activityPing, 20000);
+/* (heartbeat pings no longer used for scoring -- page views are enough) */
 var DISCORD_CLIENT_ID = '1473817153059819650';
 var DISCORD_REDIRECT = 'https://jammmyrewards.com/';
 
@@ -7974,11 +8011,11 @@ async function loadAdminActive(days){
         + '<div class="act-rank">'+medal+'</div>'
         + '<div class="act-av">'+av+'</div>'
         + '<div class="act-main">'
-          + '<div class="act-name"><b>'+pccEsc(u.username)+'</b><span class="act-seen">'+(u.last_at ? 'seen '+rqAgo(u.last_at) : 'requests only')+'</span></div>'
+          + '<div class="act-name"><b>'+pccEsc(u.username)+'</b><span class="act-seen">'+(u.last_at ? 'on the site '+rqAgo(u.last_at) : 'not seen on the site yet')+'</span></div>'
           + '<div class="act-chips">'
-            + chip('🔴', u.live_days, 'live days', 'live') + chip('📅', u.active_days, 'active days')
-            + chip('⏱', u.live_minutes >= 60 ? (Math.round(u.live_minutes/6)/10)+'h' : u.live_minutes+'m', 'live time', u.live_minutes ? 'live' : '')
-            + chip('🎰', u.slot_requests, 'slot req.') + chip('⚔️', u.battle_requests, 'battle req.') + chip('🎁', u.daily_claims, 'daily claims')
+            + chip('🎰', u.slot_requests, 'slot req.') + chip('⚔️', u.battle_requests, 'battle req.') + chip('🎁', u.daily_claims, 'free 5 claims')
+            + chip('🌐', u.active_days, u.active_days === 1 ? 'day on site' : 'days on site') + (u.visits ? chip('👁', u.visits, 'page views') : '')
+            + chip('💰', u.wagered ? '$' + Math.round(u.wagered).toLocaleString() : '$0', 'wagered', u.wagered ? 'money' : '')
           + '</div>'
           + '<div class="act-meter"><span style="width:'+Math.max(4, Math.round(u.score/max*100))+'%"></span></div>'
         + '</div>'

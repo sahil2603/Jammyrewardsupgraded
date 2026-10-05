@@ -8,6 +8,36 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-05: Vault page overhaul + new Active Users score
+
+**Vault page**
+- **Faster:** the worker reuses one Power.win result for 45s per instance (and shares an in-flight request) instead of fetching it 2–3 times per page request. Live, the player list took ~4.7s and the vault number ~2s.
+- **No fake numbers while loading:** the placeholder "80% complete / 200 Coins remaining / 6 Players" is gone. It shows "—", "Loading…" and shimmering skeleton rows until real data arrives.
+- **Explains itself:** a new 4-step strip: wager under JAMMMY (every $10 = 1 coin), claim your username, vault fills and you're paid, and not claimed yet means your coins wait in the vault.
+- **Clearer stats:**
+  - Total wagered since 10 Sep
+  - Wagered by verified players
+  - Wagered by players who haven't claimed yet
+  - Players
+  - Verified players (replaces the meaningless "Live Leaderboards")
+- **"Coins waiting for their owners"** replaces "Unclaimed wagering": "9 players wagered $11,144 but haven't claimed their username yet…", with the coins waiting in the vault and a "Claim my username →" button. The stray "Open Settings" button is gone.
+- **"Players in the vault"** replaces "Live Players":
+  - **All / ✓ Verified / Not claimed yet** tabs.
+  - Each player has a status chip: ✓ Verified · Discord name, ⏳ Being verified, or Not claimed · *is this you?* (links to Profile).
+  - A "You" tag on your own row, and coins shown under each wager.
+- **Phones:** the jar is bigger and centred above the progress, and the players header no longer wraps onto three lines.
+
+**Admin → Active Users: new score**
+- The score counts only:
+  - slot requests ×4
+  - battle requests ×4
+  - free 5-coin claims ×2
+  - days visiting the site ×3 (once per day, so refreshing doesn't boost it; total page views are shown too)
+  - +1 per $100 wagered on Power.win in the chosen period (exact from/to window, matched to verified accounts)
+- Live-days and live-time tracking were removed, and the 5-minute "still here" heartbeat is no longer sent.
+
+---
+
 ## 2026-10-05: Discord profile pictures on every player list
 
 - Players' Discord profile pictures now show on:
