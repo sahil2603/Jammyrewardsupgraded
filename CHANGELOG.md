@@ -8,6 +8,46 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-05: Discord profile pictures on every player list
+
+- Players' Discord profile pictures now show on:
+  - Admin: Users (with a ring in the admin, mod or player colour), Verify Players, Slot Requests, Battle Requests, Redemptions, Activity Log (staff) and Active Users.
+  - The public **Vault player list**, for **verified** players only, with the 🥇🥈🥉 badge on the top 3.
+- If someone has no picture, or it fails to load, their initial shows instead.
+- The **leaderboards keep masked names with no pictures**, so players there can't be identified.
+- **Worker:** the slot and battle request lists, redemptions and Activity Log now include `avatar` / `actor_avatar`. `/api/casino-wagers` includes `avatar` for verified claims only.
+
+---
+
+## 2026-10-05: Vault rebuilt on exact totals, "Vault full" celebration, previous-race fixes
+
+**How the vault works now**
+- Every player's vault wagering is their **exact all-time Power.win total since 10 Sep 2026**: the sum of every 14-day window, fetched with Power.win's from/to range.
+  - Finished windows are fetched once, 2 hours after they close, and stored in `vault_cycle_totals` / `vault_cycles_done`, so they never change again. The current window is fetched live.
+  - This replaces the rolling-ledger estimate. Wagering before 24 Sep is now counted (SAHIL2603 +$8,119, GoingtheGulag +$598), and the vault matches the race board to the cent.
+- When the pool reaches **10,000 coins**:
+  - every **verified** player is paid their share automatically, including old wagering on former partners such as DegenCity;
+  - coins belonging to **unclaimed or not-yet-verified** players stay in the vault and roll into the next one. They are paid to the owner once that player is verified.
+- **Payout guard:** a payout needs at least one verified player to be owed coins, and at least 24h since the last payout. Unclaimed coins carry over forever, so this stops the vault paying out again every few minutes if it refills quickly.
+- **One vault number everywhere:** the admin Vault tab, Overview and the public pages all show the payout pool (the admin tab showed an older formula before).
+- `/api/vault` now also returns `pool.last_distributed_count`, the number of players paid.
+
+**"Vault full" celebration**
+- After a payout, every visitor sees the vault at 100% with a full-screen celebration **once per payout, per browser**:
+  - rotating light rays, confetti, the full jar bouncing with coins, "VAULT FULL!" and a filling 100% bar;
+  - "X coins were just paid out to N verified players";
+  - buttons: Check my coins (logged in) or Claim your username, and Nice!
+- On close, the vault drops to its real level. It only shows for payouts in the last 7 days, and the animation switches off for visitors who have "reduce motion" turned on.
+
+**Leaderboard**
+- The Power.win tab sits on top with the Current / Previous race toggle centred **below** it (they were side by side).
+- **Previous race** before the first real JAMMMY race (started 24 Sep) has finished shows "Waiting for the current race to finish", the date it ends, a "RESULTS IN" countdown and a button back to the live race. The podium is hidden in this state.
+- When a race ends, its exact standings for that race's window (no bets after the end) show as the previous race. 2 hours after the end they are **frozen** in `lb_snapshots`; the cron does this even if nobody visits, and from then on they're served from the database and never change.
+
+No D1 console step: all new tables create themselves.
+
+---
+
 ## 2026-10-05: Reasons for rejected claims
 
 - **Admin/Mod → Verify Players:** "Reject" (and "Reject Selected") now opens a dialog instead of a plain confirm box.

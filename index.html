@@ -1571,6 +1571,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .lbx-join img{height:20px;width:auto;mix-blend-mode:screen}
 
 /* podium */
+.lbx-podium.lbx-hide{display:none!important}
 .lbx-podium{display:grid!important;grid-template-columns:1fr 1.15fr 1fr;gap:16px;align-items:end;max-width:900px;margin:44px auto 0}
 .lbx-pod{position:relative;text-align:center;animation:lbxRise .8s cubic-bezier(.16,1,.3,1) both}
 .lbx-pod.p2{animation-delay:.18s}.lbx-pod.p1{animation-delay:.05s}.lbx-pod.p3{animation-delay:.3s}
@@ -1762,6 +1763,37 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .pwx-races{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .pwx-races.three{grid-template-columns:repeat(3,1fr)}
 /* ===== Power.win races (static cards styled like power.win's race banners) ===== */
+/* ===== Vault full celebration ===== */
+.vfx{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:18px;background:radial-gradient(circle at 50% 45%,rgba(251,191,36,.22),rgba(6,3,14,.9) 60%);backdrop-filter:blur(6px);opacity:0;transition:opacity .45s}
+.vfx.in{opacity:1}.vfx.out{opacity:0}
+.vfx-rays{position:absolute;left:50%;top:45%;width:160vmax;height:160vmax;transform:translate(-50%,-50%);background:repeating-conic-gradient(from 0deg,rgba(251,191,36,.13) 0 6deg,transparent 6deg 18deg);-webkit-mask:radial-gradient(circle,#000 0,transparent 55%);mask:radial-gradient(circle,#000 0,transparent 55%);animation:vfxSpin 18s linear infinite;pointer-events:none}
+@keyframes vfxSpin{to{transform:translate(-50%,-50%) rotate(1turn)}}
+.vfx-conf{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.vfx-conf i{position:absolute;top:-20px;width:8px;height:14px;border-radius:2px;opacity:.95;animation:vfxFall linear infinite}
+@keyframes vfxFall{to{transform:translateY(110vh) rotate(720deg)}}
+.vfx-card{position:relative;width:min(420px,100%);text-align:center;padding:26px 24px 24px;border-radius:28px;background:linear-gradient(180deg,rgba(40,24,70,.96),rgba(14,9,28,.97));border:1px solid rgba(251,191,36,.5);box-shadow:0 0 0 1px rgba(255,255,255,.04),0 40px 100px -30px rgba(251,191,36,.6);transform:scale(.8) translateY(20px);transition:transform .6s cubic-bezier(.2,1.4,.4,1)}
+.vfx.in .vfx-card{transform:none}
+.vfx-jar{position:relative;width:170px;height:170px;margin:-80px auto 6px}
+.vfx-jar video{position:relative;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 18px 30px rgba(251,191,36,.55));animation:vfxBounce 1.8s ease-in-out infinite}
+@keyframes vfxBounce{50%{transform:translateY(-8px) scale(1.03)}}
+.vfx-ring{position:absolute;inset:8%;border-radius:50%;background:conic-gradient(#fbbf24,#f472b6,#a855f7,#22d3ee,#fbbf24);filter:blur(22px);opacity:.55;animation:vfxSpin2 4s linear infinite}
+@keyframes vfxSpin2{to{transform:rotate(1turn)}}
+.vfx-coin{position:absolute;width:34px;height:34px;animation:vfxPop 2.2s ease-in-out infinite}
+.vfx-coin.c1{left:-6px;top:40%}.vfx-coin.c2{right:-10px;top:22%;animation-delay:.5s}.vfx-coin.c3{right:6px;bottom:0;width:26px;height:26px;animation-delay:1s}
+@keyframes vfxPop{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-16px) rotate(20deg)}}
+.vfx-kick{display:inline-block;font:700 .66rem 'Poppins',system-ui;letter-spacing:.18em;text-transform:uppercase;color:#fde68a;padding:5px 12px;border-radius:999px;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.4)}
+.vfx-title{margin:10px 0 12px;font:400 clamp(2.6rem,9vw,3.4rem)/1 'Lilita One','Arial Black',sans-serif;color:#fff;text-transform:uppercase;transform:skewX(-6deg)}
+.vfx-title b{font-weight:400;background:linear-gradient(100deg,#fde68a 20%,#fff 40%,#fbbf24 55%,#fde68a 80%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:prcShine 3s linear infinite}
+.vfx-meter{position:relative;height:16px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin:0 6px 14px}
+.vfx-meter span{position:absolute;inset:0;width:0;border-radius:inherit;background:linear-gradient(90deg,#4ade80,#fbbf24,#f472b6);box-shadow:0 0 18px rgba(251,191,36,.7);animation:vfxFill 1.6s .35s cubic-bezier(.16,1,.3,1) forwards}
+.vfx-meter em{position:absolute;inset:0;display:grid;place-items:center;font:800 .68rem 'Poppins',system-ui;color:#1a1026;font-style:normal;letter-spacing:.1em}
+@keyframes vfxFill{to{width:100%}}
+.vfx-sub{color:rgba(226,232,240,.8);font-size:.92rem;line-height:1.55;margin:0 0 18px}.vfx-sub b{color:#fde68a}
+.vfx-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.vfx-btns button{padding:12px 18px;border-radius:14px;border:0;font:700 .9rem 'Poppins',system-ui;cursor:pointer}
+.vfx-go{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1a1026;box-shadow:0 10px 26px -10px rgba(251,191,36,.8)}
+.vfx-close{background:rgba(255,255,255,.07);color:#fff;border:1px solid rgba(255,255,255,.14)!important}
+@media (prefers-reduced-motion:reduce){.vfx-rays,.vfx-conf,.vfx-ring{display:none}.vfx-jar video,.vfx-coin,.vfx-title b{animation:none}.vfx-meter span{animation:none;width:100%}}
 .prc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
 .prc-banner{--a:251,191,36;--b:217,119,6;position:relative;overflow:hidden;text-align:center;margin:52px 0 22px;padding:30px 20px 26px;border-radius:26px;
   background:radial-gradient(70% 120% at 50% 0%,rgba(251,191,36,.22),transparent 60%),radial-gradient(60% 90% at 0% 100%,rgba(124,58,237,.35),transparent 60%),radial-gradient(60% 90% at 100% 100%,rgba(236,72,153,.25),transparent 60%),linear-gradient(135deg,#1d1036,#110a20);
@@ -2184,7 +2216,8 @@ html.lenis{scroll-behavior:auto!important}
 .hx-bonus-art.solo .hx-chip-card.c1{left:50%;top:30px;transform:translateX(-50%) rotate(-5deg)}
 .grid2.solo{grid-template-columns:minmax(0,560px);justify-content:center}
 .lbx-tabs.solo .lbt{cursor:default;opacity:1}
-.lbx-race-tog{display:inline-flex;gap:4px;margin:14px auto 0;padding:4px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09)}
+.lbx-tabs.solo{display:flex;width:max-content;margin-left:auto;margin-right:auto}
+.lbx-race-tog{display:flex;width:max-content;gap:4px;margin:14px auto 0;padding:4px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09)}
 .lbx-race-tog button{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border:0;border-radius:999px;background:transparent;color:var(--muted);font:600 .86rem 'Poppins';cursor:pointer;transition:background .25s,color .25s}
 .lbx-race-tog button:hover{color:#fff}
 .lbx-race-tog button.on{background:linear-gradient(135deg,rgba(168,85,247,.35),rgba(34,211,238,.2));color:#fff;box-shadow:inset 0 0 0 1px rgba(168,85,247,.45)}
@@ -2193,6 +2226,12 @@ html.lenis{scroll-behavior:auto!important}
 .lbx-live.ended{background:rgba(148,163,184,.12)!important;border-color:rgba(148,163,184,.35)!important;color:#cbd5e1!important}
 .lbx-live.ended i{background:#94a3b8!important;box-shadow:none!important;animation:none!important}
 .lbx-prev .lbx-prog span{background:linear-gradient(90deg,#94a3b8,#64748b)!important}
+.lbx-wait{text-align:center;padding:46px 20px 40px;border-radius:18px;margin-top:8px;background:radial-gradient(80% 120% at 50% 0%,rgba(168,85,247,.16),transparent 70%),rgba(255,255,255,.02);border:1px dashed rgba(168,85,247,.35)}
+.lbx-wait-flag{font-size:2.6rem;display:inline-block;animation:prcWave 2.6s ease-in-out infinite;transform-origin:20% 90%}
+.lbx-wait h4{font:400 1.5rem 'Lilita One',sans-serif;margin:10px 0 6px;color:#fff}
+.lbx-wait p{color:var(--muted);font-size:.92rem;margin:0 auto 18px;max-width:420px;line-height:1.55}.lbx-wait p b{color:#fff}
+.lbx-wait button{padding:10px 18px;border-radius:999px;border:1px solid rgba(168,85,247,.5);background:rgba(168,85,247,.14);color:#e9d5ff;font:700 .85rem 'Poppins';cursor:pointer}
+.lbx-wait button:hover{background:rgba(168,85,247,.26)}
 @media (max-width:640px){.lbx-race-tog{display:flex;width:100%}.lbx-race-tog button{flex:1;justify-content:center;padding:10px 8px}}.lbx-tabs.solo .lbx-tab-ind{display:none}
 .hx-p{--rx:0deg;--ry:0deg;position:relative;border-radius:28px;padding:1px;overflow:hidden;background:rgba(255,255,255,.08);transform:perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));transition:transform .6s var(--hx-ease),box-shadow .35s,opacity 1s var(--hx-ease)}
 .hx-p.hx-rv:not(.in){transform:perspective(1000px) translate3d(0,40px,0) scale(.98)}
@@ -2349,6 +2388,14 @@ html.lenis{scroll-behavior:auto!important}
 .adm-input:focus{outline:none;border-color:var(--purple)}
 .adm-err{min-height:18px;margin-top:8px;font-size:.8rem;color:#f87171}
 .adm-err.ok{color:#4ade80}
+.uav{width:var(--s);height:var(--s);flex:none;display:inline-grid;place-items:center;border-radius:50%;overflow:hidden;vertical-align:middle;
+  font:700 calc(var(--s) * .42) 'Poppins',system-ui;color:#fff;background:linear-gradient(135deg,#a855f7,#22d3ee);box-shadow:0 0 0 1.5px rgba(255,255,255,.14)}
+.uav img{width:100%;height:100%;object-fit:cover;display:block}
+.uav-ring{box-shadow:0 0 0 2px rgba(var(--glow,168,85,247),.75),0 0 18px rgba(var(--glow,168,85,247),.35)}
+.rq-sub .who .uav,.audit-who .uav{margin:0 6px 0 2px}
+.uav-line{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.vpp-avwrap{position:relative;flex:none}
+.vpp-medal-badge{position:absolute;right:-8px;bottom:-8px;font-size:1.45rem!important;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6))}
 .rej-presets{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
 .rej-presets button{padding:7px 11px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);font:600 .76rem 'Poppins';cursor:pointer;text-align:left;transition:all .2s}
 .rej-presets button:hover{color:#fff;border-color:rgba(248,113,113,.45)}
@@ -5613,7 +5660,7 @@ function lbcd2(){
     datesEl.textContent = period.start.toLocaleDateString('en-US',opts)+' \u2192 '+period.end.toLocaleDateString('en-US',opts);
   }
   var updEl = document.getElementById('lbUpdatedTime');
-  if(updEl) updEl.textContent = LB_RACE === 'previous' ? 'final standings' : n.toLocaleString('en-US');
+  if(updEl) updEl.textContent = LB_RACE === 'previous' ? (_lbWaiting ? 'waiting for the race to end' : 'final standings') : n.toLocaleString('en-US');
 }
 lbcd2();setInterval(lbcd2,1000);
 
@@ -5645,7 +5692,27 @@ var LB_PROXY_URL = 'https://jammy-lb-proxy.sahil-sah2603.workers.dev';
 var lbRequestSeq = 0;
 /* Current race = live board. Previous race = the final standings of the race before it (the
    worker fetches that race's exact dates from Power.win, so it's frozen once it ends). */
-var LB_RACE = 'current';
+var LB_RACE = 'current', _lbWaiting = false;
+/* Previous race before the first JAMMMY race has finished: nothing to show yet, so say so and
+   count down to when the current race's final standings land here. */
+function renderPrevWaiting(meta){
+  var end = meta.results_at ? new Date(meta.results_at) : currentPowerwinPeriod().end;
+  var start = meta.current_start ? new Date(meta.current_start) : currentPowerwinPeriod().start;
+  _lbWaiting = true;
+  _realPeriodOverride = { start: start, end: end };
+  var cw = document.getElementById('lbxCdWord'); if(cw) cw.textContent = 'RESULTS IN';
+  var lt = document.getElementById('lbxLiveTxt'); if(lt) lt.textContent = 'WAITING';
+  var pod = document.getElementById('lbxPodium'); if(pod) pod.classList.add('lbx-hide');
+  var head = document.getElementById('lbxHeadRow'); if(head) head.style.display = 'none';
+  _lbxAll = []; _lastLbWagers = []; if(typeof lbxUpdateMore === 'function') lbxUpdateMore(0);
+  var when = end.toLocaleString(undefined, { weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+  var rows = document.getElementById('lbFullRows');
+  if(rows) rows.innerHTML = '<div class="lbx-wait"><div class="lbx-wait-flag" aria-hidden="true">🏁</div>'
+    + '<h4>Waiting for the current race to finish</h4>'
+    + '<p>The final standings of this race will appear here the moment it ends, on <b>'+when+'</b>.</p>'
+    + '<button type="button" onclick="lbRace(\'current\')">See the live race →</button></div>';
+  lbcd2();
+}
 function lbRace(r){
   if(LB_RACE === r) return;
   LB_RACE = r;
@@ -5653,6 +5720,7 @@ function lbRace(r){
   document.querySelectorAll('#lbxRaceTog button').forEach(function(b){ b.classList.toggle('on', b.dataset.r === r); b.setAttribute('aria-selected', b.dataset.r === r); });
   var pill = document.getElementById('lbxLivePill'); if(pill) pill.classList.toggle('ended', prev);
   var lt = document.getElementById('lbxLiveTxt'); if(lt) lt.textContent = prev ? 'FINAL RESULTS' : 'LIVE RACE';
+  var podx = document.getElementById('lbxPodium'); if(podx && !prev) podx.classList.remove('lbx-hide');
   var cw = document.getElementById('lbxCdWord'); if(cw) cw.textContent = prev ? 'RACE ENDED' : 'RACE ENDS IN';
   var sub = document.getElementById('lbxSub'); if(sub) sub.innerHTML = prev ? 'Final standings of the last race. Wager under code <b>JAMMMY</b> to get on the current one.' : 'Wager under code <b>JAMMMY</b>, climb the ranks and win a share of the prize pool. Updated live.';
   var lb = document.getElementById('leaderboards'); if(lb) lb.classList.toggle('lbx-prev', prev);
@@ -5696,6 +5764,9 @@ async function loadLeaderboard(casino){
     }
     /* If the casino's API returns its leaderboard's real start/end dates, use them for the
        countdown and date range; otherwise fall back to the generic assumed cycle. */
+    _lbWaiting = false;
+    if(data.waiting){ renderPrevWaiting(data.meta || {}); return; }
+    if(podiumEl) podiumEl.classList.remove('lbx-hide');
     _realPeriodOverride = (data.meta && data.meta.startDate && data.meta.endDate)
       ? { start: new Date(data.meta.startDate), end: new Date(data.meta.endDate) }
       : null;
@@ -5810,6 +5881,12 @@ async function loadVaultSettings(){
        this bar. */
     var current = pool.total || 0;
     var target = pool.threshold || 10000;
+    /* A payout just happened that this browser hasn't seen yet: show the vault at 100% with the
+       "VAULT FULL" celebration first, then drop to the real level once it's closed. */
+    if(vaultPayoutUnseen(pool)){
+      current = target;
+      showVaultFull(pool);
+    }
     var pct = Math.min(100, Math.round((current/target)*100));
     var remaining = Math.max(0, target - current);
 
@@ -5864,6 +5941,49 @@ async function loadVaultSettings(){
   }catch(e){ console.error('Failed to load vault settings:', e); }
 }
 function initVaultBars(){ loadVaultSettings(); loadVaultPlayers(); }
+
+var VAULT_SEEN_KEY = 'jm_vault_payout_seen', _vaultFullOpen = false;
+function vaultPayoutUnseen(pool){
+  if(!pool || !pool.last_distributed_at) return false;
+  var at = Date.parse(pool.last_distributed_at); if(!isFinite(at)) return false;
+  if(Date.now() - at > 7 * 24 * 3600 * 1000) return false;          /* only celebrate a payout from the last 7 days */
+  if(_vaultFullOpen) return true;
+  var seen = null; try{ seen = localStorage.getItem(VAULT_SEEN_KEY); }catch(e){}
+  return seen !== pool.last_distributed_at;
+}
+function showVaultFull(pool){
+  if(_vaultFullOpen || document.getElementById('vaultFullFx')) return;
+  _vaultFullOpen = true;
+  var amt = Math.floor(pool.last_distributed_amount || 0).toLocaleString();
+  var n = pool.last_distributed_count;
+  var conf = '';
+  for(var i = 0; i < 70; i++){
+    var c = ['#fbbf24','#a855f7','#22d3ee','#f472b6','#4ade80','#fde68a'][i % 6];
+    conf += '<i style="left:'+(Math.random()*100).toFixed(1)+'%;background:'+c+';animation-delay:'+(Math.random()*2.4).toFixed(2)+'s;animation-duration:'+(2.6+Math.random()*2.2).toFixed(2)+'s;transform:rotate('+Math.round(Math.random()*360)+'deg)'+(i%3===0?';border-radius:50%;width:9px;height:9px':'')+'"></i>';
+  }
+  var me = null; try{ me = JSON.parse(localStorage.getItem('jammy_user') || 'null'); }catch(e){}
+  var fx = document.createElement('div');
+  fx.id = 'vaultFullFx'; fx.className = 'vfx'; fx.setAttribute('role', 'dialog'); fx.setAttribute('aria-label', 'The vault is full');
+  fx.innerHTML = '<div class="vfx-rays" aria-hidden="true"></div><div class="vfx-conf" aria-hidden="true">'+conf+'</div>'
+    + '<div class="vfx-card">'
+      + '<div class="vfx-jar"><div class="vfx-ring"></div><video autoplay loop muted playsinline src="vault-jar-8.mp4.webm"></video><img class="vfx-coin c1" src="jammmy-coin.png" alt=""><img class="vfx-coin c2" src="jammmy-coin.png" alt=""><img class="vfx-coin c3" src="jammmy-coin.png" alt=""></div>'
+      + '<span class="vfx-kick">Community Vault</span>'
+      + '<h2 class="vfx-title">Vault <b>full!</b></h2>'
+      + '<div class="vfx-meter"><span></span><em>100%</em></div>'
+      + '<p class="vfx-sub"><b>'+amt+' coins</b> were just paid out'+(n ? ' to <b>'+n+' verified player'+(n === 1 ? '' : 's')+'</b>' : ' to verified players')+'. Unclaimed coins roll into the next vault.</p>'
+      + '<div class="vfx-btns">'+(me ? '<button type="button" class="vfx-go" onclick="closeVaultFull(\'profile\')">🪙 Check my coins</button>' : '<button type="button" class="vfx-go" onclick="closeVaultFull(\'loyalty\')">Claim your username</button>')+'<button type="button" class="vfx-close" onclick="closeVaultFull()">Nice!</button></div>'
+    + '</div>';
+  document.body.appendChild(fx);
+  requestAnimationFrame(function(){ fx.classList.add('in'); });
+  fx.addEventListener('click', function(e){ if(e.target === fx) closeVaultFull(); });
+  try{ localStorage.setItem(VAULT_SEEN_KEY, pool.last_distributed_at); }catch(e){}   /* seen once = done */
+}
+function closeVaultFull(goTo){
+  var fx = document.getElementById('vaultFullFx'); if(!fx) return;
+  fx.classList.remove('in'); fx.classList.add('out');
+  setTimeout(function(){ fx.remove(); _vaultFullOpen = false; loadVaultSettings(); /* now drops to the real level */ }, 450);
+  if(goTo && typeof nav === 'function') nav(goTo);
+}
 
 /* Picks which of the 8 jar-filling videos to show based on how full the vault actually is
    (8 videos = 8 buckets of 12.5% each, video 1 = emptiest, video 8 = fullest). Only swaps
@@ -6044,8 +6164,8 @@ function renderVaultPlayers(){
     var topGlow = ['251,191,36', '148,163,184', '217,119,6'][i] || '';
     return '<div class="vpp-row'+(isTop3 ? ' vpp-row-top3' : '')+'"'+(isTop3 ? ' style="--top-glow:'+topGlow+'"' : '')+'>'
       + (isTop3
-          ? '<div class="vpp-medal">'+medal+'</div>'
-          : '<div class="vpp-avatar" style="--av-a:#a855f7;--av-b:#5b8def">'+initial+'</div>')
+          ? (w.avatar ? '<div class="vpp-avwrap">'+uavHtml(w.avatar, w.claimed_by || w.name, 46, 'uav-ring')+'<span class="vpp-medal-badge">'+medal+'</span></div>' : '<div class="vpp-medal">'+medal+'</div>')
+          : (w.avatar ? uavHtml(w.avatar, w.claimed_by || w.name, 48, 'uav-ring') : '<div class="vpp-avatar" style="--av-a:#a855f7;--av-b:#5b8def">'+initial+'</div>'))
       + '<div class="vpp-info">'
         + '<b>'+(w.name||'—')+'</b>'
         + '<div class="vpp-meta">'
@@ -7687,6 +7807,13 @@ document.addEventListener('click', function(e){
   var b = e.target && e.target.closest ? e.target.closest('#adminContent button, #coinModal button') : null;
   if(b) _admLastBtn = { el: b, t: Date.now() };
 }, true);
+/* Discord profile picture (or the initial, if there's no picture or it fails to load). */
+function uavHtml(url, name, size, extra){
+  var i = pccEsc(String(name || '?').trim().charAt(0).toUpperCase() || '?');
+  return '<span class="uav'+(extra ? ' '+extra : '')+'" style="--s:'+(size||32)+'px" data-i="'+i+'">'
+    + (url ? '<img src="'+pccEsc(url)+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="uavFail(this)">' : i) + '</span>';
+}
+function uavFail(img){ var p = img.parentNode; if(p) p.textContent = p.dataset.i || '?'; }
 var ADM_ROW_SEL = '.battle-card, .rq, .admin-row';
 var ADM_REMOVES = /\/api\/admin\/(approve-claim|reject-claim|revoke-claim|mark-paid|reject-redemption|delete-redemption|delete-slot-request|delete-battle-request)$/;
 (function(){
@@ -7749,8 +7876,8 @@ async function loadAdminUsers(){
             + '</div>');
       return '<div class="battle-card" style="animation-delay:'+(Math.min(i,10)*0.04)+'s;--glow:'+glow+'">'
         + '<div class="battle-card-topbar" style="background:linear-gradient(90deg,rgb('+glow+'),rgba('+glow+',.4))"></div>'
-        + '<div style="display:flex;gap:14px;padding:16px 18px;flex-wrap:wrap">'
-          + '<div class="admin-card-icon" style="background:linear-gradient(135deg,rgb('+glow+'),rgba('+glow+',.6));font-family:\'Lilita One\',sans-serif;font-size:1.1rem;color:#0a0a0f">'+initial+'</div>'
+        + '<div style="display:flex;gap:14px;padding:16px 18px;flex-wrap:wrap;--glow:'+glow+'">'
+          + uavHtml(u.avatar, u.username, 46, 'uav-ring')
           + '<div style="flex:1;min-width:200px">'
             + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-start">'
               + '<div><b style="font-size:1.02rem">'+u.username+'</b>' + (u.is_admin ? ' <span class="admin-pill admin-pill-profit" style="background:rgba(251,191,36,.14);color:#fbbf24;border-color:rgba(251,191,36,.35)">ADMIN</span>' : u.is_mod ? ' <span class="admin-pill" style="background:rgba(96,165,250,.14);color:#60a5fa;border:1px solid rgba(96,165,250,.35)">MOD</span>' : '') + '<br>'
@@ -7997,7 +8124,7 @@ async function loadAuditLog(reset){
       return sep + '<div class="audit-row">'
         + '<div class="audit-ic '+pccEsc(e.category||'')+'">'+(AUDIT_ICONS[e.category]||'•')+'</div>'
         + '<div><div class="audit-sum">'+pccEsc(e.summary)+'</div>'
-        + '<div class="audit-meta"><span class="audit-who">'+pccEsc(e.actor_name||e.actor_id)+' <span class="audit-role '+(e.actor_role==='admin'?'admin':'mod')+'">'+String(e.actor_role||'').toUpperCase()+'</span></span></div>'
+        + '<div class="audit-meta"><span class="audit-who">'+uavHtml(e.actor_avatar, e.actor_name, 20)+pccEsc(e.actor_name||e.actor_id)+' <span class="audit-role '+(e.actor_role==='admin'?'admin':'mod')+'">'+String(e.actor_role||'').toUpperCase()+'</span></span></div>'
         + auditDetailsHtml(e.details) + '</div>'
         + '<div class="audit-when">'+formatWhen(e.created_at)+'</div>'
       + '</div>';
@@ -8080,7 +8207,7 @@ async function loadAdminRedemptions(status){
       return '<div class="rq" style="--acc:'+acc+';animation-delay:'+Math.min(i*0.04,.4)+'s">'
         + '<div class="rq-main">'
           + (isPending && status === 'pending' ? '<div class="rq-num">#'+(i+1)+'</div>' : '<div class="rq-num" style="font-size:1rem">💸</div>')
-          + '<div class="rd-who"><div class="rq-title">'+pccEsc(r.username)+'</div>'
+          + '<div class="rd-who"><div class="rq-title uav-line">'+uavHtml(r.avatar, r.username, 30)+pccEsc(r.username)+'</div>'
             + '<div class="rq-sub"><span class="ago">⏱ '+rqAgo(r.created_at)+'</span><span>'+formatWhen(r.created_at)+'</span>'+(r.paid_at ? '<span style="color:#4ade80">Paid '+formatWhen(r.paid_at)+'</span>' : '')+'<span class="rd-id">'+pccEsc(r.id)+'</span></div></div>'
           + '<div class="rd-amt"><b>$'+Number(r.usd_value||0).toFixed(2)+'</b><span>'+Number(r.coin_amount||0).toLocaleString()+' coins</span><div style="margin-top:8px">'+statusPill+'</div></div>'
         + '</div>'
@@ -8407,7 +8534,7 @@ async function loadAdminVerifyList(status){
       return '<div class="admin-row" style="align-items:flex-start">'
         + checkboxHtml
         + '<div style="flex:1">'
-          + '<b>'+c.username+'</b> <span style="color:var(--faint);font-size:.78rem">('+c.user_id+')</span><br>'
+          + '<div class="uav-line">'+uavHtml(c.avatar, c.username, 30)+'<b>'+pccEsc(c.username)+'</b> <span style="color:var(--faint);font-size:.78rem">('+c.user_id+')</span></div>'
           + '<span style="color:var(--muted);font-size:.85rem">Claims: <b>'+c.casino_username+'</b> on '+(CASINO_DISPLAY_NAMES[c.casino]||c.casino)+'</span>'
           + (c.submitted_at ? '<br>' + adminWhenChip('Submitted', c.submitted_at) : '')
           + (c.current_wager > 0 ? '<br><span style="color:var(--faint);font-size:.78rem">Current wager: $'+c.current_wager.toLocaleString()+'</span>' : '')
@@ -8720,7 +8847,7 @@ async function loadAdminSlots(filter){
           + '<div class="rq-num">#'+(i+1)+'</div>'
           + '<div class="rq-thumb">'+thumb+'</div>'
           + '<div style="min-width:0"><div class="rq-title">'+pccEsc(r.slot_name)+'</div>'
-            + '<div class="rq-sub"><span class="who">from <b>'+pccEsc(r.username)+'</b></span>'+(provider ? '<span class="prov">'+pccEsc(provider)+'</span>' : '')+'<span class="ago">⏱ '+rqAgo(r.created_at)+'</span></div></div>'
+            + '<div class="rq-sub"><span class="who">from '+uavHtml(r.avatar, r.username, 22)+'<b>'+pccEsc(r.username)+'</b></span>'+(provider ? '<span class="prov">'+pccEsc(provider)+'</span>' : '')+'<span class="ago">⏱ '+rqAgo(r.created_at)+'</span></div></div>'
           + '<div class="rq-status">'+rqStatusBadge(r)+(r.coins_awarded ? '<div style="margin-top:6px">'+'<span class="admin-pill admin-pill-profit">🪙 '+Number(r.coins_awarded).toLocaleString()+' coins awarded</span></div>' : '')+'</div>'
         + '</div>'
         + (r.note ? '<div class="rq-note"><small>NOTE FROM '+pccEsc(String(r.username||'').toUpperCase())+'</small>'+pccEsc(r.note)+'</div>' : '')
@@ -8813,7 +8940,7 @@ async function loadAdminBattles(filter){
           + '<div class="rq-num">#'+(i+1)+'</div>'
           + '<div class="rq-thumb" style="width:60px">⚔️</div>'
           + '<div style="min-width:0"><div style="font-size:.7rem;letter-spacing:.14em;color:var(--faint);font-weight:700">BATTLE WITH</div><div class="rq-title">'+pccEsc(r.kick_discord_name)+'</div>'
-            + '<div class="rq-sub"><span class="who">requested by <b>'+pccEsc(r.username)+'</b></span><span class="ago">⏱ '+rqAgo(r.created_at)+'</span></div></div>'
+            + '<div class="rq-sub"><span class="who">requested by '+uavHtml(r.avatar, r.username, 22)+'<b>'+pccEsc(r.username)+'</b></span><span class="ago">⏱ '+rqAgo(r.created_at)+'</span></div></div>'
           + '<div class="rq-status">'+rqStatusBadge(r)+'</div>'
         + '</div>'
         + '<div class="rq-specs">'
