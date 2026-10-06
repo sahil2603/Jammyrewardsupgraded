@@ -8,6 +8,18 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-06: Cut D1 reads (free plan was at 78% of 5M rows/day)
+
+- **Cause:** every open tab polled `/api/vault` every 30s. Each call rebuilt the vault from several tables and did a full scan of `coin_transactions`, which grows with every daily claim and bulk coin send. `/api/casino-wagers` did the same. The per-minute cron's push cleanup also scanned every push subscription even with nothing queued.
+- **Worker:**
+  - `/api/vault` and `/api/casino-wagers` are shared responses, served from a 60s cache. That's an in-memory copy per worker instance (which works on workers.dev) plus Cloudflare's edge cache (which only kicks in on a custom domain), and simultaneous requests share one build.
+  - `/api/casino-wagers` no longer depends on who's asking; the site works out the "You" tag itself.
+  - The cron creates indexes once (`idx_coin_tx_type`, `idx_coin_tx_user`, `idx_page_views_created`, `idx_casino_links_status`), remembered in `app_state` as `indexes_v1`. Totals, profile activity and analytics now read only matching rows.
+  - The push flush stops after a 1-row check when the queue is empty.
+- **Site:** the vault refresh runs every 2 minutes instead of 30s, and only while the tab is visible.
+
+---
+
 ## 2026-10-05: Vault page overhaul + new Active Users score
 
 **Vault page**
