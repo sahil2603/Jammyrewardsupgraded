@@ -8,6 +8,39 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-08 (c): Full standings polish (current + previous race)
+
+The podium is unchanged. The table below it gets:
+- **Board:** a slow glowing border that travels around the edge, and a **● LIVE** / **FINAL** / **SOON** tag next to "Full standings".
+- **Rows:**
+  - Rows slide in one after another with a short blur-in, and wagered amounts **count up** from $0 when the board loads.
+  - A colour bar on the left of each row: gold, silver or bronze for the top 3, green for the other paid places.
+  - Hover lifts and glows the row and tilts the avatar.
+- **Rank badges:** top-3 badges are metallic with a moving shine; the top-3 rows get a soft sheen and avatar rings; ranks 4+ are round badges, green while in the prize places.
+- **Prizes:** shown as glowing chips in each row's colour. On the previous race they read "$300 **won**".
+- **Prize line:** a gold "🏆 PRIZE LINE · TOP 10 GET PAID" divider after the last paid rank, with players outside it slightly dimmed.
+- **Current race only:** players outside the prizes show "$X to the prize line".
+- Visitors who have "reduce motion" turned on get a still version.
+
+---
+
+## 2026-10-08 (b): Races moved to 9 Oct → 23 Oct (00:00 UTC), new 14-day schedule
+
+- **New schedule:** the last race on the old schedule was 24 Sep → 8 Oct. From **9 Oct 00:00 UTC** races run 9 → 23 Oct, 23 Oct → 6 Nov, 6 → 20 Nov, … every 14 days.
+  - Worker: `powerWinRaces()`. Site: `powerwinRaces()`. The two use the same rules.
+  - This replaces the earlier "count from 9 Oct" override for the 8 Oct race.
+- **Exact windows:** every race now counts exactly its own window via Power.win's from/to range. The rolling 14-day BIWEEKLY feed is never used for the race board. If the fetch fails, the site shows "couldn't load" instead of wrong numbers.
+- **Before 9 Oct 00:00 UTC:**
+  - The live pill says "STARTING SOON" and the countdown reads "RACE STARTS IN".
+  - The board shows an empty state ("The new leaderboard starts 9 Oct at 00:00 UTC…").
+  - A gold notice says "New leaderboard starts 9 Oct, 00:00 UTC and runs until 23 Oct, 00:00 UTC", with the visitor's local time.
+- **After the start:** the notice reads "This race: 9 Oct 00:00 UTC → 23 Oct 00:00 UTC".
+- **Dates:** race dates are shown in UTC ("Oct 9, 2026 → Oct 23, 2026 (00:00 UTC)").
+- **Previous race:** the 24 Sep → 8 Oct race (already frozen), until the 9 Oct race ends.
+- The vault is unaffected.
+
+---
+
 ## 2026-10-08: Current race counts from 9 Oct 00:00 UTC
 
 - The 8 Oct → 22 Oct Power.win race counts wagering from **9 Oct 00:00 UTC** (5:30 AM IST), using a new `POWERWIN_FETCH_OVERRIDES` entry `'2026-10-08': { from: '2026-10-09', to: '2026-10-22' }`.

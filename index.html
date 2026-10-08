@@ -1635,6 +1635,51 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 #lbFullRows .lbx-row.top{background:linear-gradient(90deg,rgba(var(--c),.12),rgba(255,255,255,.02) 60%);border-color:rgba(var(--c),.25)}
 #lbFullRows .lbx-row.r1{--c:251,191,36}#lbFullRows .lbx-row.r2{--c:203,213,225}#lbFullRows .lbx-row.r3{--c:224,145,92}
 #lbFullRows .lbx-row.hl{border-color:rgba(251,191,36,.6);background:rgba(251,191,36,.1)}
+/* ===== Full standings polish (2026-10-08) ===== */
+.lbx-board{position:relative;isolation:isolate}
+.lbx-board-glow{position:absolute;inset:-1px;border-radius:23px;padding:1px;z-index:-1;pointer-events:none;
+  background:conic-gradient(from var(--lbxA,0deg),rgba(168,85,247,.0) 0deg,rgba(168,85,247,.55) 60deg,rgba(34,211,238,.45) 120deg,rgba(251,191,36,.0) 200deg,rgba(168,85,247,.0) 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:lbxSpinA 8s linear infinite}
+@property --lbxA{syntax:'<angle>';initial-value:0deg;inherits:false}
+@keyframes lbxSpinA{to{--lbxA:360deg}}
+.lbx-state{display:inline-flex;align-items:center;gap:6px;vertical-align:middle;margin-left:8px;padding:3px 10px;border-radius:999px;font:700 .62rem 'Poppins';letter-spacing:.14em;text-transform:uppercase;color:#4ade80;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.35)}
+.lbx-state i{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor;animation:lbxPulse 1.6s infinite}
+.lbx-state.final{color:#cbd5e1;background:rgba(148,163,184,.1);border-color:rgba(148,163,184,.35)}.lbx-state.final i{animation:none;box-shadow:none}
+#lbFullRows .lbx-row{animation:lbxRowIn .6s cubic-bezier(.16,1,.3,1) both;overflow:hidden}
+@keyframes lbxRowIn{from{opacity:0;transform:translateX(-18px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+#lbFullRows .lbx-row::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:3px;background:transparent;transition:background .25s,box-shadow .25s}
+#lbFullRows .lbx-row.paid::before{background:rgba(74,222,128,.55)}
+#lbFullRows .lbx-row.top::before{background:rgb(var(--c));box-shadow:0 0 12px rgba(var(--c),.7)}
+#lbFullRows .lbx-row:hover{transform:translateX(4px) scale(1.006);background:rgba(168,85,247,.09);border-color:rgba(168,85,247,.35);box-shadow:0 10px 30px -18px rgba(168,85,247,.9)}
+#lbFullRows .lbx-row:hover .a{transform:scale(1.1) rotate(-6deg)}
+.lbx-pl .a{transition:transform .3s cubic-bezier(.2,1.4,.4,1);box-shadow:0 0 0 2px rgba(255,255,255,.06)}
+#lbFullRows .lbx-row.top .a{box-shadow:0 0 0 2px rgba(var(--c),.8),0 0 14px rgba(var(--c),.45)}
+#lbFullRows .lbx-row.top::after{content:"";position:absolute;top:0;bottom:0;width:30%;left:-40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.08),transparent);animation:lbxSheen 5s ease-in-out infinite;pointer-events:none}
+#lbFullRows .lbx-row.r2::after{animation-delay:.6s}#lbFullRows .lbx-row.r3::after{animation-delay:1.2s}
+@keyframes lbxSheen{0%,60%{left:-40%}100%{left:130%}}
+.lbx-rk.t{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(255,255,255,.55),rgb(var(--c)) 45%,rgba(0,0,0,.25))}
+.lbx-rk.t::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.7) 50%,transparent 65%);transform:translateX(-120%);animation:lbxBadge 3.2s ease-in-out infinite}
+@keyframes lbxBadge{0%,55%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+.lbx-rk.n{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;font:800 .82rem 'Poppins';color:var(--muted);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+.lbx-rk.n.paid{color:#bbf7d0;background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.3)}
+.lbx-row .p em{display:inline-flex;align-items:baseline;gap:3px;font-style:normal;padding:4px 10px;border-radius:999px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);box-shadow:0 0 14px -6px rgba(74,222,128,.8)}
+.lbx-row .p em small{font-size:.66rem;font-weight:600;color:#86efac}
+#lbFullRows .lbx-row.top .p em{background:rgba(var(--c),.14);border-color:rgba(var(--c),.45);color:rgb(var(--c));box-shadow:0 0 16px -6px rgba(var(--c),.9)}
+#lbFullRows .lbx-row.unpaid{opacity:.86}
+#lbFullRows .lbx-row.unpaid:hover{opacity:1}
+.lbx-gap{display:block;margin-top:4px;font-size:.7rem;color:#c4b5fd;opacity:.85}
+.lbx-cut{position:relative;display:flex;align-items:center;gap:12px;margin:14px 6px 6px;color:#fde68a;font:700 .7rem 'Poppins';letter-spacing:.14em;text-transform:uppercase;animation:lbxRowIn .6s cubic-bezier(.16,1,.3,1) both}
+.lbx-cut::before,.lbx-cut::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(251,191,36,.6),transparent)}
+.lbx-cut span{padding:4px 12px;border-radius:999px;background:rgba(251,191,36,.08);border:1px dashed rgba(251,191,36,.45);white-space:nowrap}
+.lbx-row .w{transition:color .3s}
+#lbFullRows .lbx-row:hover .w{color:#e9d5ff}
+@media (max-width:640px){
+  .lbx-rk.n{width:28px;height:28px;font-size:.74rem}
+  .lbx-row .p em{padding:2px 7px;background:none;border:0;box-shadow:none}
+  .lbx-gap{font-size:.66rem}
+  .lbx-cut{font-size:.62rem;letter-spacing:.1em}
+}
+@media (prefers-reduced-motion:reduce){.lbx-board-glow,#lbFullRows .lbx-row::after,.lbx-rk.t::after{animation:none}#lbFullRows .lbx-row,.lbx-cut{animation:none}}
 .lbx-empty{padding:34px;text-align:center;color:var(--faint)}
 .lbx-more{display:block;margin:12px auto 4px;padding:11px 22px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:#fff;font:600 .88rem 'Poppins';cursor:pointer}
 .lbx-more:hover{border-color:var(--purple)}
@@ -2226,6 +2271,10 @@ html.lenis{scroll-behavior:auto!important}
 .lbx-live.ended{background:rgba(148,163,184,.12)!important;border-color:rgba(148,163,184,.35)!important;color:#cbd5e1!important}
 .lbx-live.ended i{background:#94a3b8!important;box-shadow:none!important;animation:none!important}
 .lbx-prev .lbx-prog span{background:linear-gradient(90deg,#94a3b8,#64748b)!important}
+.lbx-notice{width:max-content;max-width:100%;margin:12px auto 0;padding:8px 16px;border-radius:999px;font-size:.84rem;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09)}
+.lbx-notice b{color:#fff}.lbx-notice span{color:var(--faint)}
+.lbx-notice.soon{color:#fde68a;background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.4)}.lbx-notice.soon b{color:#fde68a}
+@media (max-width:640px){.lbx-notice{border-radius:14px;text-align:center}}
 .lbx-wait{text-align:center;padding:46px 20px 40px;border-radius:18px;margin-top:8px;background:radial-gradient(80% 120% at 50% 0%,rgba(168,85,247,.16),transparent 70%),rgba(255,255,255,.02);border:1px dashed rgba(168,85,247,.35)}
 .lbx-wait-flag{font-size:2.6rem;display:inline-block;animation:prcWave 2.6s ease-in-out infinite;transform-origin:20% 90%}
 .lbx-wait h4{font:400 1.5rem 'Lilita One',sans-serif;margin:10px 0 6px;color:#fff}
@@ -4192,6 +4241,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <button type="button" class="on" data-r="current" onclick="lbRace('current')"><i class="dot"></i>Current race</button>
           <button type="button" data-r="previous" onclick="lbRace('previous')">🏁 Previous race</button>
         </div>
+        <div class="lbx-notice" id="lbxNotice"></div>
       </div>
 
       <!-- race info -->
@@ -4228,9 +4278,9 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
       </div>
 
       <!-- table -->
-      <div class="lbx-board" id="lb-full-list">
+      <div class="lbx-board" id="lb-full-list"><div class="lbx-board-glow" aria-hidden="true"></div>
         <div class="lbx-board-top">
-          <div><h3>Full standings</h3><span class="lbx-upd">Last updated · <span id="lbUpdatedTime"></span></span></div>
+          <div><h3>Full standings <span class="lbx-state" id="lbxState"><i></i><span>Live</span></span></h3><span class="lbx-upd">Last updated · <span id="lbUpdatedTime"></span></span></div>
           <div class="lbx-tools" id="lbActionButtons">
             <input id="lbxSearch" type="search" placeholder="Find your name…" oninput="lbxFilter()" aria-label="Find a player">
             <button class="lbx-x" onclick="shareLeaderboardOnX()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Share</button>
@@ -5666,28 +5716,41 @@ function currentMonthlyPeriod(){
    rolling "last 14 days" window, so the real race dates are computed here instead. If Jammy's
    race ever moves, change POWERWIN_CYCLE_ANCHOR to any real start date of the new schedule. */
 var POWERWIN_CYCLE_ANCHOR = Date.UTC(2026, 8, 10, 0, 0, 0);   /* Thu 10 Sep 2026 00:00 UTC */
-function currentPowerwinPeriod(){
-  var len = 14*24*60*60*1000;
-  var k = Math.floor((Date.now() - POWERWIN_CYCLE_ANCHOR) / len);
-  var start = POWERWIN_CYCLE_ANCHOR + k*len;
-  return { start: new Date(start), end: new Date(start + len) };
+/* 2026-10-08: races moved by a day. Last old race 24 Sep -> 8 Oct; from 9 Oct 00:00 UTC races
+   run 9 -> 23 Oct, 23 Oct -> 6 Nov, ... Between 8 and 9 Oct the current race is the upcoming one.
+   (Same schedule as powerWinRaces() in the worker.) */
+var POWERWIN_NEW_ANCHOR = Date.UTC(2026, 9, 9, 0, 0, 0), POWERWIN_LAST_OLD_END = Date.UTC(2026, 9, 8);
+function powerwinRaces(now){
+  var len = 14*24*60*60*1000, P = function(a, b, up){ return { start: new Date(a), end: new Date(b), upcoming: !!up }; };
+  if(now < POWERWIN_LAST_OLD_END){ var k0 = Math.floor((now - POWERWIN_CYCLE_ANCHOR) / len), s0 = POWERWIN_CYCLE_ANCHOR + k0*len; return { current: P(s0, s0+len), previous: P(s0-len, s0) }; }
+  if(now < POWERWIN_NEW_ANCHOR) return { current: P(POWERWIN_NEW_ANCHOR, POWERWIN_NEW_ANCHOR+len, true), previous: P(POWERWIN_LAST_OLD_END-len, POWERWIN_LAST_OLD_END) };
+  var k = Math.floor((now - POWERWIN_NEW_ANCHOR) / len), st = POWERWIN_NEW_ANCHOR + k*len;
+  return { current: P(st, st+len), previous: k === 0 ? P(POWERWIN_LAST_OLD_END-len, POWERWIN_LAST_OLD_END) : P(st-len, st) };
 }
+function currentPowerwinPeriod(){ return powerwinRaces(Date.now()).current; }
 function lbcd2(){
   var period = _realPeriodOverride
     || (CURRENT_LB_CASINO === 'powerwin' ? currentPowerwinPeriod() : currentLbPeriod());
   var n = new Date();
-  var s = Math.max(0, Math.floor((period.end - n)/1000));
+  /* Race not started yet: count down to the start instead of the end. */
+  var notStarted = LB_RACE !== 'previous' && period.start > n;
+  var cwd = document.getElementById('lbxCdWord');
+  if(cwd && LB_RACE !== 'previous'){ var w = notStarted ? 'RACE STARTS IN' : 'RACE ENDS IN'; if(cwd.textContent !== w) cwd.textContent = w; }
+  var lt0 = document.getElementById('lbxLiveTxt');
+  if(lt0 && LB_RACE !== 'previous'){ var w2 = notStarted ? 'STARTING SOON' : 'LIVE RACE'; if(lt0.textContent !== w2) lt0.textContent = w2; }
+  var s = Math.max(0, Math.floor(((notStarted ? period.start : period.end) - n)/1000));
   var el = document.getElementById('lb-cd2');
   if(el) el.textContent = s<=0 ? 'ENDED' : Math.floor(s/86400)+'d '+Math.floor(s/3600)%24+'h '+Math.floor(s/60)%60+'m';
   var pad = function(v){ return (v<10?'0':'')+v; };
   var seg = { lbxD: Math.floor(s/86400), lbxH: Math.floor(s/3600)%24, lbxM: Math.floor(s/60)%60, lbxS: s%60 };
   Object.keys(seg).forEach(function(k){ var e = document.getElementById(k); if(e){ var v = k==='lbxD' ? String(seg[k]) : pad(seg[k]); if(e.textContent !== v) e.textContent = v; } });
   var pr = document.getElementById('lbxProg');
-  if(pr){ var tot = period.end - period.start; pr.style.width = Math.min(100, Math.max(0, (n - period.start) / tot * 100)).toFixed(2) + '%'; }
+  if(pr && notStarted) pr.style.width = '0%';
+  else if(pr){ var tot = period.end - period.start; pr.style.width = Math.min(100, Math.max(0, (n - period.start) / tot * 100)).toFixed(2) + '%'; }
   var datesEl = document.getElementById('lb2-dates');
   if(datesEl){
-    var opts = {month:'short', day:'numeric', year:'numeric'};
-    datesEl.textContent = period.start.toLocaleDateString('en-US',opts)+' \u2192 '+period.end.toLocaleDateString('en-US',opts);
+    var opts = {month:'short', day:'numeric', year:'numeric', timeZone:'UTC'};
+    datesEl.textContent = period.start.toLocaleDateString('en-US',opts)+' \u2192 '+period.end.toLocaleDateString('en-US',opts)+' (00:00 UTC)';
   }
   var updEl = document.getElementById('lbUpdatedTime');
   if(updEl) updEl.textContent = LB_RACE === 'previous' ? (_lbWaiting ? 'waiting for the race to end' : 'final standings') : n.toLocaleString('en-US');
@@ -5723,9 +5786,22 @@ var lbRequestSeq = 0;
 /* Current race = live board. Previous race = the final standings of the race before it (the
    worker fetches that race's exact dates from Power.win, so it's frozen once it ends). */
 var LB_RACE = 'current', _lbWaiting = false;
+/* One line under the race toggle with the race's exact UTC window (and, before it starts, when). */
+function lbxSetNotice(meta){
+  var el = document.getElementById('lbxNotice'); if(!el) return;
+  if(LB_RACE !== 'current' || !meta.startDate || !meta.endDate){ el.style.display = 'none'; return; }
+  var f = function(d){ return new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'short', timeZone:'UTC' }); };
+  var local = new Date(meta.startDate).toLocaleString(undefined, { day:'numeric', month:'short', hour:'numeric', minute:'2-digit' });
+  el.innerHTML = meta.upcoming
+    ? '🏁 <b>New leaderboard starts '+f(meta.startDate)+', 00:00 UTC</b> and runs until '+f(meta.endDate)+', 00:00 UTC <span>('+local+' your time)</span>'
+    : '🏁 This race: <b>'+f(meta.startDate)+' 00:00 UTC → '+f(meta.endDate)+' 00:00 UTC</b>';
+  el.classList.toggle('soon', !!meta.upcoming);
+  el.style.display = '';
+}
 /* Previous race before the first JAMMMY race has finished: nothing to show yet, so say so and
    count down to when the current race's final standings land here. */
 function renderPrevWaiting(meta){
+  setTimeout(lbxSetState, 0);
   var end = meta.results_at ? new Date(meta.results_at) : currentPowerwinPeriod().end;
   var start = meta.current_start ? new Date(meta.current_start) : currentPowerwinPeriod().start;
   _lbWaiting = true;
@@ -5750,12 +5826,13 @@ function lbRace(r){
   document.querySelectorAll('#lbxRaceTog button').forEach(function(b){ b.classList.toggle('on', b.dataset.r === r); b.setAttribute('aria-selected', b.dataset.r === r); });
   var pill = document.getElementById('lbxLivePill'); if(pill) pill.classList.toggle('ended', prev);
   var lt = document.getElementById('lbxLiveTxt'); if(lt) lt.textContent = prev ? 'FINAL RESULTS' : 'LIVE RACE';
+  var nt = document.getElementById('lbxNotice'); if(nt && prev) nt.style.display = 'none';
   var podx = document.getElementById('lbxPodium'); if(podx && !prev) podx.classList.remove('lbx-hide');
   var cw = document.getElementById('lbxCdWord'); if(cw) cw.textContent = prev ? 'RACE ENDED' : 'RACE ENDS IN';
   var sub = document.getElementById('lbxSub'); if(sub) sub.innerHTML = prev ? 'Final standings of the last race. Wager under code <b>JAMMMY</b> to get on the current one.' : 'Wager under code <b>JAMMMY</b>, climb the ranks and win a share of the prize pool. Updated live.';
   var lb = document.getElementById('leaderboards'); if(lb) lb.classList.toggle('lbx-prev', prev);
   _realPeriodOverride = null;
-  if(prev){ var cur = currentPowerwinPeriod(), len = cur.end - cur.start; _realPeriodOverride = { start: new Date(cur.start - len), end: new Date(cur.start) }; }
+  if(prev){ var pv = powerwinRaces(Date.now()).previous; _realPeriodOverride = { start: pv.start, end: pv.end }; }
   lbcd2();
   loadLeaderboard(CURRENT_LB_CASINO);
 }
@@ -5795,12 +5872,14 @@ async function loadLeaderboard(casino){
     /* If the casino's API returns its leaderboard's real start/end dates, use them for the
        countdown and date range; otherwise fall back to the generic assumed cycle. */
     _lbWaiting = false;
+    lbxSetNotice(data.meta || {});
     if(data.waiting){ renderPrevWaiting(data.meta || {}); return; }
     if(podiumEl) podiumEl.classList.remove('lbx-hide');
     _realPeriodOverride = (data.meta && data.meta.startDate && data.meta.endDate)
       ? { start: new Date(data.meta.startDate), end: new Date(data.meta.endDate) }
       : null;
     lbcd2();
+    lbxSetState();
     renderLeaderboardRows(data.wagers || [], data.meta && data.meta.leaderboard && data.meta.leaderboard.leaderboardRewards);
     _lastLbWagers = data.wagers || []; /* kept for the Share on X button -- real top-3 names + wagered amounts */
   }catch(e){
@@ -5842,22 +5921,34 @@ function renderLeaderboardRows(wagers, rewards){
       + '<div class="lbx-step"><small>PRIZE</small><b>'+(prizeFor(rank) || '—')+'</b></div>';
   });
   if(!wagers || !wagers.length){
-    rowsEl.innerHTML = '<div class="lbx-empty">'+(LB_RACE === 'previous' ? 'No results recorded for the previous race.' : 'No wagers recorded for this period yet. Be the first on the board!')+'</div>';
+    var upc = LB_RACE !== 'previous' && _realPeriodOverride && _realPeriodOverride.start > new Date();
+    rowsEl.innerHTML = '<div class="lbx-empty">'+(LB_RACE === 'previous' ? 'No results recorded for the previous race.' : upc ? '🏁 The new leaderboard starts '+_realPeriodOverride.start.toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'})+' at 00:00 UTC. Wager under code JAMMMY from then to get on the board!' : 'No wagers recorded for this period yet. Be the first on the board!')+'</div>';
     _lbxAll = []; lbxUpdateMore(0); return;
   }
   var top = Number(wagers[0].wager) || 1;
+  var prev = LB_RACE === 'previous';
+  var paidRanks = Object.keys(prizeByRank).length ? Math.max.apply(null, Object.keys(prizeByRank).map(Number)) : 3;
+  var lineWager = (wagers.find(function(w){ return (w.rank||0) === paidRanks; }) || {}).wager || 0;
+  _lbxPaidRanks = paidRanks; _lbxFresh = true;
   _lbxAll = wagers.map(function(w){
     var rank = w.rank || 0, prize = prizeFor(rank);
     var initial = pccEsc((w.name||'?').charAt(0).toUpperCase());
     var tone = rank === 1 ? '251,191,36' : rank === 2 ? '203,213,225' : rank === 3 ? '224,145,92' : '';
     var pct = Math.max(2, Math.min(100, (Number(w.wager)||0) / top * 100));
-    return { name: String(w.name||'').toLowerCase(), html:
-      '<div class="lbx-row'+(tone ? ' top r'+rank : '')+'">'
-        + '<span>'+(tone ? '<span class="lbx-rk t">'+rank+'</span>' : '<span class="lbx-rk">#'+rank+'</span>')+'</span>'
+    var paid = !!prize;
+    var gap = (!prev && !paid && lineWager > (Number(w.wager)||0)) ? lineWager - (Number(w.wager)||0) : 0;
+    var rankHtml = tone
+      ? '<span class="lbx-rk t">'+rank+'</span>'
+      : '<span class="lbx-rk n'+(paid ? ' paid' : '')+'">'+rank+'</span>';
+    return { name: String(w.name||'').toLowerCase(), rank: rank, html:
+      '<div class="lbx-row'+(tone ? ' top r'+rank : '')+(paid ? ' paid' : ' unpaid')+'">'
+        + '<span>'+rankHtml+'</span>'
         + '<span class="lbx-pl"><span class="a">'+(w.avatarUrl ? '<img src="'+pccEsc(w.avatarUrl)+'" alt="">' : initial)+'</span>'
-          + '<span class="n"><b>'+pccEsc(maskUsername(w.name))+'</b><span class="lbx-bar"><span style="width:'+pct.toFixed(1)+'%"></span></span></span></span>'
-        + '<span class="w">'+((w.wager && w.wager > 0) ? lbxMoney(w.wager) : '—')+'</span>'
-        + '<span class="p'+(prize ? ' win' : '')+'">'+(prize || '—')+'</span>'
+          + '<span class="n"><b>'+pccEsc(maskUsername(w.name))+'</b><span class="lbx-bar"><span style="width:'+pct.toFixed(1)+'%"></span></span>'
+          + (gap ? '<small class="lbx-gap">$'+Math.ceil(gap).toLocaleString()+' to the prize line</small>' : '')
+          + '</span></span>'
+        + '<span class="w" data-v="'+(Number(w.wager)||0)+'">'+((w.wager && w.wager > 0) ? lbxMoney(w.wager) : '—')+'</span>'
+        + '<span class="p'+(paid ? ' win' : '')+'">'+(paid ? '<em>'+prize+(prev ? '<small> won</small>' : '')+'</em>' : '—')+'</span>'
       + '</div>' };
   });
   _lbxShowAll = false;
@@ -5869,10 +5960,39 @@ function lbxDraw(){
   var q = ((document.getElementById('lbxSearch')||{}).value || '').trim().toLowerCase();
   var list = q ? _lbxAll.filter(function(r){ return r.name.indexOf(q) !== -1; }) : _lbxAll;
   var shown = (q || _lbxShowAll) ? list : list.slice(0, LBX_VISIBLE);
-  rowsEl.innerHTML = shown.length
-    ? shown.map(function(r, i){ return r.html.replace('<div class="lbx-row', '<div style="animation-delay:'+Math.min(i*0.035,.5)+'s" class="lbx-row'+(q ? ' hl' : '')); }).join('')
-    : '<div class="lbx-empty">No player matching “'+pccEsc(q)+'” on this leaderboard.</div>';
+  var html = '';
+  shown.forEach(function(r, i){
+    html += r.html.replace('<div class="lbx-row', '<div style="animation-delay:'+Math.min(i*0.045,.6)+'s" class="lbx-row'+(q ? ' hl' : ''));
+    var next = shown[i+1];
+    if(!q && next && r.rank === _lbxPaidRanks) html += '<div class="lbx-cut" style="animation-delay:'+Math.min((i+1)*0.045,.6)+'s"><span>🏆 Prize line · top '+_lbxPaidRanks+' get paid</span></div>';
+  });
+  rowsEl.innerHTML = shown.length ? html : '<div class="lbx-empty">No player matching “'+pccEsc(q)+'” on this leaderboard.</div>';
   lbxUpdateMore(q ? 0 : list.length);
+  if(_lbxFresh && !q){ _lbxFresh = false; lbxCountUp(rowsEl); }
+}
+var _lbxPaidRanks = 10, _lbxFresh = false;
+/* Wagered amounts count up from 0 when a board loads (skipped for reduced motion / searches). */
+function lbxCountUp(root){
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var els = [].slice.call(root.querySelectorAll('.lbx-row .w[data-v]'));
+  var t0 = performance.now();
+  els.forEach(function(el, i){ el.dataset.d = Math.min(i*45, 600); el.textContent = lbxMoney(0); });
+  (function tick(now){
+    var done = true;
+    els.forEach(function(el){
+      var v = Number(el.dataset.v) || 0, p = Math.min(1, Math.max(0, (now - t0 - el.dataset.d) / 1100));
+      if(p < 1) done = false;
+      var e = 1 - Math.pow(1 - p, 3);
+      el.textContent = v > 0 ? lbxMoney(v * e) : '—';
+    });
+    if(!done) requestAnimationFrame(tick);
+  })(t0);
+}
+function lbxSetState(){
+  var st = document.getElementById('lbxState'); if(!st) return;
+  var prevMode = LB_RACE === 'previous';
+  st.classList.toggle('final', prevMode);
+  st.querySelector('span').textContent = prevMode ? 'Final' : (_realPeriodOverride && _realPeriodOverride.start > new Date() ? 'Soon' : 'Live');
 }
 function lbxUpdateMore(total){
   var b = document.getElementById('lbxMore'); if(!b) return;
