@@ -1623,6 +1623,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .lbx-pl{display:flex;align-items:center;gap:12px;min-width:0}
 .lbx-pl .a{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;overflow:hidden;font:700 .82rem 'Poppins';color:#fff;background:linear-gradient(135deg,#a855f7,#22d3ee)}
 .lbx-pl .a img{width:100%;height:100%;object-fit:cover}
+.lbx-pl .a.pic{background:#1a1030}
 .lbx-pl .n{min-width:0;flex:1;display:block}
 .lbx-pl .n b{display:block;font:600 .95rem 'Poppins';color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lbx-bar{display:block;height:4px;border-radius:99px;background:rgba(255,255,255,.06);margin-top:6px;overflow:hidden;max-width:260px}
@@ -2271,6 +2272,7 @@ html.lenis{scroll-behavior:auto!important}
 .lbx-live.ended{background:rgba(148,163,184,.12)!important;border-color:rgba(148,163,184,.35)!important;color:#cbd5e1!important}
 .lbx-live.ended i{background:#94a3b8!important;box-shadow:none!important;animation:none!important}
 .lbx-prev .lbx-prog span{background:linear-gradient(90deg,#94a3b8,#64748b)!important}
+@media (max-width:440px){.lbx-tw{display:none}}
 .lbx-notice{width:max-content;max-width:100%;margin:12px auto 0;padding:8px 16px;border-radius:999px;font-size:.84rem;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09)}
 .lbx-notice b{color:#fff}.lbx-notice span{color:var(--faint)}
 .lbx-notice.soon{color:#fde68a;background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.4)}.lbx-notice.soon b{color:#fde68a}
@@ -3996,7 +3998,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
             </div>
           </div>
           <div class="hx-fc hx-fc-race" data-hx-mouse="2.2" onclick="goToLeaderboard('powerwin')">
-            <div class="hx-fc-top"><img src="powerwin.png" alt="" class="hx-fc-pw"><span>Race ends in</span></div>
+            <div class="hx-fc-top"><img src="powerwin.png" alt="" class="hx-fc-pw"><span>Leaderboard ends in</span></div>
             <div class="hx-fc-cd" id="hxRaceCd"><b>--</b>d <b>--</b>h <b>--</b>m</div>
             <div class="hx-fc-sub"><b>$1,000</b> prize pool</div>
           </div>
@@ -4030,10 +4032,10 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
     <div class="hx-marquee" id="hxMarquee" aria-hidden="true">
       <div class="hx-mq-track" id="hxMqTrack">
         <div class="hx-mq-row">
-          <span>Code <b>JAMMMY</b></span><i>✦</i><span>Live wager races</span><i>✦</i><span>Community Vault</span><i>✦</i><span>Exclusive bonuses</span><i>✦</i><span>Daily coin claims</span><i>✦</i><span>Redeem for cash &amp; crypto</span><i>✦</i><span>Slot &amp; battle requests</span><i>✦</i>
+          <span>Code <b>JAMMMY</b></span><i>✦</i><span>Live leaderboards</span><i>✦</i><span>Community Vault</span><i>✦</i><span>Exclusive bonuses</span><i>✦</i><span>Daily coin claims</span><i>✦</i><span>Redeem for cash &amp; crypto</span><i>✦</i><span>Slot &amp; battle requests</span><i>✦</i>
         </div>
         <div class="hx-mq-row">
-          <span>Code <b>JAMMMY</b></span><i>✦</i><span>Live wager races</span><i>✦</i><span>Community Vault</span><i>✦</i><span>Exclusive bonuses</span><i>✦</i><span>Daily coin claims</span><i>✦</i><span>Redeem for cash &amp; crypto</span><i>✦</i><span>Slot &amp; battle requests</span><i>✦</i>
+          <span>Code <b>JAMMMY</b></span><i>✦</i><span>Live leaderboards</span><i>✦</i><span>Community Vault</span><i>✦</i><span>Exclusive bonuses</span><i>✦</i><span>Daily coin claims</span><i>✦</i><span>Redeem for cash &amp; crypto</span><i>✦</i><span>Slot &amp; battle requests</span><i>✦</i>
         </div>
       </div>
     </div>
@@ -4085,7 +4087,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
 
         <article class="hx-b hx-b-race hx-rv hx-tilt hx-spotlight" style="--c:251,191,36" onclick="nav('leaderboards')">
           <span class="hx-b-tag">Leaderboards</span>
-          <h3>Live wager races</h3>
+          <h3>Live leaderboards</h3>
           <p>Wager under code JAMMMY, climb the board and win cash prizes.</p>
           <div class="hx-podium" aria-hidden="true">
             <div class="p2"><i>2</i><span></span></div><div class="p1"><i>👑</i><span></span></div><div class="p3"><i>3</i><span></span></div>
@@ -4121,7 +4123,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
         <div class="hx-steps-line" aria-hidden="true"><i id="hxStepsFill"></i></div>
         <div class="hx-step hx-rv" style="--d:0s"><div class="hx-step-n"><span>01</span></div><h4>Log in with Discord</h4><p>One tap, no passwords. That's your account.</p></div>
         <div class="hx-step hx-rv" style="--d:.08s"><div class="hx-step-n"><span>02</span></div><h4>Claim your username</h4><p>Pick your casino name on your Profile. A mod verifies it.</p></div>
-        <div class="hx-step hx-rv" style="--d:.16s"><div class="hx-step-n"><span>03</span></div><h4>Play under JAMMMY</h4><p>Every wager counts toward races and fills the Vault.</p></div>
+        <div class="hx-step hx-rv" style="--d:.16s"><div class="hx-step-n"><span>03</span></div><h4>Play under JAMMMY</h4><p>Every wager counts toward the leaderboard and fills the Vault.</p></div>
         <div class="hx-step hx-rv" style="--d:.24s"><div class="hx-step-n"><span>04</span></div><h4>Collect &amp; redeem</h4><p>Cash out coins for crypto or casino balance.</p></div>
       </div>
     </div>
@@ -4230,7 +4232,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
     <div class="lbx">
       <!-- header -->
       <div class="lbx-head">
-        <div class="lbx-kicker"><span class="lbx-live" id="lbxLivePill"><i></i><span id="lbxLiveTxt">LIVE RACE</span></span><span id="lbxCasinoName">Power.win</span> wager race</div>
+        <div class="lbx-kicker"><span class="lbx-live" id="lbxLivePill"><i></i><span id="lbxLiveTxt">LIVE</span></span><span id="lbxCasinoName">Power.win</span> wager leaderboard</div>
         <h1 class="lbx-title">Climb the <span class="g">Leaderboard</span></h1>
         <p class="lbx-sub" id="lbxSub">Wager under code <b>JAMMMY</b>, climb the ranks and win a share of the prize pool. Updated live.</p>
         <div class="lbx-tabs solo" id="lbxTabs">
@@ -4238,8 +4240,8 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <button class="lbt active" onclick="lbTab(this,'powerwin')"><img src="powerwin.png" alt="Power.win" class="pw"></button>
         </div>
         <div class="lbx-race-tog" id="lbxRaceTog" role="tablist" aria-label="Which race">
-          <button type="button" class="on" data-r="current" onclick="lbRace('current')"><i class="dot"></i>Current race</button>
-          <button type="button" data-r="previous" onclick="lbRace('previous')">🏁 Previous race</button>
+          <button type="button" class="on" data-r="current" onclick="lbRace('current')"><i class="dot"></i>Current<span class="lbx-tw"> leaderboard</span></button>
+          <button type="button" data-r="previous" onclick="lbRace('previous')">🏁 Previous<span class="lbx-tw"> leaderboard</span></button>
         </div>
         <div class="lbx-notice" id="lbxNotice"></div>
       </div>
@@ -4252,7 +4254,7 @@ a[title="Instagram"] svg{stroke:url(#igGrad2)}
           <small id="lbxPaidN">Top 10 paid</small>
         </div>
         <div class="lbx-tile lbx-cd">
-          <span class="lbx-lbl"><span id="lb-cd-label">POWER.WIN</span> <span id="lbxCdWord">RACE ENDS IN</span></span>
+          <span class="lbx-lbl"><span id="lb-cd-label">POWER.WIN</span> <span id="lbxCdWord">LEADERBOARD ENDS IN</span></span>
           <div class="lbx-segs">
             <div><b id="lbxD">--</b><small>days</small></div><i>:</i>
             <div><b id="lbxH">--</b><small>hrs</small></div><i>:</i>
@@ -5735,9 +5737,9 @@ function lbcd2(){
   /* Race not started yet: count down to the start instead of the end. */
   var notStarted = LB_RACE !== 'previous' && period.start > n;
   var cwd = document.getElementById('lbxCdWord');
-  if(cwd && LB_RACE !== 'previous'){ var w = notStarted ? 'RACE STARTS IN' : 'RACE ENDS IN'; if(cwd.textContent !== w) cwd.textContent = w; }
+  if(cwd && LB_RACE !== 'previous'){ var w = notStarted ? 'LEADERBOARD STARTS IN' : 'LEADERBOARD ENDS IN'; if(cwd.textContent !== w) cwd.textContent = w; }
   var lt0 = document.getElementById('lbxLiveTxt');
-  if(lt0 && LB_RACE !== 'previous'){ var w2 = notStarted ? 'STARTING SOON' : 'LIVE RACE'; if(lt0.textContent !== w2) lt0.textContent = w2; }
+  if(lt0 && LB_RACE !== 'previous'){ var w2 = notStarted ? 'STARTING SOON' : 'LIVE'; if(lt0.textContent !== w2) lt0.textContent = w2; }
   var s = Math.max(0, Math.floor(((notStarted ? period.start : period.end) - n)/1000));
   var el = document.getElementById('lb-cd2');
   if(el) el.textContent = s<=0 ? 'ENDED' : Math.floor(s/86400)+'d '+Math.floor(s/3600)%24+'h '+Math.floor(s/60)%60+'m';
@@ -5753,7 +5755,7 @@ function lbcd2(){
     datesEl.textContent = period.start.toLocaleDateString('en-US',opts)+' \u2192 '+period.end.toLocaleDateString('en-US',opts)+' (00:00 UTC)';
   }
   var updEl = document.getElementById('lbUpdatedTime');
-  if(updEl) updEl.textContent = LB_RACE === 'previous' ? (_lbWaiting ? 'waiting for the race to end' : 'final standings') : n.toLocaleString('en-US');
+  if(updEl) updEl.textContent = LB_RACE === 'previous' ? (_lbWaiting ? 'waiting for the leaderboard to end' : 'final standings') : n.toLocaleString('en-US');
 }
 lbcd2();setInterval(lbcd2,1000);
 
@@ -5791,10 +5793,9 @@ function lbxSetNotice(meta){
   var el = document.getElementById('lbxNotice'); if(!el) return;
   if(LB_RACE !== 'current' || !meta.startDate || !meta.endDate){ el.style.display = 'none'; return; }
   var f = function(d){ return new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'short', timeZone:'UTC' }); };
-  var local = new Date(meta.startDate).toLocaleString(undefined, { day:'numeric', month:'short', hour:'numeric', minute:'2-digit' });
   el.innerHTML = meta.upcoming
-    ? '🏁 <b>New leaderboard starts '+f(meta.startDate)+', 00:00 UTC</b> and runs until '+f(meta.endDate)+', 00:00 UTC <span>('+local+' your time)</span>'
-    : '🏁 This race: <b>'+f(meta.startDate)+' 00:00 UTC → '+f(meta.endDate)+' 00:00 UTC</b>';
+    ? '🏁 <b>New leaderboard starts '+f(meta.startDate)+', 00:00 UTC</b> and runs until '+f(meta.endDate)+', 00:00 UTC'
+    : '🏁 This leaderboard: <b>'+f(meta.startDate)+' 00:00 UTC → '+f(meta.endDate)+' 00:00 UTC</b>';
   el.classList.toggle('soon', !!meta.upcoming);
   el.style.display = '';
 }
@@ -5814,9 +5815,9 @@ function renderPrevWaiting(meta){
   var when = end.toLocaleString(undefined, { weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
   var rows = document.getElementById('lbFullRows');
   if(rows) rows.innerHTML = '<div class="lbx-wait"><div class="lbx-wait-flag" aria-hidden="true">🏁</div>'
-    + '<h4>Waiting for the current race to finish</h4>'
-    + '<p>The final standings of this race will appear here the moment it ends, on <b>'+when+'</b>.</p>'
-    + '<button type="button" onclick="lbRace(\'current\')">See the live race →</button></div>';
+    + '<h4>Waiting for the current leaderboard to finish</h4>'
+    + '<p>The final standings of this leaderboard will appear here the moment it ends, on <b>'+when+'</b>.</p>'
+    + '<button type="button" onclick="lbRace(\'current\')">See the live leaderboard →</button></div>';
   lbcd2();
 }
 function lbRace(r){
@@ -5825,11 +5826,11 @@ function lbRace(r){
   var prev = r === 'previous';
   document.querySelectorAll('#lbxRaceTog button').forEach(function(b){ b.classList.toggle('on', b.dataset.r === r); b.setAttribute('aria-selected', b.dataset.r === r); });
   var pill = document.getElementById('lbxLivePill'); if(pill) pill.classList.toggle('ended', prev);
-  var lt = document.getElementById('lbxLiveTxt'); if(lt) lt.textContent = prev ? 'FINAL RESULTS' : 'LIVE RACE';
+  var lt = document.getElementById('lbxLiveTxt'); if(lt) lt.textContent = prev ? 'FINAL RESULTS' : 'LIVE';
   var nt = document.getElementById('lbxNotice'); if(nt && prev) nt.style.display = 'none';
   var podx = document.getElementById('lbxPodium'); if(podx && !prev) podx.classList.remove('lbx-hide');
-  var cw = document.getElementById('lbxCdWord'); if(cw) cw.textContent = prev ? 'RACE ENDED' : 'RACE ENDS IN';
-  var sub = document.getElementById('lbxSub'); if(sub) sub.innerHTML = prev ? 'Final standings of the last race. Wager under code <b>JAMMMY</b> to get on the current one.' : 'Wager under code <b>JAMMMY</b>, climb the ranks and win a share of the prize pool. Updated live.';
+  var cw = document.getElementById('lbxCdWord'); if(cw) cw.textContent = prev ? 'LEADERBOARD ENDED' : 'LEADERBOARD ENDS IN';
+  var sub = document.getElementById('lbxSub'); if(sub) sub.innerHTML = prev ? 'Final standings of the last leaderboard. Wager under code <b>JAMMMY</b> to get on the current one.' : 'Wager under code <b>JAMMMY</b>, climb the ranks and win a share of the prize pool. Updated live.';
   var lb = document.getElementById('leaderboards'); if(lb) lb.classList.toggle('lbx-prev', prev);
   _realPeriodOverride = null;
   if(prev){ var pv = powerwinRaces(Date.now()).previous; _realPeriodOverride = { start: pv.start, end: pv.end }; }
@@ -5855,7 +5856,7 @@ async function loadLeaderboard(casino){
   if(actionBtnsEl) actionBtnsEl.style.display = '';
   if(countdownEl) countdownEl.style.display = '';
   if(tableHeadEl) tableHeadEl.style.display = '';
-  if(rowsEl) rowsEl.innerHTML = '<div class="lbx-empty">'+(LB_RACE === 'previous' ? 'Loading the previous race&hellip;' : 'Connecting to live leaderboard&hellip;')+'</div>';
+  if(rowsEl) rowsEl.innerHTML = '<div class="lbx-empty">'+(LB_RACE === 'previous' ? 'Loading the previous leaderboard&hellip;' : 'Connecting to live leaderboard&hellip;')+'</div>';
   try{
     var apiUrl = LB_PROXY_URL + '?casino=' + casino + (LB_RACE === 'previous' ? '&race=previous' : '');
     var res = await fetch(apiUrl);
@@ -5910,7 +5911,7 @@ function renderLeaderboardRows(wagers, rewards){
   [1,2,3].forEach(function(rank){
     var pod = document.querySelector('#lbxPodium .lbx-pod[data-rank="'+rank+'"]'); if(!pod) return;
     var w = (wagers||[])[rank-1];
-    var av = w && w.avatarUrl ? '<img src="'+pccEsc(w.avatarUrl)+'" alt="">' : (w ? pccEsc((w.name||'?').charAt(0).toUpperCase()) : '?');
+    var av = w && w.avatarUrl ? '<img src="'+pccEsc(w.avatarUrl)+'" alt="" referrerpolicy="no-referrer" data-i="'+pccEsc((w.name||'?').charAt(0).toUpperCase())+'" onerror="this.replaceWith(document.createTextNode(this.dataset.i))">' : (w ? pccEsc((w.name||'?').charAt(0).toUpperCase()) : '?');
     pod.classList.toggle('empty', !w);
     pod.innerHTML = '<div class="lbx-card">'
         + (rank === 1 ? '<span class="lbx-crown">👑</span>' : '')
@@ -5922,7 +5923,7 @@ function renderLeaderboardRows(wagers, rewards){
   });
   if(!wagers || !wagers.length){
     var upc = LB_RACE !== 'previous' && _realPeriodOverride && _realPeriodOverride.start > new Date();
-    rowsEl.innerHTML = '<div class="lbx-empty">'+(LB_RACE === 'previous' ? 'No results recorded for the previous race.' : upc ? '🏁 The new leaderboard starts '+_realPeriodOverride.start.toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'})+' at 00:00 UTC. Wager under code JAMMMY from then to get on the board!' : 'No wagers recorded for this period yet. Be the first on the board!')+'</div>';
+    rowsEl.innerHTML = '<div class="lbx-empty">'+(LB_RACE === 'previous' ? 'No results recorded for the previous leaderboard.' : upc ? '🏁 The new leaderboard starts '+_realPeriodOverride.start.toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'})+' at 00:00 UTC. Wager under code JAMMMY from then to get on the board!' : 'No wagers recorded for this period yet. Be the first on the board!')+'</div>';
     _lbxAll = []; lbxUpdateMore(0); return;
   }
   var top = Number(wagers[0].wager) || 1;
@@ -5943,7 +5944,7 @@ function renderLeaderboardRows(wagers, rewards){
     return { name: String(w.name||'').toLowerCase(), rank: rank, html:
       '<div class="lbx-row'+(tone ? ' top r'+rank : '')+(paid ? ' paid' : ' unpaid')+'">'
         + '<span>'+rankHtml+'</span>'
-        + '<span class="lbx-pl"><span class="a">'+(w.avatarUrl ? '<img src="'+pccEsc(w.avatarUrl)+'" alt="">' : initial)+'</span>'
+        + '<span class="lbx-pl"><span class="a'+(w.avatarUrl ? ' pic' : '')+'">'+(w.avatarUrl ? '<img src="'+pccEsc(w.avatarUrl)+'" alt="" loading="lazy" referrerpolicy="no-referrer" data-i="'+initial+'" onerror="this.parentNode.classList.remove(\'pic\');this.replaceWith(document.createTextNode(this.dataset.i))">' : initial)+'</span>'
           + '<span class="n"><b>'+pccEsc(maskUsername(w.name))+'</b><span class="lbx-bar"><span style="width:'+pct.toFixed(1)+'%"></span></span>'
           + (gap ? '<small class="lbx-gap">$'+Math.ceil(gap).toLocaleString()+' to the prize line</small>' : '')
           + '</span></span>'

@@ -8,6 +8,23 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-08 (e): "Leaderboard" wording + Discord pictures on the leaderboards
+
+- **Wording:** our boards are leaderboards, not races. Power.win's own races on the New page keep their name.
+  - Leaderboard page: "LIVE" pill, "Power.win wager leaderboard", "Current leaderboard / Previous leaderboard" (just "Current / Previous" on phones under 440px), "LEADERBOARD STARTS IN / ENDS IN / ENDED", "This leaderboard: …", the waiting card ("Waiting for the current leaderboard to finish", "See the live leaderboard →"), the loading and empty texts, and the previous-leaderboard subtitle.
+  - Home page: the hero card says "Leaderboard ends in", the bento card and marquee say "Live leaderboards", and How-it-works says "counts toward the leaderboard".
+- **Pictures:** verified players' Discord pictures now show on the leaderboard podium and in the full standings, for both current and previous.
+  - **Worker:** `withLbAvatars()` adds `avatarUrl` for approved Power.win claims. It runs one small query, kept in memory for 60s per worker instance.
+  - Names stay masked. If a picture fails to load, the player's initial shows instead.
+
+---
+
+## 2026-10-08 (d): Race notice shows UTC only
+
+- Removed the visitor's local time from the "New leaderboard starts…" notice (e.g. "(Oct 9, 5:30 AM your time)" for someone in India), which read as confusing. It now just says "New leaderboard starts 9 Oct, 00:00 UTC and runs until 23 Oct, 00:00 UTC".
+
+---
+
 ## 2026-10-08 (c): Full standings polish (current + previous race)
 
 The podium is unchanged. The table below it gets:
