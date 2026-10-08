@@ -8,6 +8,15 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-08: Current race counts from 9 Oct 00:00 UTC
+
+- The 8 Oct → 22 Oct Power.win race counts wagering from **9 Oct 00:00 UTC** (5:30 AM IST), using a new `POWERWIN_FETCH_OVERRIDES` entry `'2026-10-08': { from: '2026-10-09', to: '2026-10-22' }`.
+- Until 9 Oct 00:00 UTC the board is empty. It never falls back to the rolling 14-day feed, which would show wagering that doesn't count.
+- When the race ends on 22 Oct, its "previous race" standings use the same 9 Oct → 22 Oct window.
+- The dates and countdown on the site are unchanged (8 Oct → 22 Oct). The vault isn't affected; it always counts all wagering.
+
+---
+
 ## 2026-10-06: Cut D1 reads (free plan was at 78% of 5M rows/day)
 
 - **Cause:** every open tab polled `/api/vault` every 30s. Each call rebuilt the vault from several tables and did a full scan of `coin_transactions`, which grows with every daily claim and bulk coin send. `/api/casino-wagers` did the same. The per-minute cron's push cleanup also scanned every push subscription even with nothing queued.
