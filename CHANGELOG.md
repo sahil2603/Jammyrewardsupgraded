@@ -8,6 +8,38 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-10: Halloween theme (October only)
+
+- **When it's on:** automatically from 1 Oct to 31 Oct (the visitor's own date). It switches itself off on 1 Nov, so nothing needs to be removed afterwards.
+  - Preview any day with `?halloween=1`; turn it off with `?halloween=0`. The choice is kept for that browser tab.
+  - Everything is layered on top of the normal site. Leaderboards, vault, coins, requests and admin work exactly as before; there is no worker change.
+- **Look and motion:**
+  - Purple stays as the main colour, with pumpkin-orange and toxic-green accents (wordmark, gradient headings, scroll bar, background glow).
+  - Drifting fog along the bottom of every page and spider webs in the top corners, with a spider that drops down on its thread.
+  - The background sparkles are now embers and fireflies, and the lightning is purple.
+  - A glowing moon sits behind the home jar, with clouds and little bats passing in front of it. Bats fly across the screen now and then.
+  - Flickering neon headings and LIVE badges.
+  - On desktop, embers trail behind the mouse.
+- **Jammmy mascot:** wears a swaying witch hat in the nav, the home hero, the home vault card and the Vault page.
+- **Vault:**
+  - The Vault page jar floats over a bubbling green cauldron with flames and rising bubbles.
+  - The progress bars are bubbling potion.
+  - The "Vault full" celebration turns spooky: orange, green and purple confetti, 🎃🦇👻🕸️, and "Spooky Community Vault".
+- **Leaderboard:**
+  - Same podium layout, with pumpkin-orange glows and 🎃 instead of the crown on 1st.
+  - The prize line is now "🪦 Graveyard line" ("$X to the graveyard line").
+- **Cards:** slime drips on the top edges, plus a flickering candle-glow on hover.
+- **Loading screen:** a jack-o'-lantern lights up while the page loads. It shows once per tab and for 3.2s at most.
+- **Banner:** "Happy Halloween from Jammmy" with a live countdown to 31 Oct.
+  - The × shrinks it to a small pumpkin; tap the pumpkin to open it again. It stays shrunk once closed.
+  - On phones it shrinks by itself after 9s.
+- **Share on X:** during Halloween, the Power.win share uses `share-powerwin-halloween.png`, which has a moon, bats, webs, a witch hat on the logo, slime, pumpkins and a "Halloween Edition" badge.
+- **Phones and accessibility:**
+  - Phones get a lighter version: fewer bats, one fog layer, one web, static drips and no mouse trail.
+  - `prefers-reduced-motion` turns the motion off and skips the loading screen.
+
+---
+
 ## 2026-10-08 (e): "Leaderboard" wording + Discord pictures on the leaderboards
 
 - **Wording:** our boards are leaderboards, not races. Power.win's own races on the New page keep their name.
