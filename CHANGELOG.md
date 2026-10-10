@@ -8,6 +8,16 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-10 (e): Witch hat placement measured in pixels (iPhone fix, part 2)
+
+- **Problem:** on iPhone Safari the hats were still sitting too low on the jar.
+- **Fix:** instead of CSS percentages, a small script measures the actual jar picture or video on the page and puts the hat on the lid in pixels. It uses Safari's own layout, so it lands in the same place in every browser.
+- **When it runs:** on load, when switching pages, on resize, when the jar image or video loads, and when the Vault-full celebration opens.
+- **Two jar shapes:**
+  - The video jar (square frame) and the iPhone still-image jar (fills its box) each have their own measurements.
+
+---
+
 ## 2026-10-10 (d): Witch hats fixed on iPhone Safari
 
 - **Problem:** on iPhone, the hats sat too low on the jar, the home vault card's jar was pushed to the right, and a stray ring showed around the hat brim.

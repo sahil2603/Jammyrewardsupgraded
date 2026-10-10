@@ -6606,7 +6606,7 @@ function showVaultFull(pool){
       + '<p class="vfx-sub"><b>'+amt+' coins</b> were just paid out'+(n ? ' to <b>'+n+' verified player'+(n === 1 ? '' : 's')+'</b>' : ' to verified players')+'. Unclaimed coins roll into the next vault.</p>'
       + '<div class="vfx-btns">'+(me ? '<button type="button" class="vfx-go" onclick="closeVaultFull(\'profile\')">🪙 Check my coins</button>' : '<button type="button" class="vfx-go" onclick="closeVaultFull(\'loyalty\')">Claim your username</button>')+'<button type="button" class="vfx-close" onclick="closeVaultFull()">Nice!</button></div>'
     + '</div>';
-  if(hw){ var vj = fx.querySelector('.vfx-jar'); if(vj){ var hh = document.createElement('div'); hh.className = 'hw-hat'; hh.innerHTML = HW_SVG.hat(); vj.appendChild(hh); } }
+  if(hw){ var vj = fx.querySelector('.vfx-jar'); if(vj){ var hh = document.createElement('div'); hh.className = 'hw-hat'; hh.innerHTML = HW_SVG.hat(); vj.appendChild(hh); setTimeout(function(){ window.hwFitHats && window.hwFitHats(); }, 30); } }
   document.body.appendChild(fx);
   requestAnimationFrame(function(){ fx.classList.add('in'); });
   fx.addEventListener('click', function(e){ if(e.target === fx) closeVaultFull(); });
@@ -11039,7 +11039,29 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
       if(!an || an === 'none') c.classList.add('hw-candle');
     });
   }
-  function decorate(){ safe(flick); safe(slime); safe(fitCauldron); }
+
+  /* Hat placement measured from the jar element itself (px), so every browser -- including iPhone
+     Safari -- puts the hat exactly on the lid. Videos are the square 1080 frame; the still-image jar
+     (iPhone/Safari) fills its whole box. */
+  window.hwFitHats = function(){
+    try{
+      document.querySelectorAll('.hx-jar > .hw-hat, .hw-vjar > .hw-hat, .vfx-jar > .hw-hat').forEach(function(h){
+        var p = h.parentNode, el = p.querySelector('video, img.hx-jar-img, .jar-fb');
+        if(!el || !el.offsetWidth) return;
+        var k = el.tagName === 'VIDEO' ? {cx:.51, ly:.26, w:.53} : {cx:.47, ly:.075, w:.8};
+        var w = el.offsetWidth, ht = el.offsetHeight, hw = w * k.w;
+        h.style.width = hw + 'px';
+        h.style.left = (el.offsetLeft + w * k.cx) + 'px';
+        h.style.top = (el.offsetTop + ht * k.ly - hw * .875 * .81) + 'px';
+      });
+    }catch(e){}
+  };
+  
+  function decorate(){ safe(flick); safe(slime); safe(fitCauldron); window.hwFitHats(); }
+  window.addEventListener('resize', function(){ window.hwFitHats(); });
+  window.addEventListener('load', function(){ window.hwFitHats(); });
+  document.addEventListener('loadedmetadata', function(){ window.hwFitHats(); }, true);
+  document.addEventListener('load', function(e){ if(e.target && e.target.tagName === 'IMG') window.hwFitHats(); }, true);
   decorate();
   setTimeout(decorate, 1200); setTimeout(decorate, 3500);
   var _sp = window.showPage;
