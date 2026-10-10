@@ -2961,7 +2961,7 @@ html.lenis{scroll-behavior:auto!important}
 .rsx-art img{position:relative;width:100%;display:block;filter:drop-shadow(0 20px 40px rgba(147,51,234,.5))}
 .rsx-art-glow{position:absolute;inset:8% 6%;border-radius:40px;background:radial-gradient(closest-side,rgba(192,38,211,.55),transparent);filter:blur(30px);animation:rbxGlow 3.2s ease-in-out infinite}
 .rsx-art-shine{position:absolute;inset:0;border-radius:26px;overflow:hidden;pointer-events:none;
-  -webkit-mask-image:url(request-a-slot.png?v=4);mask-image:url(request-a-slot.png?v=4);-webkit-mask-size:100% 100%;mask-size:100% 100%}
+  -webkit-mask-image:url(request-a-slot.webp?v=5);mask-image:url(request-a-slot.webp?v=5);-webkit-mask-size:100% 100%;mask-size:100% 100%}
 .rsx-art-shine::after{content:'';position:absolute;top:-20%;bottom:-20%;left:-40%;width:30%;transform:skewX(-18deg);
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);animation:rsxSweep 4.5s ease-in-out infinite}
 @keyframes rsxSweep{0%,55%{left:-40%}100%{left:130%}}
@@ -3883,15 +3883,103 @@ var HW_SVG = (function(){
   var n = 0;
   function uid(){ return 'hw' + (++n) + Math.random().toString(36).slice(2,6); }
   function hat(){
-    var u = uid();
-    return '<svg viewBox="0 0 120 100" aria-hidden="true"><defs><linearGradient id="h'+u+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b5cf6"/><stop offset=".55" stop-color="#4c1d95"/><stop offset="1" stop-color="#1e0b3d"/></linearGradient></defs>'
-      + '<ellipse cx="60" cy="84" rx="57" ry="12" fill="#1f0b3a" stroke="#8b5cf6" stroke-width="1.6"/>'
-      + '<path class="tip" d="M59 24 C 65 13, 78 6, 95 12 C 85 14, 78 20, 75 31 Z" fill="url(#h'+u+')"/>'
-      + '<path d="M30 82 C 40 62, 48 42, 58 22 C 63 17, 71 18, 75 29 C 78 50, 84 66, 92 82 Z" fill="url(#h'+u+')"/>'
-      + '<path d="M40 70 C 46 52, 52 38, 58 28" stroke="rgba(216,180,254,.45)" stroke-width="2.4" fill="none" stroke-linecap="round"/>'
-      + '<path d="M31 80 C 50 86, 72 86, 91 80 L 88 70 C 70 75, 52 75, 35 70 Z" fill="#ff7a1a"/>'
-      + '<rect x="54" y="71" width="13" height="11" rx="1.5" fill="none" stroke="#ffd166" stroke-width="2.4"/>'
-      + '<path class="spk" d="M99 2 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z" fill="#c6ff8a"/>'
+    var u = uid(), hd = (-Math.random()*8).toFixed(2);
+    return '<hw-x class="hw-hi" style="--hd:'+hd+'s"><svg viewBox="0 0 160 140" aria-hidden="true"><defs>'
+      + '<linearGradient id="hc'+u+'" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b98cff"/><stop offset=".26" stop-color="#7c3aed"/><stop offset=".68" stop-color="#4c1d95"/><stop offset="1" stop-color="#1c0838"/></linearGradient>'
+      + '<radialGradient id="hb'+u+'" cx="42%" cy="30%" r="75%"><stop offset="0" stop-color="#6131a8"/><stop offset=".55" stop-color="#2a0f4d"/><stop offset="1" stop-color="#10041c"/></radialGradient>'
+      + '<linearGradient id="hr'+u+'" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d8b4fe" stop-opacity="0"/><stop offset=".32" stop-color="#f3e8ff" stop-opacity=".95"/><stop offset=".7" stop-color="#c084fc" stop-opacity=".35"/><stop offset="1" stop-color="#c084fc" stop-opacity="0"/></linearGradient>'
+      + '<linearGradient id="hn'+u+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc47a"/><stop offset=".45" stop-color="#ff7a1a"/><stop offset="1" stop-color="#a63a06"/></linearGradient>'
+      + '<linearGradient id="hg'+u+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff6d0"/><stop offset=".45" stop-color="#fbbf24"/><stop offset="1" stop-color="#a15c07"/></linearGradient>'
+      + '<clipPath id="hk'+u+'"><rect x="64" y="95" width="32" height="20" rx="4"/></clipPath></defs>'
+      + '<ellipse cx="80" cy="125" rx="64" ry="8" fill="rgba(0,0,0,.3)"/>'
+      + '<path d="M5 114 C 5 101, 40 97, 80 97 C 120 97, 155 101, 155 114 C 155 127, 120 133, 80 133 C 40 133, 5 127, 5 114 Z" fill="url(#hb'+u+')"/>'
+      + '<path d="M9 112 C 20 102, 52 99, 80 99 C 108 99, 140 102, 151 112" fill="none" stroke="url(#hr'+u+')" stroke-width="2.4" stroke-linecap="round"/>'
+      + '<path d="M8 118 C 22 129, 56 132, 80 132 C 104 132, 138 129, 152 118" fill="none" stroke="rgba(255,150,70,.4)" stroke-width="1.4"/>'
+      + '<g class="s1">'
+      +   '<path d="M36 114 C 44 100, 50 88, 56 74 L 102 74 C 108 88, 114 100, 124 114 C 104 121, 56 121, 36 114 Z" fill="url(#hc'+u+')"/>'
+      +   '<path d="M49 105 C 52 95, 56 86, 60 77" stroke="rgba(243,232,255,.5)" stroke-width="3" fill="none" stroke-linecap="round"/>'
+      +   '<path d="M95 79 l13 -2 2 13 -13 2z" fill="#3f6212" stroke="#bef264" stroke-width="1" stroke-dasharray="2 1.6"/>'
+      +   '<g class="s2">'
+      +     '<path d="M56 76 C 60 64, 64 54, 68 42 L 94 42 C 96 54, 99 64, 102 76 Z" fill="url(#hc'+u+')"/>'
+      +     '<path d="M56 76 Q 79 83 102 76" stroke="rgba(16,3,32,.6)" stroke-width="2.2" fill="none"/>'
+      +     '<path d="M63 68 C 65 60, 67 52, 70 45" stroke="rgba(243,232,255,.38)" stroke-width="2.4" fill="none" stroke-linecap="round"/>'
+      +     '<g class="s3">'
+      +       '<path d="M68 44 C 71 32, 78 22, 90 15 C 102 9, 116 10, 126 18 C 114 17, 104 21, 98 29 C 95 33, 94 38, 94 44 Z" fill="url(#hc'+u+')"/>'
+      +       '<path d="M68 44 Q 81 50 94 44" stroke="rgba(16,3,32,.6)" stroke-width="2.2" fill="none"/>'
+      +       '<path d="M75 36 C 79 27, 85 21, 93 17" stroke="rgba(243,232,255,.32)" stroke-width="2" fill="none" stroke-linecap="round"/>'
+      +       '<g class="charm"><path d="M126 18 L 127 29" stroke="#e9d5ff" stroke-width="1.1"/><path d="M127 26 l2.7 5.5 6 .9 -4.4 4.2 1 6 -5.3 -2.8 -5.3 2.8 1 -6 -4.4 -4.2 6 -.9z" fill="#9dff6a" stroke="#ecffd9" stroke-width=".6"/></g>'
+      +     '</g>'
+      +   '</g>'
+      +   '<path d="M38 112 C 58 120, 102 120, 122 112 L 117 98 C 100 105, 60 105, 43 98 Z" fill="url(#hn'+u+')"/>'
+      +   '<path d="M41 106 C 60 113, 100 113, 119 106" stroke="#ffe3bd" stroke-width="1" stroke-dasharray="3 2.6" fill="none" opacity=".75"/>'
+      +   '<rect x="64" y="95" width="32" height="20" rx="4" fill="none" stroke="url(#hg'+u+')" stroke-width="4.4"/>'
+      +   '<g clip-path="url(#hk'+u+')"><rect class="gleam" x="52" y="88" width="7" height="34" fill="rgba(255,255,255,.85)"/></g>'
+      + '</g>'
+      + '<path class="spk a" d="M142 2 l1.7 4.3 4.3 1.7 -4.3 1.7 -1.7 4.3 -1.7 -4.3 -4.3 -1.7 4.3 -1.7z" fill="#ffd166"/>'
+      + '<path class="spk b" d="M108 0 l1.2 3 3 1.2 -3 1.2 -1.2 3 -1.2 -3 -3 -1.2 3 -1.2z" fill="#c6ff8a"/>'
+      + '<path class="spk c" d="M152 40 l1.2 3 3 1.2 -3 1.2 -1.2 3 -1.2 -3 -3 -1.2 3 -1.2z" fill="#e9d5ff"/>'
+      + '</svg><i class="hw-poof"></i></hw-x>';
+  }
+  function skull(cls){
+    return '<svg class="'+(cls||'')+'" viewBox="0 0 40 44" aria-hidden="true"><path d="M20 2 C 9 2, 3 10, 4 20 C 4.6 26, 8 29, 11 31 L 11 37 L 29 37 L 29 31 C 32 29, 35.4 26, 36 20 C 37 10, 31 2, 20 2 Z" fill="#f2ead8" stroke="#bfb194" stroke-width=".8"/>'
+      + '<ellipse cx="13.5" cy="19" rx="5" ry="5.6" fill="#1b0f24"/><ellipse cx="26.5" cy="19" rx="5" ry="5.6" fill="#1b0f24"/>'
+      + '<circle class="eye" cx="13.5" cy="19.5" r="2.2" fill="#7cff4f"/><circle class="eye" cx="26.5" cy="19.5" r="2.2" fill="#7cff4f"/>'
+      + '<path d="M20 25 L 17.6 29.4 L 22.4 29.4 Z" fill="#1b0f24"/>'
+      + '<g class="jaw"><path d="M11 33 L 29 33 L 28 40 C 25 43, 15 43, 12 40 Z" fill="#f2ead8" stroke="#bfb194" stroke-width=".8"/><path d="M14.5 33 V 39.5 M18 33 V 40.6 M22 33 V 40.6 M25.5 33 V 39.5" stroke="#9c8f74" stroke-width=".9"/></g>'
+      + '<path d="M14.5 31.5 V 35 M18 31.5 V 35 M22 31.5 V 35 M25.5 31.5 V 35" stroke="#9c8f74" stroke-width=".9"/></svg>';
+  }
+  function skeleton(){
+    var ribs = '';
+    for(var i = 0; i < 5; i++){
+      var y = 132 + i*14, w = 30 - i*2.5;
+      ribs += '<path d="M66 '+y+' C '+(66-w*.6)+' '+(y-7)+', '+(66-w)+' '+(y+1)+', '+(66-w+2)+' '+(y+11)+'"/><path d="M74 '+y+' C '+(74+w*.6)+' '+(y-7)+', '+(74+w)+' '+(y+1)+', '+(74+w-2)+' '+(y+11)+'"/>';
+    }
+    var spine = '';
+    for(var j = 0; j < 9; j++) spine += '<rect x="66" y="'+(104+j*13)+'" width="8" height="9" rx="2.5"/>';
+    return '<svg viewBox="0 0 140 230" aria-hidden="true"><g fill="#efe7d6" stroke="#b5a88c" stroke-width="1">' + spine + '</g>'
+      + '<g fill="none" stroke="#efe7d6" stroke-width="5" stroke-linecap="round">' + ribs
+      +   '<path d="M70 120 C 58 115, 44 117, 33 123 M70 120 C 82 115, 96 117, 107 123"/>'
+      +   '<path d="M33 123 L 24 172 L 28 214"/>'
+      +   '<g class="arm"><path d="M107 123 L 126 94"/><g class="fore"><path d="M126 94 L 122 62"/>'
+      +     '<g stroke-width="3.2"><path d="M122 62 L 112 46 M122 62 L 118 41 M122 62 L 125 40 M122 62 L 132 45 M122 62 L 136 58"/></g>'
+      +     '<circle cx="122" cy="62" r="5" fill="#efe7d6" stroke="none"/></g></g>'
+      + '</g>'
+      + '<g class="head"><path d="M70 6 C 44 6, 29 24, 31 47 C 32 59, 39 67, 45 71 L 47 84 L 93 84 L 95 71 C 101 67, 108 59, 109 47 C 111 24, 96 6, 70 6 Z" fill="#f2ead8" stroke="#b5a88c" stroke-width="1.2"/>'
+      +   '<path d="M40 30 C 46 18, 58 13, 70 13" stroke="#fff" stroke-width="3" fill="none" opacity=".6" stroke-linecap="round"/>'
+      +   '<ellipse cx="54" cy="45" rx="10.5" ry="12" fill="#1b0f24"/><ellipse cx="86" cy="45" rx="10.5" ry="12" fill="#1b0f24"/>'
+      +   '<g class="eyes"><circle class="eye" cx="55" cy="46" r="4" fill="#7cff4f"/><circle class="eye" cx="87" cy="46" r="4" fill="#7cff4f"/></g>'
+      +   '<path d="M70 56 L 64 67 L 70 65 L 76 67 Z" fill="#1b0f24"/>'
+      +   '<path d="M52 76 V 84 M58 75 V 85 M64 75 V 85 M70 75 V 85 M76 75 V 85 M82 75 V 85 M88 76 V 84" stroke="#9c8f74" stroke-width="1.2"/>'
+      +   '<g class="jaw"><path d="M48 84 L 92 84 L 90 97 C 86 103, 54 103, 50 97 Z" fill="#f2ead8" stroke="#b5a88c" stroke-width="1.2"/><path d="M54 84 V 93 M60 84 V 95 M66 84 V 96 M74 84 V 96 M80 84 V 95 M86 84 V 93" stroke="#9c8f74" stroke-width="1.2"/></g>'
+      + '</g></svg>';
+  }
+  function hand(){
+    return '<svg viewBox="0 0 60 120" aria-hidden="true"><g fill="none" stroke="#efe7d6" stroke-linecap="round"><path d="M26 120 L 28 62" stroke-width="7"/><path d="M36 120 L 35 64" stroke-width="5"/>'
+      + '<g class="fingers" stroke-width="3.6"><path d="M30 58 L 14 38 L 10 26"/><path d="M31 56 L 22 30 L 21 16"/><path d="M33 55 L 32 26 L 33 11"/><path d="M35 56 L 41 30 L 44 17"/><path d="M36 60 L 50 44 L 55 36"/></g></g>'
+      + '<ellipse cx="32" cy="60" rx="9" ry="7" fill="#efe7d6"/></svg>';
+  }
+  function yard(){
+    var tomb = function(x, w, h, rip, tilt){
+      var r = w/2;
+      return '<g transform="translate('+x+' '+(132-h)+') rotate('+tilt+' '+r+' '+h+')"><path d="M0 '+h+' V '+r+' A '+r+' '+r+' 0 0 1 '+w+' '+r+' V '+h+' Z" fill="url(#yt)" stroke="#5b4785" stroke-width="1.4"/>'
+        + '<path d="M3 '+(r+2)+' A '+(r-3)+' '+(r-3)+' 0 0 1 '+(w*.55)+' 4" stroke="rgba(216,180,254,.35)" stroke-width="2" fill="none"/>'
+        + (rip ? '<text x="'+r+'" y="'+(r+h*.28)+'" text-anchor="middle" font-family="Lilita One,Arial Black,sans-serif" font-size="'+(w*.26).toFixed(1)+'" fill="#120a1f" opacity=".85">'+rip+'</text>' : '')
+        + '</g>';
+    };
+    var cross = function(x, h, tilt){ return '<g transform="translate('+x+' '+(132-h)+') rotate('+tilt+' 6 '+h+')" fill="#241838" stroke="#5b4785" stroke-width="1.2"><rect x="3" y="0" width="7" height="'+h+'" rx="1.5"/><rect x="-6" y="'+(h*.22)+'" width="25" height="7" rx="1.5"/></g>'; };
+    var pk = function(x, s){ return '<g transform="translate('+x+' '+(130-s)+')"><ellipse cx="'+s*.6+'" cy="'+s*.55+'" rx="'+s*.62+'" ry="'+s*.48+'" fill="#f97316"/><ellipse cx="'+s*.6+'" cy="'+s*.55+'" rx="'+s*.3+'" ry="'+s*.48+'" fill="#fb923c"/><path d="M'+(s*.38)+' '+(s*.5)+' l'+(s*.08)+' -'+(s*.12)+' '+(s*.08)+' '+(s*.12)+'z M'+(s*.66)+' '+(s*.5)+' l'+(s*.08)+' -'+(s*.12)+' '+(s*.08)+' '+(s*.12)+'z M'+(s*.38)+' '+(s*.7)+' q'+(s*.22)+' '+(s*.12)+' '+(s*.44)+' 0" fill="#ffe08a" stroke="#ffe08a" stroke-width="1.2" class="pkf"/><rect x="'+(s*.56)+'" y="'+(s*.02)+'" width="'+(s*.08)+'" height="'+(s*.14)+'" fill="#4d7c0f"/></g>'; };
+    var fence = '';
+    for(var f = 0; f < 9; f++) fence += '<path d="M'+(1080+f*14)+' 132 V 92 l3 -7 3 7 V 132" fill="#160c24"/>';
+    return '<svg viewBox="0 0 1440 140" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs>'
+      + '<linearGradient id="yt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4a3868"/><stop offset="1" stop-color="#1c1230"/></linearGradient>'
+      + '<linearGradient id="yg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d1030"/><stop offset="1" stop-color="#07030d"/></linearGradient></defs>'
+      + '<path d="M0 140 V 118 C 120 104, 240 112, 360 110 C 520 106, 600 120, 760 116 C 900 112, 1000 104, 1160 110 C 1280 114, 1360 106, 1440 112 V 140 Z" fill="#110820"/>'
+      + '<path d="M1290 132 C 1292 100, 1286 70, 1300 40 M1298 62 C 1310 50, 1322 48, 1334 38 M1293 84 C 1278 72, 1266 70, 1252 58 M1300 46 C 1296 34, 1302 24, 1296 14 M1318 54 L 1330 62" stroke="#120a1e" stroke-width="7" stroke-linecap="round" fill="none"/>'
+      + fence + '<path d="M1078 100 H 1212 M1078 118 H 1212" stroke="#160c24" stroke-width="3"/>'
+      + tomb(150, 46, 62, 'RIP', -4) + cross(232, 58, 6) + tomb(300, 36, 44, '', 3) + tomb(470, 54, 70, 'RIP', 2) + cross(560, 50, -8)
+      + tomb(760, 40, 52, 'BOO', -3) + tomb(930, 58, 74, 'RIP', 4) + cross(1010, 62, -4) + tomb(1240, 42, 50, '', -6) + tomb(1360, 50, 64, 'RIP', 3)
+      + pk(206, 26) + pk(520, 20) + pk(880, 30) + pk(1180, 22)
+      + '<path d="M0 140 V 130 C 200 124, 420 134, 700 128 C 980 122, 1220 134, 1440 128 V 140 Z" fill="url(#yg)"/>'
       + '</svg>';
   }
   function pumpkin(){
@@ -3953,7 +4041,7 @@ var HW_SVG = (function(){
       + '<path d="M58 49 C 57 60, 65 62, 65 51 Z M118 52 C 117 66, 126 67, 126 52 Z M148 44 C 148 52, 154 53, 154 43 Z" fill="#7cff4f"/>'
       + '</svg>';
   }
-  return {hat:hat, pumpkin:pumpkin, BAT:BAT, SPIDER:SPIDER, web:web, cauldron:cauldron};
+  return {hat:hat, pumpkin:pumpkin, BAT:BAT, SPIDER:SPIDER, web:web, cauldron:cauldron, skull:skull, skeleton:skeleton, hand:hand, yard:yard};
 })();
 </script>
 <script>
@@ -4045,17 +4133,35 @@ html.hw .lbx-live,html.hw #navLiveTag.is-live{border-color:rgba(124,255,79,.65)!
 
 /* witch hat */
 .hw-wrap{position:relative;display:inline-block;line-height:0}
-.hw-hat{position:absolute;pointer-events:none;z-index:3;transform-origin:50% 88%;animation:hwHat 4.2s ease-in-out infinite;filter:drop-shadow(0 4px 6px rgba(0,0,0,.55)) drop-shadow(0 0 9px rgba(168,85,247,.5))}
-.hw-hat svg{display:block;width:100%;overflow:visible}
-@keyframes hwHat{0%,100%{rotate:-4deg}50%{rotate:5deg}}
-.hw-hat .tip{transform-box:fill-box;transform-origin:0 100%;animation:hwTip 2.6s ease-in-out infinite}
-@keyframes hwTip{50%{transform:rotate(9deg)}}
-.hw-hat .spk{animation:hwSpk 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
-@keyframes hwSpk{50%{opacity:.2;transform:scale(.4)}}
+.hw-hat{position:absolute;pointer-events:none;z-index:3;filter:drop-shadow(0 5px 7px rgba(0,0,0,.55)) drop-shadow(0 0 10px rgba(168,85,247,.55))}
+.hw-hi{display:block;position:relative;transform-origin:50% 82%;animation:hwHop 8s cubic-bezier(.35,.6,.4,1) var(--hd,0s) infinite,hwSway 4.4s ease-in-out infinite}
+.hw-hat svg{display:block;width:100%;height:auto;overflow:visible}
+@keyframes hwHop{0%,70%,100%{translate:0 0;scale:1 1}74%{translate:0 3%;scale:1.08 .88}80%{translate:0 -24%;scale:.94 1.08}84%{translate:0 -27%;scale:1 1}90%{translate:0 0;scale:1.12 .85}94%{translate:0 0;scale:.96 1.05}97%{translate:0 0;scale:1.01 .99}}
+@keyframes hwSway{0%,100%{rotate:-3deg}50%{rotate:4deg}}
+.hw-hat .s1{transform-origin:80px 114px;animation:hwS1 3.4s ease-in-out infinite}
+.hw-hat .s2{transform-origin:79px 75px;animation:hwS2 3.4s ease-in-out -.4s infinite}
+.hw-hat .s3{transform-origin:81px 43px;animation:hwS3 3.4s ease-in-out -.8s infinite}
+@keyframes hwS1{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(2deg)}}
+@keyframes hwS2{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(6deg)}}
+@keyframes hwS3{0%,100%{transform:rotate(-11deg)}50%{transform:rotate(15deg)}}
+.hw-hat .charm{transform-origin:126px 18px;animation:hwCharm 1.6s ease-in-out infinite}
+@keyframes hwCharm{0%,100%{transform:rotate(-14deg)}50%{transform:rotate(18deg)}}
+.hw-hat .gleam{transform-box:fill-box;transform-origin:center;animation:hwGleam 4s ease-in-out infinite}
+@keyframes hwGleam{0%,55%{transform:translateX(0) rotate(22deg)}85%,100%{transform:translateX(52px) rotate(22deg)}}
+.hw-hat .spk{transform-box:fill-box;transform-origin:center;animation:hwSpk 2.2s ease-in-out infinite}
+.hw-hat .spk.b{animation-delay:-.8s}.hw-hat .spk.c{animation-delay:-1.5s}
+@keyframes hwSpk{0%,100%{opacity:1;transform:scale(1) rotate(0)}50%{opacity:.1;transform:scale(.3) rotate(90deg)}}
+.hw-poof{position:absolute;left:6%;right:6%;top:70%;height:22%;border-radius:50%;border:2px solid rgba(198,255,138,.85);box-shadow:0 0 14px rgba(124,255,79,.7),inset 0 0 8px rgba(124,255,79,.5);opacity:0;pointer-events:none;animation:hwPoof 8s ease-out var(--hd,0s) infinite}
+@keyframes hwPoof{0%,89%{opacity:0;transform:scale(.5)}90.5%{opacity:.95;transform:scale(.75)}100%{opacity:0;transform:scale(1.6)}}
+.brand .hw-poof{display:none}
+.vfx-jar .hw-hat{left:51%;top:-13%;width:54%;transform:translateX(-50%) rotate(-8deg);z-index:4}
 .hx-jar .hw-hat{left:51%;top:-11%;width:52%;transform:translateX(-50%) rotate(-8deg)}
 html.hw .brand{position:relative}
 .brand>.hw-hat{left:3px;top:-11px;width:27px;transform:rotate(-10deg)}
 .brand .hw-hat svg{width:100%;height:auto;filter:none}
+.hx-jar.hw-fbjar .hw-hat{left:46%;top:-30%;width:74%;transform:translateX(-50%) rotate(-9deg)}
+.hw-vjar.hw-fb .hw-hat{left:46%;top:-27%;width:76%;transform:translateX(-50%) rotate(-9deg)}
+.hw-vjar>.jar-fb{position:relative;z-index:2;filter:drop-shadow(0 0 22px rgba(124,255,79,.45))}
 .hw-vm .hw-hat{left:52%;top:-14%;width:58%;transform:translateX(-50%) rotate(-9deg)}
 .hw-vjar .hw-hat{left:51%;top:-11%;width:52%;transform:translateX(-50%) rotate(-8deg)}
 html.hw .hx-jar-v{filter:drop-shadow(0 0 26px rgba(255,122,26,.35))}
@@ -4141,11 +4247,11 @@ html.hw:not(.hw-lite) .bcard:hover,html.hw:not(.hw-lite) .loy2-card:hover{box-sh
 #hwLoader{position:fixed;inset:0;z-index:10001;display:grid;place-items:center;background:radial-gradient(circle at 50% 46%,#2a1240 0,#120822 45%,#05030a 100%);transition:opacity .7s,visibility .7s}
 #hwLoader.out{opacity:0;visibility:hidden}
 .hwl-in{position:relative;text-align:center;transform:translateY(-2vh)}
-.hwl-glow{position:absolute;left:50%;top:44%;width:340px;height:340px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(255,140,40,.55),rgba(255,90,0,.12) 60%,transparent);opacity:0;animation:hwlGlow 1.3s .35s ease-out forwards,hwlFlick 1.1s 1.6s ease-in-out infinite}
+.hwl-glow{position:absolute;left:50%;top:44%;width:340px;height:340px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(255,140,40,.55),rgba(255,90,0,.12) 60%,transparent);opacity:0;animation:hwlGlow .7s .15s ease-out forwards,hwlFlick 1.1s .9s ease-in-out infinite}
 .hwl-pk{position:relative;width:170px;margin:0 auto;animation:hwlPop .8s cubic-bezier(.2,1.4,.4,1) both}
 .hwl-pk svg{width:100%;display:block;overflow:visible}
-.hw-face{fill:#2a1206;animation:hwlFace 1.3s .35s ease-out forwards}
-#hwLoader .hw-face{animation:hwlFace 1.3s .35s ease-out forwards,hwlFaceF 1.1s 1.6s ease-in-out infinite}
+.hw-face{fill:#2a1206;animation:hwlFace .7s .15s ease-out forwards}
+#hwLoader .hw-face{animation:hwlFace .7s .15s ease-out forwards,hwlFaceF 1.1s .9s ease-in-out infinite}
 @keyframes hwlFace{to{fill:#ffd166}}
 @keyframes hwlFaceF{50%{fill:#ffb347}}
 @keyframes hwlGlow{to{opacity:1}}
@@ -4154,12 +4260,66 @@ html.hw:not(.hw-lite) .bcard:hover,html.hw:not(.hw-lite) .loy2-card:hover{box-sh
 .hwl-t{margin-top:18px;font:400 1.35rem 'Lilita One','Arial Black',sans-serif;letter-spacing:.06em;color:#fff;text-shadow:0 0 18px rgba(255,122,26,.6)}
 .hwl-t b{font-weight:400;color:#ff9a3c}
 .hwl-bar{width:180px;height:4px;margin:14px auto 0;border-radius:9px;background:rgba(255,255,255,.08);overflow:hidden}
-.hwl-bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#a855f7,#ff7a1a,#7cff4f);box-shadow:0 0 12px rgba(255,122,26,.8);animation:hwlBar 1.5s .2s cubic-bezier(.4,0,.2,1) forwards}
+.hwl-bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#a855f7,#ff7a1a,#7cff4f);box-shadow:0 0 12px rgba(255,122,26,.8);animation:hwlBar .95s .05s cubic-bezier(.4,0,.2,1) forwards}
 @keyframes hwlBar{to{width:100%}}
-.hwl-bats{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hwl-orbit{position:absolute;left:50%;top:40%;width:250px;height:250px;margin:-125px 0 0 -125px;animation:hwlOrb 2.8s linear infinite;pointer-events:none}
+.hwl-orbit b{position:absolute;inset:0}.hwl-orbit b+b{transform:rotate(120deg)}.hwl-orbit b+b+b{transform:rotate(240deg)}
+.hwl-orbit i{position:absolute;left:50%;top:0;width:30px;margin-left:-15px;filter:drop-shadow(0 0 6px rgba(255,122,26,.7))}
+.hwl-orbit svg{width:100%;display:block;overflow:visible}
+@keyframes hwlOrb{to{transform:rotate(360deg)}}
 
 /* cursor embers */
 #hwEmbers{position:fixed;inset:0;z-index:9995;pointer-events:none}
+
+/* skull on the graveyard line */
+.hw-skull-i{display:inline-block;width:15px;height:17px;vertical-align:-4px;margin-right:3px;overflow:visible;filter:drop-shadow(0 0 5px rgba(124,255,79,.6));animation:hwSkB 2.4s ease-in-out infinite}
+.hw-skull-i .jaw{transform-box:fill-box;transform-origin:50% 0;animation:hwJaw .32s ease-in-out infinite alternate}
+.hw-skull-i .eye,.hw-ghost .eye{animation:hwEye 1.4s ease-in-out infinite}
+@keyframes hwSkB{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-2px) rotate(6deg)}}
+@keyframes hwJaw{to{transform:translateY(2px)}}
+@keyframes hwEye{50%{opacity:.35}}
+
+/* peeking skeleton */
+.hw-skel{position:fixed;z-index:60;width:118px;pointer-events:none;will-change:transform;transform-origin:50% 100%;filter:drop-shadow(0 0 10px rgba(124,255,79,.35)) drop-shadow(0 8px 12px rgba(0,0,0,.55))}
+.hw-skel.l{left:0}.hw-skel.r{right:0}
+.hw-skel svg{display:block;width:100%;height:auto;overflow:visible}
+.hw-skel.r svg{transform:scaleX(-1)}
+.hw-skel .jaw{transform-origin:70px 84px;animation:hwChatter .2s ease-in-out infinite alternate}
+@keyframes hwChatter{to{transform:translateY(5px) rotate(2deg)}}
+.hw-skel .arm{transform-origin:107px 123px;animation:hwArm 1s ease-in-out infinite alternate}
+.hw-skel .fore{transform-origin:126px 94px;animation:hwFore .5s ease-in-out infinite alternate}
+@keyframes hwArm{from{transform:rotate(-8deg)}to{transform:rotate(12deg)}}
+@keyframes hwFore{from{transform:rotate(-24deg)}to{transform:rotate(18deg)}}
+.hw-skel .head{transform-origin:70px 92px;animation:hwHead 2.4s ease-in-out infinite}
+@keyframes hwHead{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(8deg)}}
+.hw-skel .eye{animation:hwEye 1.2s ease-in-out infinite}
+.hw-skel .eyes{animation:hwLook 2.6s ease-in-out infinite}
+@keyframes hwLook{0%,100%{transform:translateX(0)}30%{transform:translateX(3px)}62%{transform:translateX(-2px)}}
+.hw-skel-say{position:absolute;left:80%;top:-4%;padding:6px 12px;border-radius:14px 14px 14px 4px;background:#f2ead8;color:#1b0f24;font:400 .92rem/1.2 'Lilita One','Arial Black',sans-serif;letter-spacing:.02em;white-space:nowrap;box-shadow:0 8px 20px rgba(0,0,0,.45),0 0 0 2px rgba(124,255,79,.5);opacity:0;transform:scale(.5);transform-origin:0 100%;transition:opacity .25s,transform .45s cubic-bezier(.2,1.6,.4,1)}
+.hw-skel.r .hw-skel-say{left:auto;right:80%;border-radius:14px 14px 4px 14px;transform-origin:100% 100%}
+.hw-skel.talk .hw-skel-say{opacity:1;transform:none}
+
+/* graveyard strip above the footer */
+.hw-yard{position:relative;height:150px;margin-top:30px;pointer-events:none;overflow:hidden;z-index:0;-webkit-mask:linear-gradient(to bottom,transparent,#000 22%);mask:linear-gradient(to bottom,transparent,#000 22%)}
+.hw-yard>svg{position:absolute;left:0;bottom:0;width:100%;height:100%}
+.hw-yard .pkf{animation:hwPkf 1.3s ease-in-out infinite alternate}
+@keyframes hwPkf{to{opacity:.5}}
+.hw-hand{position:absolute;bottom:14px;width:40px;height:84px;overflow:hidden}
+.hw-hand svg{position:absolute;left:0;bottom:0;width:100%;transform:translateY(102%);animation:hwRise 12s ease-in-out infinite}
+.hw-hand+.hw-hand svg{animation-delay:-6s}
+@keyframes hwRise{0%,10%{transform:translateY(102%)}20%{transform:translateY(6%)}24%{transform:translateY(14%)}28%,66%{transform:translateY(8%)}78%,100%{transform:translateY(102%)}}
+.hw-hand .fingers{transform-box:fill-box;transform-origin:50% 100%;animation:hwWig .45s ease-in-out infinite alternate}
+@keyframes hwWig{to{transform:rotate(-9deg) scaleY(.9)}}
+.hw-ghost{position:absolute;left:0;top:8px;width:44px;animation:hwGhostX 30s linear infinite}
+.hw-ghost>span{position:relative;display:block;animation:hwGhostY 2.4s ease-in-out infinite alternate}
+.hw-ghost>span::after{content:'';position:absolute;left:14%;right:14%;top:78%;height:70%;border-radius:0 0 50% 50%;background:radial-gradient(ellipse at top,rgba(198,255,170,.5),transparent 72%);filter:blur(3px)}
+.hw-ghost svg{position:relative;z-index:1;display:block;width:100%;height:auto;filter:drop-shadow(0 0 12px rgba(124,255,79,.65))}
+.hw-ghost .jaw{transform-box:fill-box;transform-origin:50% 0;animation:hwJaw .3s ease-in-out infinite alternate}
+@keyframes hwGhostX{from{transform:translateX(-80px)}to{transform:translateX(calc(100vw + 40px))}}
+@keyframes hwGhostY{to{transform:translateY(16px) rotate(8deg)}}
+.hw-ff{position:absolute;width:4px;height:4px;border-radius:50%;background:#b8ff7a;box-shadow:0 0 8px 2px rgba(124,255,79,.8);animation:hwFF 5s ease-in-out infinite}
+@keyframes hwFF{0%,100%{opacity:0;transform:translate(0,0)}30%{opacity:1}50%{transform:translate(18px,-22px)}70%{opacity:.8}}
+@media(max-width:640px){.hw-yard{height:104px;margin-top:20px}.hw-hand{width:30px;height:62px;bottom:9px}.hw-ghost{width:34px}.hw-skel{width:84px}.hw-skel-say{font-size:.8rem;padding:5px 10px}}
 
 /* phone = lite */
 html.hw-lite .hw-web{width:118px;height:118px;top:60px;opacity:.22}
@@ -4169,8 +4329,8 @@ html.hw-lite .hw-fog{height:34vh}
 /* reduced motion = still images */
 html.hw-rm .hw-fog i,html.hw-rm .hw-web,html.hw-rm .hw-spider *,html.hw-rm .hw-moon,html.hw-rm .hw-moon::after,html.hw-rm .hw-mb,html.hw-rm .hw-hat,html.hw-rm .hw-hat *,
 html.hw-rm .hw-caul *,html.hw-rm .hw-steam,html.hw-rm .hw-slime i,html.hw-rm .hw-slime b,html.hw-rm .hw-flick,html.hw-rm .lbx-live,html.hw-rm #navLiveTag,
-html.hw-rm .hw-ban,html.hw-rm .hw-ban *,html.hw-rm .hw-ban::before,html.hw-rm .vp-bar-fill,html.hw-rm .hx-vbar-fill,html.hw-rm .lbx-crown{animation:none!important}
-html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b{display:none}
+html.hw-rm .hw-ban,html.hw-rm .hw-ban *,html.hw-rm .hw-hi,html.hw-rm .hw-poof,html.hw-rm .hw-skull-i,html.hw-rm .hw-skull-i *,html.hw-rm .hw-yard *,html.hw-rm .hw-ban::before,html.hw-rm .vp-bar-fill,html.hw-rm .hx-vbar-fill,html.hw-rm .lbx-crown{animation:none!important}
+html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-ghost,html.hw-rm .hw-hand,html.hw-rm .hw-poof{display:none}
 .hw-ban .hw-face{animation:hwlFace .2s forwards,hwlFaceF 1.3s .2s ease-in-out infinite}
 </style>
 </head>
@@ -4184,17 +4344,18 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b{display:none}
   try{ if(ss && ss.getItem('hw_loaded')) return; if(ss) ss.setItem('hw_loaded','1'); }catch(e){}
   var L = document.createElement('div');
   L.id = 'hwLoader'; L.setAttribute('aria-hidden','true');
-  L.innerHTML = '<div class="hwl-in"><div class="hwl-glow"></div><div class="hwl-pk">' + HW_SVG.pumpkin() + '</div>'
+  L.innerHTML = '<div class="hwl-in"><div class="hwl-glow"></div><div class="hwl-orbit"><b><i>' + HW_SVG.BAT + '</i></b><b><i>' + HW_SVG.BAT + '</i></b><b><i>' + HW_SVG.BAT + '</i></b></div><div class="hwl-pk">' + HW_SVG.pumpkin() + '</div>'
     + '<div class="hwl-t">Summoning <b>Jammmy</b>&hellip;</div><div class="hwl-bar"><i></i></div></div>';
   document.body.appendChild(L);
   var t0 = Date.now(), done = false;
   function hide(){
     if(done) return; done = true;
-    var wait = Math.max(0, 1700 - (Date.now() - t0));
+    var wait = Math.max(0, 1000 - (Date.now() - t0));
     setTimeout(function(){ L.classList.add('out'); setTimeout(function(){ if(L.parentNode) L.parentNode.removeChild(L); }, 800); }, wait);
   }
-  if(document.readyState === 'complete') hide(); else window.addEventListener('load', hide);
-  setTimeout(hide, 3200); /* never hold the page longer than this, even if a video is slow */
+  /* hide as soon as the page itself is ready -- don't wait for every image/video to finish */
+  if(document.readyState !== 'loading') hide(); else document.addEventListener('DOMContentLoaded', hide);
+  setTimeout(hide, 2400); /* hard cap */
 }catch(e){ var x = document.getElementById('hwLoader'); if(x) x.remove(); }})();
 </script>
 <canvas id="bgCanvas"></canvas>
@@ -4266,10 +4427,10 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b{display:none}
 
 <div class="sidetabs">
   <button class="sidetab slot" onclick="nav('requestslot')" title="Request a Slot" style="border:0;background:none;padding:0;cursor:pointer;display:block">
-    <img loading="lazy" src="request-a-slot.png?v=4" alt="Request a Slot" style="width:100%;display:block;pointer-events:none;will-change:auto;transform:translateZ(0)">
+    <img loading="lazy" src="request-a-slot.webp?v=5" alt="Request a Slot" style="width:100%;display:block;pointer-events:none;will-change:auto;transform:translateZ(0)">
   </button>
   <button class="sidetab battle" onclick="nav('requestbattle')" title="Request a Battle" style="border:0;background:none;padding:0;cursor:pointer;display:block">
-    <img loading="lazy" src="request-a-battle.png?v=4" alt="Request a Battle" style="width:100%;display:block;pointer-events:none;will-change:auto;transform:translateZ(0)">
+    <img loading="lazy" src="request-a-battle.webp?v=5" alt="Request a Battle" style="width:100%;display:block;pointer-events:none;will-change:auto;transform:translateZ(0)">
   </button>
 </div>
 
@@ -4307,15 +4468,15 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b{display:none}
               <circle cx="200" cy="200" r="158" fill="none" stroke="url(#hxRg)" stroke-width="1.5" stroke-dasharray="120 40 8 40" opacity=".7"/>
             </svg>
             <div class="hx-orbit" aria-hidden="true">
-              <img src="jammmy-coin.png" alt="" class="hx-oc c1"><img src="jammmy-coin.png" alt="" class="hx-oc c2"><img src="jammmy-coin.png" alt="" class="hx-oc c3">
+              <img src="jammmy-coin.webp" alt="" class="hx-oc c1"><img src="jammmy-coin.webp" alt="" class="hx-oc c2"><img src="jammmy-coin.webp" alt="" class="hx-oc c3">
             </div>
             <div class="hx-jar" onclick="openVaultModal()" title="Jammmy">
-              <video id="homeJarVideo" class="hx-jar-v" autoplay loop muted playsinline preload="auto"><source src="vault-jar-7.mp4.webm" type="video/webm"></video>
+              <video id="homeJarVideo" class="hx-jar-v" autoplay loop muted playsinline preload="auto" poster="jar-7.webp"><source src="jar-7.webm" type="video/webm"></video>
               <div class="hx-jar-shadow"></div>
             </div>
           </div>
           <div class="hx-fc hx-fc-race" data-hx-mouse="2.2" onclick="goToLeaderboard('powerwin')">
-            <div class="hx-fc-top"><img src="powerwin.png" alt="" class="hx-fc-pw"><span>Leaderboard ends in</span></div>
+            <div class="hx-fc-top"><img src="powerwin.webp" alt="" class="hx-fc-pw"><span>Leaderboard ends in</span></div>
             <div class="hx-fc-cd" id="hxRaceCd"><b>--</b>d <b>--</b>h <b>--</b>m</div>
             <div class="hx-fc-sub"><b>$1,000</b> prize pool</div>
           </div>
@@ -4337,7 +4498,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b{display:none}
           </button>
           <div class="hx-trust">
             <span>Official partners</span>
-            <img src="powerwin.png" alt="Power.win" class="hx-trust-pw">
+            <img src="powerwin.webp" alt="Power.win" class="hx-trust-pw">
           </div>
         </div>
       </div>
@@ -4398,7 +4559,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b{display:none}
             <span class="hx-b-link">View bonuses <em>→</em></span>
           </div>
           <div class="hx-b-art hx-bonus-art solo" aria-hidden="true">
-            <div class="hx-chip-card c1"><img src="powerwin.png" alt=""><b>100%</b><small>Cash match</small></div>
+            <div class="hx-chip-card c1"><img src="powerwin.webp" alt=""><b>100%</b><small>Cash match</small></div>
           </div>
         </article>
 
@@ -4413,7 +4574,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b{display:none}
         </article>
 
         <article class="hx-b hx-b-coin hx-rv hx-tilt hx-spotlight" style="--c:250,204,21" onclick="nav('loyalty')">
-          <div class="hx-coin3d" aria-hidden="true"><img src="jammmy-coin.png" alt=""></div>
+          <div class="hx-coin3d" aria-hidden="true"><img src="jammmy-coin.webp" alt=""></div>
           <span class="hx-b-tag">Loyalty</span>
           <h3>Jammmy Coins</h3>
           <p>Claim daily, earn from the Vault and redeem for cash, crypto or casino balance.</p>
@@ -4489,7 +4650,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b{display:none}
       <div class="hx-partners solo">
         <article class="hx-p hx-rv hx-tilt" style="--c:192,132,252">
           <div class="hx-p-beam" aria-hidden="true"></div>
-          <div class="hx-p-logo"><img src="powerwin.png" alt="Power.win"></div>
+          <div class="hx-p-logo"><img src="powerwin.webp" alt="Power.win"></div>
           <div class="hx-p-body">
             <div class="hx-p-name">Power.win <span class="hx-p-badge">Newest partner</span></div>
             <ul class="hx-p-feats">
@@ -4531,7 +4692,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b{display:none}
       <!-- ===================== FINAL CTA ===================== -->
       <section class="hx-final hx-rv">
         <div class="hx-final-bg" aria-hidden="true"></div>
-        <img src="jammmy-coin.png" alt="" class="hx-final-coin a" aria-hidden="true"><img src="jammmy-coin.png" alt="" class="hx-final-coin b" aria-hidden="true">
+        <img src="jammmy-coin.webp" alt="" class="hx-final-coin a" aria-hidden="true"><img src="jammmy-coin.webp" alt="" class="hx-final-coin b" aria-hidden="true">
         <h2 class="hx-h2">Your seat at the table<br><span class="hx-grad">is waiting.</span></h2>
         <p>Log in, claim your casino username and start stacking rewards today.</p>
         <div class="hx-cta center">
@@ -4554,7 +4715,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b{display:none}
         <p class="lbx-sub" id="lbxSub">Wager under code <b>JAMMMY</b>, climb the ranks and win a share of the prize pool. Updated live.</p>
         <div class="lbx-tabs solo" id="lbxTabs">
           <span class="lbx-tab-ind" id="lbxTabInd"></span>
-          <button class="lbt active" onclick="lbTab(this,'powerwin')"><img src="powerwin.png" alt="Power.win" class="pw"></button>
+          <button class="lbt active" onclick="lbTab(this,'powerwin')"><img src="powerwin.webp" alt="Power.win" class="pw"></button>
         </div>
         <div class="lbx-race-tog" id="lbxRaceTog" role="tablist" aria-label="Which race">
           <button type="button" class="on" data-r="current" onclick="lbRace('current')"><i class="dot"></i>Current<span class="lbx-tw"> leaderboard</span></button>
@@ -4585,7 +4746,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b{display:none}
         <div class="lbx-tile lbx-cta">
           <span class="lbx-lbl">USE CODE</span>
           <button class="lbx-code" onclick="copy(this.querySelector('b'),'JAMMMY')"><b>JAMMMY</b><span>Copy</span></button>
-          <a id="lbJoinPowerwin" class="lbx-join" href="https://power.win/?aff=jammmy" target="_blank" rel="noopener"><img src="powerwin.png" alt="" aria-hidden="true">Join Power.win <span aria-hidden="true">↗</span></a>
+          <a id="lbJoinPowerwin" class="lbx-join" href="https://power.win/?aff=jammmy" target="_blank" rel="noopener"><img src="powerwin.webp" alt="" aria-hidden="true">Join Power.win <span aria-hidden="true">↗</span></a>
         </div>
       </div>
 
@@ -4633,7 +4794,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b{display:none}
         <span class="pwx-pill"><span class="pwx-live"></span>Official partner · Newest</span>
         <div class="pwx-logo-wrap">
           <div class="pwx-ring" aria-hidden="true"></div>
-          <img src="powerwin.png" alt="Power.win" class="pwx-logo">
+          <img src="powerwin.webp" alt="Power.win" class="pwx-logo">
         </div>
         <h1 class="pwx-h1">The most <span class="pwx-grad">rewarding</span><br>gambling site</h1>
         <p class="pwx-lead">Real cash matched on your first deposit, rakeback on every bet and weekly races. All unlocked with one code.</p>
@@ -4801,7 +4962,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b{display:none}
     <div class="inner">
       <div class="grid2 solo reveal">
         <div class="bcard">
-          <div class="top"><span class="cas"><img src="powerwin.png" alt="Power.win" style="height:42px">Power.win</span><span class="ribbon" style="background:#7e22ce">Newest Partner</span></div>
+          <div class="top"><span class="cas"><img src="powerwin.webp" alt="Power.win" style="height:42px">Power.win</span><span class="ribbon" style="background:#7e22ce">Newest Partner</span></div>
           <div class="codebox"><div class="code"><span style="color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em">Code</span><span class="cv">JAMMMY</span></div><button class="copybtn" onclick="copy(this,'JAMMMY')">Copy</button></div>
           <div class="feats"><span>💰 100% First Deposit Cash Match</span><span>💵 Rakeback Activated</span><span>📉 High Roller Lossback</span><span>🏁 Weekly Live Races</span></div>
           <button class="claim" onclick="go('https://power.win/?aff=jammmy')">Claim Bonus</button>
@@ -4994,8 +5155,8 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b{display:none}
         <!-- RIGHT: mascot panel -->
         <div class="vp-mascot-panel">
           <span class="vpp-count">● Live</span>
-          <video id="vaultMascotVideo" class="vp-mascot-img" autoplay loop muted playsinline onclick="openVaultModal()">
-            <source id="vaultMascotSource" src="vault-jar-1.mp4.webm" type="video/webm">
+          <video id="vaultMascotVideo" class="vp-mascot-img" autoplay loop muted playsinline poster="jar-1.webp" onclick="openVaultModal()">
+            <source id="vaultMascotSource" src="jar-1.webm" type="video/webm">
           </video>
         </div>
       </div>
@@ -5057,7 +5218,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b{display:none}
           </div>
           <div class="pf-balance">
             <div class="pf-label">Jammmy Coins</div>
-            <div id="pfCoins" class="pf-coins"><img src="jammmy-coin.png" alt=""><span id="pfCoinsNum">0</span></div>
+            <div id="pfCoins" class="pf-coins"><img src="jammmy-coin.webp" alt=""><span id="pfCoinsNum">0</span></div>
             <div id="pfUsdEquiv" class="pf-usd"></div>
           </div>
           <button class="pf-btn-claim claim-daily-btn" onclick="claimDaily()">🎁 Checking claim…</button>
@@ -5170,7 +5331,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b{display:none}
           </div>
           <div class="rsx-art" id="rsArt">
             <div class="rsx-art-glow"></div>
-            <img src="request-a-slot.png?v=4" alt="" aria-hidden="true">
+            <img src="request-a-slot.webp?v=5" alt="" aria-hidden="true">
             <div class="rsx-art-shine" aria-hidden="true"></div>
           </div>
         </div>
@@ -5237,7 +5398,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b{display:none}
           </div>
           <div class="rbx-art" id="rbArt">
             <div class="rbx-art-glow"></div>
-            <img src="request-a-battle.png?v=4" alt="" aria-hidden="true">
+            <img src="request-a-battle.webp?v=5" alt="" aria-hidden="true">
           </div>
         </div>
       </div>
@@ -5682,7 +5843,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b{display:none}
     <div class="foot-col">
       <h4>Partners</h4>
       <div class="foot-partners">
-        <a class="foot-partner-row" onclick="nav('new')"><img loading="lazy" class="foot-partner-logo" src="powerwin.png" alt="Power.win" style="height:38px;margin-top:-6px"></a>
+        <a class="foot-partner-row" onclick="nav('new')"><img loading="lazy" class="foot-partner-logo" src="powerwin.webp" alt="Power.win" style="height:38px;margin-top:-6px"></a>
 
 
       </div>
@@ -6282,7 +6443,7 @@ function lbxDraw(){
   shown.forEach(function(r, i){
     html += r.html.replace('<div class="lbx-row', '<div style="animation-delay:'+Math.min(i*0.045,.6)+'s" class="lbx-row'+(q ? ' hl' : ''));
     var next = shown[i+1];
-    if(!q && next && r.rank === _lbxPaidRanks) html += '<div class="lbx-cut" style="animation-delay:'+Math.min((i+1)*0.045,.6)+'s"><span>'+(window.isHW && isHW() ? '🪦 Graveyard line' : '🏆 Prize line')+' · top '+_lbxPaidRanks+' get paid</span></div>';
+    if(!q && next && r.rank === _lbxPaidRanks) html += '<div class="lbx-cut" style="animation-delay:'+Math.min((i+1)*0.045,.6)+'s"><span>'+(window.isHW && isHW() ? HW_SVG.skull('hw-skull-i')+' Graveyard line' : '🏆 Prize line')+' · top '+_lbxPaidRanks+' get paid</span></div>';
   });
   rowsEl.innerHTML = shown.length ? html : '<div class="lbx-empty">No player matching “'+pccEsc(q)+'” on this leaderboard.</div>';
   lbxUpdateMore(q ? 0 : list.length);
@@ -6427,7 +6588,7 @@ function showVaultFull(pool){
   var conf = '', hw = window.isHW && isHW();
   for(var i = 0; i < 70; i++){
     var c = (hw ? ['#ff7a1a','#a855f7','#7cff4f','#ffb347','#c084fc','#c6ff8a'] : ['#fbbf24','#a855f7','#22d3ee','#f472b6','#4ade80','#fde68a'])[i % 6];
-    if(hw && i % 7 === 0){ conf += '<i class="hwe" style="left:'+(Math.random()*100).toFixed(1)+'%;animation-delay:'+(Math.random()*2.4).toFixed(2)+'s;animation-duration:'+(3+Math.random()*2.4).toFixed(2)+'s">'+['🎃','🦇','👻','🕸️'][i % 4]+'</i>'; continue; }
+    if(hw && i % 5 === 0){ conf += '<i class="hwe" style="left:'+(Math.random()*100).toFixed(1)+'%;animation-delay:'+(Math.random()*2.4).toFixed(2)+'s;animation-duration:'+(3+Math.random()*2.4).toFixed(2)+'s">'+['🎃','🦇','💀','👻','🕸️'][i % 5]+'</i>'; continue; }
     conf += '<i style="left:'+(Math.random()*100).toFixed(1)+'%;background:'+c+';animation-delay:'+(Math.random()*2.4).toFixed(2)+'s;animation-duration:'+(2.6+Math.random()*2.2).toFixed(2)+'s;transform:rotate('+Math.round(Math.random()*360)+'deg)'+(i%3===0?';border-radius:50%;width:9px;height:9px':'')+'"></i>';
   }
   var me = null; try{ me = JSON.parse(localStorage.getItem('jammy_user') || 'null'); }catch(e){}
@@ -6435,13 +6596,14 @@ function showVaultFull(pool){
   fx.id = 'vaultFullFx'; fx.className = 'vfx'; fx.setAttribute('role', 'dialog'); fx.setAttribute('aria-label', 'The vault is full');
   fx.innerHTML = '<div class="vfx-rays" aria-hidden="true"></div><div class="vfx-conf" aria-hidden="true">'+conf+'</div>'
     + '<div class="vfx-card">'
-      + '<div class="vfx-jar"><div class="vfx-ring"></div><video autoplay loop muted playsinline src="vault-jar-8.mp4.webm"></video><img class="vfx-coin c1" src="jammmy-coin.png" alt=""><img class="vfx-coin c2" src="jammmy-coin.png" alt=""><img class="vfx-coin c3" src="jammmy-coin.png" alt=""></div>'
+      + '<div class="vfx-jar"><div class="vfx-ring"></div><video autoplay loop muted playsinline poster="jar-8.webp" src="jar-8.webm"></video><img class="vfx-coin c1" src="jammmy-coin.webp" alt=""><img class="vfx-coin c2" src="jammmy-coin.webp" alt=""><img class="vfx-coin c3" src="jammmy-coin.webp" alt=""></div>'
       + '<span class="vfx-kick">'+(hw ? '🎃 Spooky Community Vault 🦇' : 'Community Vault')+'</span>'
       + '<h2 class="vfx-title">Vault <b>full!</b></h2>'
       + '<div class="vfx-meter"><span></span><em>100%</em></div>'
       + '<p class="vfx-sub"><b>'+amt+' coins</b> were just paid out'+(n ? ' to <b>'+n+' verified player'+(n === 1 ? '' : 's')+'</b>' : ' to verified players')+'. Unclaimed coins roll into the next vault.</p>'
       + '<div class="vfx-btns">'+(me ? '<button type="button" class="vfx-go" onclick="closeVaultFull(\'profile\')">🪙 Check my coins</button>' : '<button type="button" class="vfx-go" onclick="closeVaultFull(\'loyalty\')">Claim your username</button>')+'<button type="button" class="vfx-close" onclick="closeVaultFull()">Nice!</button></div>'
     + '</div>';
+  if(hw){ var vj = fx.querySelector('.vfx-jar'); if(vj){ var hh = document.createElement('hw-x'); hh.className = 'hw-hat'; hh.innerHTML = HW_SVG.hat(); vj.appendChild(hh); } }
   document.body.appendChild(fx);
   requestAnimationFrame(function(){ fx.classList.add('in'); });
   fx.addEventListener('click', function(e){ if(e.target === fx) closeVaultFull(); });
@@ -6468,7 +6630,8 @@ function updateVaultMascotVideo(pct){
   var idx = Math.max(1, Math.min(8, Math.ceil((pct/100)*8) || 1));
   if(idx === _vaultVideoIndex) return;
   _vaultVideoIndex = idx;
-  source.src = 'vault-jar-' + idx + '.mp4.webm';
+  video.poster = 'jar-' + idx + '.webp'; /* shows instantly while the (small) video loads */
+  source.src = 'jar-' + idx + '.webm';
   video.load();
   video.play().catch(function(){}); /* autoplay can be blocked before any user interaction on some browsers -- non-fatal, video still shows its first frame */
 }
@@ -6597,7 +6760,7 @@ function renderUnclaimedCard(data){
   if(estEl) estEl.textContent = Math.round(potentialCoins).toLocaleString()+' Coins';
 
   var CASINO_LOGOS = {
-    powerwin: '<img src="powerwin.png" alt="Power.win" style="max-height:22px;max-width:100%;width:auto;object-fit:contain">',
+    powerwin: '<img src="powerwin.webp" alt="Power.win" style="max-height:22px;max-width:100%;width:auto;object-fit:contain">',
   };
 
   listEl.innerHTML = KNOWN_CASINOS_DISPLAY_LIST.map(function(casino){
@@ -7044,7 +7207,7 @@ function renderAuthUI(user){
   area.innerHTML = '<div class="user-pill" onclick="toggleUserMenu(event)">'
     + '<img src="'+user.avatar+'" alt="">'
     + '<span class="up-name">'+user.username+'</span>'
-    + '<span class="up-coins"><img src="jammmy-coin.png" class="coin-icon" alt=""> '+fmtCoins(user.coin_balance)+'</span>'
+    + '<span class="up-coins"><img src="jammmy-coin.webp" class="coin-icon" alt=""> '+fmtCoins(user.coin_balance)+'</span>'
     + '<div class="user-menu" id="userMenu">'
       + '<button onclick="event.stopPropagation();nav(\'profile\')">My Profile</button>'
       + (user.is_admin ? '<button onclick="event.stopPropagation();nav(\'admin\')" style="color:#fbbf24">⚙ Admin Dashboard</button>'
@@ -8360,7 +8523,7 @@ async function loadAdminUsers(){
             + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-start">'
               + '<div><b style="font-size:1.02rem">'+u.username+'</b>' + (u.is_admin ? ' <span class="admin-pill admin-pill-profit" style="background:rgba(251,191,36,.14);color:#fbbf24;border-color:rgba(251,191,36,.35)">ADMIN</span>' : u.is_mod ? ' <span class="admin-pill" style="background:rgba(96,165,250,.14);color:#60a5fa;border:1px solid rgba(96,165,250,.35)">MOD</span>' : '') + '<br>'
               + '<span style="color:var(--faint);font-size:.75rem;font-family:monospace">'+u.discord_id+'</span></div>'
-              + '<div style="font-family:\'Lilita One\',sans-serif;color:#fbbf24;font-size:1.3rem;white-space:nowrap"><img src="jammmy-coin.png" class="coin-icon" alt=""> '+fmtCoins(u.coin_balance)+'</div>'
+              + '<div style="font-family:\'Lilita One\',sans-serif;color:#fbbf24;font-size:1.3rem;white-space:nowrap"><img src="jammmy-coin.webp" class="coin-icon" alt=""> '+fmtCoins(u.coin_balance)+'</div>'
             + '</div>'
             + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">'+linksHtml+'</div>'
             + actionsHtml
@@ -8462,7 +8625,7 @@ async function loadAdminActive(days){
         + '</div>'
         + '<div class="act-side">'
           + '<div class="act-score"><b>'+u.score+'</b><small>score</small></div>'
-          + '<div class="act-bal"><img src="jammmy-coin.png" class="coin-icon" alt=""> '+fmtCoins(u.coin_balance)+'</div>'
+          + '<div class="act-bal"><img src="jammmy-coin.webp" class="coin-icon" alt=""> '+fmtCoins(u.coin_balance)+'</div>'
           + '<button class="admin-btn-row-action act-give" onclick="adminAddCoinsPrompt(\''+pccEsc(u.discord_id)+'\',\''+pccEsc(safeName)+'\',1)">+ Coins</button>'
         + '</div>'
       + '</div>';
@@ -8702,7 +8865,7 @@ async function loadAdminRedemptions(status){
   }
 }
 
-var RD_LOGOS = { powerwin:'powerwin.png', degencity:'degencity.png' };
+var RD_LOGOS = { powerwin:'powerwin.webp', degencity:'degencity.png' };
 function rdCopy(btn, v){
   var done = function(){ btn.textContent = 'Copied ✓'; btn.classList.add('ok'); setTimeout(function(){ btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 1500); };
   var txt = document.createElement('textarea'); txt.innerHTML = v; v = txt.value;
@@ -10533,11 +10696,11 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     || (/Safari/.test(UA) && !/Chrome|Chromium|CriOS|FxiOS|EdgiOS|Edg\/|OPR|Android|SamsungBrowser/.test(UA));
   if(NO_ALPHA_WEBM || /[?&]jarfb=1/.test(location.search)){
     var hv = document.getElementById('homeJarVideo');
-    if(hv){ var im = document.createElement('img'); im.src = 'jar-clean.png'; im.alt = 'Jammmy'; im.className = 'hx-jar-img'; hv.replaceWith(im); }
+    if(hv){ var im = document.createElement('img'); im.src = 'jar-clean.webp'; im.alt = 'Jammmy'; im.className = 'hx-jar-img'; hv.replaceWith(im); }
     var vv = document.getElementById('vaultMascotVideo');
     if(vv){
       var fb = document.createElement('div'); fb.className = 'vp-mascot-img jar-fb'; fb.id = 'vaultJarFb'; fb.onclick = function(){ openVaultModal(); };
-      fb.innerHTML = '<img src="jar-dim.png" alt=""><img src="jar-clean.png" alt="Vault jar" class="jar-fb-fill">';
+      fb.innerHTML = '<img src="jar-dim.webp" alt=""><img src="jar-clean.webp" alt="Vault jar" class="jar-fb-fill">';
       vv.replaceWith(fb);
     }
     window.jarFbSet = function(pct){
@@ -10717,7 +10880,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     var v = home.querySelector('.hx-vault'); if(v && v.classList.contains('in')) hxRingDraw();
     var idx = Math.max(1, Math.min(8, Math.ceil((pct / 100) * 8) || 1));
     if(idx !== _jarIdx){ var src = document.getElementById('homeJarSource'), vid = document.getElementById('homeJarVideo');
-      if(src && vid){ _jarIdx = idx; src.src = 'vault-jar-' + idx + '.mp4.webm'; vid.load(); vid.play().catch(function(){}); } }
+      if(src && vid){ _jarIdx = idx; vid.poster = 'jar-' + idx + '.webp'; src.src = 'jar-' + idx + '.webm'; vid.load(); vid.play().catch(function(){}); } }
   };
   function hxRingDraw(){
     if(_ringPct == null) return;
@@ -10799,7 +10962,10 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   safe(function(){
     var br = document.querySelector('nav .brand'); if(br && br.querySelector('img') && !br.querySelector('.hw-hat')) br.insertBefore(mk('hw-x','hw-hat', HW_SVG.hat()), br.firstChild);
     var jar = document.querySelector('.hx-jar');
-    if(jar && !jar.querySelector('.hw-hat')) jar.appendChild(mk('hw-x','hw-hat', HW_SVG.hat()));
+    if(jar && !jar.querySelector('.hw-hat')){
+      if(!jar.querySelector('video')) jar.classList.add('hw-fbjar'); /* iPhone/Safari: still-image jar has a different framing */
+      jar.appendChild(mk('hw-x','hw-hat', HW_SVG.hat()));
+    }
     /* home vault ring mascot: the wrapper takes over its positioning class so the hat bobs with it */
     var vm = document.querySelector('img.hx-vault-mascot');
     if(vm){ var w = wrapWithHat(vm, 'hw-vm'); if(w){ vm.classList.remove('hx-vault-mascot'); w.classList.add('hx-vault-mascot'); vm.style.cssText = 'width:100%;display:block'; } }
@@ -10808,9 +10974,9 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   /* 4. Vault page: jar floats over a bubbling cauldron */
   var fitCauldron = function(){};
   safe(function(){
-    var v = document.getElementById('vaultMascotVideo');
+    var v = document.getElementById('vaultMascotVideo') || document.getElementById('vaultJarFb');
     if(!v) return;
-    var w = mk('span','hw-vjar');
+    var w = mk('span','hw-vjar' + (v.tagName === 'VIDEO' ? '' : ' hw-fb'));
     v.parentNode.insertBefore(w, v); w.appendChild(v);
     w.appendChild(mk('span','hw-caul', HW_SVG.cauldron()));
     w.appendChild(mk('hw-x','hw-hat', HW_SVG.hat()));
@@ -10824,6 +10990,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     fitCauldron = function(){ if(v.offsetWidth) w.style.marginBottom = Math.round(v.offsetWidth * 0.34) + 'px'; };
     fitCauldron(); window.addEventListener('resize', fitCauldron);
     var p = v.play && v.play(); if(p && p.catch) p.catch(function(){});
+    if(window._lastVaultPct != null && window.jarFbSet) window.jarFbSet(window._lastVaultPct);
   });
 
   /* 5. Flickering neon headings (only ones that aren't already animated) */
@@ -10898,6 +11065,48 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     setTimeout(flock, 2600);
   });
 
+  /* 7b. Graveyard strip above the footer: tombstones, skeleton hands, a floating skull ghost, fireflies */
+  safe(function(){
+    var ft = document.querySelector('footer');
+    if(!ft || document.querySelector('.hw-yard')) return;
+    var y = mk('div','hw-yard', HW_SVG.yard());
+    y.setAttribute('aria-hidden','true');
+    var h1 = mk('div','hw-hand', HW_SVG.hand()), h2 = mk('div','hw-hand', HW_SVG.hand());
+    h1.style.left = '27%'; h2.style.left = '72%'; h2.style.transform = 'scaleX(-1)';
+    y.appendChild(h1); y.appendChild(h2);
+    var g = mk('div','hw-ghost','<span>' + HW_SVG.skull() + '</span>'); y.appendChild(g);
+    for(var i = 0; i < (LITE ? 6 : 12); i++){
+      var ff = mk('i','hw-ff'); ff.style.cssText = 'left:'+(Math.random()*96+2).toFixed(1)+'%;top:'+(20+Math.random()*60).toFixed(0)+'%;animation-delay:'+(-Math.random()*5).toFixed(2)+'s;animation-duration:'+(4+Math.random()*3).toFixed(2)+'s';
+      y.appendChild(ff);
+    }
+    ft.parentNode.insertBefore(y, ft);
+  });
+
+  /* 7c. A skeleton peeks in from the side of the screen now and then, waves and says something */
+  if(!RM) safe(function(){
+    var LINES = ['Boo! 👻','Use code JAMMMY 💀','Spooky wins!','Rattle rattle…','I’m on the leaderboard!','Bone appétit 🦴','Trick or treat? 🎃'];
+    var busy = false;
+    function peek(){
+      if(!document.hidden && !busy && !document.getElementById('vaultFullFx') && !document.getElementById('shareXModal')){
+        busy = true;
+        var side = Math.random() < .5 ? 'l' : 'r', sg = side === 'l' ? -1 : 1;
+        var s = mk('div','hw-skel ' + side, HW_SVG.skeleton() + '<span class="hw-skel-say">' + LINES[Math.floor(Math.random()*LINES.length)] + '</span>');
+        s.setAttribute('aria-hidden','true');
+        var minB = window.innerWidth <= 820 ? 96 : 30;
+        s.style.bottom = Math.round(minB + Math.random() * window.innerHeight * .28) + 'px';
+        document.body.appendChild(s);
+        var out = 'translateX(' + (sg*112) + '%) rotate(' + (-sg*34) + 'deg)', mid = 'translateX(' + (sg*24) + '%) rotate(' + (-sg*12) + 'deg)', inn = 'translateX(' + (sg*30) + '%) rotate(' + (-sg*15) + 'deg)';
+        var a = s.animate([{transform:out},{transform:mid,offset:.13},{transform:inn,offset:.19},{transform:inn,offset:.84},{transform:out}],
+                          {duration:5600, easing:'cubic-bezier(.45,.05,.35,1)', fill:'both'});
+        setTimeout(function(){ s.classList.add('talk'); }, 1000);
+        setTimeout(function(){ s.classList.remove('talk'); }, 4300);
+        a.onfinish = function(){ s.remove(); busy = false; };
+      }
+      setTimeout(peek, (LITE ? 42000 : 26000) + Math.random()*(LITE ? 30000 : 20000));
+    }
+    setTimeout(peek, LITE ? 14000 : 8000);
+  });
+
   /* 8. "Happy Halloween from Jammmy" banner with a live countdown to 31 Oct */
   safe(function(){
     var ls = null; try{ ls = window.localStorage; }catch(e){}
@@ -10924,7 +11133,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     b.querySelector('.hw-ban-x').onclick = function(){ setMin(true, true); };
     b.querySelector('.hw-ban-pk').onclick = function(){ setMin(!b.classList.contains('min'), true); };
     setTimeout(function(){ b.classList.add('in'); }, document.getElementById('hwLoader') ? 2600 : 1200);
-    if(LITE && !wasMin) setTimeout(function(){ if(!b.classList.contains('min')) setMin(true, false); }, 9000);
+    if(LITE && !wasMin) setTimeout(function(){ if(!b.classList.contains('min')) setMin(true, false); }, 7000);
   });
 
   /* 9. Ember trail behind the mouse (desktop only) */

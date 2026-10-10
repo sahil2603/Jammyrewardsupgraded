@@ -8,6 +8,32 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-10 (b): Halloween v2 — faster mascot, new witch hat, skeletons, new share image
+
+- **Faster loading:** the home page went from about 3.1 MB to about 1.1 MB.
+  - **Jar videos:** were 1080p and 290 KB–1.5 MB each, with an unused audio track. They are re-encoded as `jar-1…8.webm` at 512px, still 60fps and still transparent, at 38–380 KB each (about 80% smaller in total). They look the same.
+  - **Instant mascot:** each jar video now has a still `jar-N.webp` poster (about 10 KB), so the mascot appears straight away while the video loads. When the vault level changes, the poster changes too.
+  - **Images:** `powerwin.png` (1.2 MB) is now `powerwin.webp` (49 KB). The coin, the Request Slot and Request Battle tabs, and the iPhone jar images are now webp too.
+  - **Loading screen:** hides as soon as the page is ready, normally about 1s, with a 2.4s cap. It no longer waits for every video to finish. Three bats now orbit the pumpkin.
+- **New witch hat:**
+  - Drawn in more detail, with shading, a stitched patch, an orange band with a gold buckle that catches the light, and a green star charm.
+  - The floppy tip bends in three segments and the charm swings.
+  - Every few seconds it hops off the jar and lands with a squash and a green "poof" ring.
+  - It now also appears in the Vault-full celebration. On iPhone, where a still jar replaces the video, it is placed to fit that image.
+- **Skulls and skeletons:**
+  - Now and then a skeleton peeks in from the side of the screen, waving, chattering its jaw and saying something like "Boo!", "Use code JAMMMY 💀" or "Bone appétit 🦴". It appears less often on phones.
+  - Every page now has a graveyard strip above the footer: tombstones, crosses, a fence, a dead tree, glowing pumpkins, skeleton hands rising from the ground, a floating skull ghost and fireflies.
+  - The leaderboard's graveyard line has a small animated skull, and the Vault-full confetti includes 💀.
+- **New `share-powerwin-halloween.png`:**
+  - Redesigned from scratch: a big moon with bats and the Power.win logo over a night sky.
+  - "I'M ON THE LEADERBOARD!" with "Use code JAMMMY".
+  - A leaderboard panel with slime and a pumpkin for 1st.
+  - The Jammmy jar wearing the witch hat.
+  - A graveyard with a skeleton waving from the corner.
+- **Checked:** all 10 pages on desktop and on phones (390px, 360px and the iPhone still-image jar) have no errors and no sideways scrolling. The theme turns off correctly with `?halloween=0`, and reduced-motion mode still works.
+
+---
+
 ## 2026-10-10: Halloween theme (October only)
 
 - **When it's on:** automatically from 1 Oct to 31 Oct (the visitor's own date). It switches itself off on 1 Nov, so nothing needs to be removed afterwards.
