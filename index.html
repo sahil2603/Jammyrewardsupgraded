@@ -6627,7 +6627,10 @@ function updateVaultMascotVideo(pct){
   var video = document.getElementById('vaultMascotVideo');
   var source = document.getElementById('vaultMascotSource');
   if(!video || !source) return;
-  var idx = Math.max(1, Math.min(8, Math.ceil((pct/100)*8) || 1));
+  /* Videos 1-7 show 1/7 ... 7/7 of the jar filled (7 = completely full); 8 = full + celebrating.
+     Round DOWN so the jar never looks fuller than the vault really is (90% shows 6/7, not full).
+     Full jar only at 100%. */
+  var idx = pct >= 100 ? 8 : Math.max(1, Math.min(6, Math.floor((pct/100)*7)));
   if(idx === _vaultVideoIndex) return;
   _vaultVideoIndex = idx;
   video.poster = 'jar-' + idx + '.webp'; /* shows instantly while the (small) video loads */
@@ -10878,7 +10881,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     var t = document.getElementById('hxVaultPct'); if(t) t.textContent = pct;
     var b = document.getElementById('hxVaultBar'); if(b) b.style.width = Math.max(pct, 2) + '%';
     var v = home.querySelector('.hx-vault'); if(v && v.classList.contains('in')) hxRingDraw();
-    var idx = Math.max(1, Math.min(8, Math.ceil((pct / 100) * 8) || 1));
+    var idx = pct >= 100 ? 8 : Math.max(1, Math.min(6, Math.floor((pct / 100) * 7)));
     if(idx !== _jarIdx){ var src = document.getElementById('homeJarSource'), vid = document.getElementById('homeJarVideo');
       if(src && vid){ _jarIdx = idx; vid.poster = 'jar-' + idx + '.webp'; src.src = 'jar-' + idx + '.webm'; vid.load(); vid.play().catch(function(){}); } }
   };

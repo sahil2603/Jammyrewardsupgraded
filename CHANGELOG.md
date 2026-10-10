@@ -8,6 +8,14 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-10 (c): Vault jar matches the real fill level
+
+- The jar video was picked by rounding UP into 8 steps, so 90% showed video 8, the completely full, celebrating jar. Videos 1–7 actually show 1/7 to 7/7 full, and 8 is full plus the celebration.
+- It now rounds DOWN, so the jar never looks fuller than the vault is. For example, 90% shows the 6/7 jar. The full jar only shows at 100%.
+- Same fix on the home vault card.
+
+---
+
 ## 2026-10-10 (b): Halloween v2 — faster mascot, new witch hat, skeletons, new share image
 
 - **Faster loading:** the home page went from about 3.1 MB to about 1.1 MB.
