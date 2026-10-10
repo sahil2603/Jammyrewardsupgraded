@@ -8,6 +8,15 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-10 (d): Witch hats fixed on iPhone Safari
+
+- **Problem:** on iPhone, the hats sat too low on the jar, the home vault card's jar was pushed to the right, and a stray ring showed around the hat brim.
+- **Hats:** they now sit in a box with a fixed shape instead of relying on the browser to work out the SVG's height, which Safari got wrong, so they're the same size and position in every browser. Every other Halloween drawing (skeleton, bats, pumpkins, cauldron, skull) also got an explicit shape.
+- **Home vault card:** the jar picture is left untouched. The hat sits in its own overlay that bobs in sync with the jar, instead of wrapping the image.
+- **Brim ring:** removed the green landing "poof" ring, which was the stray ring on Safari. The hop and squash stay.
+
+---
+
 ## 2026-10-10 (c): Vault jar matches the real fill level
 
 - The jar video was picked by rounding UP into 8 steps, so 90% showed video 8, the completely full, celebrating jar. Videos 1–7 actually show 1/7 to 7/7 full, and 8 is full plus the celebration.

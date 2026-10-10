@@ -3884,7 +3884,7 @@ var HW_SVG = (function(){
   function uid(){ return 'hw' + (++n) + Math.random().toString(36).slice(2,6); }
   function hat(){
     var u = uid(), hd = (-Math.random()*8).toFixed(2);
-    return '<hw-x class="hw-hi" style="--hd:'+hd+'s"><svg viewBox="0 0 160 140" aria-hidden="true"><defs>'
+    return '<div class="hw-hi" style="--hd:'+hd+'s"><svg viewBox="0 0 160 140" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><defs>'
       + '<linearGradient id="hc'+u+'" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b98cff"/><stop offset=".26" stop-color="#7c3aed"/><stop offset=".68" stop-color="#4c1d95"/><stop offset="1" stop-color="#1c0838"/></linearGradient>'
       + '<radialGradient id="hb'+u+'" cx="42%" cy="30%" r="75%"><stop offset="0" stop-color="#6131a8"/><stop offset=".55" stop-color="#2a0f4d"/><stop offset="1" stop-color="#10041c"/></radialGradient>'
       + '<linearGradient id="hr'+u+'" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d8b4fe" stop-opacity="0"/><stop offset=".32" stop-color="#f3e8ff" stop-opacity=".95"/><stop offset=".7" stop-color="#c084fc" stop-opacity=".35"/><stop offset="1" stop-color="#c084fc" stop-opacity="0"/></linearGradient>'
@@ -3918,7 +3918,7 @@ var HW_SVG = (function(){
       + '<path class="spk a" d="M142 2 l1.7 4.3 4.3 1.7 -4.3 1.7 -1.7 4.3 -1.7 -4.3 -4.3 -1.7 4.3 -1.7z" fill="#ffd166"/>'
       + '<path class="spk b" d="M108 0 l1.2 3 3 1.2 -3 1.2 -1.2 3 -1.2 -3 -3 -1.2 3 -1.2z" fill="#c6ff8a"/>'
       + '<path class="spk c" d="M152 40 l1.2 3 3 1.2 -3 1.2 -1.2 3 -1.2 -3 -3 -1.2 3 -1.2z" fill="#e9d5ff"/>'
-      + '</svg><i class="hw-poof"></i></hw-x>';
+      + '</svg></div>';
   }
   function skull(cls){
     return '<svg class="'+(cls||'')+'" viewBox="0 0 40 44" aria-hidden="true"><path d="M20 2 C 9 2, 3 10, 4 20 C 4.6 26, 8 29, 11 31 L 11 37 L 29 37 L 29 31 C 32 29, 35.4 26, 36 20 C 37 10, 31 2, 20 2 Z" fill="#f2ead8" stroke="#bfb194" stroke-width=".8"/>'
@@ -4041,6 +4041,9 @@ var HW_SVG = (function(){
       + '<path d="M58 49 C 57 60, 65 62, 65 51 Z M118 52 C 117 66, 126 67, 126 52 Z M148 44 C 148 52, 154 53, 154 43 Z" fill="#7cff4f"/>'
       + '</svg>';
   }
+  function fixSvg(s){ return s.replace(/<svg([^>]*?) viewBox="(-?[\d.]+) (-?[\d.]+) ([\d.]+) ([\d.]+)"/g, function(m, pre, x, y, w, h){ return /height=|style=/.test(pre) ? m : '<svg' + pre + ' style="aspect-ratio:' + w + '/' + h + '" viewBox="' + x + ' ' + y + ' ' + w + ' ' + h + '"'; }); }
+  function fx(fn){ return function(){ return fixSvg(fn.apply(null, arguments)); }; }
+  pumpkin = fx(pumpkin); BAT = fixSvg(BAT); SPIDER = fixSvg(SPIDER); cauldron = fx(cauldron); skull = fx(skull); skeleton = fx(skeleton); hand = fx(hand);
   return {hat:hat, pumpkin:pumpkin, BAT:BAT, SPIDER:SPIDER, web:web, cauldron:cauldron, skull:skull, skeleton:skeleton, hand:hand, yard:yard};
 })();
 </script>
@@ -4134,8 +4137,10 @@ html.hw .lbx-live,html.hw #navLiveTag.is-live{border-color:rgba(124,255,79,.65)!
 /* witch hat */
 .hw-wrap{position:relative;display:inline-block;line-height:0}
 .hw-hat{position:absolute;pointer-events:none;z-index:3;filter:drop-shadow(0 5px 7px rgba(0,0,0,.55)) drop-shadow(0 0 10px rgba(168,85,247,.55))}
-.hw-hi{display:block;position:relative;transform-origin:50% 82%;animation:hwHop 8s cubic-bezier(.35,.6,.4,1) var(--hd,0s) infinite,hwSway 4.4s ease-in-out infinite}
-.hw-hat svg{display:block;width:100%;height:auto;overflow:visible}
+.hw-hi{display:block;position:relative;height:0;padding-top:87.5%;transform-origin:50% 82%;animation:hwHop 8s cubic-bezier(.35,.6,.4,1) var(--hd,0s) infinite,hwSway 4.4s ease-in-out infinite}
+.hw-hat svg{position:absolute;left:0;top:0;display:block;width:100%;height:100%;overflow:visible}
+.hw-hat{display:block}
+.hw-bat svg,.hw-skel svg,.hw-ghost svg,.hw-hand svg,.hwl-orbit svg{height:auto}
 @keyframes hwHop{0%,70%,100%{translate:0 0;scale:1 1}74%{translate:0 3%;scale:1.08 .88}80%{translate:0 -24%;scale:.94 1.08}84%{translate:0 -27%;scale:1 1}90%{translate:0 0;scale:1.12 .85}94%{translate:0 0;scale:.96 1.05}97%{translate:0 0;scale:1.01 .99}}
 @keyframes hwSway{0%,100%{rotate:-3deg}50%{rotate:4deg}}
 .hw-hat .s1{transform-origin:80px 114px;animation:hwS1 3.4s ease-in-out infinite}
@@ -4151,18 +4156,16 @@ html.hw .lbx-live,html.hw #navLiveTag.is-live{border-color:rgba(124,255,79,.65)!
 .hw-hat .spk{transform-box:fill-box;transform-origin:center;animation:hwSpk 2.2s ease-in-out infinite}
 .hw-hat .spk.b{animation-delay:-.8s}.hw-hat .spk.c{animation-delay:-1.5s}
 @keyframes hwSpk{0%,100%{opacity:1;transform:scale(1) rotate(0)}50%{opacity:.1;transform:scale(.3) rotate(90deg)}}
-.hw-poof{position:absolute;left:6%;right:6%;top:70%;height:22%;border-radius:50%;border:2px solid rgba(198,255,138,.85);box-shadow:0 0 14px rgba(124,255,79,.7),inset 0 0 8px rgba(124,255,79,.5);opacity:0;pointer-events:none;animation:hwPoof 8s ease-out var(--hd,0s) infinite}
-@keyframes hwPoof{0%,89%{opacity:0;transform:scale(.5)}90.5%{opacity:.95;transform:scale(.75)}100%{opacity:0;transform:scale(1.6)}}
-.brand .hw-poof{display:none}
 .vfx-jar .hw-hat{left:51%;top:-13%;width:54%;transform:translateX(-50%) rotate(-8deg);z-index:4}
 .hx-jar .hw-hat{left:51%;top:-11%;width:52%;transform:translateX(-50%) rotate(-8deg)}
 html.hw .brand{position:relative}
 .brand>.hw-hat{left:3px;top:-11px;width:27px;transform:rotate(-10deg)}
-.brand .hw-hat svg{width:100%;height:auto;filter:none}
+.brand .hw-hat svg{filter:none}
 .hx-jar.hw-fbjar .hw-hat{left:46%;top:-30%;width:74%;transform:translateX(-50%) rotate(-9deg)}
 .hw-vjar.hw-fb .hw-hat{left:46%;top:-27%;width:76%;transform:translateX(-50%) rotate(-9deg)}
 .hw-vjar>.jar-fb{position:relative;z-index:2;filter:drop-shadow(0 0 22px rgba(124,255,79,.45))}
-.hw-vm .hw-hat{left:52%;top:-14%;width:58%;transform:translateX(-50%) rotate(-9deg)}
+.hw-vmbox{position:absolute;left:50%;top:50%;width:48%;height:0;padding-top:64%;transform:translate(-50%,-55%);animation:hxBobC 5s ease-in-out infinite;pointer-events:none;z-index:3}
+.hw-vmbox .hw-hat{left:53%;top:-13%;width:56%;transform:translateX(-50%) rotate(-9deg)}
 .hw-vjar .hw-hat{left:51%;top:-11%;width:52%;transform:translateX(-50%) rotate(-8deg)}
 html.hw .hx-jar-v{filter:drop-shadow(0 0 26px rgba(255,122,26,.35))}
 
@@ -4329,8 +4332,8 @@ html.hw-lite .hw-fog{height:34vh}
 /* reduced motion = still images */
 html.hw-rm .hw-fog i,html.hw-rm .hw-web,html.hw-rm .hw-spider *,html.hw-rm .hw-moon,html.hw-rm .hw-moon::after,html.hw-rm .hw-mb,html.hw-rm .hw-hat,html.hw-rm .hw-hat *,
 html.hw-rm .hw-caul *,html.hw-rm .hw-steam,html.hw-rm .hw-slime i,html.hw-rm .hw-slime b,html.hw-rm .hw-flick,html.hw-rm .lbx-live,html.hw-rm #navLiveTag,
-html.hw-rm .hw-ban,html.hw-rm .hw-ban *,html.hw-rm .hw-hi,html.hw-rm .hw-poof,html.hw-rm .hw-skull-i,html.hw-rm .hw-skull-i *,html.hw-rm .hw-yard *,html.hw-rm .hw-ban::before,html.hw-rm .vp-bar-fill,html.hw-rm .hx-vbar-fill,html.hw-rm .lbx-crown{animation:none!important}
-html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-ghost,html.hw-rm .hw-hand,html.hw-rm .hw-poof{display:none}
+html.hw-rm .hw-ban,html.hw-rm .hw-ban *,html.hw-rm .hw-hi,html.hw-rm .hw-skull-i,html.hw-rm .hw-skull-i *,html.hw-rm .hw-yard *,html.hw-rm .hw-ban::before,html.hw-rm .vp-bar-fill,html.hw-rm .hx-vbar-fill,html.hw-rm .lbx-crown{animation:none!important}
+html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-ghost,html.hw-rm .hw-hand{display:none}
 .hw-ban .hw-face{animation:hwlFace .2s forwards,hwlFaceF 1.3s .2s ease-in-out infinite}
 </style>
 </head>
@@ -6603,7 +6606,7 @@ function showVaultFull(pool){
       + '<p class="vfx-sub"><b>'+amt+' coins</b> were just paid out'+(n ? ' to <b>'+n+' verified player'+(n === 1 ? '' : 's')+'</b>' : ' to verified players')+'. Unclaimed coins roll into the next vault.</p>'
       + '<div class="vfx-btns">'+(me ? '<button type="button" class="vfx-go" onclick="closeVaultFull(\'profile\')">🪙 Check my coins</button>' : '<button type="button" class="vfx-go" onclick="closeVaultFull(\'loyalty\')">Claim your username</button>')+'<button type="button" class="vfx-close" onclick="closeVaultFull()">Nice!</button></div>'
     + '</div>';
-  if(hw){ var vj = fx.querySelector('.vfx-jar'); if(vj){ var hh = document.createElement('hw-x'); hh.className = 'hw-hat'; hh.innerHTML = HW_SVG.hat(); vj.appendChild(hh); } }
+  if(hw){ var vj = fx.querySelector('.vfx-jar'); if(vj){ var hh = document.createElement('div'); hh.className = 'hw-hat'; hh.innerHTML = HW_SVG.hat(); vj.appendChild(hh); } }
   document.body.appendChild(fx);
   requestAnimationFrame(function(){ fx.classList.add('in'); });
   fx.addEventListener('click', function(e){ if(e.target === fx) closeVaultFull(); });
@@ -10957,21 +10960,25 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   /* 3. Witch hats on the Jammmy jar everywhere it appears */
   function wrapWithHat(el, wrapCls){
     if(!el || el.parentNode.classList.contains('hw-wrap')) return null;
-    var w = mk('hw-x','hw-wrap ' + (wrapCls || ''));
+    var w = mk('span','hw-wrap ' + (wrapCls || ''));
     el.parentNode.insertBefore(w, el); w.appendChild(el);
-    w.appendChild(mk('hw-x','hw-hat', HW_SVG.hat()));
+    w.appendChild(mk('div','hw-hat', HW_SVG.hat()));
     return w;
   }
   safe(function(){
-    var br = document.querySelector('nav .brand'); if(br && br.querySelector('img') && !br.querySelector('.hw-hat')) br.insertBefore(mk('hw-x','hw-hat', HW_SVG.hat()), br.firstChild);
+    var br = document.querySelector('nav .brand'); if(br && br.querySelector('img') && !br.querySelector('.hw-hat')) br.insertBefore(mk('div','hw-hat', HW_SVG.hat()), br.firstChild);
     var jar = document.querySelector('.hx-jar');
     if(jar && !jar.querySelector('.hw-hat')){
       if(!jar.querySelector('video')) jar.classList.add('hw-fbjar'); /* iPhone/Safari: still-image jar has a different framing */
-      jar.appendChild(mk('hw-x','hw-hat', HW_SVG.hat()));
+      jar.appendChild(mk('div','hw-hat', HW_SVG.hat()));
     }
     /* home vault ring mascot: the wrapper takes over its positioning class so the hat bobs with it */
     var vm = document.querySelector('img.hx-vault-mascot');
-    if(vm){ var w = wrapWithHat(vm, 'hw-vm'); if(w){ vm.classList.remove('hx-vault-mascot'); w.classList.add('hx-vault-mascot'); vm.style.cssText = 'width:100%;display:block'; } }
+    if(vm && !vm.parentNode.querySelector('.hw-vmbox')){
+      var box = mk('div','hw-vmbox'); box.appendChild(mk('div','hw-hat', HW_SVG.hat()));
+      vm.parentNode.insertBefore(box, vm.nextSibling);
+      vm.style.animation = 'none'; void vm.offsetWidth; vm.style.animation = ''; /* restart so jar and hat bob in sync */
+    }
   });
 
   /* 4. Vault page: jar floats over a bubbling cauldron */
@@ -10982,7 +10989,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     var w = mk('span','hw-vjar' + (v.tagName === 'VIDEO' ? '' : ' hw-fb'));
     v.parentNode.insertBefore(w, v); w.appendChild(v);
     w.appendChild(mk('span','hw-caul', HW_SVG.cauldron()));
-    w.appendChild(mk('hw-x','hw-hat', HW_SVG.hat()));
+    w.appendChild(mk('div','hw-hat', HW_SVG.hat()));
     {
       var st = mk('span','hw-steam'), s = '';
       for(var i = 0; i < (LITE ? 6 : 11); i++){
