@@ -4219,8 +4219,10 @@ html.hw .lbx-cut span{background:rgba(124,255,79,.07);border-color:rgba(124,255,
 html.hw-lite .hw-slime b{display:none}
 html.hw-lite .hw-slime i{animation-duration:calc(var(--t) * 1.6)}
 html.hw .hw-candle{transition:box-shadow .35s}
-html.hw:not(.hw-lite) .hw-candle:hover{animation:hwCandle 1.7s ease-in-out infinite}
-@keyframes hwCandle{0%,100%{box-shadow:0 0 0 1px rgba(255,140,40,.45),0 18px 50px -12px rgba(255,122,26,.55),0 0 60px -10px rgba(255,170,60,.35)}35%{box-shadow:0 0 0 1px rgba(255,170,70,.65),0 22px 62px -12px rgba(255,140,30,.75),0 0 84px -6px rgba(255,190,80,.48)}68%{box-shadow:0 0 0 1px rgba(255,120,30,.36),0 16px 42px -12px rgba(255,100,20,.42),0 0 46px -12px rgba(255,150,50,.28)}}
+html.hw:not(.hw-lite) .hw-candle:hover{box-shadow:0 0 0 1px rgba(255,150,50,.5),0 20px 56px -14px rgba(255,122,26,.55),0 0 70px -12px rgba(255,180,70,.38)!important}
+.hw-cg{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;z-index:4;transition:opacity .3s;box-shadow:inset 0 0 0 1px rgba(255,170,70,.5),inset 0 -40px 70px -45px rgba(255,140,40,.55)}
+html.hw:not(.hw-lite) .hw-candle:hover>.hw-cg{opacity:1;animation:hwCg 1.6s ease-in-out infinite}
+@keyframes hwCg{0%,100%{opacity:1}35%{opacity:.55}65%{opacity:.85}}
 html.hw:not(.hw-lite) .bcard:hover,html.hw:not(.hw-lite) .loy2-card:hover{box-shadow:0 0 0 1px rgba(255,150,50,.55),0 22px 60px -14px rgba(255,122,26,.6),0 0 70px -10px rgba(255,180,70,.4)!important}
 
 /* happy halloween banner */
@@ -11020,7 +11022,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   var CANDLE_SEL = '.hx-p,.prc,.pwx-card,.pf-card,.vp-link-card,.battle-card,.pcc-card';
   function slime(){
     document.querySelectorAll(CARD_SEL).forEach(function(c){
-      if(c.dataset.hws) return;
+      if(c.dataset.hws || c.closest('#admin')) return;   /* admin panel stays plain */
       if(!c.offsetWidth) return; /* hidden page: try again when it's shown */
       c.dataset.hws = '1';
       if(getComputedStyle(c).position === 'static') c.style.position = 'relative';
@@ -11033,10 +11035,13 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
       }
       c.appendChild(mk('span','hw-slime', s)).setAttribute('aria-hidden','true');
     });
+    /* Candle glow lives on its own child layer, so it never replaces a card's own
+       animation (replacing it re-ran entrance fades and could leave cards invisible). */
     document.querySelectorAll(CANDLE_SEL).forEach(function(c){
-      if(c.dataset.hwc) return; c.dataset.hwc = '1';
-      var an = getComputedStyle(c).animationName;
-      if(!an || an === 'none') c.classList.add('hw-candle');
+      if(c.dataset.hwc || c.closest('#admin')) return; c.dataset.hwc = '1';
+      if(getComputedStyle(c).position === 'static') c.style.position = 'relative';
+      c.classList.add('hw-candle');
+      c.appendChild(mk('span','hw-cg')).setAttribute('aria-hidden','true');
     });
   }
 

@@ -8,6 +8,15 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-13 (b): Admin cards no longer disappear (Halloween hover fix)
+
+- **Problem:** after switching admin tabs quickly and then moving the mouse, user cards could vanish.
+- **Cause:** the Halloween candle-glow hover swapped out each card's own entrance animation. When the mouse left, that fade-in started again from invisible.
+- **Fix:** the candle glow now runs on a separate glow layer inside the card, so the card's own animation is never touched.
+- **Admin panel:** slime drips and candle glow are no longer added anywhere in the admin panel.
+
+---
+
 ## 2026-10-13: LiquidDogJ (Jammy's own account) removed from the leaderboards and vault
 
 - **Worker only. The site doesn't change.**
