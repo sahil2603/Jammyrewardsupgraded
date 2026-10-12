@@ -8,6 +8,20 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-13: LiquidDogJ (Jammy's own account) removed from the leaderboards and vault
+
+- **Worker only. The site doesn't change.**
+- **Leaderboards:** `HIDDEN_LB_PLAYERS = ['liquiddogj']`. That name is taken out of the current and previous Power.win leaderboards before they're sent to the site.
+  - Previous boards that are already frozen are filtered too.
+  - Everyone below moves up a place, and the prize for that place moves with them.
+  - The share text is built from the same data, so the name is gone from there as well.
+  - Names are matched in any case.
+- **Vault:** LiquidDogJ's lifetime wager is frozen at the figure first seen after this deploy, stored in app_state as `vault_freeze::powerwin::liquiddogj`.
+  - What it already added stays in the vault, but new wagering on that account no longer adds coins.
+  - To also remove its past contribution, set that app_state value to 0.
+
+---
+
 ## 2026-10-10 (e): Witch hat placement measured in pixels (iPhone fix, part 2)
 
 - **Problem:** on iPhone Safari the hats were still sitting too low on the jar.
