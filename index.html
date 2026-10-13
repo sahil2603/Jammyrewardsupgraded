@@ -2751,6 +2751,23 @@ html.lenis{scroll-behavior:auto!important}
 .redeem-timing-note{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.35);
   border-radius:10px;padding:10px 14px;color:#fde68a;font-size:.85rem;margin:0 0 14px;line-height:1.5}
 .redeem-timing-note b{color:#fbbf24}
+.rd-dep{margin:14px 0 12px;padding:14px;border-radius:14px;background:rgba(168,85,247,.07);border:1px solid rgba(168,85,247,.3)}
+.rd-dep-h{font:700 .9rem 'Poppins',sans-serif;color:#fff;display:flex;align-items:center;gap:8px}
+.rd-dep-h span{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:rgba(248,113,113,.15);color:#fca5a5;border:1px solid rgba(248,113,113,.35)}
+.rd-dep-rule{margin:8px 0 12px;font-size:.84rem;color:var(--muted);line-height:1.55}
+.rd-dep-rule b{color:#fde68a}
+.rd-dep-up{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;border:1.5px dashed rgba(168,85,247,.55);background:rgba(255,255,255,.03);cursor:pointer;transition:border-color .2s,background .2s}
+.rd-dep-up:hover{border-color:#c084fc;background:rgba(168,85,247,.08)}
+.rd-dep-up.ok{border-style:solid;border-color:rgba(74,222,128,.6);background:rgba(74,222,128,.07)}
+.rd-dep-up input{display:none}
+.rd-dep-ic{font-size:1.2rem}
+.rd-dep-txt{font-size:.86rem;color:#e9e3ff;word-break:break-all}
+.rd-dep-prev{display:block;max-width:100%;max-height:160px;margin-top:10px;border-radius:10px;border:1px solid var(--line);cursor:zoom-in}
+.rd-dep-chk{display:flex;gap:10px;align-items:flex-start;margin-top:12px;font-size:.82rem;color:var(--muted);line-height:1.45;cursor:pointer}
+.rd-dep-chk input{margin-top:3px;width:16px;height:16px;flex:none;accent-color:#a855f7}
+.rd-proof-btn{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:6px 12px;border-radius:9px;border:1px solid rgba(168,85,247,.45);background:rgba(168,85,247,.12);color:#e9d5ff;font:600 .78rem 'Poppins',sans-serif;cursor:pointer}
+.rd-proof-btn:hover{background:rgba(168,85,247,.22)}
+.rd-proof-none{display:inline-block;margin-top:8px;font-size:.74rem;color:#fca5a5}
 @keyframes adminEmptyFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 /* Active/Awarded filter pills for Slot & Battle Requests -- a smooth sliding highlight
    rather than an instant color swap, transform/opacity only. */
@@ -5046,7 +5063,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-gho
           <div class="lg-step">
             <div class="lg-shot"><img src="guide-4.webp" loading="lazy" alt="Your Jammmy Coins balance and the Claim Daily button on your Profile"></div>
             <div class="lg-txt"><span class="lg-n">4</span><div><b>Collect &amp; redeem</b>
-              <p>Coins land on your Profile — plus 5 free every day. Redeem from 1,000 coins as casino balance or 10,000 as crypto.</p></div></div>
+              <p>Coins land on your Profile — plus 5 free every day. Redeem from 2,000 coins ($20) as casino balance or crypto.</p></div></div>
           </div>
         </div>
         <div class="lg-cta">
@@ -5074,7 +5091,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-gho
           <li>An admin manually verifies the claim against your Discord</li>
           <li>Once approved, your wagering counts toward the shared community vault</li>
           <li>When the vault collectively reaches 10,000 coins, everyone verified gets their own share paid out automatically — nothing else to do</li>
-          <li>Redeem from your Profile page once you have 1,000 coins (as casino balance) or 10,000 coins (as crypto)</li>
+          <li>Redeem from your Profile page once you have 2,000 coins ($20), as casino balance or crypto. Your Power.win deposits in the last 7 days must be more than what you redeem (screenshot proof required)</li>
         </ol>
       </div>
 
@@ -5272,13 +5289,24 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-gho
               <div class="redeem-timing-note" id="pfPlatformTiming">⏳ Funds are credited within <b>1–7 days</b>. Thanks for your patience!</div>
             </div>
 
+            <div class="rd-dep">
+              <div class="rd-dep-h">🧾 Deposit proof <span>required</span></div>
+              <p class="rd-dep-rule">Your <b>Power.win deposits in the last 7 days</b> must be <b>more than the amount you're redeeming</b> (<b id="pfRedeemUsdNeed">$0.00</b>). Attach a screenshot of your Power.win deposit history showing this.</p>
+              <label class="rd-dep-up" id="pfDepositDrop">
+                <input type="file" id="pfDepositFile" accept="image/*" onchange="pickDepositProof(this)">
+                <span class="rd-dep-ic">📎</span>
+                <span class="rd-dep-txt" id="pfDepositName">Attach deposit screenshot</span>
+              </label>
+              <img id="pfDepositPreview" class="rd-dep-prev" alt="Deposit proof preview" style="display:none">
+              <label class="rd-dep-chk"><input type="checkbox" id="pfDepositConfirm" onchange="updateRedeemEligibilityNote()"> I confirm my Power.win deposits in the last 7 days are more than this redemption.</label>
+            </div>
             <div id="pfRedeemEligibilityNote" style="font-size:.85rem;margin-bottom:10px"></div>
             <button class="admin-btn-primary" onclick="submitRedeem()" id="pfRedeemBtn">Redeem Full Balance</button>
           </div>
           <div id="pfRedeemResult" style="display:none;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.3);border-radius:12px;padding:18px;margin-top:14px;line-height:1.7"></div>
           <div class="pf-terms">
             <span style="font-size:1.1rem">⚠️</span>
-            <span style="color:var(--faint);font-size:.88rem"><b style="color:#f59e0b">T&amp;C's:</b> Redemptions are reviewed before payout. Jammmy reserves the right to decline, delay, or reverse any redemption if wager manipulation, multi-accounting, or any other abuse of the rewards system is found.</span>
+            <span style="color:var(--faint);font-size:.88rem"><b style="color:#f59e0b">T&amp;C's:</b> Minimum redemption is <b>2,000 coins ($20)</b>. Your Power.win deposits in the last 7 days must be more than the amount you redeem, with a screenshot attached as proof. Redemptions are reviewed before payout. Jammmy reserves the right to decline, delay, or reverse any redemption if wager manipulation, multi-accounting, or any other abuse of the rewards system is found.</span>
           </div>
           </div>
 
@@ -7699,7 +7727,7 @@ function renderProfile(data){
     info.textContent = fmtCoins(data.user.coin_balance) + ' / ' + lowestMin.toLocaleString() + ' coins collected';
     form.style.display = 'none';
     locked.style.display = 'block';
-    locked.textContent = '🔒 Collect ' + needed.toLocaleString() + ' more coin' + (needed === 1 ? '' : 's') + ' to unlock redeeming (platform min: ' + data.min_redeem_coins_platform.toLocaleString() + ', address min: ' + data.min_redeem_coins_crypto.toLocaleString() + ')';
+    locked.textContent = '🔒 Collect ' + needed.toLocaleString() + ' more coin' + (needed === 1 ? '' : 's') + ' to unlock redeeming (minimum ' + lowestMin.toLocaleString() + ' coins = $' + (lowestMin / data.coins_per_dollar).toFixed(0) + ').';
   }
 
   /* Only APPROVED casino accounts can receive platform redemptions -- the Redeem card shows
@@ -8112,17 +8140,52 @@ function updateNetworkOptions(){
 var _pfRedeemMethod = 'crypto';
 var _pfVerified = {};
 var PLATFORM_LABELS = {powerwin:'Power.win'};
-var _redeemMinCrypto = 10000, _redeemMinPlatform = 1000, _redeemBalance = 0;
+var _redeemMinCrypto = 2000, _redeemMinPlatform = 2000, _redeemBalance = 0;
+var _depositProof = null;
+/* Deposit proof: resized and re-encoded as JPEG in the browser (same as claim proofs), so the
+   upload stays small. Required for every redemption. */
+function pickDepositProof(input){
+  var file = input.files && input.files[0];
+  var nameEl = document.getElementById('pfDepositName'), drop = document.getElementById('pfDepositDrop'), prev = document.getElementById('pfDepositPreview');
+  _depositProof = null; if(drop) drop.classList.remove('ok'); if(prev) prev.style.display = 'none';
+  if(!file){ if(nameEl) nameEl.textContent = 'Attach deposit screenshot'; updateRedeemEligibilityNote(); return; }
+  if(!/^image\//.test(file.type)){ alert('Please choose an image (JPG or PNG screenshot).'); input.value = ''; updateRedeemEligibilityNote(); return; }
+  if(nameEl) nameEl.textContent = 'Processing…';
+  var reader = new FileReader();
+  reader.onerror = function(){ alert('Could not read that file — please try a different image.'); if(nameEl) nameEl.textContent = 'Attach deposit screenshot'; updateRedeemEligibilityNote(); };
+  reader.onload = function(e){
+    var img = new Image();
+    img.onerror = function(){ alert('Could not process that image — please try a JPG or PNG.'); if(nameEl) nameEl.textContent = 'Attach deposit screenshot'; updateRedeemEligibilityNote(); };
+    img.onload = function(){
+      var maxDim = 1100, scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+      var c = document.createElement('canvas'); c.width = Math.round(img.width * scale); c.height = Math.round(img.height * scale);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      _depositProof = c.toDataURL('image/jpeg', 0.75);
+      if(nameEl) nameEl.textContent = '✓ ' + file.name + ' attached (tap to change)';
+      if(drop) drop.classList.add('ok');
+      if(prev){ prev.src = _depositProof; prev.style.display = 'block'; prev.onclick = function(){ showProofLightbox(_depositProof); }; }
+      updateRedeemEligibilityNote();
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
 function updateRedeemEligibilityNote(){
   var min = _pfRedeemMethod === 'crypto' ? _redeemMinCrypto : _redeemMinPlatform;
   var btn = document.getElementById('pfRedeemBtn');
   var noteEl = document.getElementById('pfRedeemEligibilityNote');
   if(!btn) return;
   var unverified = _pfRedeemMethod !== 'crypto' && !_pfVerified[_pfRedeemMethod];
-  var blocked = unverified || _redeemBalance < min;
+  var usdNeed = document.getElementById('pfRedeemUsdNeed');
+  if(usdNeed) usdNeed.textContent = '$' + (_redeemBalance / 100).toFixed(2);
+  var chk = document.getElementById('pfDepositConfirm');
+  var noProof = !_depositProof || !(chk && chk.checked);
+  var blocked = unverified || _redeemBalance < min || noProof;
   if(_redeemBalance < min){
     var needed = min - _redeemBalance;
     if(noteEl) noteEl.innerHTML = '<span style="color:#f87171">🔒 Need '+needed.toLocaleString()+' more coins for this method (minimum '+min.toLocaleString()+').</span>';
+  } else if(noProof && !unverified){
+    if(noteEl) noteEl.innerHTML = '<span style="color:#fbbf24">🧾 Attach your deposit screenshot and tick the box to redeem.</span>';
   } else if(noteEl) noteEl.innerHTML = '';
   btn.disabled = blocked;
   btn.style.opacity = blocked ? '.5' : '1';
@@ -8160,6 +8223,11 @@ async function submitRedeem(){
   var btn = document.getElementById('pfRedeemBtn');
   var payload = { redeem_method: _pfRedeemMethod };
   var timingNote;
+  var depChk = document.getElementById('pfDepositConfirm');
+  if(!_depositProof){ alert('Please attach a screenshot of your Power.win deposits from the last 7 days.'); return; }
+  if(!depChk || !depChk.checked){ alert('Please confirm your Power.win deposits in the last 7 days are more than this redemption.'); return; }
+  payload.deposit_proof = _depositProof;
+  payload.deposit_confirm = true;
   if(_pfRedeemMethod === 'crypto'){
     var currency = document.getElementById('pfCryptoCurrency').value;
     var network = document.getElementById('pfCryptoNetwork').value;
@@ -8188,6 +8256,9 @@ async function submitRedeem(){
       renderAuthUI(data.user);
       var resultEl = document.getElementById('pfRedeemResult');
       resultEl.style.display='block';
+      _depositProof = null;
+      (function(){ var f = document.getElementById('pfDepositFile'), c = document.getElementById('pfDepositConfirm'), n = document.getElementById('pfDepositName'), d = document.getElementById('pfDepositDrop'), p = document.getElementById('pfDepositPreview');
+        if(f) f.value = ''; if(c) c.checked = false; if(n) n.textContent = 'Attach deposit screenshot'; if(d) d.classList.remove('ok'); if(p) p.style.display = 'none'; })();
       resultEl.innerHTML = '<b>Redemption submitted!</b><br>Transaction ID: <code>'+data.transaction_id+'</code><br>'
         + '$'+data.usd_value.toFixed(2)+' via '+(_pfRedeemMethod === 'crypto' ? payload.crypto_currency : PLATFORM_LABELS[_pfRedeemMethod])+'<br>'
         + '<span style="color:var(--muted)">'+timingNote+'</span>';
@@ -8858,7 +8929,9 @@ async function loadAdminRedemptions(status){
           + (isPending && status === 'pending' ? '<div class="rq-num">#'+(i+1)+'</div>' : '<div class="rq-num" style="font-size:1rem">💸</div>')
           + '<div class="rd-who"><div class="rq-title uav-line">'+uavHtml(r.avatar, r.username, 30)+pccEsc(r.username)+'</div>'
             + '<div class="rq-sub"><span class="ago">⏱ '+rqAgo(r.created_at)+'</span><span>'+formatWhen(r.created_at)+'</span>'+(r.paid_at ? '<span style="color:#4ade80">Paid '+formatWhen(r.paid_at)+'</span>' : '')+'<span class="rd-id">'+pccEsc(r.id)+'</span></div></div>'
-          + '<div class="rd-amt"><b>$'+Number(r.usd_value||0).toFixed(2)+'</b><span>'+Number(r.coin_amount||0).toLocaleString()+' coins</span><div style="margin-top:8px">'+statusPill+'</div></div>'
+          + '<div class="rd-amt"><b>$'+Number(r.usd_value||0).toFixed(2)+'</b><span>'+Number(r.coin_amount||0).toLocaleString()+' coins</span><div style="margin-top:8px">'+statusPill+'</div>'
+            + (r.has_deposit_proof ? '<button type="button" class="rd-proof-btn" onclick="adminViewDepositProof(this,\''+r.id+'\')">🧾 Deposit proof</button>' : '<span class="rd-proof-none">No deposit proof</span>')
+          + '</div>'
         + '</div>'
         + '<div class="rd-pay">'+pay+'</div>'
         + '<div class="rq-ctrl">'
@@ -8874,6 +8947,18 @@ async function loadAdminRedemptions(status){
 }
 
 var RD_LOGOS = { powerwin:'powerwin.webp', degencity:'degencity.png' };
+var _rdProofCache = {};
+async function adminViewDepositProof(btn, id){
+  if(_rdProofCache[id]){ showProofLightbox(_rdProofCache[id]); return; }
+  var token = localStorage.getItem('jammy_session_token'); var old = btn.textContent; btn.textContent = 'Loading…'; btn.disabled = true;
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/redemption-proof?id=' + encodeURIComponent(id), { headers: { 'Authorization': 'Bearer ' + token } });
+    var d = await res.json();
+    if(res.ok && d.deposit_proof){ _rdProofCache[id] = d.deposit_proof; showProofLightbox(d.deposit_proof); }
+    else alert(d.error || 'Could not load the deposit proof.');
+  }catch(e){ alert('Network error — try again.'); }
+  btn.textContent = old; btn.disabled = false;
+}
 function rdCopy(btn, v){
   var done = function(){ btn.textContent = 'Copied ✓'; btn.classList.add('ok'); setTimeout(function(){ btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 1500); };
   var txt = document.createElement('textarea'); txt.innerHTML = v; v = txt.value;

@@ -8,6 +8,19 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-14: $20 minimum redemption + mandatory Power.win deposit proof
+
+- **Minimum:** redemptions now need **2,000 coins ($20)** for both crypto and Power.win. The worker sets `MIN_REDEEM_COINS_CRYPTO` and `MIN_REDEEM_COINS_PLATFORM` to 2000. The How-it-works text, guide text and locked message were updated to match.
+- **Deposit rule:** the Redeem card now has a "Deposit proof (required)" box. It says the player's Power.win deposits in the last 7 days must be more than the amount they're redeeming, and shows that dollar amount. The T&Cs say the same.
+- **Proof upload:** a screenshot is required. It's resized to 1100px and saved as a JPEG in the browser, with a preview the player can tap.
+- **Confirmation:** the player must tick a box confirming the deposit rule. The Redeem button stays disabled until both the screenshot and the tick are done.
+- **Worker checks:** `/api/redeem` rejects requests without a valid image under 2MB, or without `deposit_confirm: true`.
+  - The screenshot is stored on the redemption in a new `deposit_proof` column, which is added automatically.
+- **Admin:** each redemption card shows a 🧾 Deposit proof button that opens the screenshot. Older redemptions say "No deposit proof".
+  - The admin redemptions list no longer sends the images. They load on demand from `/api/admin/redemption-proof?id=`, which is admin only.
+
+---
+
 ## 2026-10-13 (b): Admin cards no longer disappear (Halloween hover fix)
 
 - **Problem:** after switching admin tabs quickly and then moving the mouse, user cards could vanish.
