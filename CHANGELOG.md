@@ -8,6 +8,38 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-14 (c): Cleaner Redeem card
+
+- **Layout:** rebuilt the Profile Redeem card to be compact and quiet.
+  - The heading reads "Redeem", with the balance ("2,500 coins · $25.00") beside it.
+  - A two-option switch picks Crypto or Power.win.
+  - Coin and network sit side by side, with the wallet field below.
+  - Power.win shows one small "paid to your verified account" row.
+- **Deposit proof:** one upload tile with a short line ("Power.win deposits, last 7 days · must be over $X"). Once a file is added, it shows a thumbnail and the file name. Below it is a one-line confirm checkbox.
+- **Removed:** the yellow timing boxes, the big deposit-rule box, the hint line and the long T&C block. A single footer line says "Min $20 · paid in 1–7 days · Terms", and Terms opens the full text.
+- **Button:** it now says what's still needed ("Upload deposit screenshot", "Confirm your deposits", "Not enough coins", "Verify your account first"), then "Redeem $X" when ready.
+- **Fixed:** the button stayed on "Submitting…" after a successful redemption.
+
+---
+
+## 2026-10-14 (b): Written reasons when rejecting a redemption
+
+- **Admin:** "Reject & refund" on a redemption now opens the same reason dialog as claim rejections, with redemption presets:
+  - deposits in the last 7 days are less than the redemption
+  - screenshot doesn't show the last 7 days
+  - missing, blurry or cropped screenshot
+  - different account
+  - abuse of the rewards system
+  - Admins can also write their own reason (up to 300 characters), or leave it empty.
+- **Admin card:** a rejected redemption shows the reason next to "Rejected — coins were refunded".
+- **Player:** the redemption history on the Profile page shows "Why it was declined: …" under a rejected redemption, plus "Your coins were refunded". The push notification includes the reason too.
+- **Worker:**
+  - `/api/admin/reject-redemption` accepts `reason` and stores it in a new `reject_reason` column on redemptions, which is added automatically.
+  - `/api/profile` returns it with each redemption.
+  - The Activity Log records the reason.
+
+---
+
 ## 2026-10-14: $20 minimum redemption + mandatory Power.win deposit proof
 
 - **Minimum:** redemptions now need **2,000 coins ($20)** for both crypto and Power.win. The worker sets `MIN_REDEEM_COINS_CRYPTO` and `MIN_REDEEM_COINS_PLATFORM` to 2000. The How-it-works text, guide text and locked message were updated to match.
