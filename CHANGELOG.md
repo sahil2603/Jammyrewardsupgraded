@@ -8,6 +8,47 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-14 (h): "Payout requested" flag on redemptions (staff only)
+
+- **Why:** Jammy pays Power.win redemptions with a customer transfer that Power.win approves later, so it was easy to forget whether a payout had already been requested.
+- **Button:** pending redemptions now have a 📤 Mark payout requested button, which can be undone.
+  - A requested redemption shows a blue "📤 Payout requested" pill instead of "Pending", plus "Requested 3h ago by <admin>".
+  - It has a blue edge, and "Mark Paid" still works as before.
+- **Pending list:** redemptions not yet requested come first (oldest first), then the requested ones. The header shows "N to pay · $X total · M already requested".
+- **Players never see it:** `/api/profile` doesn't return these fields, and the redemption stays "pending" for them.
+- **Worker:**
+  - New columns `payout_requested_at` / `payout_requested_by` on redemptions, added automatically.
+  - New endpoint `POST /api/admin/redemption-requested { transaction_id, requested }`, admin only and pending redemptions only.
+  - Recorded in the Activity Log.
+
+---
+
+## 2026-10-14 (g): Premium admin panel + duplicates box removed
+
+- **Removed:** the "Possible Duplicate Accounts" box on Overview. The Security tab covers this with more signals (device, IP, wallet, payout, claims).
+- **Layout:** on desktop, a sidebar on the left with line icons, grouped as Dashboard (Overview, Analytics, Activity log), Players (Users, Active users, Verify players, Security), Payouts (Redemptions, Vault) and Requests (Slot, Battle). Pending counts sit as small badges.
+  - On phones, the sidebar becomes a swipeable tab strip.
+  - Empty groups are hidden for mods.
+- **Header:** a clean "Admin" or "Mod panel" title with a one-line subtitle and the date. No emoji.
+- **Overview:**
+  - "Needs attention" cards (claims to verify, redemptions to pay, slot requests, battle requests) are clickable, open their tab, and turn amber when something is waiting.
+  - "Site" cards show total users (+today), coins in circulation, unclaimed vault coins, and the vault pool % with a progress bar.
+- **Styling:** flat dark surfaces with hairline borders, one purple accent, and Poppins headings instead of Lilita. Inputs, buttons and cards are consistent.
+  - User action buttons are now quiet outline buttons, with coloured text for Deduct, Make Admin and Make Mod.
+  - The "Send coins" box is neutral.
+- **Redemptions:** risk badges sit on their own row, so the player name no longer gets squeezed.
+- **Halloween:** bats, webs, the skeleton, the banner, the graveyard, the mouse trail and the side request tabs are hidden on the admin page, and the background sparkles are dimmed.
+
+---
+
+## 2026-10-14 (f): Vault page retries instead of showing 0
+
+- **Problem:** right after the worker deploy, the Vault page showed 0 coins and "Loading…" everywhere.
+- **What was actually wrong:** the live `/api/vault` and `/api/casino-wagers` were returning correct data (9,108 / 10,000 coins = 91%). The first request after a deploy has to recalculate lifetime wagers from Power.win, which can be slow or fail once. The page then waited for its 2-minute refresh.
+- **Fix:** if the vault or players request fails, or returns no data, the page retries after 2.5s, 5s, 7.5s and so on, up to 5 times. An error response is no longer treated as "nothing to show". Tested with two failed vault calls and one failed players call: the page recovered to 9,108 coins / 91% by itself.
+
+---
+
 ## 2026-10-14 (e): Bonuses page removed, "New" renamed to Power.win, Halloween daily lottery
 
 - **Bonuses page removed:**

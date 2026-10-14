@@ -2843,7 +2843,7 @@ html.lenis{scroll-behavior:auto!important}
 .sec-net-row b{color:#fff}
 .sec-empty{padding:18px;text-align:center;color:var(--faint);font-size:.88rem;border:1px dashed var(--line);border-radius:12px}
 .sec-look-card{margin-bottom:8px}
-.rd-risk{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;justify-content:flex-end}
+.rd-risk{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0 18px 12px;justify-content:flex-start}
 .rd-risk span{font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:7px;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.4);color:#fecaca;white-space:nowrap}
 .rd-risk span.w{background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.4);color:#fde68a}
 .rd-risk span.ok{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.3);color:#86efac}
@@ -2864,6 +2864,11 @@ html.lenis{scroll-behavior:auto!important}
 .lot-num span{font:600 .9rem 'Poppins',sans-serif;color:var(--muted)}
 .lot-sub{font-size:.84rem;color:var(--muted);min-height:2.6em}
 .lot-ok{margin-top:12px;width:100%;padding:11px;border:0;border-radius:12px;background:linear-gradient(135deg,#ff7a1a,#c2410c);color:#fff;font:700 .9rem 'Poppins',sans-serif;cursor:pointer}
+.admin-pill.rd-reqd{background:rgba(96,165,250,.14);color:#93c5fd;border:1px solid rgba(96,165,250,.4)}
+.rd-req-by{color:#93c5fd}
+.rq-ctrl .rd-req-btn{border-radius:10px;padding:9px 14px;font:600 .82rem 'Poppins',sans-serif;cursor:pointer;border:1px solid rgba(96,165,250,.5);background:rgba(96,165,250,.1);color:#bfdbfe}
+.rq-ctrl .rd-req-btn:hover{background:rgba(96,165,250,.2)}
+.rq-ctrl .rd-req-btn.on{border-color:var(--line);background:rgba(255,255,255,.04);color:var(--muted)}
 .rd-proof-none{display:inline-block;margin-top:8px;font-size:.74rem;color:#fca5a5}
 @keyframes adminEmptyFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 /* Active/Awarded filter pills for Slot & Battle Requests -- a smooth sliding highlight
@@ -4475,6 +4480,80 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-gho
   };
 }catch(e){}})();
 </script>
+<style>
+/* ================= ADMIN PANEL: premium shell (2026-10-14) =================
+   Calm, dense, readable: sidebar navigation, flat dark surfaces with hairline borders,
+   one accent colour, no glow/animation noise. Scoped to #admin only. */
+#admin{--adm-bg:#0b0912;--adm-s1:rgba(255,255,255,.025);--adm-s2:rgba(255,255,255,.045);--adm-ln:rgba(255,255,255,.075);--adm-ln2:rgba(255,255,255,.12);--adm-tx:#ece9f5;--adm-mu:#a19bb5;--adm-fa:#77718a;--adm-ac:#8b5cf6;--adm-ac2:#a78bfa}
+body.on-admin .hw-bat,body.on-admin .hw-web,body.on-admin .hw-spider,body.on-admin .hw-skel,body.on-admin .hw-ban,body.on-admin .hw-yard,body.on-admin #hwEmbers,body.on-admin .sidetabs{display:none!important}
+#admin > .wrap{max-width:1280px!important;padding:36px 24px 100px!important}
+#adminContent:not([style*="none"]){display:grid!important;grid-template-columns:232px minmax(0,1fr);column-gap:28px;align-items:start}
+#adminContent > *{grid-column:2;min-width:0}
+#adminContent > .adm-top{grid-column:1/-1}
+#adminContent > .admin-tabs{grid-column:1;grid-row:2/span 40}
+.adm-top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding-bottom:20px;margin-bottom:22px;border-bottom:1px solid var(--adm-ln)}
+.adm-top h1{margin:0;font:700 1.55rem/1.15 'Poppins',sans-serif;letter-spacing:-.01em;color:var(--adm-tx)}
+.adm-top p{margin:4px 0 0;font-size:.86rem;color:var(--adm-mu)}
+.adm-date{font-size:.8rem;color:var(--adm-fa);padding:6px 12px;border:1px solid var(--adm-ln);border-radius:99px;white-space:nowrap}
+/* sidebar */
+#admin .admin-tabs{display:flex!important;flex-direction:column;gap:2px;margin:0!important;padding:10px!important;position:sticky;top:92px;border:1px solid var(--adm-ln);border-radius:16px;background:var(--adm-s1);-webkit-mask-image:none!important;mask-image:none!important;overflow:visible}
+#admin .adm-grp{font:600 .66rem 'Poppins',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--adm-fa);padding:14px 10px 6px}
+#admin .adm-grp:first-child{padding-top:4px}
+#admin .admin-tabs .admin-tab{display:flex!important;align-items:center;gap:10px;width:100%;text-align:left!important;padding:9px 10px!important;border-radius:10px!important;border:1px solid transparent!important;background:transparent!important;color:var(--adm-mu)!important;font:500 .87rem 'Poppins',sans-serif!important;box-shadow:none!important;transform:none!important;transition:background .15s,color .15s!important}
+#admin .admin-tabs .admin-tab:hover{background:var(--adm-s2)!important;color:var(--adm-tx)!important}
+#admin .admin-tabs .admin-tab.active{background:rgba(139,92,246,.14)!important;color:#fff!important;border-color:rgba(139,92,246,.28)!important}
+#admin .admin-tabs .admin-tab.active .ai{color:var(--adm-ac2)}
+#admin .admin-tab .ai{width:18px;height:18px;flex:none;opacity:.9}
+#admin .admin-tab .al{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+#admin .admin-badge{margin-left:auto!important;background:rgba(239,68,68,.16)!important;color:#fca5a5!important;border:1px solid rgba(239,68,68,.35);font:700 .68rem 'Poppins',sans-serif!important;padding:1px 7px!important;border-radius:99px}
+/* surfaces */
+#admin .admin-tab-panel h3,#admin .admin-tab-panel h2{font-family:'Poppins',sans-serif!important;font-weight:650;letter-spacing:-.005em;color:var(--adm-tx)}
+#admin .admin-tab-panel > div[style*="background:var(--panel)"],#admin .pf-card,#admin .adm-card{background:var(--adm-s1)!important;border:1px solid var(--adm-ln)!important;border-radius:16px!important;box-shadow:none!important}
+#admin .battle-card,#admin .rq,#admin .admin-row,#admin .audit-row,#admin .sec-card{background:var(--adm-s1)!important;border:1px solid var(--adm-ln)!important;box-shadow:none!important}
+#admin .battle-card:hover,#admin .rq:hover{border-color:var(--adm-ln2)!important;transform:none!important}
+#admin .battle-card-topbar{height:2px!important;opacity:.7}
+#admin input:not([type=checkbox]):not([type=radio]),#admin select,#admin textarea,#admin .adm-input{background:rgba(0,0,0,.25)!important;border:1px solid var(--adm-ln2)!important;border-radius:10px!important;color:var(--adm-tx)!important;font-family:'Poppins',sans-serif}
+#admin input:focus,#admin select:focus,#admin textarea:focus{outline:none;border-color:rgba(139,92,246,.6)!important;box-shadow:0 0 0 3px rgba(139,92,246,.15)!important}
+#admin .admin-btn-primary{background:var(--adm-ac)!important;border:1px solid rgba(255,255,255,.1)!important;box-shadow:none!important;border-radius:10px!important;font-family:'Poppins',sans-serif!important;font-weight:600!important;letter-spacing:0!important;transition:background .15s,transform .15s!important}
+#admin .admin-btn-primary:hover{background:#7c3aed!important;transform:translateY(-1px)}
+#admin .admin-btn-secondary{background:var(--adm-s2)!important;border:1px solid var(--adm-ln2)!important;color:var(--adm-tx)!important;box-shadow:none!important;border-radius:10px!important;font-family:'Poppins',sans-serif!important;font-weight:600!important}
+#admin .admin-btn-secondary:hover,#admin .admin-btn-secondary.active{background:rgba(139,92,246,.16)!important;border-color:rgba(139,92,246,.45)!important}
+/* overview stats */
+#adminOverviewGrid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important}
+#admin .adm-sec{grid-column:1/-1;font:600 .7rem 'Poppins',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--adm-fa);margin:6px 2px -2px}
+#admin .adm-sec:not(:first-child){margin-top:14px}
+#admin .adm-stat{background:var(--adm-s1)!important;border:1px solid var(--adm-ln)!important;border-radius:14px!important;padding:16px 16px 14px!important;box-shadow:none!important;transform:none!important}
+#admin .adm-stat.link{cursor:pointer}
+#admin .adm-stat.link:hover{border-color:var(--adm-ln2)!important;background:var(--adm-s2)!important}
+#admin .adm-stat .k{font-size:.78rem;color:var(--adm-mu)}
+#admin .adm-stat .v{margin-top:6px;font:700 1.65rem/1.1 'Poppins',sans-serif;letter-spacing:-.02em;color:var(--adm-tx);font-variant-numeric:tabular-nums}
+#admin .adm-stat .s{margin-top:4px;font-size:.76rem;color:var(--adm-fa)}
+#admin .adm-stat.hot{border-color:rgba(251,191,36,.35)!important}
+#admin .adm-stat.hot .v{color:#fcd34d}
+#admin .adm-stat .b{height:4px;margin-top:10px;border-radius:9px;background:rgba(255,255,255,.07);overflow:hidden}
+#admin .adm-stat .b i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#8b5cf6,#22c55e)}
+/* tables / pills toned down */
+#admin .admin-pill{font-weight:600!important}
+#admin .rq-num{background:var(--adm-s2)!important;border-color:var(--adm-ln)!important;color:var(--adm-mu)!important}
+#admin .admin-btn-row-action{background:var(--adm-s2)!important;border:1px solid var(--adm-ln2)!important;color:var(--adm-tx)!important;box-shadow:none!important;border-radius:9px!important;font:600 .78rem 'Poppins',sans-serif!important;padding:7px 12px!important;transform:none!important}
+#admin .admin-btn-row-action:hover{border-color:rgba(139,92,246,.5)!important;background:rgba(139,92,246,.12)!important}
+#admin .admin-btn-row-action[style*="dc2626"]{color:#fca5a5!important}
+#admin .admin-btn-row-action[style*="f59e0b"]{color:#fcd34d!important}
+#admin .admin-btn-row-action[style*="3b82f6"]{color:#93c5fd!important}
+#admin .bulk-card{background:var(--adm-s1)!important;border:1px solid var(--adm-ln)!important;box-shadow:none!important}
+body.on-admin #neonBg,body.on-admin #skyParticles{opacity:.25!important}
+body.on-admin .ambient-glow-blob{opacity:.35}
+@media(max-width:900px){
+  #adminContent:not([style*="none"]){display:block!important}
+  #admin > .wrap{padding:22px 14px 100px!important}
+  #admin .admin-tabs{position:static;flex-direction:row!important;overflow-x:auto!important;padding:6px!important;margin:0 0 18px!important;gap:4px;scrollbar-width:none}
+  #admin .admin-tabs::-webkit-scrollbar{display:none}
+  #admin .adm-grp{display:none!important}
+  #admin .admin-tabs .admin-tab{width:auto;flex:none;padding:8px 12px!important}
+  #adminOverviewGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .adm-top{align-items:flex-start}.adm-date{display:none}
+}
+</style>
 </head>
 <body>
 <script>
@@ -5618,20 +5697,24 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-gho
         <p style="color:var(--muted)">This page is only visible to site admins and mods.</p>
       </div>
       <div id="adminContent" style="display:none">
-        <h1 id="adminHeading" style="font-family:'Lilita One',sans-serif;font-size:1.8rem;margin-bottom:24px">⚙ Admin Dashboard</h1>
+        <div class="adm-top"><div><h1 id="adminHeading">Admin</h1><p id="adminSubhead">Players, payouts and requests in one place.</p></div><span class="adm-date" id="admDate"></span></div>
 
         <div class="admin-tabs">
-          <button class="admin-tab active" data-tab="adminOverviewTab" onclick="switchAdminTab('adminOverviewTab')">📊 Overview</button>
-          <button class="admin-tab" data-tab="adminVaultTab" onclick="switchAdminTab('adminVaultTab')">🏦 Vault</button>
-          <button class="admin-tab" data-tab="adminUsersTab" onclick="switchAdminTab('adminUsersTab')">👥 Users</button>
-          <button class="admin-tab" data-tab="adminActiveTab" onclick="switchAdminTab('adminActiveTab')">🔥 Active Users</button>
-          <button class="admin-tab" data-tab="adminRedemptionsTab" onclick="switchAdminTab('adminRedemptionsTab')">💸 Redemptions <span class="admin-badge" id="badgeRedemptions"></span></button>
-          <button class="admin-tab" data-tab="adminAnalyticsTab" onclick="switchAdminTab('adminAnalyticsTab')">📈 Analytics</button>
-          <button class="admin-tab" data-tab="adminVerifyTab" onclick="switchAdminTab('adminVerifyTab')">✅ Verify Players <span class="admin-badge" id="badgeVerify"></span></button>
-          <button class="admin-tab" data-tab="adminSlotsTab" onclick="switchAdminTab('adminSlotsTab')">🎰 Slot Requests <span class="admin-badge" id="badgeSlots"></span></button>
-          <button class="admin-tab" data-tab="adminBattlesTab" onclick="switchAdminTab('adminBattlesTab')">⚔️ Battle Requests <span class="admin-badge" id="badgeBattles"></span></button>
-          <button class="admin-tab" data-tab="adminAuditTab" onclick="switchAdminTab('adminAuditTab')">🧾 Activity Log</button>
-          <button class="admin-tab" data-tab="adminSecurityTab" onclick="switchAdminTab('adminSecurityTab')">🛡️ Security <span class="admin-badge" id="badgeSecurity"></span></button>
+          <div class="adm-grp">Dashboard</div>
+          <button class="admin-tab active" data-tab="adminOverviewTab" onclick="switchAdminTab('adminOverviewTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="al">Overview</span></button>
+          <button class="admin-tab" data-tab="adminAnalyticsTab" onclick="switchAdminTab('adminAnalyticsTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V11M11 20V5M17 20v-6M3 20h18"/></svg><span class="al">Analytics</span></button>
+          <button class="admin-tab" data-tab="adminAuditTab" onclick="switchAdminTab('adminAuditTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg><span class="al">Activity log</span></button>
+          <div class="adm-grp">Players</div>
+          <button class="admin-tab" data-tab="adminUsersTab" onclick="switchAdminTab('adminUsersTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c2 .7 3.2 2.4 3.6 5.2"/></svg><span class="al">Users</span></button>
+          <button class="admin-tab" data-tab="adminActiveTab" onclick="switchAdminTab('adminActiveTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg><span class="al">Active users</span></button>
+          <button class="admin-tab" data-tab="adminVerifyTab" onclick="switchAdminTab('adminVerifyTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.2l2.4 2.4 4.6-4.8"/></svg><span class="al">Verify players</span><span class="admin-badge" id="badgeVerify"></span></button>
+          <button class="admin-tab" data-tab="adminSecurityTab" onclick="switchAdminTab('adminSecurityTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.4 8-8 9-4.6-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span class="al">Security</span><span class="admin-badge" id="badgeSecurity"></span></button>
+          <div class="adm-grp">Payouts</div>
+          <button class="admin-tab" data-tab="adminRedemptionsTab" onclick="switchAdminTab('adminRedemptionsTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 12h.01M18 12h.01"/></svg><span class="al">Redemptions</span><span class="admin-badge" id="badgeRedemptions"></span></button>
+          <button class="admin-tab" data-tab="adminVaultTab" onclick="switchAdminTab('adminVaultTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="15" rx="2"/><circle cx="12" cy="12.5" r="3"/><path d="M12 9.5v-1M12 16.5v-1M7 20v1.5M17 20v1.5"/></svg><span class="al">Vault</span></button>
+          <div class="adm-grp">Requests</div>
+          <button class="admin-tab" data-tab="adminSlotsTab" onclick="switchAdminTab('adminSlotsTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 9v6M12 9v6M16 9v6"/></svg><span class="al">Slot requests</span><span class="admin-badge" id="badgeSlots"></span></button>
+          <button class="admin-tab" data-tab="adminBattlesTab" onclick="switchAdminTab('adminBattlesTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6M16 16l4 4M19 21l2-2"/><path d="M9.5 17.5L21 6V3h-3L6.5 14.5"/><path d="M11 19l-6-6M8 16l-4 4M5 21l-2-2"/></svg><span class="al">Battle requests</span><span class="admin-badge" id="badgeBattles"></span></button>
         </div>
 
         <!-- VAULT TAB -->
@@ -5646,9 +5729,6 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-gho
             </div>
             <div id="adminPushResult" style="margin-top:10px;font-size:.85rem"></div>
           </div>
-          <h3 style="color:#f87171;margin-bottom:6px">⚠️ Possible Duplicate Accounts</h3>
-          <p style="color:var(--faint);font-size:.85rem;margin-bottom:16px">Flagged for a human look — not decided automatically. A shared wallet or casino username across two Discord accounts is worth checking, not necessarily wrongdoing on its own.</p>
-          <div id="adminDuplicatesList">Loading&hellip;</div>
         </div>
         <div id="adminVaultTab" class="admin-tab-panel" style="display:none">
           <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
@@ -5695,8 +5775,8 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-gho
             <button class="admin-btn-primary bulk-go" onclick="openBulkCoins('all')">🪙 Send to all users</button>
           </div>
           <div style="display:flex;gap:10px;margin-bottom:18px">
-            <input type="search" id="userSearchInput" autocomplete="off" oninput="clearTimeout(window._userSearchT);window._userSearchT=setTimeout(loadAdminUsers,300)" onkeydown="if(event.key==='Enter'){clearTimeout(window._userSearchT);loadAdminUsers()}" placeholder="Search by username or Discord ID…" style="flex:1;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff">
-            <button class="admin-btn-secondary" onclick="loadAdminUsers()">Search</button>
+            <input type="search" id="userSearchInput" autocomplete="off" oninput="clearTimeout(window._userSearchT);window._userSearchT=setTimeout(loadAdminUsers,300)" onkeydown="if(event.key==='Enter'){clearTimeout(window._userSearchT);loadAdminUsers()}" placeholder="Search by username or Discord ID…" style="flex:1;min-width:0;padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff">
+            <button class="admin-btn-secondary" style="flex:none;width:auto" onclick="loadAdminUsers()">Search</button>
           </div>
           <div id="adminUsersTotal" style="color:var(--muted);font-size:.85rem;margin-bottom:12px"></div>
           <div id="adminUsersList"></div>
@@ -6042,6 +6122,7 @@ window.addEventListener('resize',function(){
 
 function showPage(id){
   if(id==='bonuses') id='new';   /* Bonuses page was removed: old links go to the Power.win page */
+  document.body.classList.toggle('on-admin', id==='admin');
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('show'));
   var pg=document.getElementById(id);
   if(!pg){id='home';pg=document.getElementById('home');}
@@ -6667,7 +6748,8 @@ async function loadVaultSettings(){
     var data = await res.json();
     var v = data.vault;
     var pool = data.pool || {};
-    if(!v) return;
+    if(!res.ok || !v) throw new Error(data.error || ('vault ' + res.status));
+    _vaultRetry = 0;
     /* Vault progress now tracks the shared distribution pool (approved users' earned coins,
        held back until the pool collectively reaches the threshold) rather than the old
        admin-set target -- unclaimed wagering (people who haven't verified their username
@@ -6732,8 +6814,14 @@ async function loadVaultSettings(){
     if(document.getElementById('vmCurrent')) document.getElementById('vmCurrent').textContent = Math.floor(current).toLocaleString()+' Coins';
     if(document.getElementById('vmGoal')) document.getElementById('vmGoal').textContent = Math.floor(target).toLocaleString()+' Coins';
     if(v.last_added_amount != null && document.getElementById('vmLastAdded')) document.getElementById('vmLastAdded').textContent = Math.floor(v.last_added_amount).toLocaleString()+' Coins';
-  }catch(e){ console.error('Failed to load vault settings:', e); }
+  }catch(e){
+    console.error('Failed to load vault settings:', e);
+    /* Right after a worker deploy the first vault calculation can take a while or fail once --
+       retry soon instead of leaving 0 on screen until the 2-minute refresh. */
+    if(_vaultRetry < 5){ _vaultRetry++; setTimeout(loadVaultSettings, 2500 * _vaultRetry); }
+  }
 }
+var _vaultRetry = 0;
 function initVaultBars(){ loadVaultSettings(); loadVaultPlayers(); }
 
 var VAULT_SEEN_KEY = 'jm_vault_payout_seen', _vaultFullOpen = false;
@@ -6839,7 +6927,7 @@ var _vaultPlayerCasinoFilter = '';
    confirmed formula: (their combined wagered across every casino they've linked / total
    wagered by every linked user) * the vault's current coin total. Recalculated fresh on
    every page view per spec -- not cached. */
-var _casinoWagersData = [];
+var _casinoWagersData = [], _playersRetry = 0;
 async function loadVaultPlayers(){
   var listEl = document.getElementById('vaultPlayers');
   if(!listEl) return;
@@ -6851,13 +6939,16 @@ async function loadVaultPlayers(){
     var headers = token ? { 'Authorization': 'Bearer ' + token } : {};
     var res = await fetch(AUTH_API + '/api/casino-wagers', { headers: headers, cache: 'no-store' });
     var data = await res.json();
+    if(!res.ok || !Array.isArray(data.wagers)) throw new Error(data.error || ('casino-wagers ' + res.status));
+    _playersRetry = 0;
     _casinoWagersData = data.wagers || [];
     renderVaultPlayers();
     renderUnclaimedCard(data);
     renderVaultSummaryStats();
   }catch(e){
     console.error('Failed to load vault players:', e);
-    listEl.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--faint)">Couldn\'t load live players right now — try refreshing.</div>';
+    if(_playersRetry < 5){ _playersRetry++; setTimeout(loadVaultPlayers, 2500 * _playersRetry); }
+    else listEl.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--faint)">Couldn\'t load live players right now — try refreshing.</div>';
   }
   if(refreshBtn){ refreshBtn.disabled = false; refreshBtn.style.opacity = '1'; refreshBtn.textContent = '↻'; }
 }
@@ -8482,28 +8573,32 @@ async function loadAdminOverview(){
 
     var grid = document.getElementById('adminOverviewGrid');
     if(grid){
-      var stats = [
-        {label:'Pending Claims', value: data.pending_claims, color:'#f472b6'},
-        {label:'Pending Redemptions', value: data.pending_redemptions, color:'#fbbf24'},
-        {label:'Pending Redemptions ($)', value: '$'+data.pending_redemptions_usd.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}), color:'#4ade80'},
-        {label:'Pending Slot Requests', value: data.pending_slot_requests, color:'#fb923c'},
-        {label:'Pending Battle Requests', value: data.pending_battle_requests, color:'#60a5fa'},
-        {label:'New Signups Today', value: data.new_signups_today, color:'#4ade80'},
-        {label:'Total Users', value: data.total_users, color:'#a855f7'},
-        {label:'Coins in Circulation', value: Math.floor(data.total_coins_in_circulation).toLocaleString(), color:'#fbbf24'},
-        {label:'Unclaimed Vault (Coins)', value: Math.floor(data.unclaimed_vault_coins).toLocaleString(), color:'#22d3ee'},
-        {label:'Vault Pool Progress', value: Math.floor(data.vault_pool_total).toLocaleString()+' / '+Math.floor(data.vault_pool_threshold).toLocaleString(), color:'#c084fc'},
+      var usd = function(n){ return '$' + Number(n || 0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); };
+      var vp = data.vault_pool_threshold ? Math.min(100, Math.round(data.vault_pool_total / data.vault_pool_threshold * 100)) : 0;
+      var todo = [
+        {label:'Claims to verify', value: data.pending_claims, tab:'adminVerifyTab'},
+        {label:'Redemptions to pay', value: data.pending_redemptions, sub: usd(data.pending_redemptions_usd) + ' total', tab:'adminRedemptionsTab'},
+        {label:'Slot requests', value: data.pending_slot_requests, tab:'adminSlotsTab'},
+        {label:'Battle requests', value: data.pending_battle_requests, tab:'adminBattlesTab'},
       ];
-      grid.innerHTML = stats.map(function(s, i){
-        return '<div class="admin-overview-card" style="animation-delay:'+(i*0.05)+'s">'
-          + '<div style="color:var(--faint);font-size:.78rem;margin-bottom:6px">'+s.label+'</div>'
-          + '<div style="font-family:\'Lilita One\',sans-serif;font-size:1.6rem;color:'+s.color+'">'+s.value+'</div>'
+      var site = [
+        {label:'Total users', value: Number(data.total_users || 0).toLocaleString(), sub: '+' + (data.new_signups_today || 0) + ' today'},
+        {label:'Coins in circulation', value: Math.floor(data.total_coins_in_circulation || 0).toLocaleString()},
+        {label:'Unclaimed vault coins', value: Math.floor(data.unclaimed_vault_coins || 0).toLocaleString()},
+        {label:'Vault pool', value: vp + '%', sub: Math.floor(data.vault_pool_total || 0).toLocaleString() + ' / ' + Math.floor(data.vault_pool_threshold || 0).toLocaleString(), bar: vp},
+      ];
+      var card = function(s, i){
+        var hot = s.tab && s.value > 0;
+        return '<div class="admin-overview-card adm-stat' + (hot ? ' hot' : '') + (s.tab ? ' link' : '') + '" style="animation-delay:' + (i * 0.04) + 's"' + (s.tab ? ' onclick="switchAdminTab(\'' + s.tab + '\')"' : '') + '>'
+          + '<div class="k">' + s.label + '</div><div class="v">' + s.value + '</div>'
+          + (s.sub ? '<div class="s">' + s.sub + '</div>' : '')
+          + (s.bar !== undefined ? '<div class="b"><i style="width:' + s.bar + '%"></i></div>' : '')
         + '</div>';
-      }).join('');
+      };
+      grid.innerHTML = '<div class="adm-sec">Needs attention</div>' + todo.map(card).join('')
+        + '<div class="adm-sec">Site</div>' + site.map(function(s, i){ return card(s, i + 4); }).join('');
     }
   }catch(e){ console.error('Failed to load admin overview:', e); }
-
-  loadAdminDuplicates();
 }
 
 /* Dismiss = "seen it, it's fine" -- hides the flag for every admin. If another account joins the
@@ -8596,7 +8691,14 @@ async function loadAdminDashboard(){
     b.style.display = (_adminModOnly && MOD_TABS.indexOf(b.dataset.tab) === -1) ? 'none' : '';
   });
   var heading = document.getElementById('adminHeading');
-  if(heading) heading.textContent = _adminModOnly ? '🛡 Mod Panel' : '⚙ Admin Dashboard';
+  if(heading) heading.textContent = _adminModOnly ? 'Mod panel' : 'Admin';
+  var sub = document.getElementById('adminSubhead'); if(sub) sub.textContent = _adminModOnly ? 'Verify players and handle requests.' : 'Players, payouts and requests in one place.';
+  var dt = document.getElementById('admDate'); if(dt) dt.textContent = new Date().toLocaleDateString(undefined, { weekday:'short', day:'numeric', month:'short' });
+  document.querySelectorAll('.admin-tabs .adm-grp').forEach(function(g){
+    var n = g.nextElementSibling, any = false;
+    while(n && !n.classList.contains('adm-grp')){ if(n.style.display !== 'none') any = true; n = n.nextElementSibling; }
+    g.style.display = any ? '' : 'none';
+  });
   var syncBtn = document.getElementById('adminSyncWagersBtn');
   if(syncBtn) syncBtn.style.display = _adminModOnly ? 'none' : '';
   var approvedFilter = document.querySelector('.admin-verify-filter[data-status="approved"]');
@@ -9069,14 +9171,19 @@ async function loadAdminRedemptions(status){
     if(!data.redemptions.length){ listEl.innerHTML = adminEmptyState('💸', 'No redemptions here', 'Nothing to review right now -- check back once someone redeems.'); return; }
     var cnt = document.getElementById('redQueueCount');
     if(cnt){ var pend = data.redemptions.filter(function(r){ return r.status === 'pending'; }), tot = pend.reduce(function(a,r){ return a + (r.usd_value||0); }, 0);
-      cnt.innerHTML = status === 'pending' ? '<b>'+pend.length+'</b> to pay · <b>$'+tot.toFixed(2)+'</b> total · oldest first' : '<b>'+data.redemptions.length+'</b> redemptions'; }
+      var reqd = pend.filter(function(r){ return r.payout_requested_at; }).length;
+      cnt.innerHTML = status === 'pending' ? '<b>'+pend.length+'</b> to pay · <b>$'+tot.toFixed(2)+'</b> total' + (reqd ? ' · <b>'+reqd+'</b> already requested' : '') : '<b>'+data.redemptions.length+'</b> redemptions'; }
     var rows = data.redemptions.slice();
-    if(status === 'pending') rows.sort(function(a,b){ return (parseWhen(a.created_at)||0) - (parseWhen(b.created_at)||0); });
+    /* Pending view: not-yet-requested first (oldest first), already-requested ones after. */
+    if(status === 'pending') rows.sort(function(a,b){ return ((a.payout_requested_at ? 1 : 0) - (b.payout_requested_at ? 1 : 0)) || ((parseWhen(a.created_at)||0) - (parseWhen(b.created_at)||0)); });
     listEl.innerHTML = rows.map(function(r, i){
       var isPending = r.status === 'pending', isRejected = r.status === 'rejected';
-      var acc = isPending ? '251,191,36' : isRejected ? '248,113,113' : '74,222,128';
+      var acc = isPending ? (r.payout_requested_at ? '96,165,250' : '251,191,36') : isRejected ? '248,113,113' : '74,222,128';
       var isPlatform = r.redeem_method && r.redeem_method !== 'crypto';
-      var statusPill = isPending
+      var isReq = isPending && r.payout_requested_at;
+      var statusPill = isReq
+        ? '<span class="admin-pill rd-reqd" title="Payout already requested on the casino side">📤 Payout requested</span>'
+        : isPending
         ? '<span class="admin-pill" style="background:rgba(251,191,36,.14);color:#fbbf24;border:1px solid rgba(251,191,36,.35)">⏳ Pending</span>'
         : isRejected ? '<span class="admin-pill admin-pill-loss">✕ Rejected · refunded</span>' : '<span class="admin-pill admin-pill-profit">✓ Paid</span>';
       var copyBtn = function(v){ return '<button class="rd-copy" onclick="rdCopy(this,\''+pccEsc(String(v||'')).replace(/'/g,'&#39;')+'\')">Copy</button>'; };
@@ -9095,15 +9202,18 @@ async function loadAdminRedemptions(status){
         + '<div class="rq-main">'
           + (isPending && status === 'pending' ? '<div class="rq-num">#'+(i+1)+'</div>' : '<div class="rq-num" style="font-size:1rem">💸</div>')
           + '<div class="rd-who"><div class="rq-title uav-line">'+uavHtml(r.avatar, r.username, 30)+pccEsc(r.username)+'</div>'
-            + '<div class="rq-sub"><span class="ago">⏱ '+rqAgo(r.created_at)+'</span><span>'+formatWhen(r.created_at)+'</span>'+(r.paid_at ? '<span style="color:#4ade80">Paid '+formatWhen(r.paid_at)+'</span>' : '')+'<span class="rd-id">'+pccEsc(r.id)+'</span></div></div>'
+            + '<div class="rq-sub"><span class="ago">⏱ '+rqAgo(r.created_at)+'</span><span>'+formatWhen(r.created_at)+'</span>'+(r.paid_at ? '<span style="color:#4ade80">Paid '+formatWhen(r.paid_at)+'</span>' : '')+(isReq ? '<span class="rd-req-by">📤 Requested '+rqAgo(r.payout_requested_at)+(r.payout_requested_by ? ' by '+pccEsc(r.payout_requested_by) : '')+'</span>' : '')+'<span class="rd-id">'+pccEsc(r.id)+'</span></div></div>'
           + '<div class="rd-amt"><b>$'+Number(r.usd_value||0).toFixed(2)+'</b><span>'+Number(r.coin_amount||0).toLocaleString()+' coins</span><div style="margin-top:8px">'+statusPill+'</div>'
             + (r.has_deposit_proof ? '<button type="button" class="rd-proof-btn" onclick="adminViewDepositProof(this,\''+r.id+'\')">🧾 Deposit proof</button>' : '<span class="rd-proof-none">No deposit proof</span>')
-            + rdRiskHtml(r)
           + '</div>'
         + '</div>'
+        + rdRiskHtml(r)
         + '<div class="rd-pay">'+pay+'</div>'
         + '<div class="rq-ctrl">'
-          + (isPending ? '<button class="pay" onclick="adminMarkPaid(\''+r.id+'\')">✓ Mark Paid</button><button class="rej" onclick="adminRejectRedemption(\''+r.id+'\')">Reject &amp; refund</button>' : '<span class="lbl">'+(isRejected ? 'REJECTED — COINS WERE REFUNDED' : 'PAID')+'</span>'+(isRejected && r.reject_reason ? '<span class="rd-rej-why">Reason: '+pccEsc(r.reject_reason)+'</span>' : ''))
+          + (isPending ? '<button class="pay" onclick="adminMarkPaid(\''+r.id+'\')">✓ Mark Paid</button>'
+              + (isReq ? '<button class="rd-req-btn on" onclick="adminSetRequested(this,\''+r.id+'\',false)">↩ Undo requested</button>'
+                       : '<button class="rd-req-btn" onclick="adminSetRequested(this,\''+r.id+'\',true)">📤 Mark payout requested</button>')
+              + '<button class="rej" onclick="adminRejectRedemption(\''+r.id+'\')">Reject &amp; refund</button>' : '<span class="lbl">'+(isRejected ? 'REJECTED — COINS WERE REFUNDED' : 'PAID')+'</span>'+(isRejected && r.reject_reason ? '<span class="rd-rej-why">Reason: '+pccEsc(r.reject_reason)+'</span>' : ''))
           + (r.risk && !r.risk.blocked ? '<button class="del" onclick="openBlk(\''+r.user_id+'\',\''+pccEsc(r.username||'').replace(/'/g,'&#39;')+'\')">⛔ Block user</button>' : '')
           + '<button class="del" onclick="adminDeleteRedemption(\''+r.id+'\')">🗑 Delete</button>'
         + '</div>'
@@ -9157,7 +9267,7 @@ async function loadAdminSecurity(){
       + '<div class="sec-stat"><b>' + (s.networks || 0) + '</b><span>big shared networks</span></div>';
     var badge = document.getElementById('badgeSecurity');
     var high = (d.clusters || []).filter(function(c){ return c.severity === 'high'; }).length;
-    if(badge){ badge.textContent = high || ''; badge.style.display = high ? '' : 'none'; }
+    if(badge){ badge.textContent = high || ''; badge.classList.toggle('show', high > 0); }
     list.innerHTML = (d.clusters || []).length ? d.clusters.map(function(c){
       return '<div class="sec-card ' + c.severity + '">'
         + '<div class="sec-top"><div><span class="sec-sev">' + (c.severity === 'high' ? 'Likely alts' : 'Possible alts') + '</span><span class="sec-sum">' + c.accounts.length + ' accounts · $' + Number(c.redeemed_usd || 0).toFixed(2) + ' redeemed</span></div></div>'
@@ -9238,6 +9348,17 @@ async function secUnblock(id){
 
 var RD_LOGOS = { powerwin:'powerwin.webp', degencity:'degencity.png' };
 var _rdProofCache = {};
+/* Staff-only "payout requested" flag (e.g. Power.win transfer already requested, waiting for approval). */
+async function adminSetRequested(btn, id, on){
+  var token = localStorage.getItem('jammy_session_token'); btn.disabled = true; var old = btn.textContent; btn.textContent = 'Saving…';
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/redemption-requested', { method:'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ transaction_id: id, requested: on }) });
+    var d = await res.json().catch(function(){ return {}; });
+    if(!res.ok){ alert(d.error || 'Failed.'); btn.disabled = false; btn.textContent = old; return; }
+    loadAdminRedemptions(_currentRedemptionFilter);
+  }catch(e){ alert('Network error — try again.'); btn.disabled = false; btn.textContent = old; }
+}
 async function adminViewDepositProof(btn, id){
   if(_rdProofCache[id]){ showProofLightbox(_rdProofCache[id]); return; }
   var token = localStorage.getItem('jammy_session_token'); var old = btn.textContent; btn.textContent = 'Loading…'; btn.disabled = true;
