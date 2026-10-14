@@ -8,6 +8,50 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-14 (e): Bonuses page removed, "New" renamed to Power.win, Halloween daily lottery
+
+- **Bonuses page removed:**
+  - The nav link and footer link are gone.
+  - Home buttons and the bento card now point to the Power.win page ("Power.win offers").
+  - Old `#bonuses` links open the Power.win page.
+- **Nav:** "New" (with the NEW pill) is now just "Power.win". The page id stays `new`, so existing links still work.
+- **Daily claim is a pumpkin lottery in October (UTC):** each claim pays 2–20 coins, decided server-side and weighted.
+  - The average is about 6.6 coins. A win of 15 or more has an 8% chance, and 20 has a 1% chance.
+  - The button reads "🎃 Daily pumpkin lottery (2–20 coins)".
+  - After claiming, a pumpkin card rolls through numbers and lands on the win.
+  - From 1 Nov it goes back to a flat 5 coins automatically.
+  - The transaction note is "Halloween daily lottery". `/api/claim-status` returns `lottery`, `min` and `max`, and `/api/claim-daily` returns `claimed` and `lottery`.
+- **Text:** the Home guide and the Loyalty "earn" card mention the October lottery.
+
+---
+
+## 2026-10-14 (d): Alt-account detection, blocking and anti-farm rules
+
+**What's tracked** (logged-in players only: login, `/api/me`, page heartbeats, daily claim, casino claims, redemptions):
+- **IP:** stored only as a keyed hash (HMAC with `SESSION_SECRET`), plus a masked label (`103.21.x.x`), country and network owner (ISP / ASN org) from Cloudflare. The full IP is never stored.
+- **VPN/hosting:** flagged when the network owner looks like a datacenter, VPN or cloud provider.
+- **Device:** a random id kept in the browser (localStorage + cookie `jr_dev`). It's sent as `?jrd=` on signed-in API calls (no new CORS headers needed) and stored hashed. Alts made in the same browser share it.
+- **Discord account age:** read from the Discord ID itself, since the creation time is encoded in it.
+- **Storage:** new tables `user_signals` and `claim_marks`, and new columns `users.is_blocked` / `blocked_reason`, all created automatically. The cron deletes signals older than 90 days and claim marks older than 3 days.
+
+**Automatic rules**
+- **Daily coins:** one claim per device per day, and at most 2 other accounts per network (IP) per day. A household can share wifi, but an alt farm on one connection can't. The button explains why when this blocks a claim.
+- **Blocked players:** can still log in and browse, but can't claim daily coins, claim casino usernames, redeem, or receive vault payouts. Their vault share waits until they're unblocked.
+
+**Admin → 🛡️ Security tab (admins only)**
+- **Stats:** linked groups, blocked players, players tracked, big shared networks.
+- **Check a player:** type a Discord username or ID to see every account linked to them and why, plus their IPs (masked, ISP, VPN flag) and number of devices. Useful before paying a giveaway.
+- **Linked accounts:** groups of accounts joined by the same device, small-group IP, crypto wallet, Power.win payout account or claimed Power.win username.
+  - "Likely alts" covers anything with a strong link, 3+ accounts, or IP links plus a new Discord account or VPN. Everything else is "Possible alts".
+  - Each account shows Discord age (red under 30 days), coins, total redeemed, latest IP/ISP and last seen, with a Block/Unblock button.
+  - A group can be dismissed ("Checked"), and it comes back if a new account joins it.
+- **Big shared networks:** IPs with more than 6 accounts (mobile carriers, colleges) are listed separately and not counted as alts on their own.
+- **Block dialog:** includes a staff-only reason. Blocks and unblocks are recorded in the Activity Log.
+
+**Redemptions:** each card shows risk badges (device shared ×N, payout shared ×N, IP shared ×N, VPN/hosting IP, new Discord account, blocked, or "No alt signals"), plus a ⛔ Block user button.
+
+---
+
 ## 2026-10-14 (c): Cleaner Redeem card
 
 - **Layout:** rebuilt the Profile Redeem card to be compact and quiet.

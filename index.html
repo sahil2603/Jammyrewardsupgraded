@@ -2809,6 +2809,61 @@ html.lenis{scroll-behavior:auto!important}
 .rd-rej-why{display:block;margin-top:6px;font-size:.8rem;color:#fca5a5;letter-spacing:0;text-transform:none;font-weight:500}
 .pf-rej-why{grid-column:1/-1;margin-top:8px;padding:9px 12px;border-radius:10px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);font-size:.8rem;color:#fecaca;line-height:1.45}
 .pf-rej-why b{color:#fca5a5}.pf-rej-why span{color:var(--faint)}
+.sec-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.sec-stat{padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+.sec-stat b{display:block;font:400 1.5rem/1.1 'Lilita One',sans-serif;color:#fff}
+.sec-stat span{font-size:.74rem;color:var(--faint)}
+.sec-look{display:flex;gap:8px;margin-bottom:12px}
+.sec-look .adm-input{flex:1 1 auto;min-width:0;width:auto!important;margin:0!important}
+.sec-look .admin-btn-primary{flex:none;width:auto!important;padding:10px 22px!important;margin:0!important}
+.sec-h{margin:18px 0 10px;font-size:.95rem}
+.sec-list{display:flex;flex-direction:column;gap:12px}
+.sec-card{border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.025);padding:14px 16px;border-left:3px solid rgba(var(--sv),.9)}
+.sec-card.high{--sv:248,113,113}.sec-card.medium{--sv:251,191,36}
+.sec-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.sec-sev{font:800 .66rem 'Poppins';letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border-radius:99px;color:rgb(var(--sv));background:rgba(var(--sv),.12);border:1px solid rgba(var(--sv),.4)}
+.sec-sum{font-size:.82rem;color:var(--muted);margin-left:8px}
+.sec-why{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.sec-why span{font-size:.74rem;padding:4px 9px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:#e9e3ff}
+.sec-why span.s{border-color:rgba(248,113,113,.45);background:rgba(248,113,113,.08)}
+.sec-acc{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) auto;gap:6px 12px;align-items:center;padding:9px 0;border-top:1px solid var(--line);font-size:.82rem}
+.sec-acc .nm{display:flex;align-items:center;gap:9px;min-width:0}
+.sec-acc .nm b{color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sec-acc .meta{color:var(--faint);font-size:.76rem;line-height:1.45}
+.sec-acc .meta i{font-style:normal;color:#fca5a5}
+.sec-tag{display:inline-block;font-size:.66rem;font-weight:700;padding:2px 7px;border-radius:6px;margin-left:4px;background:rgba(248,113,113,.14);color:#fca5a5;border:1px solid rgba(248,113,113,.35)}
+.sec-tag.ok{background:rgba(74,222,128,.1);color:#86efac;border-color:rgba(74,222,128,.35)}
+.sec-btn{border-radius:9px;padding:6px 12px;font:600 .76rem 'Poppins';cursor:pointer;border:1px solid rgba(248,113,113,.5);background:rgba(248,113,113,.1);color:#fecaca;white-space:nowrap}
+.sec-btn.un{border-color:var(--line);background:rgba(255,255,255,.05);color:#e9e3ff}
+.sec-foot{display:flex;justify-content:flex-end;margin-top:8px}
+.sec-net{margin-top:18px;border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.sec-net summary{cursor:pointer;font-weight:600;font-size:.9rem}
+.sec-net p{font-size:.8rem;color:var(--faint);margin:8px 0}
+.sec-net-row{font-size:.8rem;padding:7px 0;border-top:1px solid var(--line);color:var(--muted)}
+.sec-net-row b{color:#fff}
+.sec-empty{padding:18px;text-align:center;color:var(--faint);font-size:.88rem;border:1px dashed var(--line);border-radius:12px}
+.sec-look-card{margin-bottom:8px}
+.rd-risk{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;justify-content:flex-end}
+.rd-risk span{font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:7px;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.4);color:#fecaca;white-space:nowrap}
+.rd-risk span.w{background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.4);color:#fde68a}
+.rd-risk span.ok{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.3);color:#86efac}
+@media(max-width:700px){.sec-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.sec-acc{grid-template-columns:1fr auto}.sec-acc .meta.r{grid-column:1/-1;order:3}}
+.lot-win{position:fixed;inset:0;z-index:10002;display:grid;place-items:center;padding:20px;background:rgba(6,3,14,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .3s}
+.lot-win.in{opacity:1}
+.lot-card{width:min(320px,100%);text-align:center;padding:24px 22px 20px;border-radius:22px;background:linear-gradient(180deg,#24113a,#120a1f);border:1px solid rgba(255,140,40,.45);box-shadow:0 30px 80px -20px rgba(255,122,26,.55);transform:scale(.85);transition:transform .5s cubic-bezier(.2,1.4,.4,1)}
+.lot-win.in .lot-card{transform:none}
+.lot-pk{width:96px;margin:-62px auto 6px;filter:drop-shadow(0 0 22px rgba(255,140,40,.8));animation:lotWob .35s ease-in-out infinite alternate}
+.lot-pk svg{width:100%;height:auto;display:block}
+.lot-pk .hw-face{fill:#ffd166}
+.lot-win.done .lot-pk{animation:lotPop .6s cubic-bezier(.2,1.6,.4,1)}
+@keyframes lotWob{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
+@keyframes lotPop{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+.lot-lbl{font:700 .7rem 'Poppins',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#fdba74}
+.lot-num{margin:6px 0 4px;display:flex;align-items:baseline;justify-content:center;gap:8px}
+.lot-num b{font:400 3.6rem/1 'Lilita One',sans-serif;color:#fff;text-shadow:0 0 24px rgba(255,140,40,.7);font-variant-numeric:tabular-nums}
+.lot-num span{font:600 .9rem 'Poppins',sans-serif;color:var(--muted)}
+.lot-sub{font-size:.84rem;color:var(--muted);min-height:2.6em}
+.lot-ok{margin-top:12px;width:100%;padding:11px;border:0;border-radius:12px;background:linear-gradient(135deg,#ff7a1a,#c2410c);color:#fff;font:700 .9rem 'Poppins',sans-serif;cursor:pointer}
 .rd-proof-none{display:inline-block;margin-top:8px;font-size:.74rem;color:#fca5a5}
 @keyframes adminEmptyFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 /* Active/Awarded filter pills for Slot & Battle Requests -- a smooth sliding highlight
@@ -4397,6 +4452,29 @@ html.hw-rm .hw-ban,html.hw-rm .hw-ban *,html.hw-rm .hw-hi,html.hw-rm .hw-skull-i
 html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-ghost,html.hw-rm .hw-hand{display:none}
 .hw-ban .hw-face{animation:hwlFace .2s forwards,hwlFaceF 1.3s .2s ease-in-out infinite}
 </style>
+<script>
+/* Anti-alt: a random id kept in this browser (localStorage + cookie). It's sent with signed-in
+   API calls so accounts made in the same browser can be linked by admins. No personal data. */
+(function(){try{
+  var id = null;
+  try{ id = localStorage.getItem('jr_dev'); }catch(e){}
+  if(!id){ var m = document.cookie.match(/(?:^|; )jr_dev=([a-z0-9-]+)/); if(m) id = m[1]; }
+  if(!id || !/^[a-z0-9-]{12,64}$/.test(id)) id = (window.crypto && crypto.randomUUID ? crypto.randomUUID() : ('d' + Date.now().toString(36) + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2))).toLowerCase();
+  try{ localStorage.setItem('jr_dev', id); }catch(e){}
+  try{ document.cookie = 'jr_dev=' + id + '; max-age=31536000; path=/; SameSite=Lax'; }catch(e){}
+  window.JR_DEVICE = id;
+  var of = window.fetch; if(!of) return;
+  window.fetch = function(input, init){
+    try{
+      if(typeof input === 'string' && input.indexOf('workers.dev') !== -1 && input.indexOf('jrd=') === -1){
+        var h = init && init.headers, auth = h && (typeof h.get === 'function' ? h.get('Authorization') : (h.Authorization || h.authorization));
+        if(auth || input.indexOf('/auth/discord/callback') !== -1) input += (input.indexOf('?') === -1 ? '?' : '&') + 'jrd=' + encodeURIComponent(id);
+      }
+    }catch(e){}
+    return of.call(this, input, init);
+  };
+}catch(e){}})();
+</script>
 </head>
 <body>
 <script>
@@ -4451,8 +4529,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-gho
       <span class="nav-indicator" aria-hidden="true"></span>
       <a data-page="home" class="active">Home</a>
       <a data-page="leaderboards">Leaderboards</a>
-      <a data-page="new" style="display:inline-flex;align-items:center;gap:5px">New <span style="font-size:.6rem;font-weight:800;color:#0a0a0f;background:linear-gradient(135deg,#c084fc,#f472b6);padding:2px 7px;border-radius:99px;letter-spacing:.03em">NEW</span></a>
-      <a data-page="bonuses">Bonuses</a>
+      <a data-page="new">Power.win</a>
       <a data-page="reviews">Reviews</a>
       <a data-page="loyalty">Loyalty</a>
       <a data-page="vault">Vault</a>
@@ -4551,7 +4628,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-gho
         </div>
 
         <div class="hx-cta center hx-in" style="--d:1s">
-          <button type="button" class="hx-btn hx-btn-p hx-mag" onclick="nav('bonuses')"><span>Explore bonuses</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button type="button" class="hx-btn hx-btn-p hx-mag" onclick="nav('new')"><span>Power.win offers</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <button type="button" class="hx-btn hx-btn-g hx-mag" onclick="nav('loyalty')"><span>Join loyalty</span></button>
           <button type="button" class="hx-btn hx-btn-c hx-mag" onclick="nav('leaderboards')"><span class="hx-live-dot"></span><span>Leaderboards</span></button>
         </div>
@@ -4615,12 +4692,12 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-gho
       </div>
 
       <div class="hx-bento">
-        <article class="hx-b hx-b-bonus hx-rv hx-tilt hx-spotlight" style="--c:168,85,247" onclick="nav('bonuses')">
+        <article class="hx-b hx-b-bonus hx-rv hx-tilt hx-spotlight" style="--c:168,85,247" onclick="nav('new')">
           <div class="hx-b-txt">
-            <span class="hx-b-tag">Bonuses</span>
+            <span class="hx-b-tag">Power.win</span>
             <h3>Exclusive bonus codes</h3>
             <p>Hand-picked deposit matches, rakeback and cashback from our verified partners. Sign up under <b>JAMMMY</b> to unlock everything.</p>
-            <span class="hx-b-link">View bonuses <em>→</em></span>
+            <span class="hx-b-link">View Power.win offers <em>→</em></span>
           </div>
           <div class="hx-b-art hx-bonus-art solo" aria-hidden="true">
             <div class="hx-chip-card c1"><img src="powerwin.webp" alt=""><b>100%</b><small>Cash match</small></div>
@@ -4761,7 +4838,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-gho
         <p>Log in, claim your casino username and start stacking rewards today.</p>
         <div class="hx-cta center">
           <button type="button" class="hx-btn hx-btn-p hx-mag" onclick="nav('loyalty')"><span>Get started</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <button type="button" class="hx-btn hx-btn-g hx-mag" onclick="nav('bonuses')"><span>See bonuses</span></button>
+          <button type="button" class="hx-btn hx-btn-g hx-mag" onclick="nav('new')"><span>Power.win offers</span></button>
         </div>
       </section>
     </div>
@@ -5020,21 +5097,6 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-gho
     </div>
   </section>
 
-  <!-- BONUSES -->
-  <section class="page" id="bonuses">
-    <div class="sec-head"><h2>Casino <span class="g">Bonuses</span></h2><p>Hand-picked offers from our live partners. Sign up under JAMMMY to unlock leaderboard prizes and vault share.</p></div>
-    <div class="inner">
-      <div class="grid2 solo reveal">
-        <div class="bcard">
-          <div class="top"><span class="cas"><img src="powerwin.webp" alt="Power.win" style="height:42px">Power.win</span><span class="ribbon" style="background:#7e22ce">Newest Partner</span></div>
-          <div class="codebox"><div class="code"><span style="color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em">Code</span><span class="cv">JAMMMY</span></div><button class="copybtn" onclick="copy(this,'JAMMMY')">Copy</button></div>
-          <div class="feats"><span>💰 100% First Deposit Cash Match</span><span>💵 Rakeback Activated</span><span>📉 High Roller Lossback</span><span>🏁 Weekly Live Races</span></div>
-          <button class="claim" onclick="go('https://power.win/?aff=jammmy')">Claim Bonus</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- REVIEWS -->
   <section class="page" id="reviews">
     <div class="sec-head"><h2>Slot Game <span class="g">Reviews</span></h2><p>Find your next slot: facts, full reviews and one-tap requests.</p></div>
@@ -5105,7 +5167,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-gho
           <div class="lg-step">
             <div class="lg-shot"><img src="guide-4.webp" loading="lazy" alt="Your Jammmy Coins balance and the Claim Daily button on your Profile"></div>
             <div class="lg-txt"><span class="lg-n">4</span><div><b>Collect &amp; redeem</b>
-              <p>Coins land on your Profile — plus 5 free every day. Redeem from 2,000 coins ($20) as casino balance or crypto.</p></div></div>
+              <p>Coins land on your Profile — plus free coins every day (2–20 in our October pumpkin lottery). Redeem from 2,000 coins ($20) as casino balance or crypto.</p></div></div>
           </div>
         </div>
         <div class="lg-cta">
@@ -5144,7 +5206,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-gho
           <div class="loy2-earn">
             <div class="loy2-earn-icon">🎁</div>
             <div class="loy2-earn-title">Daily Claim</div>
-            <div class="loy2-earn-desc">5 free Jammmy Coins every 24 hours, just for logging in</div>
+            <div class="loy2-earn-desc">Free Jammmy Coins every 24 hours, just for logging in (in October: a 2–20 coin pumpkin lottery)</div>
           </div>
           <div class="loy2-earn">
             <div class="loy2-earn-icon">🪙</div>
@@ -5569,6 +5631,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-gho
           <button class="admin-tab" data-tab="adminSlotsTab" onclick="switchAdminTab('adminSlotsTab')">🎰 Slot Requests <span class="admin-badge" id="badgeSlots"></span></button>
           <button class="admin-tab" data-tab="adminBattlesTab" onclick="switchAdminTab('adminBattlesTab')">⚔️ Battle Requests <span class="admin-badge" id="badgeBattles"></span></button>
           <button class="admin-tab" data-tab="adminAuditTab" onclick="switchAdminTab('adminAuditTab')">🧾 Activity Log</button>
+          <button class="admin-tab" data-tab="adminSecurityTab" onclick="switchAdminTab('adminSecurityTab')">🛡️ Security <span class="admin-badge" id="badgeSecurity"></span></button>
         </div>
 
         <!-- VAULT TAB -->
@@ -5778,6 +5841,40 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-gho
         </div>
 
         <!-- ACTIVITY LOG TAB (admins only) -->
+        <div id="adminSecurityTab" class="admin-tab-panel" style="display:none">
+          <div class="audit-head">
+            <div>
+              <h3 style="margin:0;font-size:1.15rem">Alt accounts &amp; security</h3>
+              <p style="margin:4px 0 0;color:var(--faint);font-size:.85rem">Accounts linked by the same device, IP, wallet or casino account. IPs are stored hashed and shown masked. Blocked players can still log in but can't claim, redeem or get vault payouts.</p>
+            </div>
+            <button class="admin-btn-secondary" onclick="loadAdminSecurity()" style="padding:8px 14px">↻ Refresh</button>
+          </div>
+          <div class="sec-stats" id="secStats"></div>
+          <form class="sec-look" onsubmit="event.preventDefault();secLookup()">
+            <input id="secLookQ" class="adm-input" placeholder="Check a player — Discord username or ID (before paying a giveaway, etc.)" autocomplete="off">
+            <button class="admin-btn-primary" type="submit">Check</button>
+          </form>
+          <div id="secLookOut"></div>
+          <h4 class="sec-h">Linked accounts</h4>
+          <div id="secClusters" class="sec-list">Loading…</div>
+          <details class="sec-net"><summary>Big shared networks <span id="secNetCount"></span></summary><p>Many accounts on one IP — usually a mobile carrier, college or public wifi. Not counted as alts on their own.</p><div id="secNets"></div></details>
+        </div>
+
+        <!-- block player dialog -->
+        <div id="blkModal" class="adm-modal" style="display:none" onclick="if(event.target===this)closeBlk()">
+          <div class="adm-modal-card">
+            <h3 id="blkTitle" style="margin:0 0 4px">Block player</h3>
+            <p style="margin:0 0 14px;color:var(--faint);font-size:.86rem">They can still log in, but can't claim daily coins, claim casino usernames, redeem, or receive vault payouts. You can unblock any time.</p>
+            <label class="adm-lbl">Reason <span style="color:var(--faint);font-weight:400">(staff only)</span></label>
+            <textarea id="blkReason" class="adm-input" rows="2" maxlength="300" placeholder="e.g. Alt of player123 — same device"></textarea>
+            <div id="blkErr" class="adm-err"></div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:10px">
+              <button class="admin-btn-secondary" onclick="closeBlk()">Cancel</button>
+              <button id="blkGo" class="admin-btn-primary rej-go" onclick="submitBlk()">Block</button>
+            </div>
+          </div>
+        </div>
+
         <div id="adminAuditTab" class="admin-tab-panel" style="display:none">
           <div class="audit-head">
             <div>
@@ -5892,7 +5989,7 @@ html.hw-rm .hw-mb,html.hw-rm .hw-steam,html.hw-rm .hw-slime b,html.hw-rm .hw-gho
       <h4>Quick Links</h4>
       <a onclick="nav('home')">Home</a>
       <a onclick="nav('leaderboards')">Leaderboards</a>
-      <a onclick="nav('bonuses')">Bonuses</a>
+      <a onclick="nav('new')">Power.win</a>
       <a onclick="nav('reviews')">Reviews</a>
       <a onclick="nav('loyalty')">Loyalty Program</a>
       <a onclick="nav('vault')">Community Vault</a>
@@ -5944,6 +6041,7 @@ window.addEventListener('resize',function(){
 });
 
 function showPage(id){
+  if(id==='bonuses') id='new';   /* Bonuses page was removed: old links go to the Power.win page */
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('show'));
   var pg=document.getElementById(id);
   if(!pg){id='home';pg=document.getElementById('home');}
@@ -7304,7 +7402,7 @@ async function refreshClaimStatus(){
     btns = document.querySelectorAll('.claim-daily-btn'); /* re-query: DOM may have changed while this was in flight */
     btns.forEach(function(btn){
       if(data.can_claim){
-        btn.textContent = '🎁 Claim Daily (+5)';
+        btn.textContent = data.lottery ? '🎃 Daily pumpkin lottery (' + data.min + '–' + data.max + ' coins)' : '🎁 Claim Daily (+5)';
         btn.disabled = false;
       } else {
         btn.textContent = '🕒 Next claim in ' + formatCountdown(data.remaining_ms);
@@ -7323,6 +7421,7 @@ async function claimDaily(){
     var res = await fetch(AUTH_API + '/api/claim-daily', { method:'POST', headers: { 'Authorization': 'Bearer ' + token } });
     var data = await res.json();
     if(res.ok && data.user){
+      if(data.lottery) showLotteryWin(data.claimed);
       localStorage.setItem('jammy_user', JSON.stringify(data.user));
       renderAuthUI(data.user); /* also calls refreshClaimStatus(), which re-syncs every .claim-daily-btn on the page */
       toggleUserMenu(); /* re-open, since renderAuthUI rebuilt the menu closed */
@@ -7333,12 +7432,37 @@ async function claimDaily(){
          (a genuine server error, a missing binding, anything) left the button just
          sitting on "Claiming…" forever with zero feedback. Now always shows something. */
       console.error('Daily claim failed:', data.error || res.status);
-      btns.forEach(function(btn){ btn.textContent = '⚠ Error — try again (see console)'; });
+      if(data.blocked || data.shared_limit){
+        var lbl = data.blocked ? '🔒 Account restricted' : '🔒 Already claimed on this device/network today';
+        btns.forEach(function(btn){ btn.textContent = lbl; btn.title = data.error || ''; btn.disabled = true; });
+      } else btns.forEach(function(btn){ btn.textContent = '⚠ Error — try again (see console)'; });
     }
   }catch(e){
     console.error('Daily claim request failed:', e);
     btns.forEach(function(btn){ btn.textContent = '⚠ Network error — try again'; });
   }
+}
+
+/* Halloween daily lottery: the pumpkin "rolls" through numbers and lands on the server's result. */
+function showLotteryWin(n){
+  try{
+    var old = document.getElementById('lotWin'); if(old) old.remove();
+    var o = document.createElement('div'); o.id = 'lotWin'; o.className = 'lot-win';
+    var pk = (window.HW_SVG && HW_SVG.pumpkin) ? HW_SVG.pumpkin() : '🎃';
+    o.innerHTML = '<div class="lot-card"><div class="lot-pk">' + pk + '</div><div class="lot-lbl">Daily pumpkin lottery</div>'
+      + '<div class="lot-num"><b id="lotNum">2</b><span>coins</span></div><div class="lot-sub" id="lotSub">Rolling…</div>'
+      + '<button type="button" class="lot-ok" onclick="document.getElementById(\'lotWin\').remove()">Nice!</button></div>';
+    o.addEventListener('click', function(e){ if(e.target === o) o.remove(); });
+    document.body.appendChild(o);
+    requestAnimationFrame(function(){ o.classList.add('in'); });
+    var el = document.getElementById('lotNum'), t0 = performance.now(), dur = 1400;
+    (function roll(t){
+      var p = Math.min(1, (t - t0) / dur);
+      if(p < 1){ el.textContent = 2 + Math.floor(Math.random() * 19); setTimeout(function(){ requestAnimationFrame(roll); }, 40 + p * 110); return; }
+      el.textContent = n; o.classList.add('done');
+      document.getElementById('lotSub').textContent = n >= 15 ? 'Huge win! Come back tomorrow for another spin.' : n >= 8 ? 'Nice one! Come back tomorrow for another spin.' : 'Added to your balance. Come back tomorrow for another spin.';
+    })(t0);
+  }catch(e){}
 }
 
 function toggleUserMenu(e){
@@ -8331,6 +8455,7 @@ function switchAdminTab(tabId){
   if(tabId==='adminSlotsTab') loadAdminSlots();
   if(tabId==='adminBattlesTab') loadAdminBattles();
   if(tabId==='adminAuditTab') loadAuditLog(true);
+  if(tabId==='adminSecurityTab') loadAdminSecurity();
 }
 
 /* Backs both the Overview tab and the pending-count badges on every other tab button, so
@@ -8973,11 +9098,13 @@ async function loadAdminRedemptions(status){
             + '<div class="rq-sub"><span class="ago">⏱ '+rqAgo(r.created_at)+'</span><span>'+formatWhen(r.created_at)+'</span>'+(r.paid_at ? '<span style="color:#4ade80">Paid '+formatWhen(r.paid_at)+'</span>' : '')+'<span class="rd-id">'+pccEsc(r.id)+'</span></div></div>'
           + '<div class="rd-amt"><b>$'+Number(r.usd_value||0).toFixed(2)+'</b><span>'+Number(r.coin_amount||0).toLocaleString()+' coins</span><div style="margin-top:8px">'+statusPill+'</div>'
             + (r.has_deposit_proof ? '<button type="button" class="rd-proof-btn" onclick="adminViewDepositProof(this,\''+r.id+'\')">🧾 Deposit proof</button>' : '<span class="rd-proof-none">No deposit proof</span>')
+            + rdRiskHtml(r)
           + '</div>'
         + '</div>'
         + '<div class="rd-pay">'+pay+'</div>'
         + '<div class="rq-ctrl">'
           + (isPending ? '<button class="pay" onclick="adminMarkPaid(\''+r.id+'\')">✓ Mark Paid</button><button class="rej" onclick="adminRejectRedemption(\''+r.id+'\')">Reject &amp; refund</button>' : '<span class="lbl">'+(isRejected ? 'REJECTED — COINS WERE REFUNDED' : 'PAID')+'</span>'+(isRejected && r.reject_reason ? '<span class="rd-rej-why">Reason: '+pccEsc(r.reject_reason)+'</span>' : ''))
+          + (r.risk && !r.risk.blocked ? '<button class="del" onclick="openBlk(\''+r.user_id+'\',\''+pccEsc(r.username||'').replace(/'/g,'&#39;')+'\')">⛔ Block user</button>' : '')
           + '<button class="del" onclick="adminDeleteRedemption(\''+r.id+'\')">🗑 Delete</button>'
         + '</div>'
       + '</div>';
@@ -8986,6 +9113,127 @@ async function loadAdminRedemptions(status){
     console.error('Failed to load admin redemptions:', e);
     listEl.innerHTML = 'Network error — try again.';
   }
+}
+
+
+/* ══════════════ ADMIN: SECURITY (alt accounts) ══════════════ */
+function rdRiskHtml(r){
+  var k = r.risk; if(!k) return '';
+  var out = [];
+  if(k.blocked) out.push('<span>⛔ Blocked</span>');
+  if(k.shared_device) out.push('<span title="Same browser/device as other accounts">📱 Device shared ×' + k.shared_device + '</span>');
+  if(k.shared_payout) out.push('<span title="Same wallet or casino payout account as other accounts">💳 Payout shared ×' + k.shared_payout + '</span>');
+  if(k.shared_ip) out.push('<span class="w" title="Same IP as other accounts in the last 60 days">🌐 IP shared ×' + k.shared_ip + '</span>');
+  if(k.vpn) out.push('<span class="w" title="Used a VPN or hosting IP">🛰 VPN/hosting IP</span>');
+  if(k.discord_age_days !== null && k.discord_age_days < 30) out.push('<span class="' + (k.discord_age_days < 7 ? '' : 'w') + '" title="Discord account age">🆕 Discord ' + k.discord_age_days + 'd old</span>');
+  if(!out.length) out.push('<span class="ok">✓ No alt signals</span>');
+  return '<div class="rd-risk">' + out.join('') + '</div>';
+}
+function secAge(d){ return d === null || d === undefined ? '?' : d < 30 ? '<i>' + d + 'd</i>' : d < 365 ? Math.floor(d/30) + 'mo' : (d/365).toFixed(1) + 'y'; }
+function secAccRow(a, extra){
+  var tags = (a.blocked ? '<span class="sec-tag">BLOCKED</span>' : '') + (a.vpn ? '<span class="sec-tag" style="background:rgba(251,191,36,.1);color:#fde68a;border-color:rgba(251,191,36,.4)">VPN</span>' : '');
+  return '<div class="sec-acc">'
+    + '<div class="nm">' + uavHtml(a.avatar, a.username, 28) + '<div style="min-width:0"><b>' + pccEsc(a.username) + '</b>' + tags
+      + '<div class="meta">Discord ' + secAge(a.discord_age_days) + ' · ' + fmtCoins(a.coins || 0) + ' coins · redeemed $' + Number(a.redeemed_usd || 0).toFixed(2) + (a.redemptions ? ' (' + a.redemptions + ')' : '') + '</div></div></div>'
+    + '<div class="meta r">' + (a.last_ip ? pccEsc(a.last_ip) : 'No IP seen yet') + (a.last_seen ? '<br>seen ' + rqAgo(a.last_seen) : '') + (extra || '') + '</div>'
+    + (a.blocked ? '<button class="sec-btn un" onclick="secUnblock(\'' + a.id + '\')">Unblock</button>'
+                 : '<button class="sec-btn" onclick="openBlk(\'' + a.id + '\',\'' + pccEsc(a.username).replace(/'/g, '&#39;') + '\')">Block</button>')
+  + '</div>';
+}
+async function loadAdminSecurity(){
+  var token = localStorage.getItem('jammy_session_token');
+  var list = document.getElementById('secClusters'); if(!list) return;
+  if(!list.dataset.loaded) list.textContent = 'Loading…';
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/security', { headers: { 'Authorization': 'Bearer ' + token }, cache: 'no-store' });
+    var d = await res.json();
+    if(!res.ok){ list.textContent = d.error || 'Failed to load.'; return; }
+    list.dataset.loaded = '1';
+    var s = d.stats || {};
+    document.getElementById('secStats').innerHTML =
+      '<div class="sec-stat"><b>' + (s.groups || 0) + '</b><span>linked groups</span></div>'
+      + '<div class="sec-stat"><b>' + (s.blocked || 0) + '</b><span>blocked players</span></div>'
+      + '<div class="sec-stat"><b>' + (s.tracked || 0) + '</b><span>players tracked</span></div>'
+      + '<div class="sec-stat"><b>' + (s.networks || 0) + '</b><span>big shared networks</span></div>';
+    var badge = document.getElementById('badgeSecurity');
+    var high = (d.clusters || []).filter(function(c){ return c.severity === 'high'; }).length;
+    if(badge){ badge.textContent = high || ''; badge.style.display = high ? '' : 'none'; }
+    list.innerHTML = (d.clusters || []).length ? d.clusters.map(function(c){
+      return '<div class="sec-card ' + c.severity + '">'
+        + '<div class="sec-top"><div><span class="sec-sev">' + (c.severity === 'high' ? 'Likely alts' : 'Possible alts') + '</span><span class="sec-sum">' + c.accounts.length + ' accounts · $' + Number(c.redeemed_usd || 0).toFixed(2) + ' redeemed</span></div></div>'
+        + '<div class="sec-why">' + c.why.map(function(w){ return '<span class="' + (w.strong ? 's' : '') + '">' + pccEsc(w.label) + (w.hosting ? ' · VPN/hosting' : '') + '</span>'; }).join('') + '</div>'
+        + c.accounts.map(function(a){ return secAccRow(a); }).join('')
+        + '<div class="sec-foot"><button class="dup-dismiss" data-key="' + pccEsc(c.key) + '" data-label="' + pccEsc(c.accounts.map(function(a){ return a.username; }).join(', ')) + '" onclick="secDismiss(this)">✓ Checked · Dismiss</button></div>'
+      + '</div>';
+    }).join('') + (d.dismissed_count ? '<div class="dup-foot">' + d.dismissed_count + ' dismissed group' + (d.dismissed_count === 1 ? '' : 's') + ' hidden · <button onclick="restoreDuplicates().then(loadAdminSecurity)">Show them again</button></div>' : '')
+      : '<div class="sec-empty">No linked accounts found yet. Links appear as players log in and use the site.</div>';
+    document.getElementById('secNetCount').textContent = (d.networks || []).length ? '(' + d.networks.length + ')' : '';
+    document.getElementById('secNets').innerHTML = (d.networks || []).map(function(n){
+      return '<div class="sec-net-row"><b>' + pccEsc(n.label || '?') + '</b> · ' + pccEsc([n.org, n.country].filter(Boolean).join(' · ')) + (n.hosting ? ' · VPN/hosting' : '') + ' — <b>' + n.users + '</b> accounts: ' + pccEsc((n.usernames || []).join(', ')) + (n.users > (n.usernames || []).length ? '…' : '') + '</div>';
+    }).join('') || '<div class="sec-net-row">None.</div>';
+  }catch(e){ console.error('Security load failed:', e); list.textContent = 'Network error — try again.'; }
+}
+async function secDismiss(btn){
+  var token = localStorage.getItem('jammy_session_token'); btn.disabled = true;
+  try{
+    await fetch(AUTH_API + '/api/admin/dismiss-duplicate', { method:'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: btn.dataset.key, label: btn.dataset.label }) });
+  }catch(e){}
+  var card = btn.closest('.sec-card'); if(card){ card.style.transition = 'opacity .25s'; card.style.opacity = '0'; }
+  setTimeout(loadAdminSecurity, 260);
+}
+async function secLookup(){
+  var q = document.getElementById('secLookQ').value.trim(), out = document.getElementById('secLookOut');
+  if(!q){ out.innerHTML = ''; return; }
+  out.innerHTML = '<div class="sec-empty">Checking…</div>';
+  var token = localStorage.getItem('jammy_session_token');
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/user-security?q=' + encodeURIComponent(q), { headers: { 'Authorization': 'Bearer ' + token }, cache: 'no-store' });
+    var d = await res.json();
+    if(!res.ok){ out.innerHTML = '<div class="sec-empty">' + pccEsc(d.error || 'Not found.') + '</div>'; return; }
+    var clean = !d.linked.length;
+    out.innerHTML = '<div class="sec-card sec-look-card ' + (clean ? '' : 'high') + '" style="' + (clean ? '--sv:74,222,128' : '') + '">'
+      + '<div class="sec-top"><div><span class="sec-sev">' + (clean ? 'No linked accounts' : d.linked.length + ' linked account' + (d.linked.length === 1 ? '' : 's')) + '</span>'
+      + '<span class="sec-sum">' + d.ips.length + ' IP' + (d.ips.length === 1 ? '' : 's') + ' · ' + d.devices + ' device' + (d.devices === 1 ? '' : 's') + ' seen</span></div>'
+      + '<button class="sec-btn un" onclick="document.getElementById(\'secLookOut\').innerHTML=\'\'">Close</button></div>'
+      + secAccRow(d.user)
+      + d.linked.map(function(a){ return secAccRow(a, '<br><span style="color:#fecaca">' + pccEsc(a.why.join(' · ')) + '</span>'); }).join('')
+      + (d.ips.length ? '<div class="sec-why" style="margin:10px 0 0">' + d.ips.slice(0, 8).map(function(i){ return '<span>' + pccEsc([i.label, i.org, i.country].filter(Boolean).join(' · ')) + (i.vpn ? ' · VPN' : '') + '</span>'; }).join('') + '</div>' : '')
+    + '</div>';
+  }catch(e){ out.innerHTML = '<div class="sec-empty">Network error — try again.</div>'; }
+}
+var _blk = { id: null };
+function openBlk(id, name){
+  _blk = { id: id };
+  var m = document.getElementById('blkModal'); if(m.parentNode !== document.body) document.body.appendChild(m);
+  var tmp = document.createElement('textarea'); tmp.innerHTML = name || ''; 
+  document.getElementById('blkTitle').textContent = 'Block ' + (tmp.value || 'player');
+  document.getElementById('blkReason').value = ''; document.getElementById('blkErr').textContent = '';
+  document.getElementById('blkGo').disabled = false; document.getElementById('blkGo').textContent = 'Block';
+  m.style.display = 'grid'; setTimeout(function(){ document.getElementById('blkReason').focus(); }, 60);
+}
+function closeBlk(){ document.getElementById('blkModal').style.display = 'none'; }
+async function secSetBlocked(id, blocked, reason){
+  var token = localStorage.getItem('jammy_session_token');
+  var res = await fetch(AUTH_API + '/api/admin/block-user', { method:'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ discord_id: id, blocked: blocked, reason: reason || '' }) });
+  var d = await res.json().catch(function(){ return {}; });
+  if(!res.ok) throw new Error(d.error || 'Failed.');
+}
+function secRefreshViews(){
+  var sec = document.getElementById('adminSecurityTab'), red = document.getElementById('adminRedemptionsTab');
+  if(sec && sec.style.display !== 'none'){ loadAdminSecurity(); if(document.getElementById('secLookQ').value.trim() && document.getElementById('secLookOut').innerHTML) secLookup(); }
+  if(red && red.style.display !== 'none') loadAdminRedemptions(_currentRedemptionFilter);
+}
+async function submitBlk(){
+  var btn = document.getElementById('blkGo'), err = document.getElementById('blkErr');
+  btn.disabled = true; btn.textContent = 'Blocking…';
+  try{ await secSetBlocked(_blk.id, true, document.getElementById('blkReason').value.trim()); closeBlk(); secRefreshViews(); }
+  catch(e){ err.textContent = e.message; btn.disabled = false; btn.textContent = 'Block'; }
+}
+async function secUnblock(id){
+  if(!confirm('Unblock this player? They can claim and redeem again.')) return;
+  try{ await secSetBlocked(id, false); secRefreshViews(); }catch(e){ alert(e.message); }
 }
 
 var RD_LOGOS = { powerwin:'powerwin.webp', degencity:'degencity.png' };
