@@ -8,6 +8,17 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-16 (f): Crypto redemption minimum 10,000 coins + Power.win tab first
+
+- Crypto redemptions now need at least **10,000 coins ($100)**. Power.win stays at 2,000 coins ($20).
+- The worker enforces it too, so the form can't be bypassed.
+- The Redeem card opens on **Power.win** by default, and the tab order is now Power.win | Crypto.
+- The small print under the button shows the minimum for the selected tab ("Min $20" or "Min $100 for crypto").
+- The How it works / Loyalty text mentions both minimums.
+- **Worker change** (one line: `MIN_REDEEM_COINS_CRYPTO = 10000`).
+
+---
+
 ## 2026-10-16 (e): Live card redesign
 
 - Each scene now has its own colour: the card's border, glow and progress bar change to match (purple race, gold top 3, pink given away, blue new member, yellow coins, pink announcement).

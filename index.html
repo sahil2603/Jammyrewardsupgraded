@@ -5513,7 +5513,7 @@ body.on-admin .ambient-glow-blob{opacity:.35}
           <div class="lg-step">
             <div class="lg-shot"><img src="guide-4.webp" loading="lazy" alt="Your Jammmy Coins balance and the Claim Daily button on your Profile"></div>
             <div class="lg-txt"><span class="lg-n">4</span><div><b>Collect &amp; redeem</b>
-              <p>Coins land on your Profile — plus free coins every day (2–20 in our October pumpkin lottery). Redeem from 2,000 coins ($20) as casino balance or crypto.</p></div></div>
+              <p>Coins land on your Profile — plus free coins every day (2–20 in our October pumpkin lottery). Redeem from 2,000 coins ($20) as Power.win balance, or 10,000 coins ($100) as crypto.</p></div></div>
           </div>
         </div>
         <div class="lg-cta">
@@ -5541,7 +5541,7 @@ body.on-admin .ambient-glow-blob{opacity:.35}
           <li>An admin manually verifies the claim against your Discord</li>
           <li>Once approved, your wagering counts toward the shared community vault</li>
           <li>When the vault collectively reaches 10,000 coins, everyone verified gets their own share paid out automatically — nothing else to do</li>
-          <li>Redeem from your Profile page once you have 2,000 coins ($20), as casino balance or crypto. Your Power.win deposits in the last 7 days must be more than what you redeem (screenshot proof required)</li>
+          <li>Redeem from your Profile page: from 2,000 coins ($20) as Power.win balance, or from 10,000 coins ($100) as crypto. Your Power.win deposits in the last 7 days must be more than what you redeem (screenshot proof required)</li>
         </ol>
       </div>
 
@@ -5713,11 +5713,11 @@ body.on-admin .ambient-glow-blob{opacity:.35}
             <button id="pfRedeemLocked" class="pf-btn-locked" style="display:none" disabled></button>
             <div id="pfRedeemForm" style="display:none">
               <div class="rdx-seg">
-                <button type="button" class="pf-redeem-method active" data-method="crypto" onclick="setRedeemMethod('crypto')">Crypto</button>
-                <button type="button" class="pf-redeem-method" data-method="powerwin" onclick="setRedeemMethod('powerwin')">Power.win</button>
+                <button type="button" class="pf-redeem-method active" data-method="powerwin" onclick="setRedeemMethod('powerwin')">Power.win</button>
+                <button type="button" class="pf-redeem-method" data-method="crypto" onclick="setRedeemMethod('crypto')">Crypto</button>
               </div>
 
-              <div id="pfRedeemCryptoFields">
+              <div id="pfRedeemCryptoFields" style="display:none">
                 <div class="rdx-two">
                   <label class="rdx-f"><span>Coin</span>
                     <select id="pfCryptoCurrency" class="pf-select" onchange="updateNetworkOptions()">
@@ -5730,7 +5730,7 @@ body.on-admin .ambient-glow-blob{opacity:.35}
                   <input id="pfWallet" type="text" class="pf-select rdx-wallet" placeholder="Paste your wallet address" autocomplete="off" spellcheck="false"></label>
               </div>
 
-              <div id="pfRedeemPlatformFields" style="display:none">
+              <div id="pfRedeemPlatformFields">
                 <span id="pfPlatformUsernameLabel" hidden></span>
                 <div id="pfVerifiedAcct" class="pf-verified-acct"></div>
                 <span id="pfPlatformTiming" hidden></span>
@@ -5746,7 +5746,7 @@ body.on-admin .ambient-glow-blob{opacity:.35}
 
               <div id="pfRedeemEligibilityNote" class="rdx-note"></div>
               <button class="admin-btn-primary rdx-go" onclick="submitRedeem()" id="pfRedeemBtn">Redeem</button>
-              <div class="rdx-fine">Min $20 &middot; paid in 1&ndash;7 days &middot; <button type="button" class="rdx-terms-btn" onclick="this.closest('.rdx').classList.toggle('terms-open')">Terms</button></div>
+              <div class="rdx-fine"><span id="pfRedeemMinTxt">Min $20</span> &middot; paid in 1&ndash;7 days &middot; <button type="button" class="rdx-terms-btn" onclick="this.closest('.rdx').classList.toggle('terms-open')">Terms</button></div>
               <p class="rdx-terms">Redemptions are reviewed before payout. Your Power.win deposits in the last 7 days must be more than the amount you redeem, shown in the screenshot you attach. Jammmy can decline, delay or reverse any redemption if wager manipulation, multi-accounting or other abuse is found.</p>
             </div>
             <div id="pfRedeemResult" style="display:none"></div>
@@ -8670,10 +8670,10 @@ function updateNetworkOptions(){
   networkSel.innerHTML = networks.map(function(n){ return '<option value="'+n+'">'+n+'</option>'; }).join('');
 }
 
-var _pfRedeemMethod = 'crypto';
+var _pfRedeemMethod = 'powerwin';
 var _pfVerified = {};
 var PLATFORM_LABELS = {powerwin:'Power.win'};
-var _redeemMinCrypto = 2000, _redeemMinPlatform = 2000, _redeemBalance = 0;
+var _redeemMinCrypto = 10000, _redeemMinPlatform = 2000, _redeemBalance = 0;
 var _depositProof = null;
 /* Deposit proof: resized and re-encoded as JPEG in the browser (same as claim proofs), so the
    upload stays small. Required for every redemption. */
@@ -8705,6 +8705,7 @@ function pickDepositProof(input){
 }
 function updateRedeemEligibilityNote(){
   var min = _pfRedeemMethod === 'crypto' ? _redeemMinCrypto : _redeemMinPlatform;
+  var minTxt = document.getElementById('pfRedeemMinTxt'); if(minTxt) minTxt.textContent = 'Min $' + Math.round(min / 100).toLocaleString() + (_pfRedeemMethod === 'crypto' ? ' for crypto' : '');
   var btn = document.getElementById('pfRedeemBtn');
   var noteEl = document.getElementById('pfRedeemEligibilityNote');
   if(!btn) return;
