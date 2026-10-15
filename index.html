@@ -4634,6 +4634,79 @@ body.on-admin .ambient-glow-blob{opacity:.35}
   .adm-top{align-items:flex-start}.adm-date{display:none}
 }
 </style>
+<style>
+/* Styled pop-ups that replace the browser's grey alert/confirm boxes */
+#jmDlg{position:fixed;inset:0;z-index:200000;display:grid;place-items:center;padding:16px;background:rgba(5,3,10,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:jmDlgFade .18s ease both}
+#jmDlg.out{animation:jmDlgFade .15s ease reverse both}
+@keyframes jmDlgFade{from{opacity:0}to{opacity:1}}
+.jmd-box{width:min(420px,100%);box-sizing:border-box;border-radius:20px;padding:22px 22px 18px;background:linear-gradient(180deg,#1b1328,#120c1c);border:1px solid rgba(255,255,255,.1);box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(168,85,247,.12);color:#fff;font-family:'Poppins',sans-serif;animation:jmDlgPop .26s cubic-bezier(.16,1,.3,1) both}
+@keyframes jmDlgPop{from{transform:translateY(10px) scale(.96);opacity:0}to{transform:none;opacity:1}}
+.jmd-ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:1.35rem;margin-bottom:12px;background:rgba(168,85,247,.16);border:1px solid rgba(168,85,247,.35)}
+.jmd-box.danger .jmd-ic{background:rgba(239,68,68,.14);border-color:rgba(239,68,68,.4)}
+.jmd-box.warn .jmd-ic{background:rgba(250,204,21,.12);border-color:rgba(250,204,21,.35)}
+.jmd-t{font-weight:700;font-size:1.08rem;margin:0 0 6px}
+.jmd-m{font-size:.92rem;line-height:1.55;color:rgba(255,255,255,.72);white-space:pre-line;word-break:break-word;margin:0}
+.jmd-b{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+.jmd-b button{border-radius:12px;padding:10px 18px;font:600 .9rem 'Poppins',sans-serif;cursor:pointer;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#fff;transition:filter .15s,background .15s}
+.jmd-b button:not(.jmd-ok):hover{background:rgba(255,255,255,.12)}
+.jmd-b .jmd-ok{border-color:transparent;background:linear-gradient(135deg,#a855f7,#6366f1)}
+.jmd-box.danger .jmd-ok{background:linear-gradient(135deg,#ef4444,#b91c1c)}
+.jmd-b .jmd-ok:hover{filter:brightness(1.12)}
+.jmd-b button:focus-visible{outline:2px solid #c4b5fd;outline-offset:2px}
+@media (max-width:480px){.jmd-b button{flex:1}}
+</style>
+<script>
+(function(){
+  var queue = [], busy = false;
+  function esc(v){ return String(v == null ? '' : v).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function next(){
+    if(busy || !queue.length || !document.body) return;
+    busy = true;
+    var job = queue.shift(), msg = String(job.msg == null ? '' : job.msg), isConfirm = job.type === 'confirm';
+    var danger = isConfirm && /delete|revoke|remove|unblock|cannot be undone|can't be undone/i.test(msg);
+    var bad = !isConfirm && /error|fail|could ?n.t|not allowed|invalid|denied|too |must |please /i.test(msg);
+    var kind = danger ? 'danger' : (bad ? 'warn' : '');
+    var icon = danger ? '🗑️' : (isConfirm ? '❔' : (bad ? '⚠️' : '✨'));
+    var title = job.title || (isConfirm ? (danger ? 'Are you sure?' : 'Please confirm') : (bad ? 'Something needs attention' : 'Heads up'));
+    var okText = job.ok || (isConfirm ? (/^\s*delete/i.test(msg) ? 'Delete' : (danger ? 'Yes, do it' : 'Confirm')) : 'OK');
+    var prevFocus = document.activeElement;
+    var d = document.createElement('div');
+    d.id = 'jmDlg'; d.setAttribute('role', isConfirm ? 'alertdialog' : 'dialog'); d.setAttribute('aria-modal', 'true');
+    d.innerHTML = '<div class="jmd-box ' + kind + '"><div class="jmd-ic" aria-hidden="true">' + icon + '</div>'
+      + '<p class="jmd-t">' + esc(title) + '</p><p class="jmd-m">' + esc(msg) + '</p>'
+      + '<div class="jmd-b">' + (isConfirm ? '<button type="button" class="jmd-no">Cancel</button>' : '') + '<button type="button" class="jmd-ok">' + esc(okText) + '</button></div></div>';
+    document.body.appendChild(d);
+    var ok = d.querySelector('.jmd-ok'), no = d.querySelector('.jmd-no');
+    function done(val){
+      document.removeEventListener('keydown', key, true);
+      d.classList.add('out');
+      setTimeout(function(){ if(d.parentNode) d.parentNode.removeChild(d); busy = false; try{ if(prevFocus && prevFocus.focus) prevFocus.focus(); }catch(e){} next(); }, 140);
+      job.resolve(val);
+    }
+    function key(e){
+      if(e.key === 'Escape'){ e.preventDefault(); e.stopPropagation(); done(false); }
+      else if(e.key === 'Enter' && document.activeElement !== no){ e.preventDefault(); e.stopPropagation(); done(true); }
+      else if(e.key === 'Tab'){ e.preventDefault(); var t = document.activeElement === ok && no ? no : ok; t.focus(); }
+    }
+    ok.onclick = function(){ done(true); };
+    if(no) no.onclick = function(){ done(false); };
+    d.addEventListener('click', function(e){ if(e.target === d) done(isConfirm ? false : true); });
+    document.addEventListener('keydown', key, true);
+    setTimeout(function(){ (danger && no ? no : ok).focus(); }, 30);
+  }
+  function open(type, msg, opts){
+    return new Promise(function(resolve){
+      opts = opts || {};
+      queue.push({type:type, msg:msg, title:opts.title, ok:opts.ok, resolve:resolve});
+      if(document.body) next(); else document.addEventListener('DOMContentLoaded', next);
+    });
+  }
+  window.jmConfirm = function(msg, opts){ return open('confirm', msg, opts); };
+  window.jmAlert = function(msg, opts){ return open('alert', msg, opts); };
+  /* every existing alert(...) in the site now shows the styled box instead of the browser one */
+  window.alert = function(msg){ open('alert', msg); };
+})();
+</script>
 </head>
 <body>
 <script>
@@ -7160,7 +7233,7 @@ function renderVaultPlayers(){
 async function claimCasinoAccount(casino, username){
   var token = localStorage.getItem('jammy_session_token');
   if(!token){ startDiscordLogin(); return; }
-  if(!confirm('Claim "'+username+'" on '+(CASINO_DISPLAY_NAMES[casino]||casino)+' as your account? An admin will verify this — once approved, your wagering counts toward the shared vault, and coins are distributed automatically when it fills.')) return;
+  if(!await jmConfirm('Claim "'+username+'" on '+(CASINO_DISPLAY_NAMES[casino]||casino)+' as your account? An admin will verify this — once approved, your wagering counts toward the shared vault, and coins are distributed automatically when it fills.')) return;
   try{
     var res = await fetch(AUTH_API + '/api/claim-casino-account', {
       method: 'POST',
@@ -7912,7 +7985,7 @@ async function loadAdminPushStats(){
 async function adminSendLivePush(btn){
   var out = document.getElementById('adminPushResult');
   var msgEl = document.getElementById('adminPushLiveMsg');
-  if(!confirm('Send "Jammmy is LIVE on Kick!" to everyone who turned on live alerts?')) return;
+  if(!await jmConfirm('Send "Jammmy is LIVE on Kick!" to everyone who turned on live alerts?')) return;
   var token = localStorage.getItem('jammy_session_token');
   btn.disabled = true;
   try{
@@ -8697,7 +8770,7 @@ async function dismissDuplicate(btn){
   }catch(e){ alert('Network error — try again.'); btn.disabled = false; btn.textContent = '✓ Seen · Dismiss'; }
 }
 async function restoreDuplicates(){
-  if(!confirm('Show all dismissed duplicate-account flags again?')) return;
+  if(!await jmConfirm('Show all dismissed duplicate-account flags again?')) return;
   try{
     await fetch(AUTH_API + '/api/admin/dismiss-duplicate', { method:'POST',
       headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jammy_session_token'), 'Content-Type': 'application/json' },
@@ -9208,7 +9281,7 @@ async function loadAuditLog(reset){
 
 async function adminToggleAdmin(discordId, username, makeAdmin){
   var verb = makeAdmin ? 'make' : 'remove';
-  if(!confirm((makeAdmin?'Make ':'Remove ')+username+(makeAdmin?' an admin?':' as an admin?')+' They will '+(makeAdmin?'gain':'lose')+' access to this dashboard.')) return;
+  if(!await jmConfirm((makeAdmin?'Make ':'Remove ')+username+(makeAdmin?' an admin?':' as an admin?')+' They will '+(makeAdmin?'gain':'lose')+' access to this dashboard.')) return;
   var token = localStorage.getItem('jammy_session_token');
   try{
     var res = await fetch(AUTH_API + '/api/admin/set-admin', {
@@ -9222,7 +9295,7 @@ async function adminToggleAdmin(discordId, username, makeAdmin){
 }
 
 async function adminToggleMod(discordId, username, makeMod){
-  if(!confirm((makeMod ? 'Make ' + username + ' a mod? They will be able to approve/reject claims and view users.' : 'Remove ' + username + ' as a mod?'))) return;
+  if(!await jmConfirm((makeMod ? 'Make ' + username + ' a mod? They will be able to approve/reject claims and view users.' : 'Remove ' + username + ' as a mod?'))) return;
   var token = localStorage.getItem('jammy_session_token');
   try{
     var res = await fetch(AUTH_API + '/api/admin/set-mod', {
@@ -9423,7 +9496,7 @@ async function submitBlk(){
   catch(e){ err.textContent = e.message; btn.disabled = false; btn.textContent = 'Block'; }
 }
 async function secUnblock(id){
-  if(!confirm('Unblock this player? They can claim and redeem again.')) return;
+  if(!await jmConfirm('Unblock this player? They can claim and redeem again.')) return;
   try{ await secSetBlocked(id, false); secRefreshViews(); }catch(e){ alert(e.message); }
 }
 
@@ -9459,7 +9532,7 @@ function rdCopy(btn, v){
 }
 
 async function adminMarkPaid(txId){
-  if(!confirm('Mark ' + txId + ' as paid? Only do this after you\'ve actually sent the payment.')) return;
+  if(!await jmConfirm('Mark ' + txId + ' as paid? Only do this after you\'ve actually sent the payment.')) return;
   var token = localStorage.getItem('jammy_session_token');
   try{
     var res = await fetch(AUTH_API + '/api/admin/mark-paid', {
@@ -9487,7 +9560,7 @@ function adminRejectRedemption(txId){
 }
 
 async function adminDeleteRedemption(txId){
-  if(!confirm('Delete ' + txId + ' permanently? If it\'s still pending, the coins are refunded to the user first — this cannot be undone.')) return;
+  if(!await jmConfirm('Delete ' + txId + ' permanently? If it\'s still pending, the coins are refunded to the user first — this cannot be undone.')) return;
   var token = localStorage.getItem('jammy_session_token');
   try{
     var res = await fetch(AUTH_API + '/api/admin/delete-redemption', {
@@ -9791,7 +9864,7 @@ function getSelectedClaims(){
 async function adminBulkApproveSelected(){
   var claims = getSelectedClaims();
   if(!claims.length){ alert('Select at least one claim first.'); return; }
-  if(!confirm('Approve '+claims.length+' selected claim(s)? This credits coins immediately for each one.')) return;
+  if(!await jmConfirm('Approve '+claims.length+' selected claim(s)? This credits coins immediately for each one.')) return;
   var token = localStorage.getItem('jammy_session_token');
   try{
     var res = await fetch(AUTH_API + '/api/admin/bulk-approve-claims', {
@@ -9819,7 +9892,7 @@ function adminBulkRejectSelected(){
 }
 
 async function adminRevokeClaim(userId, casino){
-  if(!confirm('Revoke this claim? This will claw back the coins that were awarded (as much as is still in their balance) and restore that amount to the vault.')) return;
+  if(!await jmConfirm('Revoke this claim? This will claw back the coins that were awarded (as much as is still in their balance) and restore that amount to the vault.')) return;
   var token = localStorage.getItem('jammy_session_token');
   try{
     var res = await fetch(AUTH_API + '/api/admin/revoke-claim', {
@@ -9858,7 +9931,7 @@ async function adminSyncWagersNow(){
 }
 
 async function adminApproveClaim(userId, casino){
-  if(!confirm('Approve this claim? Coins will be credited immediately and deducted from the vault.')) return;
+  if(!await jmConfirm('Approve this claim? Coins will be credited immediately and deducted from the vault.')) return;
   var token = localStorage.getItem('jammy_session_token');
   try{
     var res = await fetch(AUTH_API + '/api/admin/approve-claim', {
@@ -10179,15 +10252,15 @@ function vsClose(){
   _vsCur = null; _vsState = null;
   vsSyncPickUi();
 }
-function vsDelete(id){
+async function vsDelete(id){
   var i = vsFind(id); if(i < 0) return;
   var v = _vsList[i];
-  if(!confirm('Delete the showdown "' + v.a.slot + ' vs ' + v.b.slot + '"?')) return;
+  if(!await jmConfirm('Delete the showdown "' + v.a.slot + ' vs ' + v.b.slot + '"?')) return;
   _vsList.splice(i, 1); vsSave();
   if(_vsCur === id) vsClose(); else vsSyncPickUi();
 }
-function vsDeleteAll(){
-  if(!_vsList.length || !confirm('Delete all ' + _vsList.length + ' showdowns?')) return;
+async function vsDeleteAll(){
+  if(!_vsList.length || !await jmConfirm('Delete all ' + _vsList.length + ' showdowns?')) return;
   _vsList = []; vsSave();
   if(_vsCur) vsClose(); else vsSyncPickUi();
 }
@@ -10294,7 +10367,7 @@ async function adminUpdateSlotRequest(id){
 }
 
 async function adminDeleteSlotRequest(id){
-  if(!confirm('Delete this slot request? This can\'t be undone.')) return;
+  if(!await jmConfirm('Delete this slot request? This can\'t be undone.')) return;
   var token = localStorage.getItem('jammy_session_token');
   try{
     var res = await fetch(AUTH_API + '/api/admin/delete-slot-request', {
@@ -10308,8 +10381,8 @@ async function adminDeleteSlotRequest(id){
 }
 
 async function adminDeleteAllSlotRequests(){
-  if(!confirm('Delete ALL slot requests? This permanently removes every request, including their history and outcomes. This cannot be undone.')) return;
-  if(!confirm('Really sure? This deletes every slot request for every user, right now.')) return;
+  if(!await jmConfirm('Delete ALL slot requests? This permanently removes every request, including their history and outcomes. This cannot be undone.')) return;
+  if(!await jmConfirm('Really sure? This deletes every slot request for every user, right now.')) return;
   var token = localStorage.getItem('jammy_session_token');
   try{
     var res = await fetch(AUTH_API + '/api/admin/delete-all-slot-requests', {
@@ -10392,7 +10465,7 @@ async function adminUpdateBattleRequest(id){
 }
 
 async function adminDeleteBattleRequest(id){
-  if(!confirm('Delete this battle request? This can\'t be undone.')) return;
+  if(!await jmConfirm('Delete this battle request? This can\'t be undone.')) return;
   var token = localStorage.getItem('jammy_session_token');
   try{
     var res = await fetch(AUTH_API + '/api/admin/delete-battle-request', {
@@ -10406,8 +10479,8 @@ async function adminDeleteBattleRequest(id){
 }
 
 async function adminDeleteAllBattleRequests(){
-  if(!confirm('Delete ALL battle requests? This permanently removes every request, including their history and outcomes. This cannot be undone.')) return;
-  if(!confirm('Really sure? This deletes every battle request for every user, right now.')) return;
+  if(!await jmConfirm('Delete ALL battle requests? This permanently removes every request, including their history and outcomes. This cannot be undone.')) return;
+  if(!await jmConfirm('Really sure? This deletes every battle request for every user, right now.')) return;
   var token = localStorage.getItem('jammy_session_token');
   try{
     var res = await fetch(AUTH_API + '/api/admin/delete-all-battle-requests', {

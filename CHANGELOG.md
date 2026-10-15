@@ -8,6 +8,15 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-16 (c): Styled pop-ups instead of the browser's grey boxes
+
+- Every "Are you sure?" question on the site (deleting requests, redemptions, showdowns, approving/revoking claims, making admins/mods, unblocking, live alert, claiming a casino account) now opens a dark Jammmy-styled pop-up instead of the browser's "jammmyrewards.com says" box.
+- Delete/revoke questions get a red button; Cancel is pre-selected on those so a stray Enter doesn't delete anything. Esc or clicking outside = Cancel.
+- All error/info messages (e.g. "Network error — try again.") use the same styled pop-up.
+- No worker change.
+
+---
+
 ## 2026-10-16 (b): Slot Versus fixes: multiple showdowns + delete
 
 - Fixed: the 👑 crown and WINNER ribbon were hidden behind the slot picture. They now sit on top.
