@@ -8,6 +8,22 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-16 (d): Homepage live card + Slot Library link removed
+
+- Slot Library: removed the "full reviews by Slot-Streamers ↗" link under the title.
+- The card next to the jar on the homepage is now a **live card**. Every ~5.5 seconds it moves to the next scene (it pauses while you hover it), with a small progress bar at the bottom:
+  1. Race ends in (countdown + $1,000 prize pool), as before
+  2. Top 3 live on the Power.win leaderboard (masked names + wagered)
+  3. Given away: $10,000+ to the community
+  4. Just joined: the newest members who logged in with Discord (masked name + how long ago)
+  5. Coins rewarded: recent vault payouts, slot request rewards and daily claims (masked name + amount)
+  6. Announcement: "Coming soon · Exclusive JammmySlot · Launching soon on the website"
+- Scenes with no data are skipped. Blocked players never show up. Names are masked by the worker, so full Discord names never leave the server.
+- Admin → Overview → **🏠 Homepage live card**: edit the "Given away" number and the announcement (label, title, text, on/off). Changes show on the homepage within about a minute.
+- **Worker change:** new public `/api/live-feed` and admin `/api/admin/live-card`. Saving the card is recorded in the Activity log. A new `site_kv` table is created automatically.
+
+---
+
 ## 2026-10-16 (c): Styled pop-ups instead of the browser's grey boxes
 
 - Every "Are you sure?" question on the site (deleting requests, redemptions, showdowns, approving/revoking claims, making admins/mods, unblocking, live alert, claiming a casino account) now opens a dark Jammmy-styled pop-up instead of the browser's "jammmyrewards.com says" box.

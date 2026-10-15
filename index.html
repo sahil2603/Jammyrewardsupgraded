@@ -2217,6 +2217,49 @@ html.lenis{scroll-behavior:auto!important}
   .hx-hero .hx-cta .hx-btn:not(.hx-btn-p){flex:1 1 40%;padding:0 12px;font-size:.86rem}
 }
 .hx-fc-cd{white-space:nowrap}
+.lc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lc-grid label{display:flex;flex-direction:column;gap:6px;font-size:.8rem;color:var(--faint);min-width:0}
+.lc-grid input[type=text]{padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font:500 .9rem 'Poppins';min-width:0}
+.lc-grid .lc-sw{flex-direction:row;align-items:center;gap:10px;font-size:.9rem;color:#fff;align-self:end;padding-bottom:10px;cursor:pointer}
+.lc-grid .lc-sw input{width:18px;height:18px;accent-color:#a855f7}
+.lc-grid .lc-full{grid-column:1/-1}
+@media (max-width:600px){.lc-grid{grid-template-columns:1fr}.lc-grid .lc-sw{padding-bottom:0}}
+/* ===== Homepage live card: rotates through race / top 3 / given away / new members / rewards / announcement ===== */
+.hx-fc.hx-live{display:flex!important;flex-direction:column;align-items:stretch;text-align:left;gap:0!important}
+.hx-live .hxl-stage{display:grid}
+@media (max-width:480px){.hx-live .hx-fc-top{letter-spacing:.03em;gap:6px}}
+.hx-live .hxl-s{grid-area:1/1;min-width:0;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .22s ease,transform .3s ease}
+.hx-live .hxl-s.on{opacity:1;transform:none;pointer-events:auto;transition:opacity .4s ease .22s,transform .55s cubic-bezier(.16,1,.3,1) .22s}
+.hx-live .hxl-s.off{transform:translateY(-8px)}
+.hx-live .hx-fc-top{letter-spacing:.05em;gap:7px}
+.hx-live .hx-fc-top span:last-child{overflow:hidden;text-overflow:ellipsis}
+.hxl-ic{font-size:.85rem;line-height:1;flex:none}
+.hxl-coin{width:18px;height:18px;flex:none}
+.hxl-pulse{width:8px;height:8px;border-radius:50%;background:#4ade80;flex:none;box-shadow:0 0 0 0 rgba(74,222,128,.6);animation:hxlPulse 1.6s ease-out infinite}
+@keyframes hxlPulse{to{box-shadow:0 0 0 8px rgba(74,222,128,0)}}
+.hxl-big{font-family:'Lilita One',sans-serif;font-size:1.7rem;line-height:1.05;color:#fff;white-space:nowrap}
+.hxl-gold{color:#fbbf24}
+.hxl-name{font:700 1.02rem 'Poppins',system-ui;color:#fff;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hxl-an{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;background:linear-gradient(90deg,#fde68a,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hx-live .hx-fc-sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hxl-top{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px}
+.hxl-top li{display:flex;align-items:center;gap:6px;font:600 .78rem 'Poppins',system-ui;color:#fff;min-width:0}
+.hxl-top li .m{flex:none;width:16px;text-align:center}
+.hxl-top li .n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hxl-top li .w{flex:none;color:rgba(255,255,255,.55);font-size:.7rem;font-weight:500}
+.hxl-dots{display:flex;gap:4px;margin-top:9px}
+.hxl-dots i{height:3px;flex:1;border-radius:3px;background:rgba(255,255,255,.12);overflow:hidden;position:relative}
+.hxl-dots i.done{background:rgba(255,255,255,.4)}
+.hxl-dots i.cur::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#a855f7,#f472b6);transform-origin:left;transform:scaleX(0);animation:hxlBar var(--hxl-t,5.5s) linear forwards}
+.hx-live.paused .hxl-dots i.cur::after{animation-play-state:paused}
+@keyframes hxlBar{to{transform:scaleX(1)}}
+@media (max-width:480px){
+  .hxl-big{font-size:1.25rem}
+  .hxl-name{font-size:.8rem}
+  .hxl-top li{font-size:.66rem;gap:4px}.hxl-top li .w{display:none}.hxl-top li .m{width:12px}
+  .hxl-dots{margin-top:6px;gap:3px}
+}
+@media (prefers-reduced-motion:reduce){.hx-live .hxl-s{transition:opacity .2s}.hx-live .hxl-s,.hx-live .hxl-s.off{transform:none}.hxl-pulse{animation:none}}
 @media (prefers-reduced-motion:reduce){.hx-l,.hx-wm-glow{opacity:1!important;transform:none!important;animation:none!important}}
 /* ---------- MARQUEE ---------- */
 .hx-marquee{position:relative;overflow:hidden;padding:18px 0;margin:0 0 70px;background:linear-gradient(90deg,rgba(147,51,234,.16),rgba(236,72,153,.12),rgba(34,211,238,.12));border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);transform:rotate(-1.6deg) scale(1.04);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
@@ -4848,10 +4891,39 @@ body.on-admin .ambient-glow-blob{opacity:.35}
               <div class="hx-jar-shadow"></div>
             </div>
           </div>
-          <div class="hx-fc hx-fc-race" data-hx-mouse="2.2" onclick="goToLeaderboard('powerwin')">
-            <div class="hx-fc-top"><img src="powerwin.webp" alt="" class="hx-fc-pw"><span>Leaderboard ends in</span></div>
-            <div class="hx-fc-cd" id="hxRaceCd"><b>--</b>d <b>--</b>h <b>--</b>m</div>
-            <div class="hx-fc-sub"><b>$1,000</b> prize pool</div>
+          <div class="hx-fc hx-fc-race hx-live" id="hxLive" data-hx-mouse="2.2" onclick="hxLiveClick()" aria-live="polite">
+            <div class="hxl-stage">
+              <div class="hxl-s on" data-s="race">
+                <div class="hx-fc-top"><img src="powerwin.webp" alt="" class="hx-fc-pw"><span>Race ends in</span></div>
+                <div class="hx-fc-cd" id="hxRaceCd"><b>--</b>d <b>--</b>h <b>--</b>m</div>
+                <div class="hx-fc-sub"><b>$1,000</b> prize pool</div>
+              </div>
+              <div class="hxl-s" data-s="top3" aria-hidden="true">
+                <div class="hx-fc-top"><span class="hxl-ic">🏆</span><span>Top 3 live</span></div>
+                <ol class="hxl-top" id="hxlTop"></ol>
+              </div>
+              <div class="hxl-s" data-s="given" aria-hidden="true">
+                <div class="hx-fc-top"><span class="hxl-ic">💜</span><span>Given away</span></div>
+                <div class="hxl-big" id="hxlGiven">$10,000+</div>
+                <div class="hx-fc-sub">to the community</div>
+              </div>
+              <div class="hxl-s" data-s="signup" aria-hidden="true">
+                <div class="hx-fc-top"><span class="hxl-pulse"></span><span>Just joined</span></div>
+                <div class="hxl-name" id="hxlSignName">—</div>
+                <div class="hx-fc-sub" id="hxlSignSub">signed in with Discord</div>
+              </div>
+              <div class="hxl-s" data-s="reward" aria-hidden="true">
+                <div class="hx-fc-top"><img src="jammmy-coin.webp" alt="" class="hxl-coin"><span>Coins rewarded</span></div>
+                <div class="hxl-big hxl-gold" id="hxlRewAmt">+0</div>
+                <div class="hx-fc-sub" id="hxlRewSub">—</div>
+              </div>
+              <div class="hxl-s" data-s="announce" aria-hidden="true">
+                <div class="hx-fc-top"><span class="hxl-ic">📣</span><span id="hxlAnTag">Coming soon</span></div>
+                <div class="hxl-name hxl-an" id="hxlAnTitle">Exclusive JammmySlot</div>
+                <div class="hx-fc-sub" id="hxlAnText">Launching soon on the website</div>
+              </div>
+            </div>
+            <div class="hxl-dots" id="hxlDots" aria-hidden="true"></div>
           </div>
           <div class="hx-fc hx-fc-kick" data-hx-mouse="1.6" onclick="window.open('https://kick.com/jammmyslots','_blank')">
             <span class="hx-kick-dot" id="hxKickDot"></span>
@@ -5339,7 +5411,7 @@ body.on-admin .ambient-glow-blob{opacity:.35}
       <div class="sl-head">
         <div>
           <h3 class="sl-title">Slot <span class="g">Library</span></h3>
-          <p class="sl-sub"><b id="slCount">—</b> slots · full reviews by <a href="https://www.slot-streamers.com/game-reviews" target="_blank" rel="noopener">Slot-Streamers ↗</a></p>
+          <p class="sl-sub"><b id="slCount">—</b> slots</p>
         </div>
         <div class="sl-controls">
           <input id="slSearch" type="search" placeholder="Search slot or provider…" aria-label="Search slots">
@@ -5881,6 +5953,21 @@ body.on-admin .ambient-glow-blob{opacity:.35}
               <button class="admin-btn-primary" onclick="adminSendLivePush(this)" style="width:auto;flex:none;padding:11px 18px">🔴 Send "Jammmy is live"</button>
             </div>
             <div id="adminPushResult" style="margin-top:10px;font-size:.85rem"></div>
+          </div>
+          <div data-admin-only style="background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:28px">
+            <h3 style="margin:0 0 6px">🏠 Homepage live card</h3>
+            <p style="margin:0 0 14px;color:var(--muted);font-size:.86rem">The card next to the jar on the homepage rotates: leaderboard timer → top 3 → given away → new members → coin rewards → your announcement. New members and rewards are automatic (names are masked).</p>
+            <div class="lc-grid">
+              <label>Given away (big number)<input type="text" id="lcGiven" maxlength="16" placeholder="$10,000+"></label>
+              <label class="lc-sw"><input type="checkbox" id="lcOn"> Show announcement</label>
+              <label>Announcement label<input type="text" id="lcTag" maxlength="24" placeholder="Coming soon"></label>
+              <label>Announcement title<input type="text" id="lcTitle" maxlength="48" placeholder="Exclusive JammmySlot"></label>
+              <label class="lc-full">Announcement text<input type="text" id="lcText" maxlength="90" placeholder="Launching soon on the website"></label>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;margin-top:14px;flex-wrap:wrap">
+              <button class="admin-btn-primary" id="lcSaveBtn" disabled title="Loading current settings…" onclick="saveLiveCard()" style="width:auto;padding:11px 20px">Save live card</button>
+              <span id="lcResult" style="font-size:.85rem"></span>
+            </div>
           </div>
         </div>
         <div id="adminVaultTab" class="admin-tab-panel" style="display:none">
@@ -8706,7 +8793,37 @@ function switchAdminTab(tabId){
 /* Backs both the Overview tab and the pending-count badges on every other tab button, so
    admin can see what needs attention without clicking into each one first. Called once on
    dashboard load (for the badges) and again whenever the Overview tab itself is opened. */
+/* Homepage live card settings (admin) */
+async function loadLiveCardSettings(){
+  var token = localStorage.getItem('jammy_session_token'); if(!token || !document.getElementById('lcGiven')) return;
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/live-card', { headers: { 'Authorization': 'Bearer ' + token } });
+    if(!res.ok) return;
+    var s = (await res.json()).settings;
+    if(!s) return;
+    document.getElementById('lcSaveBtn').disabled = false;
+    document.getElementById('lcGiven').value = s.given_text || '';
+    document.getElementById('lcOn').checked = !!s.announce_on;
+    document.getElementById('lcTag').value = s.announce_tag || '';
+    document.getElementById('lcTitle').value = s.announce_title || '';
+    document.getElementById('lcText').value = s.announce_text || '';
+  }catch(e){}
+}
+async function saveLiveCard(){
+  var token = localStorage.getItem('jammy_session_token');
+  var btn = document.getElementById('lcSaveBtn'), out = document.getElementById('lcResult');
+  var body = { given_text: document.getElementById('lcGiven').value, announce_on: document.getElementById('lcOn').checked, announce_tag: document.getElementById('lcTag').value, announce_title: document.getElementById('lcTitle').value, announce_text: document.getElementById('lcText').value };
+  btn.disabled = true; out.textContent = 'Saving…'; out.style.color = 'var(--muted)';
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/live-card', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    var d = await res.json();
+    if(res.ok){ out.textContent = '✓ Saved. The homepage shows it within a minute.'; out.style.color = '#4ade80'; }
+    else { out.textContent = d.error || 'Could not save.'; out.style.color = '#f87171'; }
+  }catch(e){ out.textContent = 'Network error — try again.'; out.style.color = '#f87171'; }
+  btn.disabled = false;
+}
 async function loadAdminOverview(){
+  loadLiveCardSettings();
   var token = localStorage.getItem('jammy_session_token');
   if(!token) return;
   try{
@@ -11754,6 +11871,100 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     el.innerHTML = '<b>' + d + '</b>d <b>' + String(h).padStart(2, '0') + '</b>h <b>' + String(m).padStart(2, '0') + '</b>m';
   }
   hxKickRace(); setInterval(hxKickRace, 20000);
+  /* ===== live card rotation ===== */
+  (function(){
+    var card = document.getElementById('hxLive'); if(!card) return;
+    var DUR = 5500, feed = {signups:[], rewards:[], announce:null, given:'$10,000+'}, top3 = [];
+    var order = ['race','top3','given','signup','reward','announce'], idx = 0, timer = null, paused = false, si = 0, ri = 0;
+    function api(){ return (typeof AUTH_API !== 'undefined' ? AUTH_API : 'https://jammy-lb-proxy.sahil-sah2603.workers.dev'); }
+    function esc(v){ return String(v == null ? '' : v).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+    function ago(t){
+      if(!t) return '';
+      var s = String(t); if(!/[zZ]|[+-]\d\d:?\d\d$/.test(s)) s = s.replace(' ', 'T') + 'Z';
+      var d = (Date.now() - new Date(s).getTime()) / 1000; if(!isFinite(d)) return '';
+      if(d < 60) return 'just now'; if(d < 3600) return Math.floor(d/60) + 'm ago'; if(d < 86400) return Math.floor(d/3600) + 'h ago'; return Math.floor(d/86400) + 'd ago';
+    }
+    function has(k){
+      if(k === 'top3') return top3.length > 0;
+      if(k === 'signup') return feed.signups.length > 0;
+      if(k === 'reward') return feed.rewards.length > 0;
+      if(k === 'announce') return !!(feed.announce && feed.announce.title);
+      if(k === 'given') return !!feed.given;
+      return true;
+    }
+    function avail(){ return order.filter(has); }
+    function fill(k){
+      if(k === 'signup'){ var s = feed.signups[si++ % feed.signups.length]; document.getElementById('hxlSignName').textContent = s.name + ' 🎉'; document.getElementById('hxlSignSub').textContent = 'joined with Discord · ' + ago(s.at); }
+      if(k === 'reward'){ var r = feed.rewards[ri++ % feed.rewards.length]; document.getElementById('hxlRewAmt').textContent = '+' + Number(r.amount).toLocaleString(undefined, {maximumFractionDigits:2}); document.getElementById('hxlRewSub').textContent = r.name + ' · ' + r.kind; }
+    }
+    function dots(list, cur){
+      var el = document.getElementById('hxlDots'); if(!el) return;
+      el.style.setProperty('--hxl-t', DUR + 'ms');
+      el.innerHTML = list.map(function(k, i){ return '<i class="' + (i < cur ? 'done' : (i === cur ? 'cur' : '')) + '"></i>'; }).join('');
+    }
+    function show(k){
+      var list = avail(), i = list.indexOf(k); if(i < 0){ k = list[0]; i = 0; }
+      fill(k);
+      card.setAttribute('data-scene', k);
+      card.querySelectorAll('.hxl-s').forEach(function(el){
+        var on = el.getAttribute('data-s') === k;
+        if(el.classList.contains('on') && !on){ el.classList.add('off'); (function(x){ setTimeout(function(){ x.classList.remove('off'); }, 600); })(el); }
+        el.classList.toggle('on', on); el.setAttribute('aria-hidden', on ? 'false' : 'true');
+      });
+      dots(list, i);
+    }
+    function step(){
+      if(paused || document.hidden) return;
+      var list = avail(), cur = list.indexOf(card.getAttribute('data-scene') || 'race');
+      show(list[(cur + 1) % list.length]);
+    }
+    function start(){ clearInterval(timer); timer = setInterval(step, DUR); }
+    card.addEventListener('mouseenter', function(){ paused = true; card.classList.add('paused'); });
+    card.addEventListener('mouseleave', function(){ paused = false; card.classList.remove('paused'); start(); });
+    window.hxLiveClick = function(){
+      var k = card.getAttribute('data-scene') || 'race';
+      if(k === 'race' || k === 'top3') return goToLeaderboard('powerwin');
+      if(k === 'given' || k === 'reward' || k === 'signup') return nav('loyalty');
+    };
+    function renderTop(){
+      var el = document.getElementById('hxlTop'); if(!el) return;
+      var m = ['🥇','🥈','🥉'];
+      el.innerHTML = top3.map(function(w, i){
+        var name = typeof maskUsername === 'function' ? maskUsername(w.name) : w.name;
+        return '<li><span class="m">' + m[i] + '</span><span class="n">' + esc(name) + '</span><span class="w">$' + Math.round(Number(w.wager) || 0).toLocaleString() + '</span></li>';
+      }).join('');
+    }
+    function loadFeed(){
+      fetch(api() + '/api/live-feed').then(function(r){ return r.ok ? r.json() : null; }).then(function(d){
+        if(!d) return;
+        feed.signups = Array.isArray(d.signups) ? d.signups : [];
+        feed.rewards = Array.isArray(d.rewards) ? d.rewards : [];
+        feed.announce = d.announce || null;
+        feed.given = d.given || '';
+        var g = document.getElementById('hxlGiven'); if(g && feed.given) g.textContent = feed.given;
+        if(feed.announce){
+          document.getElementById('hxlAnTag').textContent = feed.announce.tag || 'Announcement';
+          document.getElementById('hxlAnTitle').textContent = feed.announce.title || '';
+          document.getElementById('hxlAnText').textContent = feed.announce.text || '';
+        }
+        dots(avail(), avail().indexOf(card.getAttribute('data-scene') || 'race'));
+      }).catch(function(){});
+    }
+    function loadTop(){
+      if(typeof LB_PROXY_URL === 'undefined') return;
+      fetch(LB_PROXY_URL + '?casino=powerwin').then(function(r){ return r.ok ? r.json() : null; }).then(function(d){
+        if(!d || d.waiting || !Array.isArray(d.wagers)) return;
+        top3 = d.wagers.filter(function(w){ return Number(w.wager) > 0; }).slice(0, 3); renderTop();
+        dots(avail(), avail().indexOf(card.getAttribute('data-scene') || 'race'));
+      }).catch(function(){});
+    }
+    card.setAttribute('data-scene', 'race');
+    dots(avail(), 0);
+    /* wait for the page to settle before the extra requests */
+    setTimeout(function(){ loadFeed(); loadTop(); }, 1500);
+    setInterval(loadFeed, 90000); setInterval(loadTop, 180000);
+    start();
+  })();
   window.hxCopyCode = function(btn){
     try{ navigator.clipboard && navigator.clipboard.writeText('JAMMMY'); }catch(e){}
     var c = btn.querySelector('.hx-code-c'); btn.classList.add('done'); c.textContent = 'Copied ✓';
