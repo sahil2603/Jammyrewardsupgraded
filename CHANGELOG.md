@@ -8,6 +8,17 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-16 (b): Slot Versus fixes: multiple showdowns + delete
+
+- Fixed: the 👑 crown and WINNER ribbon were hidden behind the slot picture. They now sit on top.
+- You can now keep several showdowns. Pick 2 requests with ⚔️ VS and press **⚔️ New versus**. Each one is saved in a "Showdowns" list at the top of Slot Requests, showing the winner once crowned.
+- Delete: 🗑 on each showdown in the list, **Delete all**, or **🗑 Delete** inside the showdown screen.
+- With more than one showdown, ‹ › arrows in the showdown screen flip between them.
+- Removed the big empty gap between the inputs and the multiplier.
+- A showdown made before this update is kept automatically. No worker change.
+
+---
+
 ## 2026-10-16: Slot Versus (admin only)
 
 - New **⚔️ VS** button on every slot request card in Admin → Slot Requests. Pick two, then press **⚔️ Versus** in the top bar.
