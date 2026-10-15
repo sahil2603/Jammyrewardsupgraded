@@ -8,6 +8,17 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-16: Slot Versus (admin only)
+
+- New **⚔️ VS** button on every slot request card in Admin → Slot Requests. Pick two, then press **⚔️ Versus** in the top bar.
+- Opens a full-screen "Slot Showdown" made for screen-sharing on stream: both slots (art + provider), who picked them, and Bet / Bonus win boxes for each side.
+- The multiplier (win ÷ bet) updates live. **👑 Crown winner** highlights the higher multiplier with a crown and confetti and greys out the other side. Ties show "Dead heat".
+- Extra buttons: Swap sides, Reset results, Fullscreen, Close (or Esc).
+- No coins or prizes. Nothing is sent to the server. The current showdown is kept in the browser, so a page refresh doesn't lose it.
+- No worker change.
+
+---
+
 ## 2026-10-14 (h): "Payout requested" flag on redemptions (staff only)
 
 - **Why:** Jammy pays Power.win redemptions with a customer transfer that Power.win approves later, so it was easy to forget whether a payout had already been requested.
