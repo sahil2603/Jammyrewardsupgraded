@@ -2225,41 +2225,83 @@ html.lenis{scroll-behavior:auto!important}
 .lc-grid .lc-full{grid-column:1/-1}
 @media (max-width:600px){.lc-grid{grid-template-columns:1fr}.lc-grid .lc-sw{padding-bottom:0}}
 /* ===== Homepage live card: rotates through race / top 3 / given away / new members / rewards / announcement ===== */
-.hx-fc.hx-live{display:flex!important;flex-direction:column;align-items:stretch;text-align:left;gap:0!important}
-.hx-live .hxl-stage{display:grid}
-@media (max-width:480px){.hx-live .hx-fc-top{letter-spacing:.03em;gap:6px}}
-.hx-live .hxl-s{grid-area:1/1;min-width:0;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .22s ease,transform .3s ease}
-.hx-live .hxl-s.on{opacity:1;transform:none;pointer-events:auto;transition:opacity .4s ease .22s,transform .55s cubic-bezier(.16,1,.3,1) .22s}
-.hx-live .hxl-s.off{transform:translateY(-8px)}
-.hx-live .hx-fc-top{letter-spacing:.05em;gap:7px}
+@property --hxla{syntax:'<angle>';inherits:false;initial-value:0deg}
+.hx-fc.hx-live{--acc:168,85,247;display:flex!important;flex-direction:column;align-items:stretch;text-align:left;gap:0!important;isolation:isolate;border-color:rgba(var(--acc),.35);box-shadow:0 24px 50px -20px rgba(0,0,0,.75),0 0 34px -8px rgba(var(--acc),.45),inset 0 1px 0 rgba(255,255,255,.08);transition:transform .9s var(--hx-ease),border-color .6s,box-shadow .6s}
+.hx-live[data-scene=top3]{--acc:251,191,36}
+.hx-live[data-scene=given]{--acc:244,114,182}
+.hx-live[data-scene=signup]{--acc:99,102,241}
+.hx-live[data-scene=reward]{--acc:250,204,21}
+.hx-live[data-scene=announce]{--acc:236,72,153}
+.hxl-glow{position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none;background:radial-gradient(120% 90% at 100% 0%,rgba(var(--acc),.28),transparent 60%),radial-gradient(90% 70% at 0% 100%,rgba(var(--acc),.12),transparent 65%);transition:background .6s}
+.hxl-ring{position:absolute;inset:-1px;border-radius:inherit;padding:1.5px;pointer-events:none;z-index:2;background:conic-gradient(from var(--hxla),rgba(var(--acc),0) 0deg,rgba(var(--acc),.95) 70deg,rgba(255,255,255,.9) 90deg,rgba(var(--acc),0) 150deg,rgba(var(--acc),0) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:hxlSpin 4.5s linear infinite}
+@keyframes hxlSpin{to{--hxla:360deg}}
+.hx-live .hxl-stage{display:grid;position:relative;z-index:1}
+.hx-live .hxl-s{grid-area:1/1;align-self:center;min-width:0;opacity:0;transform:translateY(10px) scale(.98);filter:blur(3px);pointer-events:none;transition:opacity .22s ease,transform .3s ease,filter .22s ease}
+.hx-live .hxl-s.on{opacity:1;transform:none;filter:none;pointer-events:auto;transition:opacity .45s ease .2s,transform .6s cubic-bezier(.16,1,.3,1) .2s,filter .45s ease .2s}
+.hx-live .hxl-s.off{transform:translateY(-10px) scale(.98)}
+.hx-live .hx-fc-top{letter-spacing:.07em;gap:7px;color:rgba(var(--acc),.95);filter:saturate(1.1) brightness(1.25)}
 .hx-live .hx-fc-top span:last-child{overflow:hidden;text-overflow:ellipsis}
-.hxl-ic{font-size:.85rem;line-height:1;flex:none}
-.hxl-coin{width:18px;height:18px;flex:none}
+.hxl-ic{font-size:.85rem;line-height:1;flex:none;filter:none}
+.hxl-live{flex:none;font:800 .55rem 'Poppins',system-ui;letter-spacing:.1em;color:#1a1200!important;background:linear-gradient(135deg,#fde047,#f59e0b);border-radius:5px;padding:2px 5px;box-shadow:0 0 12px rgba(250,204,21,.45)}
 .hxl-pulse{width:8px;height:8px;border-radius:50%;background:#4ade80;flex:none;box-shadow:0 0 0 0 rgba(74,222,128,.6);animation:hxlPulse 1.6s ease-out infinite}
 @keyframes hxlPulse{to{box-shadow:0 0 0 8px rgba(74,222,128,0)}}
-.hxl-big{font-family:'Lilita One',sans-serif;font-size:1.7rem;line-height:1.05;color:#fff;white-space:nowrap}
-.hxl-gold{color:#fbbf24}
-.hxl-name{font:700 1.02rem 'Poppins',system-ui;color:#fff;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hxl-an{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;background:linear-gradient(90deg,#fde68a,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hxl-big{font-family:'Lilita One',sans-serif;font-size:1.9rem;line-height:1.05;color:#fff;white-space:nowrap;font-variant-numeric:tabular-nums}
+.hxl-shine{background:linear-gradient(100deg,#fff 0%,#fbcfe8 30%,#fff 45%,#f9a8d4 60%,#fff 100%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 14px rgba(244,114,182,.45));animation:hxlShine 3.2s linear infinite}
+@keyframes hxlShine{to{background-position:-220% 0}}
+.hxl-gold{background:linear-gradient(180deg,#fff7c2,#fbbf24 55%,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 10px rgba(250,204,21,.4))}
+.hxl-name{font:700 1rem 'Poppins',system-ui;color:#fff;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* top 3 */
+.hxl-top{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.hxl-top li{display:flex;align-items:center;gap:7px;font:600 .78rem 'Poppins',system-ui;color:#fff;min-width:0;padding:3px 6px 3px 3px;border-radius:9px;background:rgba(255,255,255,.04)}
+.hxl-top li.r1{background:linear-gradient(90deg,rgba(251,191,36,.22),rgba(251,191,36,.04));box-shadow:inset 0 0 0 1px rgba(251,191,36,.3)}
+.hxl-top .rk{flex:none;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font:800 .64rem 'Poppins';color:#1a1200}
+.hxl-top .r1 .rk{background:radial-gradient(circle at 35% 30%,#fff6bf,#fbbf24 60%,#b45309)}
+.hxl-top .r2 .rk{background:radial-gradient(circle at 35% 30%,#fff,#cbd5e1 60%,#64748b)}
+.hxl-top .r3 .rk{background:radial-gradient(circle at 35% 30%,#ffe2c4,#f59e0b 55%,#9a3412)}
+.hxl-top .n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hxl-top .w{flex:none;color:#fde68a;font-size:.68rem;font-weight:700}
+/* new member */
+.hxl-user{display:flex;align-items:center;gap:9px;min-width:0;margin-top:2px}
+.hxl-av{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:800 .78rem 'Poppins';color:#fff;background:linear-gradient(135deg,hsl(var(--h,260),85%,62%),hsl(calc(var(--h,260) + 50),85%,48%));box-shadow:0 0 0 2px rgba(255,255,255,.12),0 0 18px hsla(var(--h,260),90%,60%,.45);text-transform:uppercase}
+.hx-live[data-scene=signup] .hxl-av{animation:hxlPop .6s cubic-bezier(.34,1.56,.64,1) .25s both}
+@keyframes hxlPop{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+.hxl-uinfo{min-width:0;flex:1}
+.hxl-dc{display:flex;align-items:center;gap:5px;font-size:.68rem;color:rgba(255,255,255,.6);white-space:nowrap;overflow:hidden}
+.hxl-dc span{overflow:hidden;text-overflow:ellipsis}
+.hxl-dcl{width:13px;height:13px;flex:none;color:#8b93ff}
+/* reward */
+.hxl-rew{display:flex;align-items:center;gap:8px}
+.hxl-coinbig{width:34px;height:34px;flex:none;filter:drop-shadow(0 4px 12px rgba(250,204,21,.5))}
+.hx-live[data-scene=reward] .hxl-coinbig{animation:hxlCoin .9s cubic-bezier(.34,1.56,.64,1) .2s both}
+@keyframes hxlCoin{from{transform:translateY(-14px) rotateY(540deg) scale(.6);opacity:0}to{transform:none;opacity:1}}
+.hxl-rewsub{display:flex;align-items:center;gap:6px;margin-top:6px;min-width:0;font-size:.7rem;color:rgba(255,255,255,.75)}
+.hxl-rewsub b{font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.hxl-kind{flex:none;font-size:.6rem;font-weight:700;letter-spacing:.04em;color:#fde68a;background:rgba(250,204,21,.12);border:1px solid rgba(250,204,21,.3);border-radius:999px;padding:1px 7px;white-space:nowrap;max-width:60%;overflow:hidden;text-overflow:ellipsis}
+/* announcement */
+.hxl-tag{flex:none;font:800 .58rem 'Poppins',system-ui;letter-spacing:.12em;color:#fff!important;background:linear-gradient(135deg,#ec4899,#f97316);border-radius:6px;padding:3px 7px;box-shadow:0 0 14px rgba(236,72,153,.5);overflow:visible!important}
+.hxl-an{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-size:1.05rem;margin-top:2px;background:linear-gradient(100deg,#fde68a,#f9a8d4 45%,#fde68a 90%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:hxlShine 4s linear infinite}
+.hxl-antext{margin-top:4px}
 .hx-live .hx-fc-sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hxl-top{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px}
-.hxl-top li{display:flex;align-items:center;gap:6px;font:600 .78rem 'Poppins',system-ui;color:#fff;min-width:0}
-.hxl-top li .m{flex:none;width:16px;text-align:center}
-.hxl-top li .n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.hxl-top li .w{flex:none;color:rgba(255,255,255,.55);font-size:.7rem;font-weight:500}
-.hxl-dots{display:flex;gap:4px;margin-top:9px}
-.hxl-dots i{height:3px;flex:1;border-radius:3px;background:rgba(255,255,255,.12);overflow:hidden;position:relative}
-.hxl-dots i.done{background:rgba(255,255,255,.4)}
-.hxl-dots i.cur::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#a855f7,#f472b6);transform-origin:left;transform:scaleX(0);animation:hxlBar var(--hxl-t,5.5s) linear forwards}
+/* progress */
+.hxl-dots{display:flex;gap:4px;margin-top:10px;position:relative;z-index:1}
+.hxl-dots i{height:3px;flex:1;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden;position:relative}
+.hxl-dots i.done{background:rgba(var(--acc),.45)}
+.hxl-dots i.cur::after{content:"";position:absolute;inset:0;background:rgb(var(--acc));box-shadow:0 0 8px rgb(var(--acc));transform-origin:left;transform:scaleX(0);animation:hxlBar var(--hxl-t,5.5s) linear forwards}
 .hx-live.paused .hxl-dots i.cur::after{animation-play-state:paused}
 @keyframes hxlBar{to{transform:scaleX(1)}}
 @media (max-width:480px){
-  .hxl-big{font-size:1.25rem}
+  .hx-live .hx-fc-top{letter-spacing:.03em;gap:5px}
+  .hxl-big{font-size:1.3rem}
   .hxl-name{font-size:.8rem}
-  .hxl-top li{font-size:.66rem;gap:4px}.hxl-top li .w{display:none}.hxl-top li .m{width:12px}
-  .hxl-dots{margin-top:6px;gap:3px}
+  .hxl-an{font-size:.82rem}
+  .hxl-top li{font-size:.64rem;gap:4px;padding:2px 4px 2px 2px}.hxl-top .w{display:none}.hxl-top .rk{width:14px;height:14px;font-size:.52rem}
+  .hxl-av{width:24px;height:24px;font-size:.6rem}.hxl-user{gap:6px}
+  .hxl-coinbig{width:24px;height:24px}
+  .hxl-dc{font-size:.58rem}.hxl-rewsub{font-size:.6rem;flex-wrap:wrap;gap:3px}.hxl-kind{max-width:100%}
+  .hxl-dots{margin-top:7px;gap:3px}
 }
-@media (prefers-reduced-motion:reduce){.hx-live .hxl-s{transition:opacity .2s}.hx-live .hxl-s,.hx-live .hxl-s.off{transform:none}.hxl-pulse{animation:none}}
+.hw-lite .hxl-ring{animation:none;opacity:.6}
+@media (prefers-reduced-motion:reduce){.hxl-ring,.hxl-shine,.hxl-an{animation:none}.hx-live .hxl-s{transition:opacity .2s;filter:none}.hx-live .hxl-s,.hx-live .hxl-s.off{transform:none}.hxl-pulse,.hxl-av,.hxl-coinbig{animation:none!important}}
 @media (prefers-reduced-motion:reduce){.hx-l,.hx-wm-glow{opacity:1!important;transform:none!important;animation:none!important}}
 /* ---------- MARQUEE ---------- */
 .hx-marquee{position:relative;overflow:hidden;padding:18px 0;margin:0 0 70px;background:linear-gradient(90deg,rgba(147,51,234,.16),rgba(236,72,153,.12),rgba(34,211,238,.12));border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);transform:rotate(-1.6deg) scale(1.04);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
@@ -4891,7 +4933,8 @@ body.on-admin .ambient-glow-blob{opacity:.35}
               <div class="hx-jar-shadow"></div>
             </div>
           </div>
-          <div class="hx-fc hx-fc-race hx-live" id="hxLive" data-hx-mouse="2.2" onclick="hxLiveClick()" aria-live="polite">
+          <div class="hx-fc hx-fc-race hx-live" id="hxLive" data-scene="race" data-hx-mouse="2.2" onclick="hxLiveClick()" aria-live="polite">
+            <span class="hxl-ring" aria-hidden="true"></span><span class="hxl-glow" aria-hidden="true"></span>
             <div class="hxl-stage">
               <div class="hxl-s on" data-s="race">
                 <div class="hx-fc-top"><img src="powerwin.webp" alt="" class="hx-fc-pw"><span>Race ends in</span></div>
@@ -4899,28 +4942,27 @@ body.on-admin .ambient-glow-blob{opacity:.35}
                 <div class="hx-fc-sub"><b>$1,000</b> prize pool</div>
               </div>
               <div class="hxl-s" data-s="top3" aria-hidden="true">
-                <div class="hx-fc-top"><span class="hxl-ic">🏆</span><span>Top 3 live</span></div>
+                <div class="hx-fc-top"><span class="hxl-live">LIVE</span><span>Top 3 now</span></div>
                 <ol class="hxl-top" id="hxlTop"></ol>
               </div>
               <div class="hxl-s" data-s="given" aria-hidden="true">
                 <div class="hx-fc-top"><span class="hxl-ic">💜</span><span>Given away</span></div>
-                <div class="hxl-big" id="hxlGiven">$10,000+</div>
+                <div class="hxl-big hxl-shine" id="hxlGiven" data-v="$10,000+">$10,000+</div>
                 <div class="hx-fc-sub">to the community</div>
               </div>
               <div class="hxl-s" data-s="signup" aria-hidden="true">
                 <div class="hx-fc-top"><span class="hxl-pulse"></span><span>Just joined</span></div>
-                <div class="hxl-name" id="hxlSignName">—</div>
-                <div class="hx-fc-sub" id="hxlSignSub">signed in with Discord</div>
+                <div class="hxl-user"><span class="hxl-av" id="hxlSignAv">?</span><div class="hxl-uinfo"><div class="hxl-name" id="hxlSignName">—</div><div class="hxl-dc"><svg class="hxl-dcl" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.3 4.4A19.6 19.6 0 0 0 15.4 3l-.6 1.3a18 18 0 0 0-5.6 0L8.6 3a19.6 19.6 0 0 0-4.9 1.5C.6 9.1-.3 13.7.1 18.2a19.8 19.8 0 0 0 6 3l1.3-2a12.8 12.8 0 0 1-2-1l.5-.4a14.1 14.1 0 0 0 12.2 0l.5.4c-.6.4-1.3.7-2 1l1.3 2a19.7 19.7 0 0 0 6-3c.5-5.2-.8-9.7-3.6-13.8ZM8 15.5c-1.2 0-2.2-1.1-2.2-2.4S6.8 10.7 8 10.7s2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Zm8 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Z"/></svg><span id="hxlSignSub">joined</span></div></div></div>
               </div>
               <div class="hxl-s" data-s="reward" aria-hidden="true">
-                <div class="hx-fc-top"><img src="jammmy-coin.webp" alt="" class="hxl-coin"><span>Coins rewarded</span></div>
-                <div class="hxl-big hxl-gold" id="hxlRewAmt">+0</div>
-                <div class="hx-fc-sub" id="hxlRewSub">—</div>
+                <div class="hx-fc-top"><span class="hxl-ic">✨</span><span>Coins rewarded</span></div>
+                <div class="hxl-rew"><img src="jammmy-coin.webp" alt="" class="hxl-coinbig"><div><div class="hxl-big hxl-gold" id="hxlRewAmt">+0</div></div></div>
+                <div class="hxl-rewsub"><b id="hxlRewName">—</b><span class="hxl-kind" id="hxlRewKind">reward</span></div>
               </div>
               <div class="hxl-s" data-s="announce" aria-hidden="true">
-                <div class="hx-fc-top"><span class="hxl-ic">📣</span><span id="hxlAnTag">Coming soon</span></div>
+                <div class="hx-fc-top"><span class="hxl-tag" id="hxlAnTag">Coming soon</span></div>
                 <div class="hxl-name hxl-an" id="hxlAnTitle">Exclusive JammmySlot</div>
-                <div class="hx-fc-sub" id="hxlAnText">Launching soon on the website</div>
+                <div class="hx-fc-sub hxl-antext" id="hxlAnText">Launching soon on the website</div>
               </div>
             </div>
             <div class="hxl-dots" id="hxlDots" aria-hidden="true"></div>
@@ -11894,8 +11936,38 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     }
     function avail(){ return order.filter(has); }
     function fill(k){
-      if(k === 'signup'){ var s = feed.signups[si++ % feed.signups.length]; document.getElementById('hxlSignName').textContent = s.name + ' 🎉'; document.getElementById('hxlSignSub').textContent = 'joined with Discord · ' + ago(s.at); }
-      if(k === 'reward'){ var r = feed.rewards[ri++ % feed.rewards.length]; document.getElementById('hxlRewAmt').textContent = '+' + Number(r.amount).toLocaleString(undefined, {maximumFractionDigits:2}); document.getElementById('hxlRewSub').textContent = r.name + ' · ' + r.kind; }
+      if(k === 'signup'){
+        var s = feed.signups[si++ % feed.signups.length], hue = 0;
+        for(var c = 0; c < s.name.length; c++) hue = (hue * 31 + s.name.charCodeAt(c)) % 360;
+        var av = document.getElementById('hxlSignAv'); av.textContent = s.name.replace(/[^a-z0-9]/gi, '').slice(0, 2) || '?'; av.style.setProperty('--h', hue);
+        document.getElementById('hxlSignName').textContent = s.name;
+        document.getElementById('hxlSignSub').textContent = ago(s.at);
+      }
+      if(k === 'reward'){
+        var r = feed.rewards[ri++ % feed.rewards.length];
+        document.getElementById('hxlRewName').textContent = r.name;
+        document.getElementById('hxlRewKind').textContent = r.kind;
+        countUp(document.getElementById('hxlRewAmt'), '+', Number(r.amount) || 0, '', Number(r.amount) % 1 ? 2 : 0);
+      }
+      if(k === 'given'){
+        var g = document.getElementById('hxlGiven'), m = String(g.getAttribute('data-v') || '').match(/^([^0-9]*)([0-9][0-9,.]*)(.*)$/);
+        if(m) countUp(g, m[1], Number(m[2].replace(/,/g, '')), m[3], 0); else g.textContent = g.getAttribute('data-v') || '';
+      }
+    }
+    function countUp(el, pre, to, post, dec){
+      if(!el) return;
+      var fmt = function(v){ return pre + v.toLocaleString(undefined, {minimumFractionDigits:dec, maximumFractionDigits:dec}) + post; };
+      var reduce = false; try{ reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
+      if(reduce || !(to > 0)){ el.textContent = fmt(to); return; }
+      var t0 = 0, D = 1100;
+      el.textContent = fmt(0);
+      setTimeout(function(){
+        requestAnimationFrame(function tick(t){
+          if(!t0) t0 = t; var p = Math.min(1, (t - t0) / D), e = 1 - Math.pow(1 - p, 3);
+          el.textContent = fmt(dec ? Math.round(to * e * 100) / 100 : Math.round(to * e));
+          if(p < 1) requestAnimationFrame(tick);
+        });
+      }, 220);
     }
     function dots(list, cur){
       var el = document.getElementById('hxlDots'); if(!el) return;
@@ -11928,10 +12000,10 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     };
     function renderTop(){
       var el = document.getElementById('hxlTop'); if(!el) return;
-      var m = ['🥇','🥈','🥉'];
+      var short = function(v){ v = Number(v) || 0; return v >= 1e6 ? '$' + (v/1e6).toFixed(1).replace(/\.0$/, '') + 'M' : v >= 1e4 ? '$' + Math.round(v/1e3) + 'k' : v >= 1e3 ? '$' + (v/1e3).toFixed(1).replace(/\.0$/, '') + 'k' : '$' + Math.round(v); };
       el.innerHTML = top3.map(function(w, i){
         var name = typeof maskUsername === 'function' ? maskUsername(w.name) : w.name;
-        return '<li><span class="m">' + m[i] + '</span><span class="n">' + esc(name) + '</span><span class="w">$' + Math.round(Number(w.wager) || 0).toLocaleString() + '</span></li>';
+        return '<li class="r' + (i + 1) + '"><span class="rk">' + (i + 1) + '</span><span class="n">' + esc(name) + '</span><span class="w">' + short(w.wager) + '</span></li>';
       }).join('');
     }
     function loadFeed(){
@@ -11941,7 +12013,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
         feed.rewards = Array.isArray(d.rewards) ? d.rewards : [];
         feed.announce = d.announce || null;
         feed.given = d.given || '';
-        var g = document.getElementById('hxlGiven'); if(g && feed.given) g.textContent = feed.given;
+        var g = document.getElementById('hxlGiven'); if(g && feed.given){ g.setAttribute('data-v', feed.given); g.textContent = feed.given; }
         if(feed.announce){
           document.getElementById('hxlAnTag').textContent = feed.announce.tag || 'Announcement';
           document.getElementById('hxlAnTitle').textContent = feed.announce.title || '';

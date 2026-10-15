@@ -8,6 +8,20 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-16 (e): Live card redesign
+
+- Each scene now has its own colour: the card's border, glow and progress bar change to match (purple race, gold top 3, pink given away, blue new member, yellow coins, pink announcement).
+- A thin light runs around the card border so it reads as "live".
+- Top 3: gold/silver/bronze rank badges, #1 highlighted, short wager amounts ($5.2k).
+- Given away: shimmering number that counts up when the scene appears.
+- Just joined: coloured initials avatar that pops in, Discord icon and how long ago.
+- Coins rewarded: the Jammmy coin flips in and the amount counts up, with a small chip showing the reward type.
+- Announcement: gradient "COMING SOON" tag and a shimmering title.
+- Smoother scene changes (blur + slide). Lighter on phones; no motion for people who turn off animations.
+- No worker change in this update (the worker from update (d) is still needed).
+
+---
+
 ## 2026-10-16 (d): Homepage live card + Slot Library link removed
 
 - Slot Library: removed the "full reviews by Slot-Streamers ↗" link under the title.
