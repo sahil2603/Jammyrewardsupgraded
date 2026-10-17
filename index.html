@@ -2883,6 +2883,7 @@ html.lenis{scroll-behavior:auto!important}
 .bt-live.on{background:rgba(239,68,68,.18);color:#fca5a5}
 .bt-live i{width:8px;height:8px;border-radius:50%;background:currentColor}
 .bt-sets{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:6px 18px 18px;margin-bottom:16px}
+.bt-savebar{position:sticky;top:72px;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;flex-wrap:wrap;background:var(--panel);border-bottom:1px solid rgba(255,255,255,.06)}
 .bt-sets details{border-bottom:1px solid rgba(255,255,255,.06)}
 .bt-sets summary{cursor:pointer;padding:14px 0;font-weight:700;list-style:none;display:flex;justify-content:space-between}
 .bt-sets summary::after{content:'＋';color:var(--muted)}.bt-sets details[open] summary::after{content:'－'}
@@ -6094,8 +6095,9 @@ body.on-admin .ambient-glow-blob{opacity:.35}
             </div>
           </div>
           <div class="bt-sets">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 0 6px;flex-wrap:wrap"><h4 style="margin:0">⚙️ Bot settings</h4><div style="display:flex;gap:10px;align-items:center"><span id="btSaveMsg" class="bt-msg" style="margin:0"></span><button class="bt-btn p" id="btSaveBtn" onclick="saveBotSettings()" disabled>Save settings</button></div></div>
+            <div class="bt-savebar"><h4 style="margin:0">⚙️ Bot settings</h4><div style="display:flex;gap:10px;align-items:center"><span id="btSaveMsg" class="bt-msg" style="margin:0"></span><button class="bt-btn p" id="btSaveBtn" onclick="saveBotSettings()" disabled>Save settings</button></div></div>
             <div id="btSettings">Loading&hellip;</div>
+            <div style="display:flex;justify-content:flex-end;padding-top:14px"><button class="bt-btn p" onclick="saveBotSettings()" style="padding:11px 20px">💾 Save settings</button></div>
           </div>
           <div class="bt-card" style="margin-bottom:16px">
             <h4>🧾 Recent bot payouts</h4>
@@ -9046,6 +9048,8 @@ async function loadBotSettings(){
 async function saveBotSettings(){
   var body = {}, btn = document.getElementById('btSaveBtn'), msg = document.getElementById('btSaveMsg');
   document.querySelectorAll('#btSettings [data-bk]').forEach(function(el){ body[el.dataset.bk] = el.type === 'checkbox' ? el.checked : el.value; });
+  var badId = ['dc_announce_ch','dc_staff_ch','dc_verified_role'].filter(function(k){ return body[k] && /[^0-9\s]/.test(body[k]); });
+  if(badId.length){ msg.textContent = 'IDs are numbers only. Check: ' + badId.map(function(k){ return document.querySelector('[data-bk="' + k + '"]').parentNode.firstChild.textContent; }).join(', '); msg.style.color = '#f87171'; return; }
   btn.disabled = true; msg.textContent = 'Saving…'; msg.style.color = 'var(--muted)';
   var d = await botFetch('/api/admin/bot-settings', body);
   btn.disabled = false;
