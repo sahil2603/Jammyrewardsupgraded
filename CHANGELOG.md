@@ -8,6 +8,39 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-18: Jammmy Bot (Kick + Discord + website)
+
+One bot on Kick chat and Discord, paying Jammmy Coins straight to website accounts. Every payout goes through one place with a **weekly budget** (default 5,000 coins = $50, editable in Admin → Jammmy Bot).
+
+**Kick chat** (Kick sends chat/live/follow/sub events to the worker at `/kick/webhook`; signatures are verified)
+- `!link CODE` connects a viewer's Kick to their site account (code from Profile → Link your Kick).
+- Coins for chatting on stream: 1 coin per 10 active minutes, max 10 per stream (editable).
+- Automatic chat drops about every 40 min while live ("first 10 to type !claim get 10 coins"). Mods can also type `!drop`.
+- `!balance`, `!lb`, `!code`, `!discord`, `!site`, `!commands`.
+- `!sr Sweet Bonanza` goes straight into Admin → Slot Requests.
+- Bonus hunt guessing: `!guess 1450`. Open, close and settle it from the admin panel or with `!hunt open/close/result` (mods). The closest guess wins.
+- Thanks for follows, plus coins for subs (50) and gifted subs (25 each to the gifter).
+- Welcome message in chat when the stream starts.
+
+**Discord** (new `jammmy-bot` program, hosted on Railway)
+- Live announcement with a "Claim 5 coins" button (open 15 min).
+- Slash commands: /balance /rank /leaderboard /redeem-status /daily /link /site and /giveaway (staff).
+- Chat activity coins with a cooldown, spam filter and daily cap.
+- Invite rewards once the invited friend is verified (no reward if they share a device or network).
+- Staff alerts for blocked, brand-new or alt-looking joins.
+- Auto roles: verified Power.win players and activity levels.
+- DMs: redemption paid, slot request played, invite reward.
+
+**Website**
+- Profile: new **Link your Kick** card and **Have a code?** box for code drops (same device/network can't claim one code twice).
+- Admin → **Jammmy Bot** tab: Kick and Discord connection status, weekly budget bar, live controls (Kick drop, code drop, bonus hunt, announcement, test), all settings and a payout log.
+- Slot Versus: "📣 Announce in chat" button after crowning a winner.
+- The homepage live card also shows bot rewards of 10+ coins.
+
+**Worker:** new secrets `DISCORD_BOT_TOKEN` and `BOT_API_KEY`. New tables are created automatically. Saving settings and bot actions are recorded in the Activity log.
+
+---
+
 ## 2026-10-16 (f): Crypto redemption minimum 10,000 coins + Power.win tab first
 
 - Crypto redemptions now need at least **10,000 coins ($100)**. Power.win stays at 2,000 coins ($20).

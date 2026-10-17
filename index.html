@@ -1499,6 +1499,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 @keyframes vsPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
 .vs-reveal{background:linear-gradient(135deg,#facc15,#f59e0b);color:#1a1200;border:0;border-radius:14px;padding:13px 18px;font:800 .95rem 'Poppins';letter-spacing:.06em;cursor:pointer;box-shadow:0 10px 30px rgba(250,204,21,.3);white-space:nowrap}
 .vs-reveal[disabled]{opacity:.35;cursor:not-allowed;box-shadow:none}
+.vs-ann{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:12px;padding:9px 14px;font:700 .82rem 'Poppins';cursor:pointer;white-space:nowrap}
+.vs-ann[disabled]{opacity:.7;cursor:default}
 .vs-verdict{min-height:1.4em;text-align:center;font:700 1rem 'Poppins';color:#fde047;max-width:180px}
 .vs-confetti{position:fixed;top:-20px;width:10px;height:14px;border-radius:2px;pointer-events:none;z-index:100001;animation:vsDrop linear forwards}
 @keyframes vsDrop{to{transform:translateY(110vh) rotate(720deg);opacity:.9}}
@@ -2836,6 +2838,68 @@ html.lenis{scroll-behavior:auto!important}
 @media (max-width:768px){ .push-prompt{left:16px;right:16px;width:auto;max-width:none;bottom:calc(84px + env(safe-area-inset-bottom))} }
 /* ── Profile page layout ── */
 .pf-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px 24px;margin-bottom:20px}
+/* ===== Jammmy Bot: profile Kick link + code card ===== */
+.kl-card{display:flex;flex-direction:column;min-width:0}
+.kl-card *{max-width:100%}
+.kl-codebox code{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kl-k{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:6px;background:#53fc18;color:#08130a;font:900 .8rem 'Poppins'}
+.kl-box{margin-top:12px}
+.kl-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:rgba(83,252,24,.06);border:1px solid rgba(83,252,24,.3)}
+.kl-row b{font-size:1rem}.kl-row small{display:block;color:var(--faint);font-size:.78rem}
+.kl-row .kl-x{margin-left:auto;background:none;border:1px solid var(--line);color:var(--muted);border-radius:10px;padding:7px 12px;font:600 .8rem 'Poppins';cursor:pointer}
+.kl-steps{display:grid;gap:10px}
+.kl-codebox{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-radius:14px;background:linear-gradient(135deg,rgba(83,252,24,.12),rgba(83,252,24,.03));border:1px dashed rgba(83,252,24,.5)}
+.kl-codebox code{font:800 1.35rem 'Poppins';letter-spacing:.06em;color:#b9ff9a}
+.kl-codebox button{background:#53fc18;color:#08130a;border:0;border-radius:10px;padding:8px 14px;font:800 .82rem 'Poppins';cursor:pointer}
+.kl-hint{font-size:.82rem;color:var(--muted);line-height:1.5}
+.kl-hint b{color:#fff}
+.kl-go{background:#53fc18!important;color:#08130a!important;width:auto!important;padding:11px 18px!important}
+.kl-code{display:flex;gap:10px;margin-top:12px}
+.kl-code input{flex:1;min-width:0;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font:700 1rem 'Poppins';letter-spacing:.06em;text-transform:uppercase}
+.kl-code button{width:auto!important;flex:none;padding:12px 20px!important}
+.kl-msg{margin-top:10px;font-size:.88rem;min-height:1.2em}
+/* ===== Admin → Jammmy Bot ===== */
+.bt-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.bt-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;min-width:0}
+.bt-card h4{margin:0 0 10px;font-size:.98rem;display:flex;align-items:center;gap:8px}
+.bt-line{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;font-size:.86rem;border-bottom:1px solid rgba(255,255,255,.05)}
+.bt-line:last-child{border-bottom:0}
+.bt-line span{color:var(--muted)}
+.bt-ok{color:#4ade80;font-weight:700}.bt-no{color:#f87171;font-weight:700}.bt-warn{color:#fbbf24;font-weight:700}
+.bt-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:10px;padding:8px 12px;font:600 .8rem 'Poppins';cursor:pointer;white-space:nowrap}
+.bt-btn:hover{background:rgba(255,255,255,.12)}
+.bt-btn.p{background:linear-gradient(135deg,#9333ea,#7c3aed);border-color:transparent}
+.bt-btn.g{background:#53fc18;color:#08130a;border-color:transparent}
+.bt-btn[disabled]{opacity:.5;cursor:not-allowed}
+.bt-bar{height:10px;border-radius:9px;background:rgba(255,255,255,.08);overflow:hidden;margin:8px 0 6px}
+.bt-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#4ade80,#fbbf24,#f87171);background-size:300% 100%}
+.bt-big{font:800 1.5rem 'Poppins'}
+.bt-big small{font-size:.8rem;color:var(--muted);font-weight:600}
+.bt-acts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.bt-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.bt-row input,.bt-row textarea,.bt-f input[type=text],.bt-f input[type=number],.bt-f textarea{padding:9px 11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font:500 .88rem 'Poppins';min-width:0;box-sizing:border-box}
+.bt-row textarea{width:100%;min-height:64px;resize:vertical}
+.bt-live{display:inline-flex;align-items:center;gap:6px;font:700 .75rem 'Poppins';padding:4px 10px;border-radius:99px;background:rgba(255,255,255,.06)}
+.bt-live.on{background:rgba(239,68,68,.18);color:#fca5a5}
+.bt-live i{width:8px;height:8px;border-radius:50%;background:currentColor}
+.bt-sets{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:6px 18px 18px;margin-bottom:16px}
+.bt-sets details{border-bottom:1px solid rgba(255,255,255,.06)}
+.bt-sets summary{cursor:pointer;padding:14px 0;font-weight:700;list-style:none;display:flex;justify-content:space-between}
+.bt-sets summary::after{content:'＋';color:var(--muted)}.bt-sets details[open] summary::after{content:'－'}
+.bt-fs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 18px;padding:0 0 16px}
+.bt-f{display:flex;flex-direction:column;gap:5px;font-size:.8rem;color:var(--faint);min-width:0}
+.bt-f.full{grid-column:1/-1}
+.bt-f small{color:rgba(255,255,255,.4);font-size:.72rem}
+.bt-f.sw{flex-direction:row;align-items:center;gap:10px;color:#fff;font-size:.88rem;cursor:pointer}
+.bt-f.sw input{width:18px;height:18px;accent-color:#a855f7;flex:none}
+.bt-copy{display:flex;gap:8px;align-items:center;margin-top:6px}
+.bt-copy code{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:.78rem}
+.bt-log{width:100%;border-collapse:collapse;font-size:.82rem}
+.bt-log th{text-align:left;color:var(--faint);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--line)}
+.bt-log td{padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.05)}
+.bt-msg{font-size:.84rem;margin-top:8px;min-height:1.1em}
+@media (max-width:900px){.bt-grid{grid-template-columns:1fr}.bt-acts{grid-template-columns:1fr}}
+@media (max-width:600px){.bt-fs{grid-template-columns:1fr}.bt-log .hm{display:none}}
 .pf-h{margin:0 0 4px;font-size:1.08rem;display:flex;align-items:center;gap:8px}
 .pf-sub{color:var(--muted);font-size:.86rem;line-height:1.5;margin:0 0 16px}
 .pf-label{color:var(--faint);font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
@@ -5704,6 +5768,25 @@ body.on-admin .ambient-glow-blob{opacity:.35}
         </div>
 
         <div class="pf-grid">
+          <!-- Kick link (Jammmy Bot) -->
+          <div class="pf-card reveal kl-card">
+            <h3 class="pf-h"><span class="kl-k">K</span> Link your Kick</h3>
+            <p class="pf-sub">Earn Jammmy Coins for chatting on Jammy's Kick stream, catch chat drops and guess bonus hunts.</p>
+            <div id="pfKickBox" class="kl-box">Loading&hellip;</div>
+          </div>
+          <!-- Code drops -->
+          <div class="pf-card reveal kl-card">
+            <h3 class="pf-h">🔑 Have a code?</h3>
+            <p class="pf-sub">Jammmy Bot drops codes on Discord and Kick. First ones to enter them here win coins.</p>
+            <form class="kl-code" onsubmit="redeemDropCode(event)">
+              <input id="pfDropCode" type="text" placeholder="JAM-XXXXX" autocomplete="off" spellcheck="false" maxlength="20">
+              <button type="submit" class="admin-btn-primary" id="pfDropBtn">Claim</button>
+            </form>
+            <div id="pfDropMsg" class="kl-msg"></div>
+          </div>
+        </div>
+
+        <div class="pf-grid">
           <!-- Redeem -->
           <div class="pf-card reveal rdx">
             <div class="rdx-head">
@@ -5982,8 +6065,43 @@ body.on-admin .ambient-glow-blob{opacity:.35}
           <div class="adm-grp">Requests</div>
           <button class="admin-tab" data-tab="adminSlotsTab" onclick="switchAdminTab('adminSlotsTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 9v6M12 9v6M16 9v6"/></svg><span class="al">Slot requests</span><span class="admin-badge" id="badgeSlots"></span></button>
           <button class="admin-tab" data-tab="adminBattlesTab" onclick="switchAdminTab('adminBattlesTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6M16 16l4 4M19 21l2-2"/><path d="M9.5 17.5L21 6V3h-3L6.5 14.5"/><path d="M11 19l-6-6M8 16l-4 4M5 21l-2-2"/></svg><span class="al">Battle requests</span><span class="admin-badge" id="badgeBattles"></span></button>
+          <div class="adm-grp" data-admin-only>Community</div>
+          <button class="admin-tab" data-tab="adminBotTab" onclick="switchAdminTab('adminBotTab')" data-admin-only><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4M9 13h.01M15 13h.01M9.5 16.5h5"/><circle cx="12" cy="3.5" r="1"/></svg><span class="al">Jammmy Bot</span></button>
         </div>
 
+        <!-- JAMMMY BOT TAB -->
+        <div id="adminBotTab" class="admin-tab-panel" style="display:none">
+          <div class="bt-grid">
+            <div class="bt-card"><h4><span class="kl-k">K</span> Kick</h4><div id="btKick">Loading&hellip;</div></div>
+            <div class="bt-card"><h4>💬 Discord</h4><div id="btDiscord">Loading&hellip;</div></div>
+            <div class="bt-card"><h4>🪙 This week's budget</h4><div id="btBudget">Loading&hellip;</div></div>
+          </div>
+          <div class="bt-acts">
+            <div class="bt-card">
+              <h4>🎮 Live controls <span id="btLive" class="bt-live"><i></i>Offline</span></h4>
+              <div class="bt-row"><button class="bt-btn p" onclick="botAct('drop_now')">🎁 Start Kick drop</button><button class="bt-btn p" onclick="botAct('code_drop')">🔑 Post code drop</button><button class="bt-btn" onclick="botAct('test')">🧪 Send test messages</button></div>
+              <div style="margin-top:14px;font-weight:700;font-size:.88rem">🎯 Bonus hunt guessing <span id="btHunt" style="color:var(--muted);font-weight:500"></span></div>
+              <div class="bt-row"><input id="btHuntPrize" type="number" min="1" value="100" style="width:110px" title="Prize coins"><button class="bt-btn" onclick="botAct('hunt_open',{prize:document.getElementById('btHuntPrize').value})">Open guessing</button><button class="bt-btn" onclick="botAct('hunt_close')">Close guessing</button></div>
+              <div class="bt-row"><input id="btHuntResult" type="text" placeholder="Final $ total, e.g. 1450" style="flex:1"><button class="bt-btn p" onclick="botAct('hunt_result',{result:document.getElementById('btHuntResult').value})">Settle &amp; pay winner</button></div>
+              <div id="btActMsg" class="bt-msg"></div>
+            </div>
+            <div class="bt-card">
+              <h4>📣 Announcement</h4>
+              <div class="bt-row"><textarea id="btAnnText" maxlength="450" placeholder="Write a message for Kick chat and/or the Discord announcements channel…"></textarea></div>
+              <div class="bt-row"><label class="bt-f sw"><input type="checkbox" id="btAnnKick" checked> Kick chat</label><label class="bt-f sw"><input type="checkbox" id="btAnnDc" checked> Discord</label><button class="bt-btn p" style="margin-left:auto" onclick="botAnnounce()">Send</button></div>
+              <div id="btAnnMsg" class="bt-msg"></div>
+              <div style="margin-top:12px;font-size:.8rem;color:var(--faint)">Players type <b style="color:#fff">!commands</b> in Kick chat to see everything the bot can do. Mods can also use <b style="color:#fff">!drop</b> and <b style="color:#fff">!hunt open/close/result</b>.</div>
+            </div>
+          </div>
+          <div class="bt-sets">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 0 6px;flex-wrap:wrap"><h4 style="margin:0">⚙️ Bot settings</h4><div style="display:flex;gap:10px;align-items:center"><span id="btSaveMsg" class="bt-msg" style="margin:0"></span><button class="bt-btn p" id="btSaveBtn" onclick="saveBotSettings()" disabled>Save settings</button></div></div>
+            <div id="btSettings">Loading&hellip;</div>
+          </div>
+          <div class="bt-card" style="margin-bottom:16px">
+            <h4>🧾 Recent bot payouts</h4>
+            <div id="btLedger" style="overflow-x:auto">Loading&hellip;</div>
+          </div>
+        </div>
         <!-- VAULT TAB -->
         <div id="adminOverviewTab" class="admin-tab-panel">
           <div id="adminOverviewGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:28px">Loading&hellip;</div>
@@ -8264,6 +8382,7 @@ function renderProfile(data){
 
   /* Only APPROVED casino accounts can receive platform redemptions -- the Redeem card shows
      the verified username (no free typing) and the worker enforces the same rule. */
+  try{ loadKickLink(); }catch(e){}
   _pfVerified = {};
   (data.casino_links||[]).forEach(function(l){ if(l.status === 'approved') _pfVerified[l.casino] = l.casino_username; });
   document.querySelectorAll('.pf-redeem-method').forEach(function(b){
@@ -8366,6 +8485,7 @@ function renderProfile(data){
     redemption: 'Redeemed',
     redemption_refund: 'Redemption refunded',
     admin_add: 'Coins adjusted by the team',
+    bot_reward: 'Jammmy Bot reward',
   };
   /* Shows 10 at a time instead of dumping up to 15-50 transactions in one long list, with
      Previous/Next paging through whatever the backend already returned (up to 50) rather
@@ -8417,6 +8537,7 @@ function renderTransactionsPage(){
     redemption: 'Redeemed',
     redemption_refund: 'Redemption refunded',
     admin_add: 'Coins adjusted by the team',
+    bot_reward: 'Jammmy Bot reward',
   };
   var PAGE_SIZE = 10;
   if(!all.length){ txEl.textContent = 'No activity yet.'; return; }
@@ -8831,12 +8952,175 @@ function switchAdminTab(tabId){
   if(tabId==='adminBattlesTab') loadAdminBattles();
   if(tabId==='adminAuditTab') loadAuditLog(true);
   if(tabId==='adminSecurityTab') loadAdminSecurity();
+  if(tabId==='adminBotTab') loadBotAdmin();
 }
 
 /* Backs both the Overview tab and the pending-count badges on every other tab button, so
    admin can see what needs attention without clicking into each one first. Called once on
    dashboard load (for the badges) and again whenever the Overview tab itself is opened. */
 /* Homepage live card settings (admin) */
+/* ===== Jammmy Bot: admin tab ===== */
+var BOT_FIELDS = [
+  ['Budget', [['weekly_budget','num','Weekly coin budget','All bot payouts together stop once this is reached. 100 coins = $1. Resets every Monday.']]],
+  ['Kick chat', [
+    ['kick_on','bool','Kick bot on'],['kick_cmds_on','bool','Chat commands (!balance, !lb, …)'],
+    ['kick_watch_on','bool','Coins for chatting on stream'],['kick_watch_coins','num','Coins per reward'],['kick_watch_every','num','Active minutes per reward','A viewer counts as active in a minute when they chat in it.'],['kick_watch_cap','num','Max coins per viewer per stream'],
+    ['kick_drops_on','bool','Automatic chat drops'],['kick_drop_amount','num','Coins per drop winner'],['kick_drop_winners','num','Winners per drop'],['kick_drop_window','num','Seconds to type !claim'],['kick_drop_every','num','Minutes between automatic drops (about)'],
+    ['kick_sub_coins','num','Coins for a new sub / resub'],['kick_gift_coins','num','Coins per gifted sub (to the gifter)'],
+    ['kick_follow_msg','bool','Thank new followers in chat'],['kick_sr_on','bool','!sr slot requests from chat'],['kick_guess_on','bool','!guess bonus hunt guessing'],
+    ['kick_live_msg','area','Message when the stream starts']]],
+  ['Discord', [
+    ['dc_on','bool','Discord bot on'],['dc_dm_on','bool','DM players (redemption paid, slot played, invite rewards)'],
+    ['dc_announce_ch','text','Announcements channel ID','Right-click the channel in Discord → Copy Channel ID (turn on Developer Mode first).'],['dc_staff_ch','text','Staff alerts channel ID','New joins that look like alts or blocked players get posted here.'],
+    ['dc_live_ping','text','Ping when live','e.g. @everyone, @here, <@&ROLE_ID> or leave empty.'],['dc_live_claim_coins','num','Coins on the "Claim" button when live'],['dc_live_claim_min','num','Minutes the live claim stays open'],
+    ['dc_chat_on','bool','Coins for chatting in Discord'],['dc_chat_coins','num','Coins per reward'],['dc_chat_per_coin','num','Counted messages per reward'],['dc_chat_cooldown','num','Seconds between counted messages'],['dc_chat_min_chars','num','Minimum message length'],['dc_chat_cap','num','Max chat coins per person per day'],
+    ['dc_ignore_channels','text','Channel IDs that don\'t count','Comma separated, e.g. a spam or bot-commands channel.'],
+    ['dc_invite_on','bool','Invite rewards'],['dc_invite_coins','num','Coins per invited friend','Paid when the invited friend gets their Power.win account verified. Same device/network = no reward.'],
+    ['dc_verified_role','text','"Verified Power.win" role ID','Given automatically to verified players. Leave empty to skip.'],
+    ['dc_level_roles','text','Activity roles','messages:roleID pairs, e.g. 100:123…,500:456…,2000:789…']]],
+  ['Code drops', [['code_drop_amount','num','Coins per code winner'],['code_drop_winners','num','Winners per code'],['code_drop_minutes','num','Minutes a code stays valid']]]
+];
+var _botSettings = null;
+function botTok(){ return localStorage.getItem('jammy_session_token'); }
+async function botFetch(path, body){
+  var res = await fetch(AUTH_API + path, body ? { method:'POST', headers:{ 'Authorization':'Bearer ' + botTok(), 'Content-Type':'application/json' }, body: JSON.stringify(body) } : { headers:{ 'Authorization':'Bearer ' + botTok() } });
+  var d = {}; try{ d = await res.json(); }catch(e){}
+  if(!res.ok && !d.error) d.error = 'Request failed (' + res.status + ')';
+  return d;
+}
+function botAgo(ms){ if(!ms) return 'never'; var d = (Date.now() - ms) / 1000; if(d < 90) return 'just now'; if(d < 3600) return Math.floor(d/60) + ' min ago'; if(d < 86400) return Math.floor(d/3600) + ' h ago'; return Math.floor(d/86400) + ' d ago'; }
+function botCopy(t, btn){ try{ navigator.clipboard.writeText(t); btn.textContent = 'Copied ✓'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1400); }catch(e){} }
+async function loadBotAdmin(){
+  var st = await botFetch('/api/admin/bot-status');
+  var k = document.getElementById('btKick'), dc = document.getElementById('btDiscord'), bu = document.getElementById('btBudget');
+  if(st.error){ k.textContent = st.error; dc.textContent = ''; bu.textContent = ''; return; }
+  var K = st.kick || {}, ev = K.last_event;
+  k.innerHTML =
+      '<div class="bt-line"><span>Bot account</span>' + (K.bot ? '<b class="bt-ok">✓ ' + pccEsc(K.bot.username || 'connected') + '</b>' : '<button class="bt-btn g" onclick="botKickConnect(\'bot\')">Connect bot account</button>') + '</div>'
+    + '<div class="bt-line"><span>Jammy\'s channel</span>' + (K.channel ? '<b class="bt-ok">✓ ' + pccEsc(K.channel.username || 'connected') + '</b>' : '<button class="bt-btn g" onclick="botKickConnect(\'channel\')">Connect channel</button>') + '</div>'
+    + '<div class="bt-line"><span>Last event from Kick</span><b class="' + (ev && Date.now() - ev.at < 3*86400000 ? 'bt-ok' : 'bt-warn') + '">' + (ev ? botAgo(ev.at) : 'none yet') + '</b></div>'
+    + '<div class="bt-line"><span>Linked viewers</span><b>' + Number(K.linked_players || 0).toLocaleString() + '</b></div>'
+    + '<div class="bt-row">' + (K.channel ? '<button class="bt-btn" onclick="botAct(\'kick_subscribe\')">Re-subscribe events</button>' : '') + (K.bot ? '<button class="bt-btn" onclick="botAct(\'kick_disconnect\',{role:\'bot\'},true)">Disconnect bot</button>' : '') + (K.channel ? '<button class="bt-btn" onclick="botAct(\'kick_disconnect\',{role:\'channel\'},true)">Disconnect channel</button>' : '') + '</div>'
+    + (K.app_keys ? '' : '<div class="bt-msg bt-no">KICK_CLIENT_ID / KICK_CLIENT_SECRET missing on the worker.</div>')
+    + '<details style="margin-top:8px"><summary style="cursor:pointer;font-size:.8rem;color:var(--muted)">Kick app setup URLs</summary>'
+    + '<div style="font-size:.76rem;color:var(--faint);margin-top:6px">Webhook URL</div><div class="bt-copy"><code>' + pccEsc(K.webhook_url) + '</code><button class="bt-btn" onclick="botCopy(\'' + K.webhook_url + '\',this)">Copy</button></div>'
+    + '<div style="font-size:.76rem;color:var(--faint);margin-top:6px">Redirect URL</div><div class="bt-copy"><code>' + pccEsc(K.redirect_url) + '</code><button class="bt-btn" onclick="botCopy(\'' + K.redirect_url + '\',this)">Copy</button></div></details>';
+  var D = st.discord || {}, seen = D.last_seen;
+  var online = seen && Date.now() - seen.at < 5 * 60000;
+  dc.innerHTML =
+      '<div class="bt-line"><span>Bot program</span><b class="' + (online ? 'bt-ok' : 'bt-no') + '">' + (online ? '● Online' : seen ? '● Offline (' + botAgo(seen.at) + ')' : '● Never connected') + '</b></div>'
+    + (seen && seen.guild ? '<div class="bt-line"><span>Server</span><b>' + pccEsc(seen.guild) + (seen.members ? ' · ' + Number(seen.members).toLocaleString() + ' members' : '') + '</b></div>' : '')
+    + '<div class="bt-line"><span>DISCORD_BOT_TOKEN on worker</span><b class="' + (D.token_set ? 'bt-ok' : 'bt-no') + '">' + (D.token_set ? '✓ set' : '✗ missing') + '</b></div>'
+    + '<div class="bt-line"><span>BOT_API_KEY on worker</span><b class="' + (D.key_set ? 'bt-ok' : 'bt-no') + '">' + (D.key_set ? '✓ set' : '✗ missing') + '</b></div>';
+  var B = st.budget || {}, pct = B.budget > 0 ? Math.min(100, B.used / B.budget * 100) : 100;
+  var KIND = { kick_watch:'Kick chatting', kick_drop:'Kick drops', kick_sub:'Kick subs', kick_gift:'Gifted subs', hunt_guess:'Hunt guesses', code_drop:'Code drops', discord_live_claim:'Live claims', discord_chat:'Discord chat', discord_invite:'Invites', giveaway:'Giveaways' };
+  bu.innerHTML = '<div class="bt-big">' + Number(B.used || 0).toLocaleString() + ' <small>/ ' + Number(B.budget || 0).toLocaleString() + ' coins</small></div>'
+    + '<div class="bt-bar"><i style="width:' + pct.toFixed(1) + '%;background-position:' + pct.toFixed(0) + '% 0"></i></div>'
+    + '<div style="font-size:.78rem;color:var(--faint)">≈ $' + (Number(B.used || 0) / 100).toFixed(2) + ' of $' + (Number(B.budget || 0) / 100).toFixed(2) + ' · resets Monday</div>'
+    + (B.by_kind && B.by_kind.length ? B.by_kind.map(function(x){ return '<div class="bt-line"><span>' + (KIND[x.kind] || x.kind) + ' <small style="color:var(--faint)">×' + x.n + '</small></span><b>' + Number(x.t).toLocaleString() + '</b></div>'; }).join('') : '<div class="bt-line"><span>No payouts yet this week</span></div>');
+  var lv = document.getElementById('btLive'), live = st.stream && st.stream.live;
+  lv.className = 'bt-live' + (live ? ' on' : ''); lv.innerHTML = '<i></i>' + (live ? 'LIVE' : 'Offline');
+  var h = st.hunt, he = document.getElementById('btHunt');
+  he.textContent = h ? (h.status === 'open' ? '· open, ' + h.entries + ' guesses, prize ' + h.prize : h.status === 'closed' ? '· closed, ' + h.entries + ' guesses, waiting for result' : '· last result $' + Number(h.result).toLocaleString()) : '';
+  var L = st.ledger || [];
+  document.getElementById('btLedger').innerHTML = L.length ? '<table class="bt-log"><tr><th>When</th><th>Player</th><th>For</th><th class="hm">Where</th><th style="text-align:right">Coins</th></tr>'
+    + L.map(function(r){ return '<tr><td>' + pccEsc(rqAgo(r.created_at)) + '</td><td>' + pccEsc(r.username || r.user_id) + '</td><td>' + pccEsc(KIND[r.kind] || r.kind) + '</td><td class="hm">' + pccEsc(r.platform || '') + '</td><td style="text-align:right;color:#fbbf24;font-weight:700">+' + Number(r.amount).toLocaleString() + '</td></tr>'; }).join('') + '</table>'
+    : adminEmptyState('🤖', 'No bot payouts yet', 'They show up here as soon as the bot gives coins.');
+  if(!_botSettings) loadBotSettings();
+}
+async function loadBotSettings(){
+  var d = await botFetch('/api/admin/bot-settings');
+  var box = document.getElementById('btSettings');
+  if(d.error){ box.textContent = d.error; return; }
+  _botSettings = d.settings;
+  box.innerHTML = BOT_FIELDS.map(function(g, gi){
+    return '<details' + (gi === 0 ? ' open' : '') + '><summary>' + g[0] + '</summary><div class="bt-fs">' + g[1].map(function(f){
+      var k = f[0], t = f[1], v = _botSettings[k], help = f[3] ? '<small>' + pccEsc(f[3]) + '</small>' : '';
+      if(t === 'bool') return '<label class="bt-f sw"><input type="checkbox" data-bk="' + k + '"' + (v ? ' checked' : '') + '> ' + pccEsc(f[2]) + '</label>';
+      if(t === 'area') return '<label class="bt-f full">' + pccEsc(f[2]) + '<textarea data-bk="' + k + '" rows="2" maxlength="480">' + pccEsc(v || '') + '</textarea>' + help + '</label>';
+      return '<label class="bt-f' + (k === 'dc_level_roles' || k === 'dc_ignore_channels' ? ' full' : '') + '">' + pccEsc(f[2]) + '<input type="' + (t === 'num' ? 'number' : 'text') + '" data-bk="' + k + '" value="' + pccEsc(v == null ? '' : v) + '"' + (t === 'num' ? ' min="0" step="any"' : '') + '>' + help + '</label>';
+    }).join('') + '</div></details>';
+  }).join('');
+  document.getElementById('btSaveBtn').disabled = false;
+}
+async function saveBotSettings(){
+  var body = {}, btn = document.getElementById('btSaveBtn'), msg = document.getElementById('btSaveMsg');
+  document.querySelectorAll('#btSettings [data-bk]').forEach(function(el){ body[el.dataset.bk] = el.type === 'checkbox' ? el.checked : el.value; });
+  btn.disabled = true; msg.textContent = 'Saving…'; msg.style.color = 'var(--muted)';
+  var d = await botFetch('/api/admin/bot-settings', body);
+  btn.disabled = false;
+  if(d.error){ msg.textContent = d.error; msg.style.color = '#f87171'; return; }
+  _botSettings = null; await loadBotSettings(); loadBotAdmin();
+  msg.textContent = '✓ Saved'; msg.style.color = '#4ade80';
+}
+async function botKickConnect(role){
+  var ok = await jmConfirm(role === 'bot'
+    ? 'You\'ll be sent to Kick. Make sure you are logged into Kick as the BOT account (e.g. JammmyBot), not your own, then press Allow.'
+    : 'You\'ll be sent to Kick. Make sure you are logged into Kick as JAMMY (jammmyslots), then press Allow.', { title: role === 'bot' ? 'Connect the bot account' : 'Connect Jammy\'s channel', ok: 'Go to Kick' });
+  if(!ok) return;
+  var d = await botFetch('/api/admin/bot-action', { action: 'kick_oauth_url', role: role });
+  if(d.url) location.href = d.url; else jmAlert(d.error || 'Could not start the Kick connection.');
+}
+async function botAct(action, extra, confirmFirst){
+  if(confirmFirst && !(await jmConfirm('Are you sure?'))) return;
+  var msg = document.getElementById('btActMsg');
+  msg.textContent = 'Working…'; msg.style.color = 'var(--muted)';
+  var body = Object.assign({ action: action }, extra || {});
+  var d = await botFetch('/api/admin/bot-action', body);
+  if(d.error){ msg.textContent = d.error; msg.style.color = '#f87171'; }
+  else { msg.textContent = d.message || (action === 'hunt_result' ? (d.winner ? '🏆 ' + d.winner + ' won (guessed $' + Number(d.guess).toLocaleString() + ')' : 'Settled, nobody guessed') : action === 'hunt_open' ? 'Guessing open, prize ' + d.prize : action === 'hunt_close' ? 'Guessing closed, ' + d.entries + ' guesses' : '✓ Done'); msg.style.color = '#4ade80'; }
+  loadBotAdmin();
+}
+async function botAnnounce(){
+  var t = document.getElementById('btAnnText').value.trim(), m = document.getElementById('btAnnMsg');
+  if(!t){ m.textContent = 'Write a message first.'; m.style.color = '#f87171'; return; }
+  m.textContent = 'Sending…'; m.style.color = 'var(--muted)';
+  var d = await botFetch('/api/admin/bot-action', { action: 'announce', text: t, kick: document.getElementById('btAnnKick').checked, discord: document.getElementById('btAnnDc').checked });
+  m.textContent = d.error || d.message; m.style.color = d.error ? '#f87171' : '#4ade80';
+  if(!d.error) document.getElementById('btAnnText').value = '';
+}
+/* back from Kick's connect page: /?kick=message#admin */
+(function(){ try{
+  var q = new URLSearchParams(location.search), k = q.get('kick');
+  if(!k) return;
+  history.replaceState(null, '', location.pathname + location.hash);
+  window.addEventListener('load', function(){ setTimeout(function(){ jmAlert(k, { title: 'Kick' }); try{ nav('admin'); setTimeout(function(){ switchAdminTab('adminBotTab'); }, 600); }catch(e){} }, 800); });
+}catch(e){} })();
+
+/* ===== Profile: link Kick + redeem code drops ===== */
+async function loadKickLink(){
+  var box = document.getElementById('pfKickBox'); if(!box || !botTok()) return;
+  var d = await botFetch('/api/kick-link');
+  renderKickLink(d);
+}
+function renderKickLink(d){
+  var box = document.getElementById('pfKickBox'); if(!box) return;
+  if(d.error){ box.innerHTML = '<div class="kl-hint">' + pccEsc(d.error) + '</div>'; return; }
+  if(d.linked){
+    box.innerHTML = '<div class="kl-row"><span class="kl-k" style="width:34px;height:34px;font-size:1.1rem">K</span><div><b>' + pccEsc(d.linked.kick_username) + '</b><small>Linked · you earn coins when you chat on stream</small></div><button class="kl-x" onclick="unlinkKick()">Unlink</button></div>';
+    return;
+  }
+  if(d.code){
+    box.innerHTML = '<div class="kl-steps"><div class="kl-codebox"><code>!link ' + pccEsc(d.code.code) + '</code><button onclick="botCopy(\'!link ' + d.code.code + '\',this)">Copy</button></div>'
+      + '<div class="kl-hint">Type <b>!link ' + pccEsc(d.code.code) + '</b> in <a href="https://kick.com/jammmyslots" target="_blank" rel="noopener" style="color:#53fc18">Jammy\'s Kick chat</a> from your Kick account. Code works for 15 minutes.</div>'
+      + '<div class="bt-row" style="margin:0"><button class="bt-btn" onclick="loadKickLink()">I typed it, check again</button></div></div>';
+    return;
+  }
+  box.innerHTML = '<button class="admin-btn-primary kl-go" onclick="newKickCode()">Get my link code</button>';
+}
+async function newKickCode(){ renderKickLink(await botFetch('/api/kick-link', {})); }
+async function unlinkKick(){ if(!(await jmConfirm('Unlink your Kick account? You\'ll stop earning coins from Kick chat until you link again.'))) return; renderKickLink(await botFetch('/api/kick-link', { action: 'unlink' })); }
+async function redeemDropCode(e){
+  e.preventDefault();
+  var inp = document.getElementById('pfDropCode'), btn = document.getElementById('pfDropBtn'), m = document.getElementById('pfDropMsg');
+  var code = inp.value.trim(); if(!code) return;
+  btn.disabled = true; m.textContent = 'Checking…'; m.style.color = 'var(--muted)';
+  var d = await botFetch('/api/redeem-code', { code: code });
+  btn.disabled = false;
+  if(d.error){ m.textContent = d.error; m.style.color = '#f87171'; return; }
+  m.textContent = '🎉 +' + Number(d.amount).toLocaleString() + ' Jammmy Coins!'; m.style.color = '#4ade80'; inp.value = '';
+  if(d.balance != null){ var c = document.getElementById('pfCoinsNum'); if(c && typeof fmtCoins === 'function') c.textContent = fmtCoins(d.balance); }
+}
 async function loadLiveCardSettings(){
   var token = localStorage.getItem('jammy_session_token'); if(!token || !document.getElementById('lcGiven')) return;
   try{
@@ -10457,7 +10741,7 @@ function vsRender(){
       + '<button type="button" onclick="vsSwap()">⇄ Swap</button><button type="button" onclick="vsReset()">↺ Reset results</button><button type="button" onclick="vsFull()">⛶ Fullscreen</button>'
       + '<button type="button" class="vs-del" onclick="vsDelete(_vsCur)">🗑 Delete</button><button type="button" onclick="vsClose()">✕ Close</button></div></div>'
     + '<div class="vs-arena">' + vsSideHtml('a')
-      + '<div class="vs-mid"><div class="vs-badge">VS</div><button type="button" class="vs-reveal" id="vsRevealBtn" onclick="vsReveal()">👑 Crown winner</button><div class="vs-verdict" id="vsVerdict"></div></div>'
+      + '<div class="vs-mid"><div class="vs-badge">VS</div><button type="button" class="vs-reveal" id="vsRevealBtn" onclick="vsReveal()">👑 Crown winner</button><div class="vs-verdict" id="vsVerdict"></div><button type="button" class="vs-ann" id="vsAnnBtn" onclick="vsAnnounce(this)" style="display:none">📣 Announce in chat</button></div>'
       + vsSideHtml('b') + '</div>'
   + '</div>';
   vsUpdate(false);
@@ -10478,12 +10762,25 @@ function vsUpdate(celebrate){
   if(!A || !B) return;
   A.classList.remove('win','lose'); B.classList.remove('win','lose');
   if(V) V.textContent = '';
+  var ab0 = document.getElementById('vsAnnBtn'); if(ab0) ab0.style.display = 'none';
   if(!_vsState.revealed || !w) return;
   if(w === 'tie'){ if(V) V.textContent = '🤝 Dead heat — it\'s a tie!'; return; }
   var W = w === 'a' ? A : B, L = w === 'a' ? B : A;
   W.classList.add('win'); L.classList.add('lose');
   if(V) V.textContent = '🏆 ' + _vsState[w].user + ' wins!';
+  var ab = document.getElementById('vsAnnBtn'); if(ab){ ab.style.display = ''; ab.disabled = false; ab.textContent = '📣 Announce in chat'; }
   if(celebrate) vsConfetti();
+}
+async function vsAnnounce(btn){
+  var w = vsWinnerKey(_vsState); if(!w || w === 'tie') return;
+  var W = _vsState[w], L = _vsState[w === 'a' ? 'b' : 'a'];
+  var text = '⚔️ SLOT VERSUS: ' + W.slot + ' (' + vsFmtX(vsMult(W)) + ', picked by ' + W.user + ') beat ' + L.slot + ' (' + vsFmtX(vsMult(L)) + ', picked by ' + L.user + ')! 🏆';
+  btn.disabled = true; btn.textContent = 'Sending…';
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/bot-action', { method:'POST', headers:{ 'Authorization':'Bearer ' + localStorage.getItem('jammy_session_token'), 'Content-Type':'application/json' }, body: JSON.stringify({ action:'announce', text: text }) });
+    var d = await res.json();
+    btn.textContent = res.ok ? '✓ ' + (d.message || 'Sent') : (d.error || 'Failed');
+  }catch(e){ btn.textContent = 'Network error'; btn.disabled = false; }
 }
 function vsReveal(){
   if(!_vsState) return;
