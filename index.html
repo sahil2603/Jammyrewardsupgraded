@@ -4804,6 +4804,36 @@ body.on-admin .ambient-glow-blob{opacity:.35}
 .jmd-b .jmd-ok:hover{filter:brightness(1.12)}
 .jmd-b button:focus-visible{outline:2px solid #c4b5fd;outline-offset:2px}
 @media (max-width:480px){.jmd-b button{flex:1}}
+.jmd-box.jdrop{width:min(480px,100%);max-height:calc(100dvh - 32px);overflow:auto}
+.jdrop .jmd-m b{color:#fff}
+.jd-warn{margin-top:12px;padding:10px 12px;border-radius:12px;font-size:.84rem;color:#fde68a;background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.35)}
+.jd-lbl{margin:16px 0 7px;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.6)}
+.jd-pre{display:flex;flex-wrap:wrap;gap:6px}
+.jd-pre button{padding:7px 11px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:#fff;font:600 .82rem 'Poppins',sans-serif;cursor:pointer}
+.jd-pre button:hover{background:rgba(255,255,255,.1)}
+.jd-pre button.on{background:rgba(168,85,247,.28);border-color:rgba(192,132,252,.7)}
+.jd-grid{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:10px;margin-top:14px}
+.jd-grid label,.jd-code{display:flex;flex-direction:column;gap:6px;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.6)}
+.jd-code{margin-top:12px}
+.jd-code small{font-weight:500;color:rgba(255,255,255,.4)}
+.jdrop input:not([type=checkbox]),.jdrop select{width:100%;box-sizing:border-box;height:44px;padding:0 12px;border-radius:12px;background:#0b0712;border:1px solid rgba(255,255,255,.14);color:#fff;font:600 .95rem 'Poppins',sans-serif}
+.jdrop input:focus,.jdrop select:focus{outline:0;border-color:rgba(168,85,247,.7);box-shadow:0 0 0 3px rgba(168,85,247,.2)}
+.jd-to{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:.86rem}
+.jd-to label{display:flex;align-items:center;gap:7px;cursor:pointer}
+.jd-to small{color:rgba(255,255,255,.4)}
+.jd-to input{width:17px;height:17px;accent-color:#a855f7}
+.jd-sum{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.jd-sum div{padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:1px}
+.jd-sum span{font-size:.72rem;color:rgba(255,255,255,.5)}
+.jd-sum b{font-size:1.05rem}
+.jd-sum b.bad{color:#f87171}
+.jd-sum small{font-size:.72rem;color:rgba(255,255,255,.45)}
+.jd-prev{margin-top:10px;padding:10px 12px;border-radius:12px;font-size:.82rem;line-height:1.45;color:rgba(255,255,255,.85);background:rgba(83,252,24,.06);border:1px solid rgba(83,252,24,.22);word-break:break-word}
+.jd-prev span{display:block;font-size:.7rem;font-weight:600;color:rgba(255,255,255,.45);margin-bottom:3px}
+.jd-err{margin-top:8px;font-size:.82rem;color:#f87171;min-height:1em}
+.jdrop .jmd-ok[disabled]{opacity:.45;cursor:not-allowed;filter:grayscale(.4)}
+@media (max-width:480px){.jd-grid{grid-template-columns:1fr 1fr}.jd-grid label:last-child{grid-column:1/-1}}
+
 </style>
 <script>
 (function(){
@@ -6080,7 +6110,7 @@ body.on-admin .ambient-glow-blob{opacity:.35}
           <div class="bt-acts">
             <div class="bt-card">
               <h4>🎮 Live controls <span id="btLive" class="bt-live"><i></i>Offline</span></h4>
-              <div class="bt-row"><button class="bt-btn p" onclick="botAct('drop_now')">🎁 Start Kick drop</button><button class="bt-btn p" onclick="botAct('code_drop')">🔑 Post code drop</button><button class="bt-btn" onclick="botAct('test')">🧪 Send test messages</button></div>
+              <div class="bt-row"><button class="bt-btn p" onclick="botDropDialog('kick')">🎁 Start Kick drop</button><button class="bt-btn p" onclick="botDropDialog('code')">🔑 Post code drop</button><button class="bt-btn" onclick="botAct('test')">🧪 Send test messages</button></div>
               <div style="margin-top:14px;font-weight:700;font-size:.88rem">🎯 Bonus hunt guessing <span id="btHunt" style="color:var(--muted);font-weight:500"></span></div>
               <div class="bt-row"><input id="btHuntPrize" type="number" min="1" value="100" style="width:110px" title="Prize coins"><button class="bt-btn" onclick="botAct('hunt_open',{prize:document.getElementById('btHuntPrize').value})">Open guessing</button><button class="bt-btn" onclick="botAct('hunt_close')">Close guessing</button></div>
               <div class="bt-row"><input id="btHuntResult" type="text" placeholder="Final $ total, e.g. 1450" style="flex:1"><button class="bt-btn p" onclick="botAct('hunt_result',{result:document.getElementById('btHuntResult').value})">Settle &amp; pay winner</button></div>
@@ -9014,6 +9044,7 @@ async function loadBotAdmin(){
     + (seen && seen.guild ? '<div class="bt-line"><span>Server</span><b>' + pccEsc(seen.guild) + (seen.members ? ' · ' + Number(seen.members).toLocaleString() + ' members' : '') + '</b></div>' : '')
     + '<div class="bt-line"><span>DISCORD_BOT_TOKEN on worker</span><b class="' + (D.token_set ? 'bt-ok' : 'bt-no') + '">' + (D.token_set ? '✓ set' : '✗ missing') + '</b></div>'
     + '<div class="bt-line"><span>BOT_API_KEY on worker</span><b class="' + (D.key_set ? 'bt-ok' : 'bt-no') + '">' + (D.key_set ? '✓ set' : '✗ missing') + '</b></div>';
+  _botState = st;
   var B = st.budget || {}, pct = B.budget > 0 ? Math.min(100, B.used / B.budget * 100) : 100;
   var KIND = { kick_watch:'Kick chatting', kick_drop:'Kick drops', kick_sub:'Kick subs', kick_gift:'Gifted subs', hunt_guess:'Hunt guesses', code_drop:'Code drops', discord_live_claim:'Live claims', discord_chat:'Discord chat', discord_invite:'Invites', giveaway:'Giveaways' };
   bu.innerHTML = '<div class="bt-big">' + Number(B.used || 0).toLocaleString() + ' <small>/ ' + Number(B.budget || 0).toLocaleString() + ' coins</small></div>'
@@ -9074,7 +9105,75 @@ async function botAct(action, extra, confirmFirst){
   if(d.error){ msg.textContent = d.error; msg.style.color = '#f87171'; }
   else { msg.textContent = d.message || (action === 'hunt_result' ? (d.winner ? '🏆 ' + d.winner + ' won (guessed $' + Number(d.guess).toLocaleString() + ')' : 'Settled, nobody guessed') : action === 'hunt_open' ? 'Guessing open, prize ' + d.prize : action === 'hunt_close' ? 'Guessing closed, ' + d.entries + ' guesses' : '✓ Done'); msg.style.color = '#4ade80'; }
   loadBotAdmin();
+  return d;
 }
+/* ── drop setup: pick the coins, winners and time before a drop goes out ── */
+var _botState = null;
+function botDropDialog(kind){
+  var S = _botSettings || {}, st = _botState || {}, B = st.budget || {}, live = !!(st.stream && st.stream.live);
+  var isKick = kind === 'kick';
+  var mem = {}; try { mem = JSON.parse(localStorage.getItem('jm_drop_' + kind) || '{}') || {}; } catch(e) {}
+  var def = isKick ? { amount: S.kick_drop_amount || 10, winners: S.kick_drop_winners || 10, time: S.kick_drop_window || 60 }
+                   : { amount: S.code_drop_amount || 15, winners: S.code_drop_winners || 10, time: S.code_drop_minutes || 30 };
+  var v = { amount: mem.amount || def.amount, winners: mem.winners || def.winners, time: mem.time || def.time };
+  var left = Math.max(0, Number(B.budget || 0) - Number(B.used || 0));
+  var presets = [[10,10],[25,10],[50,5],[100,3],[250,1]];
+  var times = isKick ? [[30,'30 sec'],[60,'1 min'],[90,'1.5 min'],[120,'2 min'],[300,'5 min']] : [[5,'5 min'],[10,'10 min'],[15,'15 min'],[30,'30 min'],[60,'1 hour'],[120,'2 hours']];
+  if (!times.some(function(t){ return t[0] == v.time; })) times.push([v.time, isKick ? v.time + ' sec' : v.time + ' min']);
+  var prev = document.activeElement;
+  var d = document.createElement('div');
+  d.id = 'jmDlg'; d.setAttribute('role', 'dialog'); d.setAttribute('aria-modal', 'true'); d.setAttribute('aria-labelledby', 'dropT');
+  d.innerHTML = '<div class="jmd-box jdrop"><div class="jmd-ic" aria-hidden="true">' + (isKick ? '🎁' : '🔑') + '</div>'
+    + '<p class="jmd-t" id="dropT">' + (isKick ? 'Start a Kick drop' : 'Post a code drop') + '</p>'
+    + '<p class="jmd-m">' + (isKick ? 'The first viewers to type <b>!claim</b> in Kick chat get the coins. Only linked accounts can claim.' : 'A code people enter on the website (Profile → Have a code?). The first ones to enter it get the coins.') + '</p>'
+    + (isKick && !live ? '<div class="jd-warn">Jammy isn\'t live on Kick right now, so a Kick drop can\'t start. Use a code drop instead.</div>' : '')
+    + '<div class="jd-lbl">Quick picks <span style="font-weight:500;color:rgba(255,255,255,.4)">winners × coins</span></div><div class="jd-pre">' + presets.map(function(p){ return '<button type="button" data-a="' + p[0] + '" data-w="' + p[1] + '">' + p[1] + ' × ' + p[0] + '</button>'; }).join('') + '</div>'
+    + '<div class="jd-grid"><label>Coins each<input id="jdA" type="number" min="1" step="1" inputmode="numeric" value="' + v.amount + '"></label>'
+    + '<label>Winners<input id="jdW" type="number" min="1" step="1" inputmode="numeric" value="' + v.winners + '"></label>'
+    + '<label>' + (isKick ? 'Time to claim' : 'Code works for') + '<select id="jdT">' + times.map(function(t){ return '<option value="' + t[0] + '"' + (t[0] == v.time ? ' selected' : '') + '>' + t[1] + '</option>'; }).join('') + '</select></label></div>'
+    + (isKick ? '' : '<label class="jd-code">Code <small>(optional; leave empty for a random one)</small><input id="jdC" maxlength="20" autocomplete="off" placeholder="e.g. JAMMMYLIVE"></label>'
+      + '<div class="jd-to"><label><input type="checkbox" id="jdK"' + (live ? ' checked' : ' disabled') + '> Kick chat' + (live ? '' : ' <small>(not live)</small>') + '</label><label><input type="checkbox" id="jdD" checked> Discord announcements</label></div>')
+    + '<div class="jd-sum" id="jdSum"></div>'
+    + '<div class="jd-prev" id="jdPrev"></div><div class="jd-err" id="jdErr" role="alert"></div>'
+    + '<div class="jmd-b"><button type="button" class="jmd-no">Cancel</button><button type="button" class="jmd-ok" id="jdGo">' + (isKick ? 'Start drop' : 'Post code') + '</button></div></div>';
+  document.body.appendChild(d);
+  var $ = function(id){ return d.querySelector('#' + id); };
+  function num(id){ return Math.max(0, Math.floor(Number($(id).value) || 0)); }
+  function paint(){
+    var a = num('jdA'), w = num('jdW'), t = Number($('jdT').value), total = a * w;
+    var over = B.budget > 0 && total > left;
+    $('jdSum').innerHTML = '<div><span>Costs up to</span><b>' + total.toLocaleString() + ' coins</b><small>≈ $' + (total / 100).toFixed(2) + '</small></div>'
+      + '<div><span>Budget left this week</span><b class="' + (over ? 'bad' : '') + '">' + left.toLocaleString() + '</b><small>' + (over ? 'Not enough for every winner' : 'of ' + Number(B.budget || 0).toLocaleString()) + '</small></div>';
+    var code = isKick ? '' : ($('jdC').value.trim() || 'JAM-?????');
+    var tl = isKick ? t + 's' : t + ' min';
+    $('jdPrev').innerHTML = '<span>Chat message preview</span>' + pccEsc(isKick ? '🎁 DROP! First ' + w + ' to type !claim in the next ' + t + 's get ' + a.toLocaleString() + ' Jammmy Coins! (linked accounts only)' : '🔑 CODE DROP: ' + code + ' · first ' + w + ' to enter it get ' + a.toLocaleString() + ' Jammmy Coins (' + tl + ') 👉 jammmyrewards.com/#profile');
+    $('jdGo').disabled = !a || !w || (isKick && !live);
+    $('jdErr').textContent = '';
+    d.querySelectorAll('.jd-pre button').forEach(function(b){ b.classList.toggle('on', +b.dataset.a === a && +b.dataset.w === w); });
+  }
+  d.querySelectorAll('.jd-pre button').forEach(function(b){ b.onclick = function(){ $('jdA').value = b.dataset.a; $('jdW').value = b.dataset.w; paint(); }; });
+  ['jdA','jdW','jdT','jdC'].forEach(function(id){ var e = $(id); if (e) { e.addEventListener('input', paint); e.addEventListener('change', paint); } });
+  if (!isKick) $('jdC').addEventListener('input', function(){ this.value = this.value.toUpperCase().replace(/[^A-Z0-9-]/g, ''); paint(); });
+  function close(){ document.removeEventListener('keydown', key, true); d.classList.add('out'); setTimeout(function(){ d.remove(); try { prev && prev.focus && prev.focus(); } catch(e) {} }, 140); }
+  function key(e){ if (e.key === 'Escape') { e.preventDefault(); close(); } else if (e.key === 'Enter' && e.target && e.target.tagName === 'INPUT' && !$('jdGo').disabled) { e.preventDefault(); $('jdGo').click(); } }
+  document.addEventListener('keydown', key, true);
+  d.addEventListener('click', function(e){ if (e.target === d) close(); });
+  d.querySelector('.jmd-no').onclick = close;
+  $('jdGo').onclick = async function(){
+    var a = num('jdA'), w = num('jdW'), t = Number($('jdT').value);
+    if (!isKick) { var c = $('jdC').value.trim(); if (c && !/^[A-Z0-9-]{4,20}$/.test(c)) { $('jdErr').textContent = 'Codes need 4 to 20 letters, numbers or dashes.'; return; } }
+    try { localStorage.setItem('jm_drop_' + kind, JSON.stringify({ amount: a, winners: w, time: t })); } catch(e) {}
+    var extra = isKick ? { amount: a, winners: w, window: t } : { amount: a, winners: w, minutes: t, code: $('jdC').value.trim(), kick: $('jdK').checked, discord: $('jdD').checked };
+    this.disabled = true; this.textContent = 'Sending…';
+    var r = await botAct(isKick ? 'drop_now' : 'code_drop', extra);
+    if (r && r.error) { this.disabled = false; this.textContent = isKick ? 'Start drop' : 'Post code'; $('jdErr').textContent = r.error; return; }
+    close();
+    if (r && r.code) jmAlert(r.message, { title: 'Code ' + r.code + ' is live 🔑' });
+  };
+  paint();
+  setTimeout(function(){ $('jdA').focus(); $('jdA').select(); }, 40);
+}
+
 async function botAnnounce(){
   var t = document.getElementById('btAnnText').value.trim(), m = document.getElementById('btAnnMsg');
   if(!t){ m.textContent = 'Write a message first.'; m.style.color = '#f87171'; return; }

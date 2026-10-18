@@ -8,6 +8,33 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-18: Drop setup (Admin → Jammmy Bot → Live controls)
+
+"Start Kick drop" and "Post code drop" now open a setup box first instead of firing straight away.
+
+**Both drops**
+- Quick picks: 10×10, 10×25, 5×50, 3×100 and 1×250 (winners × coins).
+- Coins per winner and number of winners can also be set by hand.
+- Shows the most it can cost (coins and $) next to what is left of this week's budget, and warns if the budget can't cover every winner.
+- Shows a preview of the exact chat message.
+- Remembers the last numbers used.
+
+**Kick drop**
+- Choose the claim time: 30 seconds to 5 minutes.
+- Start is blocked while Jammy is offline.
+
+**Code drop**
+- Choose how long the code works: 5 minutes to 2 hours.
+- Optionally type your own code (e.g. JAMMMYLIVE); otherwise a random one is made. A code can only be used once ever.
+- Choose where it is posted: Kick chat (while live) and/or Discord.
+
+**Worker**
+- `/api/admin/bot-action` accepts `amount`, `winners`, `window` / `minutes`, `code`, `kick` and `discord`.
+- Values are kept inside the same limits as the bot settings.
+- The admin log records the numbers used.
+
+---
+
 ## 2026-10-18: Jammmy Bot (Kick + Discord + website)
 
 One bot on Kick chat and Discord, paying Jammmy Coins straight to website accounts. Every payout goes through one place with a **weekly budget** (default 5,000 coins = $50, editable in Admin → Jammmy Bot).
