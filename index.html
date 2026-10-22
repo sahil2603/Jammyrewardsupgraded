@@ -3065,7 +3065,10 @@ html.lenis{scroll-behavior:auto!important}
 .sec-tag.ok{background:rgba(74,222,128,.1);color:#86efac;border-color:rgba(74,222,128,.35)}
 .sec-btn{border-radius:9px;padding:6px 12px;font:600 .76rem 'Poppins';cursor:pointer;border:1px solid rgba(248,113,113,.5);background:rgba(248,113,113,.1);color:#fecaca;white-space:nowrap}
 .sec-btn.un{border-color:var(--line);background:rgba(255,255,255,.05);color:#e9e3ff}
-.sec-foot{display:flex;justify-content:flex-end;margin-top:8px}
+.sec-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:8px}
+.dup-delete{flex:none;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.45);color:#fca5a5;border-radius:9px;padding:8px 14px;font:600 .82rem 'Poppins';cursor:pointer;white-space:nowrap}
+.dup-delete:hover{background:rgba(248,113,113,.18)}
+.dup-delete:disabled,.dup-dismiss:disabled{opacity:.5;cursor:default}
 .sec-net{margin-top:18px;border:1px solid var(--line);border-radius:12px;padding:10px 14px}
 .sec-net summary{cursor:pointer;font-weight:600;font-size:.9rem}
 .sec-net p{font-size:.8rem;color:var(--faint);margin:8px 0}
@@ -9974,7 +9977,7 @@ async function loadAdminSecurity(){
         + '<div class="sec-top"><div><span class="sec-sev">' + (c.severity === 'high' ? 'Likely alts' : 'Possible alts') + '</span><span class="sec-sum">' + c.accounts.length + ' accounts · $' + Number(c.redeemed_usd || 0).toFixed(2) + ' redeemed</span></div></div>'
         + '<div class="sec-why">' + c.why.map(function(w){ return '<span class="' + (w.strong ? 's' : '') + '">' + pccEsc(w.label) + (w.hosting ? ' · VPN/hosting' : '') + '</span>'; }).join('') + '</div>'
         + c.accounts.map(function(a){ return secAccRow(a); }).join('')
-        + '<div class="sec-foot"><button class="dup-dismiss" data-key="' + pccEsc(c.key) + '" data-label="' + pccEsc(c.accounts.map(function(a){ return a.username; }).join(', ')) + '" onclick="secDismiss(this)">✓ Checked · Dismiss</button></div>'
+        + '<div class="sec-foot"><button class="dup-dismiss" data-key="' + pccEsc(c.key) + '" data-label="' + pccEsc(c.accounts.map(function(a){ return a.username; }).join(', ')) + '" onclick="secDismiss(this)">✓ Checked · Dismiss</button><button class="dup-delete" data-key="' + pccEsc(c.key) + '" data-label="' + pccEsc(c.accounts.map(function(a){ return a.username; }).join(', ')) + '" onclick="secDelete(this)">Delete</button></div>'
       + '</div>';
     }).join('') + (d.dismissed_count ? '<div class="dup-foot">' + d.dismissed_count + ' dismissed group' + (d.dismissed_count === 1 ? '' : 's') + ' hidden · <button onclick="restoreDuplicates().then(loadAdminSecurity)">Show them again</button></div>' : '')
       : '<div class="sec-empty">No linked accounts found yet. Links appear as players log in and use the site.</div>';
@@ -9990,6 +9993,19 @@ async function secDismiss(btn){
     await fetch(AUTH_API + '/api/admin/dismiss-duplicate', { method:'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
       body: JSON.stringify({ key: btn.dataset.key, label: btn.dataset.label }) });
   }catch(e){}
+  var card = btn.closest('.sec-card'); if(card){ card.style.transition = 'opacity .25s'; card.style.opacity = '0'; }
+  setTimeout(loadAdminSecurity, 260);
+}
+/* Delete = remove this alt card for good. Not written to the admin log, and "Show them again"
+   doesn't bring it back. Comes back only if a new account joins the group. */
+async function secDelete(btn){
+  if(!await jmConfirm('Delete this alt flag for ' + btn.dataset.label + '? It won\'t come back for these accounts and won\'t be logged.')) return;
+  var token = localStorage.getItem('jammy_session_token'); btn.disabled = true; btn.textContent = 'Deleting…';
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/delete-duplicate', { method:'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: btn.dataset.key }) });
+    if(!res.ok){ var d = await res.json().catch(function(){ return {}; }); alert(d.error || 'Could not delete.'); btn.disabled = false; btn.textContent = 'Delete'; return; }
+  }catch(e){ alert('Network error — try again.'); btn.disabled = false; btn.textContent = 'Delete'; return; }
   var card = btn.closest('.sec-card'); if(card){ card.style.transition = 'opacity .25s'; card.style.opacity = '0'; }
   setTimeout(loadAdminSecurity, 260);
 }

@@ -8,6 +8,16 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-22: Alt checks remember pairs of accounts (Admin → Security / Duplicates)
+
+Dismissing a "Possible alts" / "Likely alts" group or a duplicate flag now marks those accounts as checked against each other.
+- If the same accounts are flagged again later (new shared IP, wallet or casino username), the flag stays hidden.
+- If a new, unchecked account joins the group, the flag shows up again.
+- Works for every flag, including ones dismissed before this change. "Show them again" still brings everything back.
+- New **Delete** button on each alt card (Admin → Security): removes the card for good. It is not written to the admin log, and "Show them again" does not bring it back. It returns only if a new account joins the group. Stored in app_state `dup_deleted`; endpoint `/api/admin/delete-duplicate` (admin only, not in AUDIT_ROUTES).
+
+---
+
 ## 2026-10-18: Drop setup (Admin → Jammmy Bot → Live controls)
 
 "Start Kick drop" and "Post code drop" now open a setup box first instead of firing straight away.
