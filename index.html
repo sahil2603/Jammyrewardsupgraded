@@ -8473,7 +8473,7 @@ function renderProfile(data){
           + '</div>'
         ))
         + (isLocked
-            ? '<p style="color:var(--faint);font-size:.8rem;margin:14px 0 0">'+(status==='pending' ? 'Submitted — locked while Jammmy reviews it. You\'ll see this update to Approved or reopen automatically if rejected.' : 'This account is verified. Contact an admin if anything needs to change.')+'</p>'
+            ? '<p style="color:var(--faint);font-size:.8rem;margin:14px 0 0">'+(status==='pending' ? 'Submitted — locked while Jammmy reviews it. You\'ll see this update to Approved or reopen automatically if rejected.' : 'This account is verified. Changed your username on the casino? Tell an admin your new one so your wagering keeps counting.')+'</p>'
             : '<button id="pccSubmit_'+key+'" class="admin-btn-primary" disabled onclick="saveCasinoLink(this,\''+key+'\')" style="width:100%;margin-top:14px;opacity:.5;cursor:not-allowed">Submit Claim</button>'
               + '<div id="pccResult_'+key+'" style="margin-top:10px;font-size:.85rem"></div>'
           )
@@ -10386,7 +10386,8 @@ async function loadAdminVerifyList(status){
       var actionsHtml = status === 'pending'
         ? '<button class="admin-btn-row-action" onclick="adminApproveClaim(\''+c.user_id+'\',\''+c.casino+'\')">Approve</button>'
           + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#6b7280,#4b5563)" onclick="adminRejectClaim(\''+c.user_id+'\',\''+c.casino+'\')">Reject</button>'
-        : (_adminModOnly ? '' : '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminRevokeClaim(\''+c.user_id+'\',\''+c.casino+'\')">Revoke</button>');
+        : (_adminModOnly ? '' : '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#2563eb,#1e40af)" data-old="'+pccEsc(c.casino_username)+'" data-who="'+pccEsc(c.username)+'" onclick="adminRenameClaim(this,\''+c.user_id+'\',\''+c.casino+'\')" title="Player changed their casino username">Change username</button>'
+          + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminRevokeClaim(\''+c.user_id+'\',\''+c.casino+'\')">Revoke</button>');
       var checkboxHtml = status === 'pending'
         ? '<input type="checkbox" class="verify-claim-check" data-user-id="'+c.user_id+'" data-casino="'+c.casino+'" style="width:18px;height:18px;margin-right:12px;flex:none;accent-color:#a855f7">'
         : '';
@@ -10452,6 +10453,26 @@ function adminBulkRejectSelected(){
   if(!claims.length){ alert('Select at least one claim first.'); return; }
   _rej = { mode:'bulk', userId:null, casino:null, claims:claims };
   openRejModal('Reject ' + claims.length + ' claim' + (claims.length === 1 ? '' : 's'), 'The same reason goes to every selected player. No coins are awarded; they can submit again.');
+}
+
+/* A verified player renamed on the casino (e.g. ClutchBear_7982 -> PARTH99). Moves the claim and
+   their Vault history to the new name so they keep their total and aren't paid twice. */
+async function adminRenameClaim(btn, userId, casino){
+  var oldName = btn.dataset.old, who = btn.dataset.who;
+  var nn = prompt('New ' + (CASINO_DISPLAY_NAMES[casino] || casino) + ' username for ' + who + ' (currently ' + oldName + '):', '');
+  if(nn === null) return;
+  nn = nn.trim(); if(!nn) return;
+  if(!await jmConfirm('Change ' + who + '’s username from ' + oldName + ' to ' + nn + '? Their verified claim and wager history move to the new name.', { ok: 'Change username' })) return;
+  btn.disabled = true; btn.textContent = 'Changing…';
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/rename-casino-username', { method:'POST',
+      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jammy_session_token'), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: userId, casino: casino, new_username: nn }) });
+    var data = await res.json().catch(function(){ return {}; });
+    if(!res.ok){ alert(data.error || 'Could not change the username.'); btn.disabled = false; btn.textContent = 'Change username'; return; }
+    alert('Done: ' + data.from + ' is now ' + data.to + '.');
+    loadAdminVerifyList('approved');
+  }catch(e){ alert('Network error — try again.'); btn.disabled = false; btn.textContent = 'Change username'; }
 }
 
 async function adminRevokeClaim(userId, casino){

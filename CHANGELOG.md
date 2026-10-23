@@ -8,6 +8,18 @@ Newest entries at the top.
 
 ---
 
+## 2026-10-23: Change a player's casino username (Admin → Verify Players → Approved)
+
+Power.win lets players rename, and its API only gives usernames, so a renamed player (e.g. ClutchBear_7982 → PARTH99) showed up as a new, unclaimed name.
+
+- New **Change username** button on each approved claim (admins only). Type the new name; it must be on our Power.win leaderboard and not claimed by someone else.
+- Moves the verified claim, the saved Vault cycles and the paid-out checkpoint to the new name, so the player keeps their lifetime total and isn't paid twice for wagering from before the rename.
+- Logged in the admin log ("Changed X's Power.win username: old → new"); every rename is also kept in app_state `casino_renames`.
+- Verified players now see: "Changed your username on the casino? Tell an admin your new one so your wagering keeps counting."
+- Endpoint: `/api/admin/rename-casino-username` (admin only, audited as `claim_rename`).
+
+---
+
 ## 2026-10-22: Alt checks remember pairs of accounts (Admin → Security / Duplicates)
 
 Dismissing a "Possible alts" / "Likely alts" group or a duplicate flag now marks those accounts as checked against each other.
