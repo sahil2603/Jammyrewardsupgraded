@@ -5259,6 +5259,8 @@ html.ice-lite .rk-me-fruit svg,html.ice-rm .rk-me-fruit svg{animation:none}
 @media (prefers-reduced-motion:reduce){.rk-tier{opacity:1;transform:none;animation:none!important}}
 /* ===== Fruit Ranks v2: living page ===== */
 .rx{position:relative;isolation:isolate}
+.rx-since{display:inline-block;margin-top:12px;padding:6px 14px;border-radius:999px;font-size:.82rem;color:#e0f2fe;background:rgba(125,211,252,.1);box-shadow:inset 0 0 0 1px rgba(125,211,252,.25)}
+.rx-since[hidden]{display:none}
 .rx-float{position:absolute;inset:-40px 0 0;z-index:-1;pointer-events:none;overflow:hidden;-webkit-mask:linear-gradient(#000 60%,transparent);mask:linear-gradient(#000 60%,transparent)}
 .rx-float span{position:absolute;bottom:-90px;width:var(--s,40px);height:var(--s,40px);opacity:0;animation:rxRise var(--d,18s) linear var(--dl,0s) infinite;filter:blur(var(--b,0px)) drop-shadow(0 8px 14px rgba(0,0,0,.35))}
 .rx-float span svg{width:100%;height:100%;animation:rxSpin var(--rd,9s) ease-in-out infinite alternate}
@@ -6146,6 +6148,7 @@ body.maint-lock{overflow:hidden}
       <header class="rk-head">
         <h1 class="rk-h1">Fruit Ranks</h1>
         <p class="rk-sub">Every dollar you wager with us counts: partner casinos under code <b>JAMMMY</b> and Jammmy Games. Rank up for coins, a bigger daily claim and your fruit role on Discord.</p>
+        <p class="rx-since" id="rxSince" hidden></p>
       </header>
 
       <div class="rx-hero" id="rkMe">
@@ -7083,6 +7086,7 @@ body.maint-lock{overflow:hidden}
             <h4>🍒 Fruit ranks</h4>
             <p class="ag-note">A player's rank comes from everything they've wagered: verified partner accounts plus Jammmy Games (100 coins wagered = $1). Reaching a rank pays its coins once, sets their daily claim, and the Discord bot gives the role (paste the role ID from Discord). Ranks update about every 10 minutes.</p>
             <div class="bt-row"><label class="bt-f sw"><input type="checkbox" id="arkOn"> Ranks on</label><button class="bt-btn" onclick="arkSync()">Update everyone's rank now</button><span id="arkMsg" class="bt-msg" style="margin:0"></span></div>
+            <div class="bt-row" style="margin-top:8px"><span id="arkStart" class="bt-msg" style="margin:0"></span><button class="bt-btn" id="arkRestart" onclick="arkRestart()">Restart counting from now</button></div>
             <div style="overflow-x:auto;margin-top:12px"><table class="ag-tbl" id="arkTbl"></table></div>
             <div class="bt-row" style="justify-content:space-between"><button class="bt-btn" onclick="arkAdd()">+ Add a rank</button><button class="bt-btn p" onclick="arkSave()">💾 Save ranks</button></div>
           </div>
@@ -14470,6 +14474,10 @@ window.fruitSvg = function(key){ return (window.FRUIT_SVG[key] || window.FRUIT_S
   window.rkShow = async function(){
     await loadCfg(); if(!CFG || !CFG.tiers) return;
     await loadMe();
+    var sn = $('rxSince');
+    if(sn){ sn.hidden = false; sn.textContent = CFG.counting_since
+      ? 'Counting wagers since ' + new Date(CFG.counting_since).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) + '.'
+      : 'Ranks start counting soon. Only wagers from then on count.'; }
     paintFloat(); paintMe(); paintLadder(); paintRecent();
     clearInterval(_rkLive);
     _rkLive = setInterval(async function(){
@@ -14570,6 +14578,10 @@ window.fruitSvg = function(key){ return (window.FRUIT_SVG[key] || window.FRUIT_S
   window.arkLoad = async function(){
     var d = await call('/api/admin/ranks'); if(d.error){ $('arkTbl').innerHTML = '<tr><td>' + esc(d.error) + '</td></tr>'; return; }
     RK = d.settings; RKC = {}; (d.counts || []).forEach(function(c){ RKC[c.rank_key] = c.n; });
+    $('arkStart').innerHTML = RK.start_at
+      ? 'Counting wagers since <b>' + new Date(RK.start_at).toLocaleString() + '</b>. Wagers from before then don\'t count.'
+      : '<b>Not counting yet.</b> Counting starts the moment you tick Ranks on and save. Wagers from before then never count.';
+    $('arkRestart').style.display = RK.start_at ? '' : 'none';
     arkRender();
   };
   function arkRead(){
@@ -14580,9 +14592,18 @@ window.fruitSvg = function(key){ return (window.FRUIT_SVG[key] || window.FRUIT_S
   window.arkAdd = function(){ RK.tiers = arkRead(); RK.tiers.push({ key: 'rank' + (RK.tiers.length + 1), name: 'New rank', min_usd: 50000, reward: 0, daily: 5, role: '' }); arkRender(); };
   window.arkDel = function(i){ RK.tiers = arkRead(); RK.tiers.splice(i, 1); arkRender(); };
   window.arkSave = async function(){
-    if(!await jmConfirm('Save the ranks? Players who already reached a rank keep it; anyone who now qualifies for a new rank gets its reward on the next update.')) return;
+    var starting = $('arkOn').checked && !(RK && RK.start_at);
+    if(!await jmConfirm(starting
+      ? 'Switch ranks on and start counting from right now? Only wagers from this moment on count. Everyone starts with no rank.'
+      : 'Save the ranks? Players who already reached a rank keep it; anyone who now qualifies for a new rank gets its reward on the next update.')) return;
     var d = await call('/api/admin/ranks', { enabled: $('arkOn').checked, tiers: arkRead() });
     $('arkMsg').textContent = d.error ? d.error : 'Saved ✓'; if(!d.error) arkLoad();
+  };
+  window.arkRestart = async function(){
+    if(!await jmConfirm('Restart rank counting from right now? Everyone goes back to no rank and only wagers from this moment count. Coins already paid for ranks stay with the players. This can\'t be undone.')) return;
+    $('arkMsg').textContent = 'Restarting…';
+    var d = await call('/api/admin/ranks', { restart: true });
+    $('arkMsg').textContent = d.error ? d.error : 'Counting restarted ✓'; arkLoad();
   };
   window.arkSync = async function(){
     $('arkMsg').textContent = 'Updating…';
