@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>HiLo · Jammmy Originals</title>
 <meta name="description" content="Higher or lower? Build a streak and cash out. Jammmy Originals, provably fair, 98% RTP.">
-<link rel="icon" type="image/png" href="favicon-32.png">
+<link rel="icon" type="image/png" href="../favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -324,9 +324,9 @@ body{background:radial-gradient(1100px 600px at 70% -10%,rgba(56,189,248,.18),tr
 </head>
 <body>
 <header class="top">
-  <a class="brand" href="./" title="All Jammmy Originals"><img src="jar-clean.webp" alt=""><b>HiLo</b></a>
+  <a class="brand" href="./" title="All Jammmy Originals"><img src="../jar-clean.webp" alt=""><b>HiLo</b></a>
   <div class="top-sp"></div>
-  <div class="bal" id="bal" title="Your balance"><img src="jammmy-coin.webp" alt=""><span id="balNum">0</span><small>DEMO</small></div>
+  <div class="bal" id="bal" title="Your balance"><img src="../jammmy-coin.webp" alt=""><span id="balNum">0</span><small>DEMO</small></div>
   <button class="ibtn" id="sndBtn" type="button" aria-label="Sound on" title="Sound"></button>
   <button class="ibtn" type="button" aria-label="How to play" title="How to play" onclick="openModal('rules')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg></button>
   <button class="ibtn" type="button" aria-label="Provably fair" title="Provably fair" onclick="openModal('fair')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8-8 9-4.6-1-8-4-8-9V6z"/><path d="M8.5 12.2l2.4 2.4 4.6-4.8"/></svg></button>
@@ -338,7 +338,7 @@ body{background:radial-gradient(1100px 600px at 70% -10%,rgba(56,189,248,.18),tr
     <aside class="panel" aria-label="Bet controls">
       <div class="fld">
         <label for="bet">Bet amount <span>min 1</span></label>
-        <div class="amt"><img src="jammmy-coin.webp" alt=""><input id="bet" type="number" inputmode="decimal" min="1" step="1" aria-label="Bet amount in coins"><button class="q" type="button" data-q="half" data-for="bet">½</button><button class="q" type="button" data-q="double" data-for="bet">2×</button></div>
+        <div class="amt"><img src="../jammmy-coin.webp" alt=""><input id="bet" type="number" inputmode="decimal" min="1" step="1" aria-label="Bet amount in coins"><button class="q" type="button" data-q="half" data-for="bet">½</button><button class="q" type="button" data-q="double" data-for="bet">2×</button></div>
       </div>
       <button class="deal" id="mainBtn" type="button">Bet</button>
       <button class="guess up" id="g0" type="button" disabled></button>
@@ -352,7 +352,7 @@ body{background:radial-gradient(1100px 600px at 70% -10%,rgba(56,189,248,.18),tr
     <section class="stage" id="stage" aria-label="HiLo">
       <div class="htop"><span class="totx" id="totX">1.00×</span><span class="streak" id="streak"></span><span class="hintp" id="hintTop">King is highest · Ace is lowest</span></div>
       <div class="streakfx" id="streakFx" aria-live="polite"></div>
-      <div class="table2"><div class="deck" aria-hidden="true"><span></span><span></span><span><img src="jammmy-coin.webp" alt=""></span></div><div class="slot" id="cur"></div></div>
+      <div class="table2"><div class="deck" aria-hidden="true"><span></span><span></span><span><img src="../jammmy-coin.webp" alt=""></span></div><div class="slot" id="cur"></div></div>
       <div class="hist" id="hist" aria-label="Cards this round"></div>
       <div class="banner" id="banner"><div class="t"></div><div class="s"></div></div>
       <div class="toast" id="toast"></div>
@@ -647,7 +647,7 @@ var fmt = function (n) { return Number(n || 0).toLocaleString('en-US', { maximum
 var fmtX = function (m) { return (m >= 100 ? fmt(Math.round(m * 100) / 100) : Number(m).toFixed(2)) + '×'; };
 var wait = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
 var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-var SP = REDUCED ? 0.35 : 1;
+var SP = REDUCED ? 0.3 : 0.6;   /* animation speed factor: snappier (was 1) */
 var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
 function rndHex(n) { var a = new Uint8Array(n); crypto.getRandomValues(a); return Array.from(a, function (b) { return b.toString(16).padStart(2, '0'); }).join(''); }
 var LIMITS = { minBet: 1, maxBet: 5000, maxWin: 100000 };
@@ -917,7 +917,7 @@ function coinBurst(n, x, y) {
   var st = $('stage'), W = st.clientWidth, H = st.clientHeight;
   x = x == null ? W / 2 : x; y = y == null ? H * 0.45 : y;
   for (var i = 0; i < n; i++) {
-    var c = document.createElement('img'); c.src = 'jammmy-coin.webp'; c.className = 'coin-fx'; c.alt = '';
+    var c = document.createElement('img'); c.src = '../jammmy-coin.webp'; c.className = 'coin-fx'; c.alt = '';
     c.style.left = (x - 13) + 'px'; c.style.top = (y - 13) + 'px'; st.appendChild(c);
     var a = Math.random() * Math.PI * 2, d = 110 + Math.random() * 200;
     var anim = c.animate([{ transform: 'translate(0,0) scale(.4)', opacity: 1 }, { transform: 'translate(' + Math.cos(a) * d + 'px,' + (Math.sin(a) * d * 0.7 - 60) + 'px) scale(1) rotate(' + (Math.random() * 720 - 360) + 'deg)', opacity: 1, offset: 0.6 }, { transform: 'translate(' + Math.cos(a) * d * 1.1 + 'px,' + (Math.sin(a) * d * 0.7 + 120) + 'px) scale(.8) rotate(' + (Math.random() * 720) + 'deg)', opacity: 0 }], { duration: 1100 + Math.random() * 500, easing: 'cubic-bezier(.2,.7,.4,1)' });
@@ -944,11 +944,11 @@ function renderBets(newId) {
   if (!list.length) { tb.innerHTML = '<tr><td colspan="5" class="empty">' + (BETS.tab === 'all' ? 'No bets yet. Be the first to play.' : 'Your last 10 bets show up here.') + '</td></tr>'; return; }
   tb.innerHTML = list.map(function (b) {
     var profit = b.payout > b.wagered, zero = !b.payout;
-    return '<tr class="' + (b.id === newId ? 'new' : '') + (b.rid && BETS.tab === 'mine' ? ' chk' : '') + '"' + (b.rid && BETS.tab === 'mine' ? ' onclick="checkBet2(\'' + b.id + '\')" title="Check this bet"' : '') + '><td><span class="who"><img src="jar-clean.webp" alt="">' + esc(b.user) + '</span></td>'
+    return '<tr class="' + (b.id === newId ? 'new' : '') + (b.rid && BETS.tab === 'mine' ? ' chk' : '') + '"' + (b.rid && BETS.tab === 'mine' ? ' onclick="checkBet2(\'' + b.id + '\')" title="Check this bet"' : '') + '><td><span class="who"><img src="../jar-clean.webp" alt="">' + esc(b.user) + '</span></td>'
       + '<td class="hm" style="color:var(--faint)">' + ago(b.at) + '</td>'
-      + '<td class="r"><span class="coin">' + fmt(b.wagered) + '<img src="jammmy-coin.webp" alt=""></span></td>'
+      + '<td class="r"><span class="coin">' + fmt(b.wagered) + '<img src="../jammmy-coin.webp" alt=""></span></td>'
       + '<td class="r m' + (b.mult >= 2 ? ' hi' : '') + '">' + b.mult.toFixed(2) + '×</td>'
-      + '<td class="r ' + (profit ? 'pos' : 'neg') + '"><span class="coin">' + (zero ? '0' : fmt(b.payout)) + '<img src="jammmy-coin.webp" alt=""></span></td></tr>';
+      + '<td class="r ' + (profit ? 'pos' : 'neg') + '"><span class="coin">' + (zero ? '0' : fmt(b.payout)) + '<img src="../jammmy-coin.webp" alt=""></span></td></tr>';
   }).join('');
 }
 setInterval(function () { renderBets(); }, 30000);
@@ -1013,7 +1013,7 @@ async function showCard(c, from) {
   var el = curEl;
   el.className = 'slot ' + (from || 'flip');
   el.dataset.c = c;
-  el.innerHTML = '<div class="in"><div class="f">' + cardHTML(c, true) + '</div><div class="b"><img src="jammmy-coin.webp" alt=""></div></div>';
+  el.innerHTML = '<div class="in"><div class="f">' + cardHTML(c, true) + '</div><div class="b"><img src="../jammmy-coin.webp" alt=""></div></div>';
   void el.offsetWidth; el.classList.add('go'); sFlip();
   await wait(430 * SP);
 }

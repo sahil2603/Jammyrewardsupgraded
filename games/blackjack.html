@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Jammmy's Blackjack · JammmyRewards</title>
 <meta name="description" content="Play blackjack with your Jammmy Coins. Perfect Pairs and 21+3 side bets, provably fair.">
-<link rel="icon" type="image/png" href="favicon-32.png">
+<link rel="icon" type="image/png" href="../favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -365,9 +365,9 @@ body{background:radial-gradient(1100px 600px at 70% -10%,rgba(56,189,248,.18),tr
 </head>
 <body>
 <header class="top">
-  <a class="brand" href="./" title="Back to JammmyRewards"><img src="jar-clean.webp" alt=""><b>Jammmy's Blackjack</b></a>
+  <a class="brand" href="./" title="Back to JammmyRewards"><img src="../jar-clean.webp" alt=""><b>Jammmy's Blackjack</b></a>
   <div class="top-sp"></div>
-  <div class="bal" id="bal" title="Your balance"><img src="jammmy-coin.webp" alt=""><span id="balNum">0</span><small id="balTag"></small></div>
+  <div class="bal" id="bal" title="Your balance"><img src="../jammmy-coin.webp" alt=""><span id="balNum">0</span><small id="balTag"></small></div>
   <button class="ibtn" id="sndBtn" type="button" aria-label="Sound on" title="Sound"></button>
   <button class="ibtn" type="button" aria-label="Rules and payouts" title="Rules and payouts" onclick="openModal('rules')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg></button>
   <button class="ibtn" type="button" aria-label="Provably fair" title="Provably fair" onclick="openModal('fair')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8-8 9-4.6-1-8-4-8-9V6z"/><path d="M8.5 12.2l2.4 2.4 4.6-4.8"/></svg></button>
@@ -384,7 +384,7 @@ body{background:radial-gradient(1100px 600px at 70% -10%,rgba(56,189,248,.18),tr
       </div>
       <div class="fld">
         <label for="bet"><span id="betLbl" style="color:inherit;font-weight:inherit">Bet amount</span> <span id="betUsd">≈ $0.10</span></label>
-        <div class="amt"><img src="jammmy-coin.webp" alt=""><input id="bet" type="number" inputmode="numeric" min="10" step="1" value="10" aria-label="Bet amount in Jammmy Coins"><button class="q" type="button" data-q="half">½</button><button class="q" type="button" data-q="double">2×</button></div>
+        <div class="amt"><img src="../jammmy-coin.webp" alt=""><input id="bet" type="number" inputmode="numeric" min="10" step="1" value="10" aria-label="Bet amount in Jammmy Coins"><button class="q" type="button" data-q="half">½</button><button class="q" type="button" data-q="double">2×</button></div>
       </div>
       <div class="sides">
         <div class="fld"><label for="pp"><em>Perfect Pairs<button type="button" class="sbi" data-sb="pp" aria-label="Perfect Pairs payouts" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8v.01"/></svg></button></em><span>25:1</span></label><div class="amt"><input id="pp" type="number" inputmode="numeric" min="0" step="1" value="0" aria-label="Perfect Pairs side bet"></div></div>
@@ -415,7 +415,7 @@ body{background:radial-gradient(1100px 600px at 70% -10%,rgba(56,189,248,.18),tr
         <button class="act split" data-a="split" type="button" disabled>Split <kbd>P</kbd></button>
       </div>
       <div class="ai">
-        <img src="jar-clean.webp" alt="">
+        <img src="../jar-clean.webp" alt="">
         <div class="txt" id="aiTxt"><b>Jammmy AI</b> suggests the best move for every hand.</div>
         <label class="tg" title="Jammmy AI hints"><input type="checkbox" id="aiOn" aria-label="Jammmy AI hints"><span></span></label>
       </div>
@@ -430,12 +430,12 @@ body{background:radial-gradient(1100px 600px at 70% -10%,rgba(56,189,248,.18),tr
       <div class="spot main" id="spotMain"></div>
       <div class="spot side" id="spotPP">PERFECT<br>PAIRS</div>
       <div class="spot side" id="spotT21">21+3</div>
-      <div class="idle" id="idle"><img src="jar-clean.webp" alt="">Place your bet and press Deal</div>
+      <div class="idle" id="idle"><img src="../jar-clean.webp" alt="">Place your bet and press Deal</div>
       <div class="banner" id="banner"><div class="t"></div><div class="s"></div></div>
       <div class="toast" id="toast"></div>
       <div class="insq" id="insq" role="dialog" aria-label="Insurance">
         <div class="q1">Dealer shows an Ace</div>
-        <div class="q2">Insurance? Costs <img src="jammmy-coin.webp" alt=""><b class="c">0</b>, pays 2:1 if the dealer has blackjack.</div>
+        <div class="q2">Insurance? Costs <img src="../jammmy-coin.webp" alt=""><b class="c">0</b>, pays 2:1 if the dealer has blackjack.</div>
         <div class="qb"><button type="button" class="yes" data-a="insurance">Yes <kbd>Y</kbd></button><button type="button" class="no" data-a="noinsurance">No <kbd>N</kbd></button></div>
       </div>
     </section>
@@ -910,7 +910,7 @@ var DEMO = { state: null, server: null, client: null, nonce: 0 };
 var fmt = function (n) { return Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: 2 }); };
 var wait = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
 var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-var SP = REDUCED ? 0.35 : 1;   /* animation speed factor */
+var SP = REDUCED ? 0.3 : 0.6;   /* animation speed factor: snappier (was 1) */   /* animation speed factor */
 
 /* ───────────── sound: all synthesised, no files to load ───────────── */
 var SND = (function () {
@@ -1041,7 +1041,7 @@ function setFace(el, c) {
 }
 function makeCard(c) {
   var d = document.createElement('div'); d.className = 'card';
-  d.innerHTML = '<div class="in"><div class="f"></div><div class="b"><img src="jammmy-coin.webp" alt=""></div></div>';
+  d.innerHTML = '<div class="in"><div class="f"></div><div class="b"><img src="../jammmy-coin.webp" alt=""></div></div>';
   if (c >= 0) setFace(d, c);
   return d;
 }
@@ -1283,7 +1283,7 @@ function coinBurst(n) {
   if (REDUCED) return;
   var g = geo();
   for (var i = 0; i < n; i++) {
-    var c = document.createElement('img'); c.src = 'jammmy-coin.webp'; c.className = 'coin-fx'; c.alt = '';
+    var c = document.createElement('img'); c.src = '../jammmy-coin.webp'; c.className = 'coin-fx'; c.alt = '';
     c.style.left = (g.W / 2 - 13) + 'px'; c.style.top = (g.H * 0.44 - 13) + 'px'; felt.appendChild(c);
     var a = Math.random() * Math.PI * 2, d = 120 + Math.random() * 220;
     var anim = c.animate([{ transform: 'translate(0,0) scale(.4) rotate(0deg)', opacity: 1 }, { transform: 'translate(' + Math.cos(a) * d + 'px,' + (Math.sin(a) * d * 0.7 - 60) + 'px) scale(1) rotate(' + (Math.random() * 720 - 360) + 'deg)', opacity: 1, offset: 0.6 }, { transform: 'translate(' + Math.cos(a) * d * 1.1 + 'px,' + (Math.sin(a) * d * 0.7 + 120) + 'px) scale(.8) rotate(' + (Math.random() * 720) + 'deg)', opacity: 0 }], { duration: 1100 + Math.random() * 500, easing: 'cubic-bezier(.2,.7,.4,1)' });
@@ -1528,11 +1528,11 @@ function renderBets(newId) {
     var isNew = !_seenIds[TAB + b.id] && Object.keys(_seenIds).length; _seenIds[TAB + b.id] = 1;
     var profit = b.payout > b.wagered, zero = b.payout === 0;
     var chk = MODE === 'live' && TAB === 'mine' && b.server_hash;
-    return '<tr class="' + (isNew || b.id === newId ? 'new' : '') + (chk ? ' chk' : '') + '"' + (chk ? ' onclick="checkBet2(' + b.id + ')" title="Check this bet"' : '') + '><td><span class="who"><img src="jar-clean.webp" alt="">' + esc(b.user || 'Player') + '</span></td>'
+    return '<tr class="' + (isNew || b.id === newId ? 'new' : '') + (chk ? ' chk' : '') + '"' + (chk ? ' onclick="checkBet2(' + b.id + ')" title="Check this bet"' : '') + '><td><span class="who"><img src="../jar-clean.webp" alt="">' + esc(b.user || 'Player') + '</span></td>'
       + '<td class="hm" style="color:var(--faint)">' + ago(b.at) + '</td>'
-      + '<td class="r"><span class="coin">' + fmt(b.wagered) + '<img src="jammmy-coin.webp" alt=""></span></td>'
+      + '<td class="r"><span class="coin">' + fmt(b.wagered) + '<img src="../jammmy-coin.webp" alt=""></span></td>'
       + '<td class="r m' + (b.mult >= 2 ? ' hi' : '') + '">' + b.mult.toFixed(2) + '×</td>'
-      + '<td class="r ' + (profit ? 'pos' : 'neg') + '"><span class="coin">' + (zero ? '0' : fmt(b.payout)) + '<img src="jammmy-coin.webp" alt=""></span></td></tr>';
+      + '<td class="r ' + (profit ? 'pos' : 'neg') + '"><span class="coin">' + (zero ? '0' : fmt(b.payout)) + '<img src="../jammmy-coin.webp" alt=""></span></td></tr>';
   }).join('');
   if (!Object.keys(_seenIds).length) list.forEach(function (b) { _seenIds[TAB + b.id] = 1; });
 }
