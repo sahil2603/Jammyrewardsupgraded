@@ -5043,15 +5043,15 @@ html.ice:not(.ice-lite) .ice-card:hover>.ice-frost{opacity:1;animation:iceSweep 
 .ice-block svg{display:block;width:100%;height:auto}
 
 /* glacier strip above the footer */
-.ice-glacier{position:relative;height:170px;margin-top:30px;margin-bottom:-40px;pointer-events:none;overflow:hidden;z-index:0;-webkit-mask:linear-gradient(to bottom,#000 55%,transparent);mask:linear-gradient(to bottom,#000 55%,transparent)}
+.ice-glacier{position:relative;height:300px;margin-top:20px;margin-bottom:-70px;pointer-events:none;overflow:hidden;z-index:0;-webkit-mask:linear-gradient(to bottom,transparent,#000 12%,#000 72%,transparent);mask:linear-gradient(to bottom,transparent,#000 12%,#000 72%,transparent)}
+.ice-glacier canvas{display:block;width:100%;height:100%}
 .ice-glacier+footer{border-top:0;background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.4) 100%)}
 .ice-glacier+footer::before{display:none}
 .ice-glacier+footer{border-top-color:transparent}
-.ice-glacier::after{content:'';position:absolute;left:10%;right:10%;bottom:30px;height:60px;background:radial-gradient(ellipse at center,rgba(125,211,252,.18),transparent 70%);filter:blur(8px)}
 .ice-glacier svg{position:absolute;left:0;bottom:0;width:100%;height:100%}
 .ice-tw{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 6px 2px rgba(186,230,253,.8);animation:iceTw 3.4s ease-in-out infinite}
 @keyframes iceTw{0%,100%{opacity:.15;transform:scale(.6)}50%{opacity:1;transform:scale(1.2)}}
-@media(max-width:640px){.ice-glacier{height:110px;margin-top:20px;margin-bottom:-26px}.ice-cicles-wm{height:22px;margin-top:-8px}}
+@media(max-width:640px){.ice-glacier{height:190px;margin-top:10px;margin-bottom:-44px}.ice-cicles-wm{height:22px;margin-top:-8px}}
 
 /* winter launch banner (bottom-left) */
 .ice-ban{position:fixed;left:18px;bottom:18px;z-index:70;display:flex;align-items:center;gap:10px;padding:8px 10px 8px 8px;border-radius:999px;max-width:calc(100vw - 36px);
@@ -5381,6 +5381,25 @@ html.ice-lite .rk-me-fruit svg,html.ice-rm .rk-me-fruit svg{animation:none}
   .rx-fruit,.rx-aura,.rx-ladder .rk-tier .f svg,.rx-next svg,.rx .rk-h1,.rx-hero::after,.rx-bar i::after,.rx-rail i::after,.rx-ladder .rk-tier.cur .f::before{animation:none!important}
   .rx-ladder .rk-tier{opacity:1;transform:none}
 }
+
+/* painted rank badges: let the badge be the whole icon (no orb behind it), a touch bigger */
+.rx-fruit:has(.fr-badge){width:168px;height:168px}
+.rx-ladder .rk-tier .f:has(.fr-badge){width:132px;height:132px;background:none;box-shadow:none;margin-top:-10px}
+.rx-ladder .rk-tier .f .fr-badge{width:132px;height:132px;filter:drop-shadow(0 10px 18px rgba(var(--tc),.35))}
+.rx-ladder .rk-tier.locked .f .fr-badge{filter:grayscale(.9) brightness(.5)}
+.rx-ladder .rk-tier.locked .f:has(.fr-badge)::after{right:14px;bottom:14px}
+.rx-ladder .rk-tier.cur .f:has(.fr-badge)::before{inset:8px}
+.rx-rail{top:68px}
+.rx .rk-row .fr-badge{width:46px;height:46px;margin:-4px 0}
+.rx-next .fr-badge{width:44px;height:44px}
+.rx-float span:has(.fr-badge){--s:58px}
+@media (max-width:760px){
+  .rx-fruit:has(.fr-badge){width:140px;height:140px}
+  .rx-ladder .rk-tier{grid-template-columns:110px 1fr}
+  .rx-ladder .rk-tier .f:has(.fr-badge){width:104px;height:104px;margin:0 0 0 4px}
+  .rx-ladder .rk-tier .f .fr-badge{width:104px;height:104px}
+  .rx-rail{left:54px;top:20px}
+}
 </style>
 <style>.ag-note{font-size:.84rem;color:var(--muted);margin:4px 0 6px;line-height:1.5}
 .ag-note b{color:#fff}
@@ -5506,7 +5525,7 @@ html.ice-lite .rk-me-fruit svg,html.ice-rm .rk-me-fruit svg{animation:none}
 .gd-steps code,.gd-p code{background:rgba(255,255,255,.08);padding:2px 7px;border-radius:7px;color:#e0f2fe;font-size:.88em}
 .gd-wv{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:28px;align-items:start;margin:6px 0 10px}
 .gd-vid{margin:0;display:flex;flex-direction:column;align-items:center;gap:10px}
-.gd-phone{position:relative;width:100%;max-width:230px;aspect-ratio:540/1052;border-radius:30px;padding:7px;background:linear-gradient(160deg,#2a2150,#0c1428);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),0 24px 50px -22px rgba(56,189,248,.55),0 0 0 4px rgba(125,211,252,.06)}
+.gd-phone{position:relative;width:100%;max-width:230px;aspect-ratio:544/1056;border-radius:30px;padding:7px;background:linear-gradient(160deg,#2a2150,#0c1428);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),0 24px 50px -22px rgba(56,189,248,.55),0 0 0 4px rgba(125,211,252,.06)}
 .gd-phone video{display:block;width:100%;height:100%;object-fit:cover;border-radius:24px;background:#070b18}
 .gd-vplay{position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;border:0;display:grid;place-items:center;color:#0b1630;background:rgba(224,246,255,.92);box-shadow:0 10px 30px rgba(0,0,0,.5);cursor:pointer;transition:opacity .25s,transform .25s}
 .gd-vplay:hover{transform:scale(1.06)}
@@ -6577,10 +6596,10 @@ body.maint-lock{overflow:hidden}
           <section class="gd-sec" id="gdRanks">
             <h2>Fruit Ranks</h2>
             <p class="gd-p">Your rank comes from everything you wager: partner casinos plus Jammmy Games (100 coins wagered = $1). Each rank pays coins once, raises your daily claim and gives you the Discord role.</p>
-            <div class="gd-wv"><div>
+            <div><div>
             <div class="gd-ranks" id="gdRanks2"></div>
             <button type="button" class="gd-cta" onclick="nav('ranks')">See my rank</button>
-            </div><figure class="gd-vid"><div class="gd-phone"><video muted loop playsinline preload="none" poster="guide-ranks.jpg" data-src="guide-ranks.mp4" aria-label="Fruit Ranks"></video><button type="button" class="gd-vplay" aria-label="Play video"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></button></div><figcaption>Fruit Ranks</figcaption></figure></div>
+            </div></div>
           </section>
 
           <section class="gd-sec" id="gdCash">
@@ -9560,6 +9579,147 @@ async function amtSave(){
   if(g && 'MutationObserver' in window) new MutationObserver(sync).observe(g, { attributes: true, attributeFilter: ['class'] });
   sync();
 })();
+/* ===== Snowy mountains above the footer =====
+   Four ranges drawn once per resize (faceted rock, snow caps, light from the upper left), then
+   animated cheaply: drifting fog between the ranges, snow blowing off the peaks, a little
+   parallax as you scroll in. Only runs while it's on screen. */
+window.jrMountains = function(host){
+  var cv = document.createElement('canvas'); host.appendChild(cv);
+  var ctx = cv.getContext('2d'), DPR = Math.min(1.5, window.devicePixelRatio || 1);
+  var W = 0, H = 0, far = null, near = null, peaks = [], fogSpr = null, fog = [], drift = [];
+  var REDUCE = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function rng(seed){ return function(){ seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }; }
+  function ridge(r, n, base, amp, rough){
+    var pts = new Array(n + 1); pts[0] = base + (r() - .5) * amp; pts[n] = base + (r() - .5) * amp;
+    (function mid(a, b, d){ if(b - a < 2) return; var m = (a + b) >> 1; pts[m] = (pts[a] + pts[b]) / 2 + (r() - .5) * d; mid(a, m, d * rough); mid(m, b, d * rough); })(0, n, amp);
+    return pts;
+  }
+  /* a range = a handful of big peaks (sharp tops, long slopes) plus fine rocky detail */
+  function heights(r, n, o){
+    var pk = [], k = o.count, i, out = new Array(n + 1);
+    for(i = 0; i < k; i++) pk.push({ x: (i + .15 + r() * .7) / k * n, h: o.amp * (.38 + Math.pow(r(), .7) * .62), wl: n / k * (.55 + r() * .5), wr: n / k * (.55 + r() * .5) });
+    var noise = ridge(r, n, 0, o.amp * .2, .6); var noise2 = ridge(r, n, 0, o.amp * .07, .8);
+    for(i = 0; i <= n; i++){
+      var top = 0;
+      pk.forEach(function(p){ var d = i < p.x ? (p.x - i) / p.wl : (i - p.x) / p.wr; if(d < 1){ var v = p.h * Math.pow(1 - d, 1.55); if(v > top) top = v; } });
+      out[i] = o.base - top - (Math.abs(noise[i]) * 1.6 + Math.abs(noise2[i])) * (0.25 + .9 * top / o.amp);
+    }
+    return out;
+  }
+  function layer(g, o){
+    var r = rng(o.seed), n = 320, ys = heights(r, n, o), step = W / n, i;
+    var P = ys.map(function(y, k){ return [k * step, Math.max(H * .03, y)]; });
+    /* body */
+    var bg = g.createLinearGradient(0, o.base - o.amp, 0, H);
+    bg.addColorStop(0, o.top); bg.addColorStop(1, o.bottom);
+    g.beginPath(); g.moveTo(0, H); P.forEach(function(p){ g.lineTo(p[0], p[1]); }); g.lineTo(W, H); g.closePath(); g.fillStyle = bg; g.fill();
+    /* snow only above the snow line, thicker the higher the summit, with a ragged lower edge */
+    if(o.snow){
+      var sl = o.base - o.amp * o.snow;
+      g.save(); g.beginPath(); g.moveTo(0, H); P.forEach(function(p){ g.lineTo(p[0], p[1]); }); g.lineTo(W, H); g.closePath(); g.clip();
+      var sg = g.createLinearGradient(0, o.base - o.amp, 0, sl + o.amp * .2);
+      sg.addColorStop(0, 'rgba(250,253,255,' + o.snowA + ')'); sg.addColorStop(.6, 'rgba(214,232,252,' + (o.snowA * .9) + ')'); sg.addColorStop(1, 'rgba(170,200,240,' + (o.snowA * .6) + ')');
+      g.beginPath(); g.moveTo(0, H);
+      var edge = ridge(r, n, 0, o.amp * .12, .7);
+      for(i = 0; i <= n; i++){ var p = P[i], above = sl - p[1]; var y = above > 0 ? p[1] + above * .75 + edge[i] + 4 : p[1] + 1; g.lineTo(p[0], Math.max(p[1], y)); }
+      for(i = n; i >= 0; i--) g.lineTo(P[i][0], P[i][1] - 2);
+      g.closePath(); g.fillStyle = sg; g.fill();
+      /* rock showing through the snow: thin dark gullies running down from the crest */
+      g.strokeStyle = 'rgba(20,32,70,' + (o.snowA * .35) + ')'; g.lineCap = 'round';
+      for(i = 4; i < n - 4; i += 3 + Math.floor(r() * 5)){
+        var c = P[i]; if(c[1] > sl) continue;
+        var len = (sl - c[1]) * (.4 + r() * .7), dx = (r() - .5) * len * .5;
+        g.lineWidth = (.6 + r() * 1.6) * DPR; g.beginPath(); g.moveTo(c[0], c[1] + 2); g.quadraticCurveTo(c[0] + dx * .3, c[1] + len * .5, c[0] + dx, c[1] + len); g.stroke();
+      }
+      g.restore();
+    }
+    /* faces: shadow on the right of every peak, light on the left */
+    var loc = [];
+    for(i = 2; i < n - 1; i++) if(P[i][1] < P[i - 1][1] && P[i][1] <= P[i + 1][1] && P[i][1] < P[i - 2][1] && P[i][1] < P[i + 2][1]) loc.push(i);
+    loc.forEach(function(k){
+      var j = k; while(j < n && P[j + 1][1] >= P[j][1]) j++;
+      var pk = P[k], v = P[j]; if(v[1] - pk[1] < 8) return;
+      var foot = [pk[0] + (v[0] - pk[0]) * .25 + (r() - .5) * 10, Math.min(H, v[1] + (v[1] - pk[1]) * 1.3)];
+      g.beginPath(); g.moveTo(pk[0], pk[1]); for(var q = k + 1; q <= j; q++) g.lineTo(P[q][0], P[q][1]); g.lineTo(foot[0], foot[1]); g.closePath();
+      var sh = g.createLinearGradient(pk[0], pk[1], pk[0], foot[1]); sh.addColorStop(0, 'rgba(10,20,52,' + o.shade + ')'); sh.addColorStop(1, 'rgba(10,20,52,0)');
+      g.fillStyle = sh; g.fill();
+      var jl = k; while(jl > 0 && P[jl - 1][1] >= P[jl][1]) jl--;
+      g.beginPath(); g.moveTo(pk[0], pk[1]); for(q = k - 1; q >= jl; q--) g.lineTo(P[q][0], P[q][1]); g.lineTo(pk[0] - (pk[0] - P[jl][0]) * .15, Math.min(H, P[jl][1] + 30)); g.closePath();
+      var li = g.createLinearGradient(pk[0], pk[1], pk[0], P[jl][1] + 30); li.addColorStop(0, 'rgba(255,255,255,' + o.light + ')'); li.addColorStop(1, 'rgba(255,255,255,0)');
+      g.fillStyle = li; g.fill();
+      if(o.peaks && pk[1] < o.base - o.amp * .55) peaks.push({ x: pk[0], y: pk[1], z: o.z });
+    });
+    /* rim light along the crest */
+    g.beginPath(); P.forEach(function(p, k){ k ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1]); });
+    g.strokeStyle = 'rgba(220,240,255,' + o.rim + ')'; g.lineWidth = 1.2; g.stroke();
+    /* haze at the foot of the range */
+    var hz = g.createLinearGradient(0, o.base, 0, H); hz.addColorStop(0, 'rgba(120,160,220,0)'); hz.addColorStop(1, 'rgba(120,160,220,' + o.haze + ')');
+    g.fillStyle = hz; g.fillRect(0, o.base, W, H - o.base);
+  }
+  function build(){
+    var w = host.clientWidth, h = host.clientHeight; if(!w || !h) return false;
+    W = Math.round(w * DPR); H = Math.round(h * DPR); cv.width = W; cv.height = H;
+    peaks = [];
+    far = document.createElement('canvas'); far.width = W; far.height = H; near = document.createElement('canvas'); near.width = W; near.height = H;
+    var gf = far.getContext('2d'), gn = near.getContext('2d'), s = H / 300;
+    /* moon glow behind the peaks */
+    var mg = gf.createRadialGradient(W * .72, H * .22, 0, W * .72, H * .22, H * .9);
+    mg.addColorStop(0, 'rgba(186,230,253,.22)'); mg.addColorStop(.4, 'rgba(129,140,248,.08)'); mg.addColorStop(1, 'rgba(129,140,248,0)');
+    gf.fillStyle = mg; gf.fillRect(0, 0, W, H);
+    layer(gf, { seed: 11, base: H * .62, amp: H * .5, count: 10, top: 'rgba(110,140,200,.42)', bottom: 'rgba(60,80,140,.18)', snow: .55, snowA: .38, shade: .28, light: .08, rim: .2, haze: .3, z: 0 });
+    layer(gf, { seed: 23, base: H * .72, amp: H * .48, count: 8, top: 'rgba(58,82,140,.92)', bottom: 'rgba(28,40,86,.8)', snow: .5, snowA: .7, shade: .42, light: .12, rim: .3, haze: .32, z: 1, peaks: true });
+    layer(gn, { seed: 37, base: H * .84, amp: H * .42, count: 6, top: '#1d2d55', bottom: '#0f1832', snow: .55, snowA: .9, shade: .52, light: .14, rim: .4, haze: .2, z: 2, peaks: true });
+    layer(gn, { seed: 53, base: H * .98, amp: H * .2, count: 9, top: '#101a36', bottom: '#0a1024', snow: 0, snowA: 0, shade: .5, light: .06, rim: .18, haze: 0, z: 3 });
+    fogSpr = document.createElement('canvas'); fogSpr.width = 512; fogSpr.height = 128;
+    var fg = fogSpr.getContext('2d'), fr = fg.createRadialGradient(256, 64, 0, 256, 64, 256);
+    fr.addColorStop(0, 'rgba(210,228,255,.5)'); fr.addColorStop(1, 'rgba(210,228,255,0)');
+    fg.setTransform(1, 0, 0, .25, 0, 48); fg.fillStyle = fr; fg.fillRect(0, 0, 512, 512);
+    fog = []; for(var i = 0; i < 6; i++) fog.push({ x: Math.random() * W, y: H * (.5 + Math.random() * .3), w: W * (.35 + Math.random() * .35), h: H * (.16 + Math.random() * .12), v: (.08 + Math.random() * .16) * DPR, a: .25 + Math.random() * .35, z: i % 2 });
+    drift = [];
+    return true;
+  }
+  var vis = false, last = 0, scrollK = 1, raf = 0;
+  function paint(t){
+    ctx.clearRect(0, 0, W, H);
+    var off = (1 - scrollK);
+    ctx.drawImage(far, 0, off * 14 * DPR);
+    fog.forEach(function(f){ if(f.z) return; ctx.globalAlpha = f.a * .6; ctx.drawImage(fogSpr, f.x - f.w / 2, f.y - f.h / 2 + off * 18 * DPR, f.w, f.h); });
+    ctx.globalAlpha = 1;
+    /* snow blowing off the peaks */
+    drift.forEach(function(p){ ctx.globalAlpha = Math.max(0, p.a); ctx.fillStyle = '#f0f9ff'; ctx.beginPath(); ctx.arc(p.x, p.y + off * 14 * DPR, p.r, 0, 6.283); ctx.fill(); });
+    ctx.globalAlpha = 1;
+    ctx.drawImage(near, 0, off * 30 * DPR);
+    fog.forEach(function(f){ if(!f.z) return; ctx.globalAlpha = f.a * .45; ctx.drawImage(fogSpr, f.x - f.w / 2, f.y - f.h / 2 + off * 30 * DPR, f.w, f.h); });
+    ctx.globalAlpha = 1;
+  }
+  function step(t){
+    raf = 0;
+    if(!vis || document.hidden || document.documentElement.classList.contains('bg-paused')) return;
+    raf = requestAnimationFrame(step);
+    if(t - last < 33) return; last = t;            /* ~30 fps is plenty for fog */
+    var wind = Math.sin(t / 4000) * .3 + .9;
+    fog.forEach(function(f){ f.x += f.v * wind; if(f.x - f.w / 2 > W) f.x = -f.w / 2; });
+    if(peaks.length && drift.length < 90){ for(var k = 0; k < 2; k++){ var pk = peaks[Math.floor(Math.random() * peaks.length)]; drift.push({ x: pk.x + (Math.random() - .5) * 6 * DPR, y: pk.y + Math.random() * 4 * DPR, vx: (.5 + Math.random() * .9) * DPR, vy: (-.05 + Math.random() * .2) * DPR, r: (.5 + Math.random() * 1.1) * DPR, a: .5 + Math.random() * .4 }); } }
+    drift = drift.filter(function(p){ p.x += p.vx * wind; p.y += p.vy; p.vy += .004 * DPR; p.a -= .008; return p.a > 0; });
+    paint(t);
+  }
+  function kick(){ if(!raf && vis && !REDUCE) raf = requestAnimationFrame(step); }
+  function onScroll(){
+    var b = host.getBoundingClientRect(), vh = window.innerHeight;
+    scrollK = Math.max(0, Math.min(1, (vh - b.top) / (vh * .6 + b.height)));
+    if(REDUCE) { scrollK = 1; }
+  }
+  function resize(){ if(build()){ onScroll(); paint(0); } }
+  resize();
+  window.addEventListener('resize', function(){ clearTimeout(resize._t); resize._t = setTimeout(resize, 200); });
+  window.addEventListener('scroll', function(){ if(vis) onScroll(); }, { passive: true });
+  document.addEventListener('visibilitychange', kick);
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){ vis = es[0].isIntersecting; if(vis){ if(!W) resize(); onScroll(); kick(); } }, { rootMargin: '100px' }).observe(host);
+  } else { vis = true; kick(); }
+  setInterval(kick, 1000);   /* resumes after the Games page un-pauses the background */
+};
+
 initAuth();
 loadVaultSettings(); /* covers the Home page's vault mini-stat/preview too, not just the dedicated Vault page */
 /* Was only ever fetched once on page load -- if an admin topped up the vault while someone
@@ -14150,12 +14310,9 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   safe(function(){
     var ft = document.querySelector('footer');
     if(!ft || document.querySelector('.ice-glacier')) return;
-    var g = mk('div','ice-glacier', ICE.glacier); g.setAttribute('aria-hidden','true');
-    for(var i = 0; i < (LITE ? 5 : 12); i++){
-      var t = mk('i','ice-tw'); t.style.cssText = 'left:' + R(2, 98).toFixed(1) + '%;top:' + R(56, 80).toFixed(0) + '%;animation-delay:' + R(-3.4, 0).toFixed(2) + 's';
-      g.appendChild(t);
-    }
+    var g = mk('div','ice-glacier', ''); g.setAttribute('aria-hidden','true');
     ft.parentNode.insertBefore(g, ft);
+    if(window.jrMountains) window.jrMountains(g);
   });
 
   /* 6. launch banner: points people at the new Games page (dismiss = gone for good on this device) */
@@ -14377,7 +14534,12 @@ window.FRUIT_SVG = {
   none: '<svg viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="52" r="30" fill="rgba(125,211,252,.06)" stroke="#7dd3fc" stroke-width="3" stroke-dasharray="7 7" opacity=".8"/>'
     + '<text x="48" y="64" text-anchor="middle" font-family="Lilita One, sans-serif" font-size="34" fill="#7dd3fc" opacity=".9">?</text></svg>'
 };
-window.fruitSvg = function(key){ return (window.FRUIT_SVG[key] || window.FRUIT_SVG.none); };
+/* the five rank badges (lemon to dragon fruit) are painted artwork; the SVGs above stay as a fallback */
+window.FRUIT_BADGE = { lemon: 1, orange: 1, watermelon: 1, pineapple: 1, dragonfruit: 1 };
+window.fruitSvg = function(key){
+  if(window.FRUIT_BADGE[key]) return '<svg viewBox="0 0 96 96" class="fr-badge" aria-hidden="true"><image href="rank-' + key + '.webp" width="96" height="96"/></svg>';
+  return (window.FRUIT_SVG[key] || window.FRUIT_SVG.none);
+};
 </script>
 <script>/* ================= FRUIT RANKS page + nav badge ================= */
 (function(){
@@ -14445,6 +14607,8 @@ window.fruitSvg = function(key){ return (window.FRUIT_SVG[key] || window.FRUIT_S
     var L = $('rkLadder');
     L.classList.remove('in');
     L.style.gridTemplateColumns = window.innerWidth > 760 ? 'repeat(' + n + ',minmax(0,1fr))' : '';
+    var rl = $('rxRail').parentNode, half = window.innerWidth > 760 ? (100 / (2 * n)).toFixed(2) + '%' : '';
+    rl.style.left = half; rl.style.right = half;
     L.innerHTML = tiers.map(function(t, i){
       var cls = !me ? '' : i === curIdx ? 'cur got' : i < curIdx ? 'got' : 'locked', cnt = (CFG.counts && CFG.counts[t.key]) || 0;
       return '<div class="rk-tier ' + cls + '" style="--i:' + i + ';--tc:' + tc(t.key)[0] + '">' + (i === curIdx ? '<span class="rx-you">You are here</span>' : '')
