@@ -2940,6 +2940,68 @@ html.lenis{scroll-behavior:auto!important}
   .pf-avatar{width:56px;height:56px}
   .pf-who h1{font-size:1.4rem}
 }
+/* ===== Profile: player card ===== */
+.pfx-hero{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:28px;padding:30px 32px;margin-bottom:18px;border-radius:26px;
+  background:radial-gradient(90% 120% at 0% 0%,rgba(124,58,237,.38),transparent 60%),radial-gradient(70% 120% at 100% 100%,rgba(14,165,233,.26),transparent 60%),linear-gradient(135deg,#140d2e,#0b1630);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.09),0 30px 70px -34px rgba(124,58,237,.75);
+  transform:perspective(1100px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.pfx-hero.tilting{transition:transform .08s linear}
+.pfx-foil{position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.22;mix-blend-mode:color-dodge;
+  background:conic-gradient(from calc(var(--mx,50) * 3.6deg) at calc(var(--mx,50) * 1%) calc(var(--my,30) * 1%),#ff6ec7,#ffd36e,#7dffb3,#6ecbff,#b38cff,#ff6ec7);
+  -webkit-mask-image:repeating-linear-gradient(115deg,#000 0 2px,transparent 2px 7px);mask-image:repeating-linear-gradient(115deg,#000 0 2px,transparent 2px 7px)}
+.pfx-glint{position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(420px circle at calc(var(--mx,50) * 1%) calc(var(--my,30) * 1%),rgba(255,255,255,.13),transparent 60%)}
+.pfx-id{display:flex;align-items:center;gap:22px;min-width:0}
+.pfx-av{position:relative;flex:none;width:104px;height:104px;display:grid;place-items:center}
+@property --pfxa{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes pfxSpin{to{--pfxa:360deg}}
+.pfx-ring{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from var(--pfxa),rgb(var(--rk,192,132,252)),#22d3ee,#facc15,rgb(var(--rk,192,132,252)));animation:pfxSpin 6s linear infinite;
+  -webkit-mask:radial-gradient(circle,transparent 46px,#000 47px);mask:radial-gradient(circle,transparent 46px,#000 47px);filter:drop-shadow(0 0 10px rgba(var(--rk,192,132,252),.7))}
+.pfx-av .pf-avatar{position:relative;width:88px;height:88px;border:0;box-shadow:0 0 0 3px #120c28}
+.pfx-fruit{position:absolute;right:-4px;bottom:-2px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#120c28;box-shadow:0 0 0 2px rgba(255,255,255,.15),0 6px 14px rgba(0,0,0,.5)}
+.pfx-fruit[hidden]{display:none}
+.pfx-fruit svg{width:26px;height:26px}
+.pfx-hero .pf-who h1{font:400 clamp(1.8rem,3.4vw,2.6rem)/1.05 'Lilita One',sans-serif;margin:0 0 10px;letter-spacing:.01em;background:linear-gradient(100deg,#fff 30%,#c4b5fd 70%,#7dd3fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pfx-chips{display:flex;flex-wrap:wrap;gap:7px}
+.pfx-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;font-size:.76rem;font-weight:600;color:#e9e3ff;background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
+.pfx-chip.rk{color:#fff;background:rgba(var(--rk,192,132,252),.2);box-shadow:inset 0 0 0 1px rgba(var(--rk,192,132,252),.5)}
+.pfx-chip svg{width:16px;height:16px}
+.pfx-prog{margin-top:14px;max-width:380px}
+.pfx-prog[hidden]{display:none}
+.pfx-bar{height:8px;border-radius:9px;background:rgba(255,255,255,.08);overflow:hidden}
+.pfx-bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,rgb(var(--rk,192,132,252)),#facc15);box-shadow:0 0 12px rgba(250,204,21,.5);transition:width 1.4s cubic-bezier(.22,1,.36,1)}
+.pfx-prog small{display:block;margin-top:6px;font-size:.76rem;color:rgba(233,227,255,.7)}
+.pfx-prog small b{color:#fde68a}
+.pfx-wallet{display:flex;flex-direction:column;align-items:flex-end;gap:14px;padding:18px 20px;border-radius:20px;background:rgba(8,6,20,.45);box-shadow:inset 0 0 0 1px rgba(250,204,21,.18)}
+.pfx-wl{font-size:.78rem;font-weight:600;color:rgba(253,230,138,.8);text-align:right}
+.pfx-hero .pf-coins{font-size:clamp(2.4rem,4.4vw,3.3rem);color:#fde047;text-shadow:0 0 28px rgba(250,204,21,.45)}
+.pfx-hero .pf-coins img{width:42px;height:42px;animation:pfxCoin 3.2s ease-in-out infinite}
+@keyframes pfxCoin{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-5px) rotate(6deg)}}
+.pfx-hero .pf-usd{text-align:right;font-size:.86rem}
+.pfx-hero .pf-btn-claim{width:100%;padding:13px 22px;border-radius:14px;font-size:.92rem}
+.pfx-tabs{position:sticky;top:84px;z-index:20;display:flex;gap:6px;width:max-content;max-width:100%;margin:0 auto 22px;padding:6px;border-radius:999px;background:rgba(14,10,32,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 10px 30px -12px rgba(0,0,0,.7);overflow-x:auto;scrollbar-width:none}
+.pfx-tabs::-webkit-scrollbar{display:none}
+.pfx-tabs a{flex:none;padding:8px 18px;border-radius:999px;font-size:.84rem;font-weight:600;color:rgba(233,227,255,.7);text-decoration:none;cursor:pointer;transition:background .25s,color .25s}
+.pfx-tabs a:hover{color:#fff}
+.pfx-tabs a.on{color:#160b2e;background:linear-gradient(135deg,#e9d5ff,#a5f3fc)}
+.pfx-tabs a:focus-visible{outline:2px solid #a5f3fc;outline-offset:2px}
+.pf-card.pfx-c{position:relative;scroll-margin-top:150px;border:0;border-radius:22px;background:linear-gradient(160deg,rgba(var(--ac),.09),rgba(255,255,255,.015) 45%),var(--panel);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+.pf-card.pfx-c::before{content:'';position:absolute;left:24px;right:24px;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(var(--ac),.9),transparent)}
+.pf-card.pfx-c .pf-h{font:400 1.25rem 'Lilita One',sans-serif;letter-spacing:.01em}
+@media (max-width:860px){
+  .pfx-hero{grid-template-columns:1fr;padding:22px 18px;gap:20px;border-radius:22px}
+  .pfx-id{gap:16px}
+  .pfx-av{width:84px;height:84px}
+  .pfx-ring{-webkit-mask:radial-gradient(circle,transparent 37px,#000 38px);mask:radial-gradient(circle,transparent 37px,#000 38px)}
+  .pfx-av .pf-avatar{width:70px;height:70px}
+  .pfx-fruit{width:32px;height:32px}.pfx-fruit svg{width:22px;height:22px}
+  .pfx-wallet{align-items:stretch}
+  .pfx-hero .pf-balance{display:flex;flex-direction:column;align-items:flex-start;text-align:left}
+  .pfx-wl,.pfx-hero .pf-usd{text-align:left}
+  .pfx-hero .pf-coins{justify-content:flex-start}
+  .pfx-tabs{top:66px}
+  .pfx-tabs a{padding:7px 14px}
+}
+@media (prefers-reduced-motion:reduce){.pfx-ring,.pfx-hero .pf-coins img{animation:none}.pfx-hero{transform:none!important}}
 .pf-notif-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
 .pf-notif-row:first-of-type{border-top:0}
 .pf-switch{position:relative;width:46px;height:26px;flex:none}
@@ -3754,7 +3816,9 @@ nav{border-bottom:1px solid transparent!important;
 .vp-hero{text-align:center;margin-bottom:36px}
 .vp-title{font-family:'Lilita One','Arial Black',sans-serif;font-size:clamp(2rem,5vw,3.4rem);margin:10px 0 12px;letter-spacing:.5px}
 .vp-desc{color:var(--muted);max-width:640px;margin:0 auto;font-size:.97rem;line-height:1.6}.vp-desc b{color:#fbbf24}
-.vp-how{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:1000px;margin:22px auto 0;text-align:left}
+.vp-how-sec{max-width:1100px;margin:34px auto 0}
+.vp-how-sec h3{font:400 1.45rem 'Lilita One',sans-serif;color:#fff;margin:0 0 20px}
+.vp-how{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;text-align:left}
 .vp-how>div{position:relative;padding:16px 16px 14px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07)}
 .vp-how i{position:absolute;top:-10px;left:14px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font:800 .74rem 'Poppins';font-style:normal;color:#0b0716;background:linear-gradient(135deg,#4ade80,#22d3ee)}
 .vp-how>div:last-child i{background:linear-gradient(135deg,#fbbf24,#f59e0b)}
@@ -4972,11 +5036,15 @@ html.ice:not(.ice-lite) .ice-card:hover>.ice-frost{opacity:1;animation:iceSweep 
 .ice-block svg{display:block;width:100%;height:auto}
 
 /* glacier strip above the footer */
-.ice-glacier{position:relative;height:150px;margin-top:30px;pointer-events:none;overflow:hidden;-webkit-mask:linear-gradient(to bottom,transparent,#000 24%);mask:linear-gradient(to bottom,transparent,#000 24%)}
+.ice-glacier{position:relative;height:170px;margin-top:30px;margin-bottom:-40px;pointer-events:none;overflow:hidden;z-index:0;-webkit-mask:linear-gradient(to bottom,#000 55%,transparent);mask:linear-gradient(to bottom,#000 55%,transparent)}
+.ice-glacier+footer{border-top:0;background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.4) 100%)}
+.ice-glacier+footer::before{display:none}
+.ice-glacier+footer{border-top-color:transparent}
+.ice-glacier::after{content:'';position:absolute;left:10%;right:10%;bottom:30px;height:60px;background:radial-gradient(ellipse at center,rgba(125,211,252,.18),transparent 70%);filter:blur(8px)}
 .ice-glacier svg{position:absolute;left:0;bottom:0;width:100%;height:100%}
 .ice-tw{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 6px 2px rgba(186,230,253,.8);animation:iceTw 3.4s ease-in-out infinite}
 @keyframes iceTw{0%,100%{opacity:.15;transform:scale(.6)}50%{opacity:1;transform:scale(1.2)}}
-@media(max-width:640px){.ice-glacier{height:100px;margin-top:20px}.ice-cicles-wm{height:22px;margin-top:-8px}}
+@media(max-width:640px){.ice-glacier{height:110px;margin-top:20px;margin-bottom:-26px}.ice-cicles-wm{height:22px;margin-top:-8px}}
 
 /* winter launch banner (bottom-left) */
 .ice-ban{position:fixed;left:18px;bottom:18px;z-index:70;display:flex;align-items:center;gap:10px;padding:8px 10px 8px 8px;border-radius:999px;max-width:calc(100vw - 36px);
@@ -5360,22 +5428,32 @@ html.ice-lite .rk-me-fruit svg,html.ice-rm .rk-me-fruit svg{animation:none}
 .gm-chw{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .gm-chw span{font-size:.8rem;padding:6px 12px;border-radius:999px;background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.25);color:#fde68a}
 .gm-chw span b{color:#fff}
-/* home billboard */
-.bb{position:relative;display:flex;align-items:stretch;margin:6px 0 0;border-top:1px solid rgba(125,211,252,.18);border-bottom:1px solid rgba(125,211,252,.18);background:linear-gradient(90deg,rgba(8,26,46,.9),rgba(14,14,38,.9));overflow:hidden;cursor:pointer}
-.bb-l{flex:none;display:flex;align-items:center;gap:8px;padding:0 18px;font:400 1rem 'Lilita One',sans-serif;color:#e0f2fe;background:linear-gradient(90deg,rgba(14,165,233,.35),rgba(14,165,233,0));z-index:1;white-space:nowrap}
-.bb-l i{width:9px;height:9px;border-radius:50%;background:#4ade80;box-shadow:0 0 10px #4ade80;animation:gmPulse 2s infinite}
-.bb-vp{flex:1;overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
-.bb-tr{display:flex;width:max-content;animation:bbRun var(--bbd,40s) linear infinite}
+/* Live wins: a strip of win cards at the top of the Games lobby */
+.bb{position:relative;display:flex;align-items:stretch;margin:0 0 22px;border-radius:20px;padding:6px;background:linear-gradient(135deg,rgba(14,40,70,.85),rgba(20,14,44,.88));box-shadow:inset 0 0 0 1px rgba(125,211,252,.16),0 18px 40px -24px rgba(56,189,248,.5);overflow:hidden}
+.bb-l{flex:none;display:flex;align-items:center;gap:11px;padding:0 18px 0 14px;margin-right:4px;border-radius:15px;background:linear-gradient(135deg,rgba(74,222,128,.16),rgba(74,222,128,.04));box-shadow:inset 0 0 0 1px rgba(74,222,128,.22);z-index:1;white-space:nowrap}
+.bb-dot{width:10px;height:10px;border-radius:50%;background:#4ade80;animation:gmPulse 2s infinite}
+.bb-lt{display:flex;flex-direction:column;line-height:1.1}
+.bb-lt b{font:400 1.05rem 'Lilita One',sans-serif;color:#dcfce7;letter-spacing:.01em}
+.bb-lt small{font-size:.68rem;color:rgba(220,252,231,.6)}
+.bb-vp{flex:1;min-width:0;overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 3%,#000 95%,transparent);mask:linear-gradient(90deg,transparent,#000 3%,#000 95%,transparent)}
+.bb-tr{display:flex;gap:8px;width:max-content;padding:2px 0;animation:bbRun var(--bbd,40s) linear infinite}
 .bb:hover .bb-tr{animation-play-state:paused}
-@keyframes bbRun{to{transform:translateX(-50%)}}
-.bb-it{display:flex;align-items:center;gap:9px;padding:12px 22px;white-space:nowrap;font-size:.88rem;color:var(--muted);border-right:1px solid rgba(255,255,255,.06)}
-.bb-it .g{font-size:1.05rem}
-.bb-it b{color:#fff}
-.bb-it em{font-style:normal;font-weight:800;color:#86efac}
-.bb-it em.ch{color:#fde68a}
-.bb-it small{font-size:.74rem;color:var(--faint)}
+@keyframes bbRun{to{transform:translateX(calc(-50% - 4px))}}
+.bb-it{display:flex;align-items:center;gap:11px;padding:8px 14px 8px 8px;border-radius:14px;white-space:nowrap;background:rgba(255,255,255,.035);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.bb-g{width:38px;height:38px;flex:none;border-radius:11px;display:grid;place-items:center;font-size:1.15rem;background:rgba(var(--gc,125,211,252),.14);box-shadow:inset 0 0 0 1px rgba(var(--gc,125,211,252),.3)}
+.bb-it[data-g=blackjack]{--gc:248,250,252}.bb-it[data-g=mines]{--gc:56,189,248}.bb-it[data-g=plinko]{--gc:250,204,21}.bb-it[data-g=hilo]{--gc:167,139,250}.bb-it[data-g=ch]{--gc:244,114,182}
+.bb-tx{display:flex;flex-direction:column;line-height:1.2}
+.bb-tx b{font-size:.86rem;color:#fff;font-weight:700}
+.bb-tx small{font-size:.7rem;color:var(--faint)}
+.bb-amt{display:flex;flex-direction:column;align-items:flex-end;line-height:1.15;margin-left:4px}
+.bb-amt em{font:400 1.08rem 'Lilita One',sans-serif;font-style:normal;color:#86efac}
+.bb-amt i{font-style:normal;font-size:.66rem;font-weight:800;padding:1px 6px;border-radius:6px;background:rgba(255,255,255,.07);color:#e0f2fe}
+.bb-it.big{background:linear-gradient(120deg,rgba(250,204,21,.16),rgba(250,204,21,.03) 60%);box-shadow:inset 0 0 0 1px rgba(250,204,21,.38),0 0 20px -6px rgba(250,204,21,.45)}
+.bb-it.big .bb-amt em{color:#fde68a}
+.bb-it.big .bb-amt i{background:#facc15;color:#1a1200}
+.bb-it[data-g=ch] .bb-amt em{color:#f9a8d4}
 html.ice-rm .bb-tr{animation-duration:calc(var(--bbd,40s) * 3)}
-@media(max-width:640px){.bb-l{padding:0 10px;font-size:.85rem}.bb-it{padding:10px 14px;font-size:.8rem}}
+@media(max-width:640px){.bb{border-radius:16px;padding:5px;margin-bottom:16px}.bb-l{padding:0 10px}.bb-lt small{display:none}.bb-lt b{font-size:.9rem}.bb-g{width:32px;height:32px;font-size:1rem}.bb-it{padding:6px 10px 6px 6px;gap:9px}}
 </style>
 <style>
 html.ice-lite .hx-wm{filter:none!important}
@@ -5474,13 +5552,13 @@ body.maint-lock{overflow:hidden}
     <div class="nav-links">
       <span class="nav-indicator" aria-hidden="true"></span>
       <a data-page="home" class="active">Home</a>
-      <a data-page="games">Games</a>
       <a data-page="leaderboards">Leaderboards</a>
-      <a data-page="ranks">Ranks</a>
       <a data-page="new">Partners</a>
+      <a data-page="ranks">Ranks</a>
+      <a data-page="games">Games</a>
+      <a data-page="vault">Vault</a>
       <a data-page="reviews">Reviews</a>
       <a data-page="loyalty">Guide</a>
-      <a data-page="vault">Vault</a>
       <a data-page="requestslot" class="mob-only-link">🎰 Request a Slot</a>
       <a data-page="requestbattle" class="mob-only-link">⚔️ Request a Battle</a>
     </div>
@@ -5628,11 +5706,6 @@ body.maint-lock{overflow:hidden}
     </header>
 
 
-    <!-- ===================== LIVE BILLBOARD ===================== -->
-    <div class="bb" id="homeBB" hidden onclick="nav('games')" title="Play Jammmy Games">
-      <div class="bb-l"><i></i>Live wins</div>
-      <div class="bb-vp"><div class="bb-tr" id="homeBBTr"></div></div>
-    </div>
     <!-- ===================== MARQUEE ===================== -->
     <div class="hx-marquee" id="hxMarquee" aria-hidden="true">
       <div class="hx-mq-track" id="hxMqTrack">
@@ -5849,6 +5922,10 @@ body.maint-lock{overflow:hidden}
       </header>
 
       <div class="gm-lobby" id="gmLobby">
+        <div class="bb" id="homeBB" hidden aria-label="Live wins">
+          <div class="bb-l"><span class="bb-dot"></span><span class="bb-lt"><b>Live wins</b><small>Last 24 hours</small></span></div>
+          <div class="bb-vp"><div class="bb-tr" id="homeBBTr"></div></div>
+        </div>
         <div class="gm-grid">
           <button type="button" class="gm-card gm-bj" data-game="blackjack">
             <span class="gm-art" aria-hidden="true">
@@ -6363,12 +6440,6 @@ body.maint-lock{overflow:hidden}
       <div class="vp-hero">
         <h1 class="vp-title">Jammmy <span class="vv">Community Vault</span></h1>
         <p class="vp-desc">Every dollar wagered on Power.win under code <b>JAMMMY</b> adds 0.1 coins to the vault. When it hits the goal, verified players get their share paid out automatically.</p>
-        <div class="vp-how">
-          <div><i>1</i><b>Wager under JAMMMY</b><span>On Power.win. Every $10 wagered adds 1 coin to the vault.</span></div>
-          <div><i>2</i><b>Claim your username</b><span>On your Profile. Jammmy verifies it's you.</span></div>
-          <div><i>3</i><b>Vault fills → you get paid</b><span>At the goal, every verified player gets their share automatically.</span></div>
-          <div><i>4</i><b>Not claimed yet?</b><span>Your coins wait in the vault. Claim any time and they're paid at the next payout.</span></div>
-        </div>
       </div>
 
       <!-- MAIN: big card + mascot panel exactly like his site -->
@@ -6452,6 +6523,17 @@ body.maint-lock{overflow:hidden}
         </div>
       </div>
 
+      <!-- How it works -->
+      <section class="vp-how-sec reveal" aria-labelledby="vpHowH">
+        <h3 id="vpHowH">How the vault works</h3>
+          <div class="vp-how">
+          <div><i>1</i><b>Wager under JAMMMY</b><span>On Power.win. Every $10 wagered adds 1 coin to the vault.</span></div>
+          <div><i>2</i><b>Claim your username</b><span>On your Profile. Jammmy verifies it's you.</span></div>
+          <div><i>3</i><b>Vault fills → you get paid</b><span>At the goal, every verified player gets their share automatically.</span></div>
+          <div><i>4</i><b>Not claimed yet?</b><span>Your coins wait in the vault. Claim any time and they're paid at the next payout.</span></div>
+        </div>
+      </section>
+
     </div>
   </section>
 
@@ -6463,23 +6545,44 @@ body.maint-lock{overflow:hidden}
       </div>
       <div id="profileContent" style="display:none">
 
-        <!-- Header: who you are + what you have + today's claim -->
-        <div class="pf-card pf-hero reveal">
-          <img id="pfAvatar" src="" alt="" class="pf-avatar">
-          <div class="pf-who">
-            <h1 id="pfName"></h1>
-            <div class="pf-sub" style="margin:0">Your JammmyRewards profile</div>
+        <!-- Player card: who you are, your rank, your coins, today's claim -->
+        <div class="pfx-hero reveal" id="pfxHero">
+          <span class="pfx-foil" aria-hidden="true"></span>
+          <span class="pfx-glint" aria-hidden="true"></span>
+          <div class="pfx-id">
+            <div class="pfx-av">
+              <span class="pfx-ring" aria-hidden="true"></span>
+              <img id="pfAvatar" src="" alt="" class="pf-avatar">
+              <span class="pfx-fruit" id="pfxFruit" hidden></span>
+            </div>
+            <div class="pf-who">
+              <h1 id="pfName"></h1>
+              <div class="pfx-chips" id="pfxChips"><span class="pfx-chip">JammmyRewards member</span></div>
+              <div class="pfx-prog" id="pfxProg" hidden>
+                <div class="pfx-bar"><i id="pfxBar"></i></div>
+                <small id="pfxNext"></small>
+              </div>
+            </div>
           </div>
-          <div class="pf-balance">
-            <div class="pf-label">Jammmy Coins</div>
-            <div id="pfCoins" class="pf-coins"><img src="jammmy-coin.webp" alt=""><span id="pfCoinsNum">0</span></div>
-            <div id="pfUsdEquiv" class="pf-usd"></div>
+          <div class="pfx-wallet">
+            <div class="pf-balance">
+              <div class="pfx-wl">Jammmy Coins</div>
+              <div id="pfCoins" class="pf-coins"><img src="jammmy-coin.webp" alt=""><span id="pfCoinsNum">0</span></div>
+              <div id="pfUsdEquiv" class="pf-usd"></div>
+            </div>
+            <button class="pf-btn-claim claim-daily-btn" onclick="claimDaily()">🎁 Checking claim…</button>
           </div>
-          <button class="pf-btn-claim claim-daily-btn" onclick="claimDaily()">🎁 Checking claim…</button>
         </div>
 
+        <nav class="pfx-tabs" id="pfxTabs" aria-label="Profile sections">
+          <a href="#pfxAccounts" data-t="pfxAccounts">Accounts</a>
+          <a href="#pfxEarn" data-t="pfxEarn">Earn</a>
+          <a href="#pfxRedeem" data-t="pfxRedeem">Redeem</a>
+          <a href="#pfxHistory" data-t="pfxHistory">History</a>
+        </nav>
+
         <!-- Casino accounts -->
-        <div class="pf-card reveal">
+        <div class="pf-card reveal pfx-c" id="pfxAccounts" style="--ac:168,85,247">
           <h3 class="pf-h">🎰 Your Casino Accounts</h3>
           <p class="pf-sub">Save your username for each casino you play on. An admin verifies it against your Discord — once approved, your wagering counts toward the shared vault, and coins are distributed automatically once it fills.</p>
           <div id="pfCasinoLinks"></div>
@@ -6487,13 +6590,13 @@ body.maint-lock{overflow:hidden}
 
         <div class="pf-grid">
           <!-- Kick link (Jammmy Bot) -->
-          <div class="pf-card reveal kl-card">
+          <div class="pf-card reveal kl-card pfx-c" id="pfxEarn" style="--ac:83,252,24">
             <h3 class="pf-h"><span class="kl-k">K</span> Link your Kick</h3>
             <p class="pf-sub">Earn Jammmy Coins for chatting on Jammy's Kick stream, catch chat drops and guess bonus hunts.</p>
             <div id="pfKickBox" class="kl-box">Loading&hellip;</div>
           </div>
           <!-- Code drops -->
-          <div class="pf-card reveal kl-card">
+          <div class="pf-card reveal kl-card pfx-c" style="--ac:192,132,252">
             <h3 class="pf-h">🔑 Have a code?</h3>
             <p class="pf-sub">Jammmy Bot drops codes on Discord and Kick. First ones to enter them here win coins.</p>
             <form class="kl-code" onsubmit="redeemDropCode(event)">
@@ -6506,7 +6609,7 @@ body.maint-lock{overflow:hidden}
 
         <div class="pf-grid">
           <!-- Redeem -->
-          <div class="pf-card reveal rdx">
+          <div class="pf-card reveal rdx pfx-c" id="pfxRedeem" style="--ac:250,204,21">
             <div class="rdx-head">
               <h3 class="pf-h">Redeem</h3>
               <div id="pfRedeemInfo" class="rdx-bal"></div>
@@ -6554,7 +6657,7 @@ body.maint-lock{overflow:hidden}
           </div>
 
           <!-- Notifications -->
-          <div class="pf-card reveal" id="pfNotifCard">
+          <div class="pf-card reveal pfx-c" id="pfNotifCard" style="--ac:56,189,248">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px">
             <h3 class="pf-h">🔔 Notifications</h3>
             <span id="pfNotifStatus" class="admin-pill" style="font-size:.75rem">Checking…</span>
@@ -6576,11 +6679,11 @@ body.maint-lock{overflow:hidden}
         </div>
 
         <div class="pf-grid">
-          <div class="pf-card reveal">
+          <div class="pf-card reveal pfx-c" id="pfxHistory" style="--ac:74,222,128">
             <h3 class="pf-h">🧾 Redemption History</h3>
             <div id="pfRedemptions" class="pf-list">No redemptions yet.</div>
           </div>
-          <div class="pf-card reveal">
+          <div class="pf-card reveal pfx-c" style="--ac:244,114,182">
             <h3 class="pf-h">📜 Recent Activity</h3>
             <div id="pfTransactions" class="pf-list">No activity yet.</div>
           </div>
@@ -7263,12 +7366,12 @@ body.maint-lock{overflow:hidden}
       <h4>Quick Links</h4>
       <a onclick="nav('home')">Home</a>
       <a onclick="nav('leaderboards')">Leaderboards</a>
-      <a onclick="nav('games')">Jammmy Games</a>
-      <a onclick="nav('ranks')">Fruit Ranks</a>
       <a onclick="nav('new')">Partners</a>
+      <a onclick="nav('ranks')">Fruit Ranks</a>
+      <a onclick="nav('games')">Jammmy Games</a>
+      <a onclick="nav('vault')">Community Vault</a>
       <a onclick="nav('reviews')">Reviews</a>
       <a onclick="nav('loyalty')">Guide</a>
-      <a onclick="nav('vault')">Community Vault</a>
     </div>
 
     <!-- Col 3: Resources -->
@@ -9166,6 +9269,78 @@ async function amtSave(){
     MAINT.on = !!d.maintenance.on; MAINT.message = d.maintenance.message; maintPaint(); amtLoad();
   }catch(e){ out.textContent = 'Not saved: ' + e.message; }
 }
+
+/* ===== Profile player card: rank, coin count-up, holo tilt, section tabs ===== */
+(function(){
+  var RK_RGB = { cherry:'244,63,94', grape:'168,85,247', lemon:'250,204,21', orange:'249,115,22', watermelon:'74,222,128', pineapple:'251,191,36', dragonfruit:'236,72,153' };
+  function $(id){ return document.getElementById(id); }
+  function usd(v){ v = Number(v || 0); return '$' + v.toLocaleString('en-US', { maximumFractionDigits: v >= 100 ? 0 : 2 }); }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  var lastCount = null;
+  function countUp(el, to){
+    if(!el || to === lastCount) return; lastCount = to;
+    if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var t0 = performance.now(), dur = 1100, final = el.textContent;
+    (function step(t){ var k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = k < 1 ? Math.round(to * e).toLocaleString('en-US') : final; if(k < 1) requestAnimationFrame(step); })(t0);
+  }
+  async function paintRank(){
+    var tk = null; try{ tk = localStorage.getItem('jammy_session_token'); }catch(e){} if(!tk) return;
+    var me = null, cfg = null;
+    try{
+      var r = await Promise.all([fetch(AUTH_API + '/api/my-rank', { headers: { 'Authorization': 'Bearer ' + tk } }), fetch(AUTH_API + '/api/ranks')]);
+      if(r[0].ok) me = await r[0].json(); if(r[1].ok) cfg = await r[1].json();
+    }catch(e){ return; }
+    var hero = $('pfxHero'), chips = $('pfxChips'); if(!hero || !me) return;
+    var html = [];
+    if(me.enabled && cfg && cfg.tiers){
+      var t = cfg.tiers.filter(function(x){ return x.key === me.rank; })[0];
+      hero.style.setProperty('--rk', RK_RGB[me.rank] || '192,132,252');
+      var fr = $('pfxFruit');
+      if(t && window.fruitSvg){ fr.innerHTML = fruitSvg(t.key); fr.hidden = false; }
+      html.push('<span class="pfx-chip rk">' + (t && window.fruitSvg ? fruitSvg(t.key) : '') + esc(t ? t.name : 'No rank yet') + '</span>');
+      var prog = $('pfxProg');
+      if(me.next){
+        var prevMin = t ? t.min_usd : 0, span = Math.max(1, me.next.min_usd - prevMin), pct = Math.max(2, Math.min(100, (me.wager_usd - prevMin) / span * 100));
+        $('pfxNext').innerHTML = '<b>' + usd(me.next.need_usd) + '</b> more wagered to reach ' + esc(me.next.name);
+        prog.hidden = false; setTimeout(function(){ $('pfxBar').style.width = pct.toFixed(1) + '%'; }, 60);
+      } else if(t){
+        $('pfxNext').textContent = 'Top rank reached'; prog.hidden = false; setTimeout(function(){ $('pfxBar').style.width = '100%'; }, 60);
+      }
+    }
+    html.push('<span class="pfx-chip">🎁 ' + (me.daily || 5) + ' coins a day</span>');
+    if(me.wager_usd) html.push('<span class="pfx-chip">' + usd(me.wager_usd) + ' wagered</span>');
+    chips.innerHTML = html.join('');
+  }
+  var _lp = window.loadProfile;
+  if(typeof _lp === 'function'){
+    window.loadProfile = async function(){
+      var r = await _lp.apply(this, arguments);
+      try{ var el = $('pfCoinsNum'); var v = Number(String(el.textContent).replace(/[^0-9.]/g, '')) || 0; if(v) countUp(el, v); }catch(e){}
+      paintRank();
+      return r;
+    };
+  }
+  /* holographic tilt (mouse only) */
+  var hero = $('pfxHero');
+  if(hero && window.matchMedia && matchMedia('(hover:hover) and (pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+    hero.addEventListener('mousemove', function(e){
+      var b = hero.getBoundingClientRect(), x = (e.clientX - b.left) / b.width, y = (e.clientY - b.top) / b.height;
+      hero.classList.add('tilting');
+      hero.style.setProperty('--mx', (x * 100).toFixed(1)); hero.style.setProperty('--my', (y * 100).toFixed(1));
+      hero.style.setProperty('--ry', ((x - .5) * 5).toFixed(2) + 'deg'); hero.style.setProperty('--rx', ((.5 - y) * 5).toFixed(2) + 'deg');
+    });
+    hero.addEventListener('mouseleave', function(){ hero.classList.remove('tilting'); hero.style.setProperty('--rx', '0deg'); hero.style.setProperty('--ry', '0deg'); });
+  }
+  /* section tabs: smooth scroll + highlight the section in view */
+  var tabs = $('pfxTabs');
+  if(tabs){
+    tabs.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); var t = $(a.dataset.t); if(t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }); });
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){ tabs.querySelectorAll('a').forEach(function(a){ a.classList.toggle('on', a.dataset.t === en.target.id); }); } }); }, { rootMargin: '-40% 0px -55% 0px' });
+      ['pfxAccounts','pfxEarn','pfxRedeem','pfxHistory'].forEach(function(id){ var el = $(id); if(el) io.observe(el); });
+    }
+  }
+})();
 initAuth();
 loadVaultSettings(); /* covers the Home page's vault mini-stat/preview too, not just the dedicated Vault page */
 /* Was only ever fetched once on page load -- if an admin topped up the vault while someone
@@ -13677,7 +13852,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
       + '<linearGradient id="iceBlkF" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7dd3fc" stop-opacity=".55"/><stop offset=".55" stop-color="#38bdf8" stop-opacity=".35"/><stop offset="1" stop-color="#1e3a8a" stop-opacity=".55"/></linearGradient></defs>'
       + '<path d="M18 24L100 6L182 24L100 42Z" fill="url(#iceBlkT)"/><path d="M18 24L100 42V90L18 70Z" fill="url(#iceBlkF)"/><path d="M182 24L100 42V90L182 70Z" fill="url(#iceBlkF)" opacity=".75"/>'
       + '<path d="M18 24L100 42L182 24M100 42V90" fill="none" stroke="#e0f2fe" stroke-opacity=".8" stroke-width="1.4"/><path d="M40 40L62 60M140 44L126 66M70 22L118 14" stroke="#fff" stroke-opacity=".55" stroke-width="1.2"/></svg>',
-    glacier: '<svg viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="iceGl1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bae6fd" stop-opacity=".32"/><stop offset=".45" stop-color="#1e4f7a" stop-opacity=".6"/><stop offset="1" stop-color="#081a30" stop-opacity=".95"/></linearGradient>'
+    glacier: '<svg viewBox="0 0 1440 170" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="iceDr1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7dd3fc" stop-opacity=".16"/><stop offset="1" stop-color="#7dd3fc" stop-opacity="0"/></linearGradient><linearGradient id="iceDr2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bae6fd" stop-opacity=".26"/><stop offset=".7" stop-color="#93c5fd" stop-opacity=".05"/><stop offset="1" stop-color="#93c5fd" stop-opacity="0"/></linearGradient><linearGradient id="iceDr3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0f9ff" stop-opacity=".5"/><stop offset=".35" stop-color="#bae6fd" stop-opacity=".16"/><stop offset="1" stop-color="#bae6fd" stop-opacity="0"/></linearGradient></defs><path d="M0 70C140 40 260 48 380 66S620 96 760 70 1020 30 1160 52 1360 84 1440 64V170H0Z" fill="url(#iceDr1)"/><path d="M0 104C120 84 230 80 350 96S560 124 700 104 950 68 1090 86 1330 118 1440 98V170H0Z" fill="url(#iceDr2)"/><path d="M0 104C120 84 230 80 350 96S560 124 700 104 950 68 1090 86 1330 118 1440 98" fill="none" stroke="#e0f2fe" stroke-opacity=".35" stroke-width="1.2" vector-effect="non-scaling-stroke"/><path d="M0 138C160 120 300 116 460 130S760 152 920 134 1220 112 1440 132V170H0Z" fill="url(#iceDr3)"/><path d="M0 138C160 120 300 116 460 130S760 152 920 134 1220 112 1440 132" fill="none" stroke="#f0f9ff" stroke-opacity=".7" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>'
       + '<linearGradient id="iceGl2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0f6ff" stop-opacity=".42"/><stop offset=".35" stop-color="#2a5f8f" stop-opacity=".7"/><stop offset="1" stop-color="#0a1f38"/></linearGradient></defs>'
       + '<path d="M0 150V80L90 46L170 74L260 30L360 70L450 40L540 78L640 34L740 72L820 44L930 80L1030 36L1130 70L1220 42L1320 76L1440 50V150Z" fill="url(#iceGl1)"/>'
       + '<path d="M248 35L260 30L276 40L262 44ZM628 39L640 34L656 44L642 47ZM1018 41L1030 36L1046 46L1032 49ZM440 44L450 40L464 49L452 51Z" fill="#e0f6ff" opacity=".55"/>'
@@ -13730,9 +13905,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   safe(function(){
     var v = document.getElementById('vaultMascotVideo') || document.getElementById('vaultJarFb');
     if(!v || v.parentNode.classList.contains('ice-vjar')) return;
-    var w = mk('span','ice-vjar');
-    v.parentNode.insertBefore(w, v); w.appendChild(v);
-    w.appendChild(mk('span','ice-block', ICE.block));
+    return; /* removed: the ice block under the vault jar */
   });
 
   /* 4. icicles on card edges + a frost sweep on hover */
@@ -13747,7 +13920,6 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
       for(var i = 0; i < n; i++){
         s += '<i style="--x:' + ((i + .2 + Math.random() * .6) / n * 100).toFixed(1) + '%;--w:' + R(6, 12).toFixed(0) + 'px;--h:' + R(8, 22).toFixed(0) + 'px"></i>';
       }
-      c.appendChild(mk('span','ice-edge', s)).setAttribute('aria-hidden','true');
       c.classList.add('ice-card');
       c.appendChild(mk('span','ice-frost')).setAttribute('aria-hidden','true');
     });
@@ -13759,7 +13931,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     if(!ft || document.querySelector('.ice-glacier')) return;
     var g = mk('div','ice-glacier', ICE.glacier); g.setAttribute('aria-hidden','true');
     for(var i = 0; i < (LITE ? 5 : 12); i++){
-      var t = mk('i','ice-tw'); t.style.cssText = 'left:' + R(2, 98).toFixed(1) + '%;top:' + R(30, 85).toFixed(0) + '%;animation-delay:' + R(-3.4, 0).toFixed(2) + 's';
+      var t = mk('i','ice-tw'); t.style.cssText = 'left:' + R(2, 98).toFixed(1) + '%;top:' + R(56, 80).toFixed(0) + '%;animation-delay:' + R(-3.4, 0).toFixed(2) + 's';
       g.appendChild(t);
     }
     ft.parentNode.insertBefore(g, ft);
@@ -14599,16 +14771,17 @@ window.fruitSvg = function(key){ return (window.FRUIT_SVG[key] || window.FRUIT_S
   setInterval(function(){ var g = $('games'); if(g && g.classList.contains('show') && !document.hidden) loadCh().then(paintCh); }, 20000);
   window.addEventListener('message', function(e){ if(e.origin === location.origin && e.data && e.data.type === 'jg-challenge') setTimeout(function(){ loadCh().then(paintCh); }, 1500); });
 
-  /* home billboard: today's biggest wins + latest rounds + challenge winners */
+  /* Live wins strip on the Games lobby: today's biggest wins + latest wins + challenge winners */
   var ICON = { blackjack: '🃏', mines: '💎', plinko: '🟡', hilo: '🔼' };
   async function bb(){
-    var home = $('home'); if(!home || !home.classList.contains('show') || document.hidden) return;
+    var home = $('games'); if(!home || !home.classList.contains('show') || document.hidden) return;
     try{
       var r = await Promise.all([fetch(AUTH_API + '/api/games/feed').then(function(x){ return x.json(); }), loadCh()]);
       var F = r[0] || {}, C = r[1] || {}, items = [], seen = {};
       (F.big || []).concat(F.recent || []).forEach(function(x){ if(seen[x.id] || !(x.payout > x.wagered)) return; seen[x.id] = 1;
-        items.push('<span class="bb-it"><span class="g">' + (ICON[x.game] || '🎮') + '</span><b>' + esc(x.user) + '</b> won <em>+' + fmt(x.payout - x.wagered) + '</em> on ' + (GN[x.game] || x.game) + ' <small>' + (x.mult || 0).toFixed(2) + '×</small></span>'); });
-      (C.winners || []).slice(0, 6).forEach(function(w){ items.push('<span class="bb-it"><span class="g">🏅</span><b>' + esc(w.user) + '</b> won a challenge <em class="ch">+' + fmt(w.reward) + ' coins</em></span>'); });
+        var m = x.mult || 0;
+        items.push('<span class="bb-it' + (m >= 10 ? ' big' : '') + '" data-g="' + esc(x.game) + '"><span class="bb-g">' + (ICON[x.game] || '🎮') + '</span><span class="bb-tx"><b>' + esc(x.user) + '</b><small>' + (GN[x.game] || x.game) + '</small></span><span class="bb-amt"><em>+' + fmt(x.payout - x.wagered) + '</em><i>' + m.toFixed(2) + '×</i></span></span>'); });
+      (C.winners || []).slice(0, 6).forEach(function(w){ items.push('<span class="bb-it" data-g="ch"><span class="bb-g">🏅</span><span class="bb-tx"><b>' + esc(w.user) + '</b><small>Challenge won</small></span><span class="bb-amt"><em>+' + fmt(w.reward) + '</em><i>coins</i></span></span>'); });
       var box = $('homeBB'), tr = $('homeBBTr');
       if(items.length < 3){ box.hidden = true; return; }
       items = items.slice(0, 24);
@@ -14619,7 +14792,7 @@ window.fruitSvg = function(key){ return (window.FRUIT_SVG[key] || window.FRUIT_S
   }
   bb(); setInterval(bb, 25000);
   var _sp = window.showPage;
-  if(_sp) window.showPage = function(id){ var r = _sp.apply(this, arguments); if(id === 'home') setTimeout(bb, 300); return r; };
+  if(_sp) window.showPage = function(id){ var r = _sp.apply(this, arguments); if(id === 'games') setTimeout(bb, 300); return r; };
 })();
 </script>
 <script>
