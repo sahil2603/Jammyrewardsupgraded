@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="robots" content="noindex,nofollow">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>JammmyRewards — Community Casino Rewards</title>
@@ -4071,6 +4072,10 @@ video.vp-mascot-img{animation:none;border-radius:16px;object-fit:cover}
 </style>
 <style>
 /* ── UPDATE 9: Nav link popping colors ── */
+.nav-links a[data-page="games"]{color:#7dd3fc}
+.nav-links a[data-page="games"]:hover,.nav-links a[data-page="games"].active{color:#e0f6ff !important}
+.nav-links a[data-page="ranks"]{color:#facc15}
+.nav-links a[data-page="ranks"]:hover,.nav-links a[data-page="ranks"].active{color:#fde68a !important}
 .nav-links a[data-page="leaderboards"]{color:#a78bfa}
 .nav-links a[data-page="leaderboards"]:hover,.nav-links a[data-page="leaderboards"].active{color:#c4b5fd !important}
 .nav-links a[data-page="bonuses"]{color:#34d399}
@@ -4403,7 +4408,7 @@ var HW_SVG = (function(){
 /* Halloween theme switch: on for October (visitor's local date), off from 1 Nov.
    Preview any time with ?halloween=1, turn off with ?halloween=0 (kept for the tab session). */
 (function(){try{
-  var on = new Date().getMonth() === 9, q = location.search, ss = null;
+  var on = false, q = location.search, ss = null;   /* Halloween is over: preview only, with ?halloween=1 */
   try{ ss = window.sessionStorage; }catch(e){}
   if(/[?&]halloween=1/.test(q)){ on = true; try{ ss && ss.setItem('hw_force','1'); }catch(e){} }
   else if(/[?&]halloween=0/.test(q)){ on = false; try{ ss && ss.setItem('hw_force','0'); }catch(e){} }
@@ -4414,6 +4419,24 @@ var HW_SVG = (function(){
   if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) h.classList.add('hw-rm');
   if(window.innerWidth < 760 || (window.matchMedia && matchMedia('(hover:none)').matches)) h.classList.add('hw-lite');
 }catch(e){ window.isHW = window.isHW || function(){ return false; }; }})();
+</script>
+<script>
+/* Ice theme switch: on by default from launch (31 Oct 2026). ?ice=0 turns it off for the tab session.
+   ice-lite = phones and weak devices: same look, less motion. */
+(function(){try{
+  var h = document.documentElement, q = location.search, ss = null;
+  try{ ss = window.sessionStorage; }catch(e){}
+  var on = !h.classList.contains('hw');
+  if(/[?&]ice=0/.test(q)){ on = false; try{ ss && ss.setItem('ice_force','0'); }catch(e){} }
+  else if(/[?&]ice=1/.test(q)){ on = true; try{ ss && ss.setItem('ice_force','1'); }catch(e){} }
+  else { var f = null; try{ f = ss && ss.getItem('ice_force'); }catch(e){} if(f) on = f === '1'; }
+  window.isICE = function(){ return h.classList.contains('ice'); };
+  if(!on) return;
+  h.classList.add('ice');
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) h.classList.add('ice-rm');
+  var weak = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) || (navigator.deviceMemory && navigator.deviceMemory <= 4);
+  if(window.innerWidth < 760 || (window.matchMedia && matchMedia('(hover:none)').matches) || weak) h.classList.add('ice-lite');
+}catch(e){ window.isICE = window.isICE || function(){ return false; }; }})();
 </script>
 <style>
 /* ================= HALLOWEEN THEME (only active when <html> has .hw) ================= */
@@ -4890,8 +4913,516 @@ body.on-admin .ambient-glow-blob{opacity:.35}
   window.alert = function(msg){ open('alert', msg); };
 })();
 </script>
+<style>
+/* ================= ICE / GLACIER THEME (active when <html> has .ice) =================
+   Light on purpose: static ice art, one shimmer, a little snow. Lite mode (phones, weak
+   devices) keeps the look and drops the motion. Never touches coins, games or requests. */
+html.ice{--ice-w:224,246,255;--ice-b:125,211,252;--ice-d:56,189,248;--ice-p:165,180,252;--ice-g:94,234,212}
+html.ice #scroll-bar{background:linear-gradient(90deg,#a5b4fc,#7dd3fc,#e0f6ff)!important;box-shadow:0 0 12px rgba(125,211,252,.7)!important}
+html.ice .aurora{background:
+  radial-gradient(ellipse 120% 60% at 78% -16%,rgba(125,211,252,.42),transparent 58%),
+  radial-gradient(ellipse 90% 50% at -6% 30%,rgba(94,234,212,.16),transparent 52%),
+  radial-gradient(ellipse 110% 60% at 50% 110%,rgba(56,189,248,.2),transparent 58%),
+  radial-gradient(ellipse 70% 45% at 20% 84%,rgba(165,180,252,.16),transparent 52%)}
+html.ice .ambient-glow-blob.b1{background:rgba(125,211,252,.16)}
+html.ice .ambient-glow-blob.b2{background:rgba(94,234,212,.1)}
+html.ice .ambient-glow-blob.b3{background:rgba(165,180,252,.14)}
+
+/* the wordmark turns to ice: frost white through glacier blue to periwinkle, with one slow sheen */
+html.ice .hx-l{background-image:linear-gradient(90deg,#e0f6ff,#bae6fd,#7dd3fc,#38bdf8,#818cf8,#a5b4fc,#7dd3fc,#e0f6ff)}
+html.ice .hx-wm{filter:drop-shadow(0 0 22px rgba(125,211,252,.35)) drop-shadow(0 0 46px rgba(129,140,248,.25))}
+html.ice .hx-grad{background-image:linear-gradient(100deg,#e0f6ff,#7dd3fc 55%,#a5b4fc);filter:drop-shadow(0 0 14px rgba(125,211,252,.3))}
+html.ice .hx-grad.g2{background-image:linear-gradient(100deg,#5eead4,#bae6fd 45%,#a5b4fc);filter:drop-shadow(0 0 14px rgba(94,234,212,.3))}
+/* icicles under the wordmark: the one bold piece of the theme */
+.ice-cicles-wm{display:block;height:34px;margin:-14px auto 0;max-width:min(1120px,92vw);pointer-events:none;position:relative;z-index:1}
+.ice-cicles-wm svg{display:block;width:100%;height:100%;overflow:visible}
+.ice-drop{transform-box:fill-box;transform-origin:center top;animation:iceDrop 5.2s ease-in infinite;opacity:0}
+@keyframes iceDrop{0%,70%{opacity:0;transform:translateY(0)}74%{opacity:1}100%{opacity:0;transform:translateY(42px)}}
+
+/* frosted nav edge */
+html.ice nav:not(.mobbar){border-bottom-color:rgba(186,230,253,.22)!important}
+html.ice nav:not(.mobbar)::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,rgba(224,246,255,.75) 30%,rgba(125,211,252,.85) 50%,rgba(224,246,255,.75) 70%,transparent);pointer-events:none}
+html.ice .lbx-live,html.ice #navLiveTag.is-live{border-color:rgba(125,211,252,.7)!important;color:#bae6fd!important;box-shadow:0 0 16px rgba(125,211,252,.35),inset 0 0 10px rgba(125,211,252,.15)}
+
+/* aurora behind the home jar (replaces the Halloween moon) */
+.ice-aur{position:absolute;left:50%;top:44%;width:150%;height:120%;transform:translate(-50%,-50%);pointer-events:none;z-index:0;opacity:.95}
+.ice-aur i{position:absolute;left:0;right:0;top:22%;height:46%;border-radius:50%;filter:blur(26px);transform:rotate(-8deg) scaleY(.55);
+  background:linear-gradient(90deg,transparent,rgba(94,234,212,.55) 20%,rgba(125,211,252,.6) 45%,rgba(165,180,252,.55) 70%,transparent);animation:iceAur 14s ease-in-out infinite alternate}
+.ice-aur i+i{top:38%;transform:rotate(7deg) scaleY(.45);background:linear-gradient(90deg,transparent,rgba(165,180,252,.45) 25%,rgba(94,234,212,.5) 55%,rgba(56,189,248,.4) 80%,transparent);animation-duration:18s;animation-delay:-6s}
+@keyframes iceAur{to{transform:rotate(-2deg) translateX(6%) scaleY(.7)}}
+
+/* snow cap on the Jammmy jar (placed by iceFitCaps) */
+.ice-cap{position:absolute;pointer-events:none;z-index:3;filter:drop-shadow(0 4px 6px rgba(2,12,27,.45)) drop-shadow(0 0 10px rgba(125,211,252,.45))}
+.ice-cap svg{display:block;width:100%;height:auto;overflow:visible}
+nav .brand{position:relative}
+nav .brand .ice-cap{width:30px;left:6px;top:-4px}
+
+/* icicles on card edges (static; one shimmer on hover) */
+.ice-edge{position:absolute;left:14px;right:14px;top:0;height:0;z-index:5;pointer-events:none}
+.ice-edge::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;border-radius:0 0 4px 4px;background:linear-gradient(180deg,rgba(240,250,255,.95),rgba(125,211,252,.75));box-shadow:0 0 8px rgba(125,211,252,.45)}
+.ice-edge i{position:absolute;top:1px;left:var(--x);width:var(--w);height:var(--h);background:linear-gradient(180deg,rgba(240,250,255,.95),rgba(125,211,252,.55) 70%,rgba(125,211,252,0));clip-path:polygon(0 0,100% 0,55% 100%,45% 100%)}
+.ice-frost{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:4;opacity:0;transition:opacity .35s;
+  background:linear-gradient(115deg,transparent 35%,rgba(224,246,255,.10) 48%,transparent 60%) no-repeat;background-size:250% 100%;background-position:120% 0;box-shadow:inset 0 0 0 1px rgba(186,230,253,.35)}
+html.ice:not(.ice-lite) .ice-card:hover>.ice-frost{opacity:1;animation:iceSweep 1.1s ease-out}
+@keyframes iceSweep{from{background-position:120% 0}to{background-position:-30% 0}}
+
+/* vault page: the jar stands on a block of ice */
+.ice-vjar{position:relative;display:inline-block}
+.ice-block{position:absolute;left:50%;bottom:-10%;width:86%;transform:translateX(-50%);pointer-events:none;z-index:-1}
+.ice-block svg{display:block;width:100%;height:auto}
+
+/* glacier strip above the footer */
+.ice-glacier{position:relative;height:150px;margin-top:30px;pointer-events:none;overflow:hidden;-webkit-mask:linear-gradient(to bottom,transparent,#000 24%);mask:linear-gradient(to bottom,transparent,#000 24%)}
+.ice-glacier svg{position:absolute;left:0;bottom:0;width:100%;height:100%}
+.ice-tw{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 6px 2px rgba(186,230,253,.8);animation:iceTw 3.4s ease-in-out infinite}
+@keyframes iceTw{0%,100%{opacity:.15;transform:scale(.6)}50%{opacity:1;transform:scale(1.2)}}
+@media(max-width:640px){.ice-glacier{height:100px;margin-top:20px}.ice-cicles-wm{height:22px;margin-top:-8px}}
+
+/* winter launch banner (bottom-left) */
+.ice-ban{position:fixed;left:18px;bottom:18px;z-index:70;display:flex;align-items:center;gap:10px;padding:8px 10px 8px 8px;border-radius:999px;max-width:calc(100vw - 36px);
+  background:linear-gradient(120deg,rgba(10,30,52,.94),rgba(14,20,44,.95));border:1px solid rgba(125,211,252,.5);color:#fff;font:600 .8rem 'Poppins',sans-serif;
+  box-shadow:0 14px 40px -12px rgba(56,189,248,.55);transform:translateY(140%);opacity:0;transition:transform .7s cubic-bezier(.2,1.3,.4,1),opacity .5s}
+.ice-ban.in{transform:none;opacity:1}
+.ice-ban-ic{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#e0f6ff,#7dd3fc 60%,#3b82f6);box-shadow:0 0 14px rgba(125,211,252,.7)}
+.ice-ban-ic svg{width:24px;height:24px}
+.ice-ban-t{display:flex;flex-direction:column;line-height:1.2;white-space:nowrap;overflow:hidden}
+.ice-ban-t b{font:400 1rem 'Lilita One',sans-serif;letter-spacing:.02em;background:linear-gradient(90deg,#e0f6ff,#7dd3fc,#a5b4fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ice-ban-t span{color:#c7d8ea;font-size:.72rem}
+.ice-ban-go{flex:none;border:0;border-radius:999px;padding:8px 14px;background:linear-gradient(135deg,#38bdf8,#818cf8);color:#fff;font:700 .78rem 'Poppins';cursor:pointer}
+.ice-ban-go:hover{filter:brightness(1.1)}
+.ice-ban-x{flex:none;width:26px;height:26px;border-radius:50%;border:0;background:rgba(255,255,255,.08);color:#fff;cursor:pointer;font-size:.9rem;line-height:1}
+@media(max-width:820px){.ice-ban{bottom:84px;left:10px}.ice-ban-t span{display:none}}
+body.on-admin .ice-ban,body.on-admin .ice-glacier{display:none!important}
+
+/* loading screen: a snowflake draws itself, once per tab session */
+#iceLoader{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:radial-gradient(circle at 50% 42%,#0c2a46,#05101e 62%);transition:opacity .7s,visibility .7s}
+#iceLoader.out{opacity:0;visibility:hidden}
+.icel-flake{width:150px;height:150px;margin:0 auto;filter:drop-shadow(0 0 14px rgba(125,211,252,.85))}
+.icel-flake path{fill:none;stroke:#e0f6ff;stroke-width:3.2;stroke-linecap:round;stroke-dasharray:120;stroke-dashoffset:120;animation:icelDraw .9s ease-out forwards}
+.icel-flake g{transform-origin:75px 75px;animation:icelSpin 2.6s linear infinite}
+@keyframes icelDraw{to{stroke-dashoffset:0}}
+@keyframes icelSpin{to{transform:rotate(60deg)}}
+.icel-t{margin-top:14px;text-align:center;font:400 1.3rem 'Lilita One',sans-serif;color:#cfe9fb;letter-spacing:.03em}
+.icel-t b{font-weight:400;background:linear-gradient(90deg,#e0f6ff,#7dd3fc,#a5b4fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* lite + reduced motion: keep the look, drop the motion */
+html.ice-lite .ice-aur i,html.ice-lite .ice-drop,html.ice-lite .ice-tw{animation:none!important}
+html.ice-lite .ice-drop{display:none}
+html.ice-lite .ice-aur i{filter:blur(18px)}
+html.ice-rm .ice-aur i,html.ice-rm .ice-drop,html.ice-rm .ice-tw,html.ice-rm .icel-flake g{animation:none!important}
+/* hero glows: violet and pink swapped for glacier blues, a touch of violet stays for the brand */
+html.ice .hx-mesh i:nth-child(1){background:radial-gradient(closest-side,rgba(99,102,241,.36),transparent)}
+html.ice .hx-mesh i:nth-child(2){background:radial-gradient(closest-side,rgba(56,189,248,.26),transparent)}
+html.ice .hx-mesh i:nth-child(3){background:radial-gradient(closest-side,rgba(94,234,212,.2),transparent)}
+html.ice .hx-mesh i:nth-child(4){background:radial-gradient(closest-side,rgba(186,230,253,.14),transparent)}
+html.ice .hx-halo{background:conic-gradient(from 0deg,rgba(125,211,252,.55),rgba(165,180,252,.4),rgba(94,234,212,.4),rgba(224,246,255,.35),rgba(125,211,252,.55))}
+html.ice .hx-wm-glow{background:radial-gradient(ellipse 38% 50% at 28% 55%,rgba(125,211,252,.36),transparent 70%),radial-gradient(ellipse 34% 50% at 55% 50%,rgba(94,234,212,.22),transparent 70%),radial-gradient(ellipse 34% 50% at 80% 55%,rgba(129,140,248,.3),transparent 70%)}
+</style>
+<style>
+/* ================= JAMMMY GAMES page ================= */
+.gm{padding:34px 0 40px}
+.gm-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:26px;flex-wrap:wrap}
+.gm-h1{font:400 clamp(2.2rem,5vw,3.4rem)/1 'Lilita One',sans-serif;letter-spacing:.01em;background:linear-gradient(100deg,#e0f6ff,#7dd3fc 45%,#a5b4fc 80%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px rgba(125,211,252,.25))}
+.gm-sub{color:var(--muted);margin-top:8px;max-width:520px}
+.gm-wallet{display:flex;align-items:center;gap:12px;padding:10px 18px 10px 12px;border-radius:18px;background:linear-gradient(135deg,rgba(14,42,70,.85),rgba(20,16,44,.85));border:1px solid rgba(125,211,252,.35);box-shadow:0 10px 30px -14px rgba(56,189,248,.55)}
+.gm-wallet img{width:38px;height:38px}
+.gm-wallet div{display:flex;flex-direction:column;line-height:1.15}
+.gm-wl{font-size:.74rem;color:var(--faint)}
+.gm-wallet b{font:400 1.45rem 'Lilita One',sans-serif;color:#fde68a;font-variant-numeric:tabular-nums;transition:color .3s}
+.gm-wallet b.up{color:#86efac}
+.gm-wallet.out b{font:600 .9rem 'Poppins',sans-serif;color:#e0f2fe}
+.gm-wallet.out{cursor:pointer}
+
+.gm-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
+.gm-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px 14px 16px;border-radius:22px;border:1px solid rgba(125,211,252,.18);text-align:left;color:var(--text);font-family:inherit;cursor:pointer;overflow:hidden;isolation:isolate;
+  background:linear-gradient(165deg,rgba(18,48,80,.9),rgba(14,14,38,.95) 70%);transition:transform .25s cubic-bezier(.2,.9,.3,1.2),border-color .25s,box-shadow .25s}
+.gm-card::before{content:'';position:absolute;inset:0;z-index:-1;background:radial-gradient(120% 70% at 50% 0%,var(--gc,rgba(125,211,252,.28)),transparent 65%);opacity:.8;transition:opacity .25s}
+.gm-card:hover:not(.gm-soon),.gm-card:focus-visible{transform:translateY(-6px);border-color:rgba(186,230,253,.55);box-shadow:0 22px 50px -20px var(--gs,rgba(56,189,248,.65))}
+.gm-card:hover:not(.gm-soon)::before{opacity:1}
+.gm-card:focus-visible{outline:2px solid #bae6fd;outline-offset:3px}
+.gm-art{display:block;width:100%;aspect-ratio:16/11;margin-bottom:8px;border-radius:14px;background:rgba(5,16,30,.55);box-shadow:inset 0 0 0 1px rgba(125,211,252,.12);display:grid;place-items:center;overflow:hidden}
+.gm-art svg{width:88%;height:auto;transition:transform .45s cubic-bezier(.2,.9,.3,1.3)}
+.gm-card:hover:not(.gm-soon) .gm-art svg{transform:scale(1.07) rotate(-1.5deg)}
+.gm-name{font:400 1.35rem 'Lilita One',sans-serif;letter-spacing:.01em}
+.gm-meta{font-size:.76rem;color:var(--faint);min-height:2.2em}
+.gm-tag{margin-top:8px;padding:6px 14px;border-radius:999px;font:700 .78rem 'Poppins';background:linear-gradient(135deg,#38bdf8,#818cf8);color:#fff;box-shadow:0 6px 16px -6px rgba(56,189,248,.7)}
+.gm-tag.soon{background:rgba(255,255,255,.08);box-shadow:none;color:var(--muted)}
+.gm-tag.off{background:rgba(255,255,255,.08);box-shadow:none;color:var(--muted)}
+.gm-soon{cursor:default;opacity:.75}
+.gm-bj{--gc:rgba(165,180,252,.32);--gs:rgba(129,140,248,.6)}
+.gm-mines{--gc:rgba(94,234,212,.28);--gs:rgba(45,212,191,.55)}
+.gm-plinko{--gc:rgba(251,191,36,.22);--gs:rgba(251,191,36,.45)}
+.gm-hilo{--gc:rgba(244,114,182,.24);--gs:rgba(236,72,153,.45)}
+
+.gm-feed{margin-top:26px;border-radius:20px;padding:14px 16px;background:rgba(10,24,44,.7);border:1px solid rgba(125,211,252,.16)}
+.gm-feed-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.gm-feed-h b{font:400 1.1rem 'Lilita One',sans-serif}
+.gm-feed-s{font-size:.78rem;color:var(--faint)}
+.gm-live-dot{width:9px;height:9px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,.6);animation:gmPulse 2s infinite}
+@keyframes gmPulse{70%{box-shadow:0 0 0 9px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
+.gm-feed-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.gm-feed-empty{color:var(--faint);font-size:.85rem;padding:6px 2px}
+.gm-win{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06);font-size:.82rem;animation:gmIn .45s cubic-bezier(.2,.9,.3,1.2)}
+.gm-win i{font-style:normal;width:30px;height:30px;flex:none;border-radius:10px;display:grid;place-items:center;background:rgba(125,211,252,.12);font-size:.95rem}
+.gm-win span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gm-win span small{display:block;color:var(--faint);font-size:.72rem}
+.gm-win em{font-style:normal;font-weight:800;color:#86efac;font-variant-numeric:tabular-nums}
+.gm-win em.lo{color:var(--faint);font-weight:600}
+@keyframes gmIn{from{opacity:0;transform:translateY(8px) scale(.98)}}
+
+.gm-play-bar{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.gm-back{white-space:nowrap;display:inline-flex;align-items:center;gap:6px;padding:9px 14px 9px 10px;border-radius:12px;border:1px solid rgba(125,211,252,.3);background:rgba(14,42,70,.7);color:#e0f2fe;font:700 .85rem 'Poppins';cursor:pointer}
+.gm-back:hover{background:rgba(14,42,70,1)}
+.gm-switch{display:flex;gap:6px;flex-wrap:wrap}
+.gm-switch button{padding:8px 13px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--muted);font:700 .8rem 'Poppins';cursor:pointer}
+.gm-switch button.on{background:rgba(56,189,248,.18);border-color:rgba(125,211,252,.55);color:#fff}
+#games.playing .gm-head{display:none}
+#games.playing .gm{padding-top:16px}
+#gmFrame{display:block;width:100%;height:calc(100vh - 150px);height:calc(100dvh - 150px);min-height:640px;border:0;border-radius:22px;background:#0b0615;box-shadow:0 30px 80px -40px rgba(0,0,0,.9)}
+
+@media(max-width:1100px){.gm-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:700px){
+  .gm{padding:18px 0 30px}
+  .gm-head{align-items:center;margin-bottom:16px}
+  .gm-wallet{padding:8px 14px 8px 10px}.gm-wallet img{width:30px;height:30px}.gm-wallet b{font-size:1.2rem}
+  .gm-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .gm-card{padding:10px 10px 12px;border-radius:18px}.gm-name{font-size:1.15rem}.gm-meta{font-size:.7rem}
+  .gm-tag{padding:5px 12px;font-size:.72rem}
+  #games.playing .gm{padding-top:10px}
+  .gm-play-bar{flex-wrap:nowrap;gap:8px;margin-bottom:8px}
+  .gm-back{padding:8px 10px 8px 8px;font-size:.8rem}
+  .gm-switch{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .gm-switch::-webkit-scrollbar{display:none}
+  .gm-switch button{flex:none;padding:7px 11px}
+  #gmFrame{height:calc(100vh - 205px);height:calc(100dvh - 205px);min-height:520px;border-radius:16px}
+}
+html.ice-lite .gm-live-dot,html.ice-rm .gm-live-dot{animation:none}
+@media (prefers-reduced-motion:reduce){.gm-card,.gm-art svg,.gm-win{transition:none!important;animation:none!important}}
+</style>
+<style>
+.lbx-tabs .lbt .lbt-jg{display:flex;align-items:center;gap:8px;font:400 1.05rem 'Lilita One',sans-serif;color:#e0f2fe;white-space:nowrap}
+.lbx-tabs .lbt .lbt-jg img{height:30px;width:auto}
+html.ice .lbx-tab-ind{background:linear-gradient(180deg,rgba(56,189,248,.28),rgba(56,189,248,.1));border-color:rgba(125,211,252,.6);box-shadow:0 0 24px rgba(56,189,248,.35),inset 0 1px 0 rgba(255,255,255,.14)}
+#leaderboards.lb-coins .lbx-notes,#leaderboards.lb-coins #lbJoinPowerwin,#leaderboards.lb-coins .lbx-cta .lbx-code{display:none!important}
+.lbx-jgplay{display:none}
+#leaderboards.lb-coins .lbx-jgplay{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;padding:12px 18px;border:0;border-radius:14px;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;font:700 .95rem 'Poppins';cursor:pointer;box-shadow:0 10px 26px -10px rgba(56,189,248,.7)}
+#leaderboards.lb-coins .lbx-jgplay:hover{filter:brightness(1.1)}
+.lbx-coin{display:inline-flex;align-items:center;gap:5px}
+.lbx-coin img{width:1em;height:1em;vertical-align:-.12em}
+#leaderboards.lb-coins .lbx-pool b{font-size:2.1rem}
+@media(max-width:640px){.lbx-tabs .lbt .lbt-jg{font-size:.9rem}.lbx-tabs .lbt .lbt-jg img{height:22px}}
+</style>
+<style>/* ================= FRUIT RANKS page ================= */
+.rk{padding:34px 0 40px}
+.rk-head{text-align:center;max-width:680px;margin:0 auto 26px}
+.rk-h1{font:400 clamp(2.4rem,6vw,3.8rem)/1 'Lilita One',sans-serif;background:linear-gradient(100deg,#fda4af,#facc15 35%,#4ade80 65%,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 20px rgba(250,204,21,.18))}
+.rk-sub{color:var(--muted);margin-top:10px}
+.rk-sub b{color:#fde68a}
+.rk-h2{font:400 1.45rem 'Lilita One',sans-serif;margin:30px 0 14px}
+.rk-top{display:grid;grid-template-columns:1.3fr 1fr;gap:16px}
+.rk-me{display:flex;align-items:center;gap:20px;padding:22px;border-radius:24px;background:linear-gradient(150deg,rgba(18,48,80,.92),rgba(16,14,40,.95));border:1px solid rgba(125,211,252,.25);box-shadow:0 24px 60px -30px rgba(56,189,248,.6)}
+.rk-me-fruit{flex:none;width:118px;height:118px;border-radius:30px;display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.14),rgba(255,255,255,.02) 70%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.rk-me-fruit svg{width:84px;height:84px;filter:drop-shadow(0 8px 14px rgba(0,0,0,.4));animation:rkBob 4s ease-in-out infinite}
+@keyframes rkBob{50%{transform:translateY(-5px) rotate(-3deg)}}
+.rk-me-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.rk-me-l{font-size:.78rem;color:var(--faint)}
+.rk-me-name{font:400 2rem/1.05 'Lilita One',sans-serif}
+.rk-me-w{color:var(--muted);font-size:.9rem}
+.rk-me-w button{border:0;border-radius:12px;padding:9px 14px;margin-top:4px;background:#5865f2;color:#fff;font:700 .85rem 'Poppins';cursor:pointer}
+.rk-bar{height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:8px}
+.rk-bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#4ade80,#facc15,#fb7185);transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.rk-me-next{font-size:.82rem;color:var(--faint)}
+.rk-me-next b{color:#e0f2fe}
+.rk-split{display:grid;gap:10px}
+.rk-split>div{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 10px;padding:14px 18px;border-radius:18px;background:rgba(10,24,44,.75);border:1px solid rgba(125,211,252,.14)}
+.rk-split span{color:var(--muted);font-size:.86rem}
+.rk-split b{font:400 1.35rem 'Lilita One',sans-serif;color:#e0f2fe}
+.rk-split small{width:100%;font-size:.72rem;color:var(--faint)}
+
+.rk-ladder{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:12px;position:relative}
+.rk-ladder::before{content:'';position:absolute;left:4%;right:4%;top:58px;height:4px;border-radius:4px;background:linear-gradient(90deg,#dc2626,#7c3aed,#facc15,#f97316,#16a34a,#eab308,#ec4899);opacity:.35}
+.rk-tier{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:12px 10px 16px;border-radius:20px;background:linear-gradient(170deg,rgba(18,40,66,.92),rgba(12,12,32,.95));border:1px solid rgba(255,255,255,.08);
+  opacity:0;transform:translateY(14px);transition:transform .25s cubic-bezier(.2,.9,.3,1.2),border-color .25s,box-shadow .25s}
+.rk-ladder.in .rk-tier{animation:rkIn .55s cubic-bezier(.2,.9,.3,1.15) forwards;animation-delay:calc(var(--i) * 70ms)}
+@keyframes rkIn{to{opacity:1;transform:none}}
+.rk-tier:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.22)}
+.rk-tier .f{width:84px;height:84px;display:grid;place-items:center;border-radius:24px;background:rgba(5,16,30,.7);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.rk-tier .f svg{width:60px;height:60px;transition:transform .35s cubic-bezier(.2,.9,.3,1.3)}
+.rk-tier:hover .f svg{transform:scale(1.12) rotate(-6deg)}
+.rk-tier .n{font:400 1.15rem 'Lilita One',sans-serif;margin-top:6px}
+.rk-tier .m{font-size:.8rem;color:var(--muted)}
+.rk-tier .m b{color:#fff}
+.rk-tier ul{list-style:none;margin:8px 0 0;padding:0;font-size:.75rem;color:var(--faint);display:grid;gap:3px}
+.rk-tier ul b{color:#fde68a;font-weight:700}
+.rk-tier.got{border-color:rgba(74,222,128,.35)}
+.rk-tier.got::after{content:'✓';position:absolute;top:8px;right:10px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:.7rem;font-weight:800;background:#16a34a;color:#fff}
+.rk-tier.cur{border-color:rgba(250,204,21,.7);box-shadow:0 0 0 1px rgba(250,204,21,.35),0 18px 44px -18px rgba(250,204,21,.55)}
+.rk-tier.cur .f{background:radial-gradient(circle,rgba(250,204,21,.25),rgba(5,16,30,.7) 70%)}
+.rk-tier.locked .f svg{filter:grayscale(.65) brightness(.75)}
+.rk-tier .cnt{margin-top:6px;font-size:.7rem;color:var(--faint)}
+
+.rk-lower{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;margin-top:6px}
+.rk-how ol{margin:0;padding-left:1.3em;display:grid;gap:10px;color:var(--muted)}
+.rk-how b{color:#fff}
+.rk-recent-list{display:grid;gap:8px}
+.rk-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06);font-size:.85rem}
+.rk-row svg{width:30px;height:30px;flex:none}
+.rk-row span{flex:1}
+.rk-row b{font-weight:700}
+.rk-empty{color:var(--faint);font-size:.85rem}
+
+/* fruit badge on the nav user pill */
+.up-fruit{display:inline-grid;place-items:center;width:22px;height:22px;margin-left:2px}
+.up-fruit svg{width:20px;height:20px}
+
+@media(max-width:1100px){.rk-ladder{grid-template-columns:repeat(4,minmax(0,1fr))}.rk-ladder::before{display:none}}
+@media(max-width:760px){
+  .rk{padding:18px 0 30px}
+  .rk-top,.rk-lower{grid-template-columns:1fr}
+  .rk-me{padding:16px;gap:14px}.rk-me-fruit{width:88px;height:88px;border-radius:22px}.rk-me-fruit svg{width:62px;height:62px}.rk-me-name{font-size:1.6rem}
+  .rk-ladder{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+}
+html.ice-lite .rk-me-fruit svg,html.ice-rm .rk-me-fruit svg{animation:none}
+@media (prefers-reduced-motion:reduce){.rk-tier{opacity:1;transform:none;animation:none!important}}
+</style>
+<style>.ag-note{font-size:.84rem;color:var(--muted);margin:4px 0 6px;line-height:1.5}
+.ag-note b{color:#fff}
+.ag-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.ag-g h4{display:flex;align-items:center;gap:10px}
+.ag-g h4 .sw2{margin-left:auto}
+.ag-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
+.ag-stats div{padding:9px 10px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
+.ag-stats span{display:block;font-size:.72rem;color:var(--faint)}
+.ag-stats b{font-size:.98rem}
+.ag-stats b.pos{color:#4ade80}.ag-stats b.neg{color:#fb7185}
+.ag-tbl{width:100%;border-collapse:collapse;font-size:.85rem}
+.ag-tbl th{text-align:left;font-size:.72rem;color:var(--faint);font-weight:600;padding:6px 6px;border-bottom:1px solid rgba(255,255,255,.08)}
+.ag-tbl td{padding:6px;border-bottom:1px solid rgba(255,255,255,.05)}
+.ag-tbl input{width:100%;min-width:70px;padding:7px 8px;border-radius:8px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.14);color:#fff;font:500 .85rem 'Poppins'}
+.ag-tbl td.f svg{width:28px;height:28px;display:block}
+.ag-tbl .x{background:none;border:0;color:#fb7185;cursor:pointer;font-size:1rem}
+.bt-guide{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 18px;margin-top:6px}
+.bt-guide div{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:.84rem}
+.bt-guide i{font-style:normal;font-size:1.1rem;line-height:1.3}
+.bt-guide p{margin:0;flex:1;color:var(--muted)}
+.bt-guide p b{color:#fff}
+.bt-guide p code{font-size:.78rem;background:rgba(255,255,255,.08);padding:1px 6px;border-radius:6px;color:#e0f2fe}
+.bt-guide em{font-style:normal;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:999px;align-self:flex-start;white-space:nowrap}
+.bt-guide em.on{background:rgba(74,222,128,.14);color:#86efac}.bt-guide em.off{background:rgba(255,255,255,.07);color:var(--faint)}
+.bt-guesses{max-height:260px;overflow:auto;margin-top:8px;border-radius:12px;background:rgba(0,0,0,.2)}
+.bt-guesses table{width:100%;border-collapse:collapse;font-size:.82rem}
+.bt-guesses td{padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.05)}
+.bt-guesses tr.win td{background:rgba(74,222,128,.1);color:#bbf7d0;font-weight:700}
+@media(max-width:900px){.ag-grid,.bt-guide{grid-template-columns:1fr}.ag-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<style>
+.vs-tools .vs-t-b{border-color:rgba(250,204,21,.5)}
+.tn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;padding-top:6px}
+.tn-card{position:relative;border-radius:20px;padding:14px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;gap:10px;transition:transform .45s cubic-bezier(.2,.9,.3,1.2),box-shadow .45s,border-color .45s,opacity .45s}
+.tn-card .tn-art{height:120px;border-radius:14px;overflow:hidden;display:grid;place-items:center;background:rgba(0,0,0,.3);font-size:2.4rem}
+.tn-card .tn-art img{width:100%;height:100%;object-fit:cover}
+.tn-card .tn-slot{font:400 1.15rem 'Lilita One',sans-serif;line-height:1.15}
+.tn-card .tn-who{display:flex;align-items:center;gap:8px;font-size:.8rem;color:rgba(255,255,255,.7)}
+.tn-card .tn-in{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tn-card .tn-in label{display:flex;flex-direction:column;gap:4px;font:600 .66rem 'Poppins';letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.tn-card .tn-in input{width:100%;box-sizing:border-box;min-width:0;padding:9px 10px;border-radius:10px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.14);color:#fff;font:700 1rem 'Poppins'}
+.tn-card .tn-in input:focus{outline:none;border-color:#facc15}
+.tn-card .tn-x{display:flex;align-items:baseline;justify-content:space-between}
+.tn-card .tn-x b{font:400 1.8rem 'Lilita One',sans-serif;color:#fde68a}
+.tn-card .tn-x small{font-size:.7rem;letter-spacing:.12em;color:rgba(255,255,255,.5)}
+.tn-card .tn-place{position:absolute;top:-12px;left:-10px;width:44px;height:44px;border-radius:50%;display:none;place-items:center;font-size:1.5rem;background:#0b1424;border:2px solid rgba(255,255,255,.2);box-shadow:0 8px 20px rgba(0,0,0,.5)}
+.tn-on .tn-card .tn-place{display:grid}
+.tn-on .tn-card.p1{transform:translateY(-6px) scale(1.03);border-color:#facc15;box-shadow:0 0 0 2px rgba(250,204,21,.5),0 24px 60px -18px rgba(250,204,21,.7)}
+.tn-on .tn-card.p2{border-color:rgba(203,213,225,.7)}
+.tn-on .tn-card.p3{border-color:rgba(224,145,92,.7)}
+.tn-on .tn-card.out{opacity:.45}
+.tn-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.tn-bar .vs-reveal{margin:0}
+.tn-verdict{font:400 1.4rem 'Lilita One',sans-serif;color:#fde68a}
+.vsl-row .vsl-t{font-size:.7rem;font-weight:800;padding:2px 8px;border-radius:999px;background:rgba(250,204,21,.16);color:#fde68a;margin-right:4px}
+</style>
+<style>
+.pt-switch{position:relative;z-index:2;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:6px auto 4px;padding-top:24px}
+.pt-switch .pt-h{width:100%;text-align:center;font:400 clamp(2rem,5vw,3rem)/1 'Lilita One',sans-serif;background:linear-gradient(100deg,#e0f6ff,#7dd3fc 45%,#a5b4fc);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:12px}
+.pt-chip{display:inline-flex;align-items:center;gap:10px;height:54px;padding:0 20px;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#fff;font:400 1.05rem 'Lilita One',sans-serif;cursor:pointer;opacity:.65;transition:opacity .2s,border-color .2s,transform .2s}
+.pt-chip img{height:30px;width:auto;max-width:130px;object-fit:contain}
+.pt-chip:hover{opacity:.9;transform:translateY(-2px)}
+.pt-chip.on{opacity:1;border-color:rgba(125,211,252,.6);background:rgba(56,189,248,.12);box-shadow:0 10px 30px -14px rgba(56,189,248,.6)}
+#ptOther{display:none;position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:10px 0 40px}
+.pwx.pt-alt>*:not(.pt-switch):not(#ptOther):not(.pwx-aurora){display:none!important}
+.pwx.pt-alt #ptOther{display:block}
+.pt-hero{text-align:center;padding:24px 16px 10px}
+.pt-hero img{max-height:84px;max-width:280px;object-fit:contain;filter:drop-shadow(0 10px 30px var(--pc-glow))}
+.pt-hero h2{font:400 clamp(1.8rem,4vw,2.6rem)/1.1 'Lilita One',sans-serif;margin:16px 0 8px}
+.pt-hero p{color:var(--muted);max-width:620px;margin:0 auto}
+.pt-cta{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:20px 0 6px}
+.pt-code{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:14px;border:1px dashed var(--pc);background:rgba(0,0,0,.25);color:#fff;font:700 .95rem 'Poppins';cursor:pointer}
+.pt-code b{font:400 1.25rem 'Lilita One',sans-serif;letter-spacing:.06em;color:var(--pc)}
+.pt-go{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:14px;background:var(--pc);color:#06111f;font:800 .95rem 'Poppins';text-decoration:none;box-shadow:0 12px 30px -12px var(--pc-glow)}
+.pt-go:hover{filter:brightness(1.08)}
+.pt-offers{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:22px}
+.pt-card{position:relative;padding:20px;border-radius:20px;background:linear-gradient(170deg,rgba(18,40,66,.92),rgba(12,12,32,.95));border:1px solid rgba(255,255,255,.08);transition:transform .25s,border-color .25s}
+.pt-card:hover{transform:translateY(-4px);border-color:var(--pc)}
+.pt-card .tag{display:inline-block;font-size:.7rem;font-weight:800;letter-spacing:.06em;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.08);color:var(--pc);margin-bottom:10px}
+.pt-card h3{font:400 1.3rem 'Lilita One',sans-serif;margin:0 0 6px}
+.pt-card p{color:var(--muted);font-size:.9rem;margin:0;white-space:pre-line}
+.pt-empty{text-align:center;color:var(--faint);padding:30px}
+</style>
+<style>
+.sx-o{position:fixed;inset:0;z-index:9998;background:rgba(2,8,18,.78);display:flex;align-items:center;justify-content:center;padding:16px;animation:sxIn .25s ease}
+@keyframes sxIn{from{opacity:0}}
+.sx-box{position:relative;width:min(560px,100%);max-height:92vh;overflow:auto;padding:22px;border-radius:22px;background:linear-gradient(180deg,#0f2440,#0a1528);border:1px solid rgba(125,211,252,.3);box-shadow:0 30px 90px rgba(0,0,0,.6);text-align:left}
+.sx-h{font:400 1.5rem 'Lilita One',sans-serif;margin-bottom:12px}
+.sx-x{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.08);color:#fff;cursor:pointer}
+.sx-imgw{position:relative;border-radius:14px;overflow:hidden;background:#06111f;aspect-ratio:16/9}
+.sx-img{display:block;width:100%;height:100%;object-fit:cover;animation:sxPop .4s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes sxPop{from{transform:scale(.97);opacity:.4}}
+.sx-look{position:absolute;right:10px;bottom:52px;font:700 .7rem 'Poppins';padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.55);color:#e0f2fe}
+.sx-cap{width:100%;margin-top:12px;padding:12px;border-radius:12px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.14);color:#fff;font:500 .85rem/1.45 'Poppins';resize:vertical}
+.sx-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.sx-b{display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#fff;font:700 .88rem 'Poppins';cursor:pointer;text-decoration:none}
+.sx-b:hover{background:rgba(255,255,255,.12)}
+.sx-post{background:#000;border-color:rgba(255,255,255,.4)}
+.sx-native{background:linear-gradient(135deg,#0ea5e9,#6366f1);border:0}
+.sx-tip{font-size:.76rem;color:var(--faint);margin:10px 0 0}
+</style>
+<style>/* ================= GUIDE page (was Loyalty) ================= */
+.gd{padding:34px 0 40px}
+.gd-head{text-align:center;max-width:720px;margin:0 auto 26px}
+.gd-h1{font:400 clamp(2.3rem,6vw,3.6rem)/1 'Lilita One',sans-serif;background:linear-gradient(100deg,#e0f6ff,#7dd3fc 40%,#a5b4fc 75%,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gd-sub{color:var(--muted);margin-top:10px}
+.gd-body{display:grid;grid-template-columns:200px 1fr;gap:30px;align-items:start}
+.gd-toc{position:sticky;top:90px;display:flex;flex-direction:column;gap:4px;padding:10px;border-radius:18px;background:rgba(10,24,44,.7);border:1px solid rgba(125,211,252,.14)}
+.gd-toc a{padding:9px 12px;border-radius:11px;color:var(--muted);text-decoration:none;font-weight:600;font-size:.9rem;transition:background .2s,color .2s}
+.gd-toc a:hover,.gd-toc a.on{background:rgba(56,189,248,.14);color:#fff}
+.gd-main{min-width:0;display:grid;gap:22px}
+.gd-sec{padding:24px;border-radius:24px;background:linear-gradient(170deg,rgba(16,36,61,.85),rgba(12,12,32,.92));border:1px solid rgba(255,255,255,.07);scroll-margin-top:90px}
+.gd-sec h2{font:400 1.8rem 'Lilita One',sans-serif;margin:0 0 12px}
+.gd-sec h3{font:400 1.2rem 'Lilita One',sans-serif;margin:0 0 6px}
+.gd-p{color:var(--muted);margin:0 0 12px;line-height:1.6}
+.gd-p b,.gd-steps b{color:#fff}
+.gd-p a,.gd-steps a{color:#7dd3fc}
+.gd-steps{margin:0;padding-left:1.4em;display:grid;gap:18px;color:var(--muted);line-height:1.55}
+.gd-steps.sm{gap:10px}
+.gd-steps li::marker{font:400 1.2rem 'Lilita One',sans-serif;color:#7dd3fc}
+.gd-steps img{display:block;width:100%;max-width:620px;margin-top:10px;border-radius:14px;border:1px solid rgba(255,255,255,.1)}
+.gd-steps code,.gd-p code{background:rgba(255,255,255,.08);padding:2px 7px;border-radius:7px;color:#e0f2fe;font-size:.88em}
+.gd-shot{display:block;width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.1);margin:12px 0}
+.gd-shot.sm{max-width:380px;margin:0 auto}
+.gd-note{font-size:.84rem;color:var(--faint)}
+.gd-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.gd-tabs button{padding:9px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:var(--muted);font:700 .85rem 'Poppins';cursor:pointer}
+.gd-tabs button.on{background:rgba(56,189,248,.18);border-color:rgba(125,211,252,.55);color:#fff}
+.gd-earn{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.gd-e{display:flex;gap:12px;padding:14px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);animation:gdIn .35s ease both}
+@keyframes gdIn{from{opacity:0;transform:translateY(6px)}}
+.gd-e i{font-style:normal;font-size:1.5rem;line-height:1}
+.gd-e b{display:block;color:#fff;font-size:.92rem}
+.gd-e span{display:block;color:var(--muted);font-size:.8rem;line-height:1.45;margin-top:2px}
+.gd-e em{display:inline-block;margin-top:6px;font-style:normal;font-weight:800;font-size:.8rem;color:#fde68a}
+.gd-e.off{opacity:.5}
+.gd-demo{display:flex;gap:12px;align-items:flex-start;margin-top:14px;padding:12px 14px;border-radius:14px;background:#0b0e0f;border:1px solid rgba(83,252,24,.25);max-width:520px}
+.gd-kick{flex:none;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:#53fc18;color:#000;font-weight:900}
+.gd-demo b{display:block;color:#53fc18;font-size:.85rem}
+.gd-demo span{color:#e5e7eb;font-size:.88rem}
+.gd-two{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:center;margin-bottom:12px}
+.gd-box{padding:18px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);text-align:center}
+.gd-box b{display:block;font:400 1.6rem 'Lilita One',sans-serif;color:#fde68a}
+.gd-box span{color:var(--muted);font-size:.85rem}
+.gd-ranks{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.gd-ranks span{display:flex;align-items:center;gap:6px;padding:6px 12px 6px 6px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-size:.8rem;color:var(--muted)}
+.gd-ranks span svg{width:24px;height:24px}
+.gd-ranks span b{color:#fff}
+.gd-cta{padding:12px 20px;border:0;border-radius:14px;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;font:700 .92rem 'Poppins';cursor:pointer;box-shadow:0 10px 26px -10px rgba(56,189,248,.7)}
+.gd-sec details{border-top:1px solid rgba(255,255,255,.07);padding:12px 0}
+.gd-sec summary{cursor:pointer;font-weight:700;color:#fff}
+.gd-sec details p{color:var(--muted);margin:8px 0 0}
+@media(max-width:900px){.gd-body{grid-template-columns:1fr}.gd-toc{position:static;flex-direction:row;overflow-x:auto;scrollbar-width:none}.gd-toc a{white-space:nowrap}.gd-two{grid-template-columns:1fr}.gd-sec{padding:18px}}
+</style>
+<style>
+/* challenges on the Games page */
+.gm-ch{margin-top:26px}
+.gm-ch-h{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+.gm-ch-h b{font:400 1.4rem 'Lilita One',sans-serif}
+.gm-ch-h span{font-size:.8rem;color:var(--faint)}
+.gm-ch-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.chc{position:relative;display:flex;flex-direction:column;gap:6px;padding:16px;border-radius:18px;overflow:hidden;background:linear-gradient(150deg,rgba(60,40,8,.55),rgba(14,14,38,.95) 60%);border:1px solid rgba(250,204,21,.35)}
+.chc::before{content:'';position:absolute;right:-40px;top:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(closest-side,rgba(250,204,21,.25),transparent)}
+.chc .t{font:400 1.2rem/1.2 'Lilita One',sans-serif;padding-right:70px}
+.chc .r{position:absolute;right:14px;top:14px;display:flex;align-items:center;gap:5px;font:400 1.15rem 'Lilita One',sans-serif;color:#fde68a}
+.chc .r img{width:22px;height:22px}
+.chc .m{font-size:.78rem;color:var(--muted)}
+.chc .bar{height:6px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+.chc .bar i{display:block;height:100%;background:linear-gradient(90deg,#facc15,#fb923c)}
+.chc .go{align-self:flex-start;margin-top:4px;padding:8px 14px;border:0;border-radius:11px;background:linear-gradient(135deg,#f59e0b,#f97316);color:#1a0d00;font:800 .8rem 'Poppins';cursor:pointer}
+.chc .go.sent{background:rgba(255,255,255,.1);color:var(--muted);cursor:default}
+.gm-ch-empty{color:var(--faint);font-size:.88rem}
+.gm-chw{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.gm-chw span{font-size:.8rem;padding:6px 12px;border-radius:999px;background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.25);color:#fde68a}
+.gm-chw span b{color:#fff}
+/* home billboard */
+.bb{position:relative;display:flex;align-items:stretch;margin:6px 0 0;border-top:1px solid rgba(125,211,252,.18);border-bottom:1px solid rgba(125,211,252,.18);background:linear-gradient(90deg,rgba(8,26,46,.9),rgba(14,14,38,.9));overflow:hidden;cursor:pointer}
+.bb-l{flex:none;display:flex;align-items:center;gap:8px;padding:0 18px;font:400 1rem 'Lilita One',sans-serif;color:#e0f2fe;background:linear-gradient(90deg,rgba(14,165,233,.35),rgba(14,165,233,0));z-index:1;white-space:nowrap}
+.bb-l i{width:9px;height:9px;border-radius:50%;background:#4ade80;box-shadow:0 0 10px #4ade80;animation:gmPulse 2s infinite}
+.bb-vp{flex:1;overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.bb-tr{display:flex;width:max-content;animation:bbRun var(--bbd,40s) linear infinite}
+.bb:hover .bb-tr{animation-play-state:paused}
+@keyframes bbRun{to{transform:translateX(-50%)}}
+.bb-it{display:flex;align-items:center;gap:9px;padding:12px 22px;white-space:nowrap;font-size:.88rem;color:var(--muted);border-right:1px solid rgba(255,255,255,.06)}
+.bb-it .g{font-size:1.05rem}
+.bb-it b{color:#fff}
+.bb-it em{font-style:normal;font-weight:800;color:#86efac}
+.bb-it em.ch{color:#fde68a}
+.bb-it small{font-size:.74rem;color:var(--faint)}
+html.ice-rm .bb-tr{animation-duration:calc(var(--bbd,40s) * 3)}
+@media(max-width:640px){.bb-l{padding:0 10px;font-size:.85rem}.bb-it{padding:10px 14px;font-size:.8rem}}
+</style>
+<style>
+html.ice-lite .hx-wm{filter:none!important}
+html.ice-lite .hx-mesh i{animation:none!important}
+html.ice-lite .ambient-glow-blob{display:none!important}
+html.ice-lite .ice-aur i{animation:none!important}
+</style>
+<style id="maintStyles">
+#maintScreen{position:fixed;inset:0;z-index:2147483000;display:none;align-items:center;justify-content:center;padding:24px;background:radial-gradient(ellipse at top,#0f2a44 0%,#06121f 70%);color:#e6f4ff;text-align:center;font-family:inherit}
+#maintScreen.on{display:flex}
+#maintScreen .mbox{max-width:460px}
+#maintScreen img{width:96px;height:96px;border-radius:50%;object-fit:cover;margin-bottom:18px;box-shadow:0 0 40px rgba(125,211,252,.35)}
+#maintScreen h1{font-size:1.7rem;margin:0 0 10px;color:#fff}
+#maintScreen p{font-size:1.02rem;line-height:1.6;margin:0 0 22px;color:#bfe3ff}
+#maintScreen button{background:transparent;border:1px solid rgba(191,227,255,.35);color:#bfe3ff;padding:9px 18px;border-radius:10px;cursor:pointer;font:inherit;font-size:.88rem}
+#maintScreen button:hover,#maintScreen button:focus-visible{border-color:#7dd3fc;color:#fff;outline:none}
+#maintBar{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:2147482000;display:none;background:#f59e0b;color:#1a1204;font-weight:700;font-size:.85rem;padding:8px 16px;border-radius:999px;box-shadow:0 6px 24px rgba(0,0,0,.4);cursor:pointer}
+#maintBar.on{display:block}
+body.maint-lock{overflow:hidden}
+</style>
 </head>
 <body>
+<div id="maintScreen" role="alertdialog" aria-live="polite" aria-labelledby="maintTitle"><div class="mbox"><img src="" id="maintLogo" alt="" onerror="this.style.display='none'"><h1 id="maintTitle">We'll be right back</h1><p id="maintText"></p><button type="button" onclick="startDiscordLogin()">Admin login</button></div></div>
+<div id="maintBar" role="status" onclick="nav('admin');setTimeout(function(){switchAdminTab('adminMaintTab')},200)">🛠 Maintenance mode is on. Only admins can see the site.</div>
+
+<script>
+/* Ice theme loading screen: a snowflake draws itself while the page loads (once per tab session). */
+(function(){try{
+  var h = document.documentElement;
+  if(!h.classList.contains('ice') || h.classList.contains('ice-rm')) return;
+  var ss = null; try{ ss = window.sessionStorage; }catch(e){}
+  try{ if(ss && ss.getItem('ice_loaded')) return; if(ss) ss.setItem('ice_loaded','1'); }catch(e){}
+  var arms = ''; for(var i = 0; i < 6; i++) arms += '<path transform="rotate(' + (i*60) + ' 75 75)" style="animation-delay:' + (i*.08).toFixed(2) + 's" d="M75 75V14M75 34l-13-11M75 34l13-11M75 52l-10-8M75 52l10-8"/>';
+  var L = document.createElement('div');
+  L.id = 'iceLoader'; L.setAttribute('aria-hidden','true');
+  L.innerHTML = '<div><svg class="icel-flake" viewBox="0 0 150 150"><g>' + arms + '</g></svg><div class="icel-t">Freezing <b>Jammmy</b>&hellip;</div></div>';
+  document.body.appendChild(L);
+  var t0 = Date.now(), done = false;
+  function hide(){
+    if(done) return; done = true;
+    var wait = Math.max(0, 1000 - (Date.now() - t0));
+    setTimeout(function(){ L.classList.add('out'); setTimeout(function(){ if(L.parentNode) L.parentNode.removeChild(L); }, 800); }, wait);
+  }
+  if(document.readyState !== 'loading') hide(); else document.addEventListener('DOMContentLoaded', hide);
+  setTimeout(hide, 2400);
+}catch(e){ var x = document.getElementById('iceLoader'); if(x) x.remove(); }})();
+</script>
 <script>
 /* Halloween loading screen: a jack-o'-lantern lights up while the page loads (once per tab session). */
 (function(){try{
@@ -4943,10 +5474,12 @@ body.on-admin .ambient-glow-blob{opacity:.35}
     <div class="nav-links">
       <span class="nav-indicator" aria-hidden="true"></span>
       <a data-page="home" class="active">Home</a>
+      <a data-page="games">Games</a>
       <a data-page="leaderboards">Leaderboards</a>
-      <a data-page="new">Power.win</a>
+      <a data-page="ranks">Ranks</a>
+      <a data-page="new">Partners</a>
       <a data-page="reviews">Reviews</a>
-      <a data-page="loyalty">Loyalty</a>
+      <a data-page="loyalty">Guide</a>
       <a data-page="vault">Vault</a>
       <a data-page="requestslot" class="mob-only-link">🎰 Request a Slot</a>
       <a data-page="requestbattle" class="mob-only-link">⚔️ Request a Battle</a>
@@ -4969,6 +5502,9 @@ body.on-admin .ambient-glow-blob{opacity:.35}
 <nav class="mobbar" aria-label="Mobile navigation">
   <a href="javascript:void(0)" class="mobbar-item" data-page="home" onclick="nav('home')">
     <span class="mobbar-ic">🏠</span><span>Home</span>
+  </a>
+  <a href="javascript:void(0)" class="mobbar-item" data-page="games" onclick="nav('games')">
+    <span class="mobbar-ic">🎮</span><span>Games</span>
   </a>
   <a href="javascript:void(0)" class="mobbar-item" data-page="leaderboards" onclick="nav('leaderboards')">
     <span class="mobbar-ic">🏆</span><span>Leaderboard</span>
@@ -5073,7 +5609,7 @@ body.on-admin .ambient-glow-blob{opacity:.35}
 
         <div class="hx-cta center hx-in" style="--d:1s">
           <button type="button" class="hx-btn hx-btn-p hx-mag" onclick="nav('new')"><span>Power.win offers</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <button type="button" class="hx-btn hx-btn-g hx-mag" onclick="nav('loyalty')"><span>Join loyalty</span></button>
+          <button type="button" class="hx-btn hx-btn-g hx-mag" onclick="nav('games')"><span>Play games</span></button>
           <button type="button" class="hx-btn hx-btn-c hx-mag" onclick="nav('leaderboards')"><span class="hx-live-dot"></span><span>Leaderboards</span></button>
         </div>
 
@@ -5091,6 +5627,12 @@ body.on-admin .ambient-glow-blob{opacity:.35}
       <button type="button" class="hx-scroll" onclick="hxScrollTo('#hxMarquee')" aria-label="Scroll down"><span></span></button>
     </header>
 
+
+    <!-- ===================== LIVE BILLBOARD ===================== -->
+    <div class="bb" id="homeBB" hidden onclick="nav('games')" title="Play Jammmy Games">
+      <div class="bb-l"><i></i>Live wins</div>
+      <div class="bb-vp"><div class="bb-tr" id="homeBBTr"></div></div>
+    </div>
     <!-- ===================== MARQUEE ===================== -->
     <div class="hx-marquee" id="hxMarquee" aria-hidden="true">
       <div class="hx-mq-track" id="hxMqTrack">
@@ -5291,6 +5833,135 @@ body.on-admin .ambient-glow-blob{opacity:.35}
   </section>
 
   <!-- LEADERBOARDS -->
+
+  <!-- JAMMMY GAMES -->
+  <section class="page" id="games">
+    <div class="gm">
+      <header class="gm-head">
+        <div class="gm-title">
+          <h1 class="gm-h1">Jammmy Games</h1>
+          <p class="gm-sub">Our own games, played with your Jammmy Coins. Every result is provably fair.</p>
+        </div>
+        <div class="gm-wallet" id="gmWallet">
+          <img src="jammmy-coin.webp" alt="">
+          <div><span class="gm-wl">Your coins</span><b id="gmBal">—</b></div>
+        </div>
+      </header>
+
+      <div class="gm-lobby" id="gmLobby">
+        <div class="gm-grid">
+          <button type="button" class="gm-card gm-bj" data-game="blackjack">
+            <span class="gm-art" aria-hidden="true">
+              <svg viewBox="0 0 160 110"><g transform="rotate(-12 70 70)"><rect x="34" y="18" width="56" height="78" rx="8" fill="#f8fbff" stroke="#bae6fd" stroke-width="2"/><text x="44" y="40" font-size="18" font-weight="800" fill="#0b2540" font-family="Poppins,sans-serif">A</text><text x="62" y="72" font-size="30" fill="#0b2540">♠</text></g><g transform="rotate(10 100 70)"><rect x="76" y="16" width="56" height="78" rx="8" fill="#f8fbff" stroke="#bae6fd" stroke-width="2"/><text x="86" y="38" font-size="18" font-weight="800" fill="#e11d48" font-family="Poppins,sans-serif">K</text><text x="102" y="70" font-size="30" fill="#e11d48">♥</text></g></svg>
+            </span>
+            <span class="gm-name">Blackjack</span>
+            <span class="gm-meta">Pays 3:2 · side bets · up to 3 hands</span>
+            <span class="gm-tag" data-tag="blackjack">Play</span>
+          </button>
+          <button type="button" class="gm-card gm-mines" data-game="mines">
+            <span class="gm-art" aria-hidden="true">
+              <svg viewBox="0 0 160 110"><g fill="#0c2a46" stroke="#38bdf8" stroke-opacity=".35"><rect x="26" y="10" width="28" height="28" rx="6"/><rect x="58" y="10" width="28" height="28" rx="6"/><rect x="90" y="10" width="28" height="28" rx="6"/><rect x="26" y="42" width="28" height="28" rx="6"/><rect x="58" y="42" width="28" height="28" rx="6"/><rect x="90" y="42" width="28" height="28" rx="6"/><rect x="26" y="74" width="28" height="28" rx="6"/><rect x="58" y="74" width="28" height="28" rx="6"/><rect x="90" y="74" width="28" height="28" rx="6"/></g><path d="M72 18l8 6-8 10-8-10z" fill="#7dd3fc"/><path d="M104 50l8 6-8 10-8-10z" fill="#a5b4fc"/><path d="M40 82l8 6-8 10-8-10z" fill="#5eead4"/><circle cx="104" cy="88" r="8" fill="#1e1b4b" stroke="#f472b6" stroke-width="2"/><path d="M108 80l4-4" stroke="#fbbf24" stroke-width="2"/></svg>
+            </span>
+            <span class="gm-name">Mines</span>
+            <span class="gm-meta">Find gems, dodge mines · up to 100K</span>
+            <span class="gm-tag" data-tag="mines">Play</span>
+          </button>
+          <button type="button" class="gm-card gm-plinko" data-game="plinko">
+            <span class="gm-art" aria-hidden="true">
+              <svg viewBox="0 0 160 110"><g fill="#e0f6ff"><circle cx="80" cy="16" r="3"/><circle cx="68" cy="30" r="3"/><circle cx="92" cy="30" r="3"/><circle cx="56" cy="44" r="3"/><circle cx="80" cy="44" r="3"/><circle cx="104" cy="44" r="3"/><circle cx="44" cy="58" r="3"/><circle cx="68" cy="58" r="3"/><circle cx="92" cy="58" r="3"/><circle cx="116" cy="58" r="3"/><circle cx="32" cy="72" r="3"/><circle cx="56" cy="72" r="3"/><circle cx="80" cy="72" r="3"/><circle cx="104" cy="72" r="3"/><circle cx="128" cy="72" r="3"/></g><circle cx="86" cy="51" r="6" fill="#fbbf24"/><g font-family="Poppins,sans-serif" font-size="9" font-weight="800" text-anchor="middle"><rect x="20" y="86" width="22" height="16" rx="4" fill="#818cf8"/><text x="31" y="97" fill="#fff">9×</text><rect x="46" y="86" width="22" height="16" rx="4" fill="#38bdf8"/><text x="57" y="97" fill="#fff">2×</text><rect x="72" y="86" width="16" height="16" rx="4" fill="#0ea5e9"/><text x="80" y="97" fill="#fff">.5</text><rect x="92" y="86" width="22" height="16" rx="4" fill="#38bdf8"/><text x="103" y="97" fill="#fff">2×</text><rect x="118" y="86" width="22" height="16" rx="4" fill="#818cf8"/><text x="129" y="97" fill="#fff">9×</text></g></svg>
+            </span>
+            <span class="gm-name">Plinko</span>
+            <span class="gm-meta">8–16 rows · three risk levels · auto drop</span>
+            <span class="gm-tag" data-tag="plinko">Play</span>
+          </button>
+          <button type="button" class="gm-card gm-hilo" data-game="hilo">
+            <span class="gm-art" aria-hidden="true">
+              <svg viewBox="0 0 160 110"><rect x="52" y="14" width="56" height="82" rx="8" fill="#f8fbff" stroke="#bae6fd" stroke-width="2"/><text x="80" y="66" font-size="34" font-weight="800" fill="#0b2540" text-anchor="middle" font-family="Poppins,sans-serif">7</text><path d="M126 46l12-16 12 16z" fill="#4ade80"/><path d="M126 64l12 16 12-16z" fill="#fb7185"/><path d="M20 46l12-16 12 16z" fill="#4ade80" opacity=".35"/><path d="M20 64l12 16 12-16z" fill="#fb7185" opacity=".35"/></svg>
+            </span>
+            <span class="gm-name">HiLo</span>
+            <span class="gm-meta">Higher or lower · build a streak · cash out</span>
+            <span class="gm-tag" data-tag="hilo">Play</span>
+          </button>
+          <div class="gm-card gm-slot gm-soon" aria-disabled="true">
+            <span class="gm-art" aria-hidden="true">
+              <svg viewBox="0 0 160 110"><rect x="20" y="20" width="120" height="70" rx="12" fill="#0c2a46" stroke="#7dd3fc" stroke-opacity=".5" stroke-width="2"/><g fill="#081a2e"><rect x="30" y="30" width="30" height="50" rx="6"/><rect x="65" y="30" width="30" height="50" rx="6"/><rect x="100" y="30" width="30" height="50" rx="6"/></g><g font-size="22" text-anchor="middle"><text x="45" y="63">💎</text><text x="80" y="63">💎</text><text x="115" y="63">💎</text></g></svg>
+            </span>
+            <span class="gm-name">Jammmy Slot</span>
+            <span class="gm-meta">Jammy's own slot</span>
+            <span class="gm-tag soon">Coming soon</span>
+          </div>
+        </div>
+
+
+        <section class="gm-ch" aria-label="Challenges">
+          <div class="gm-ch-h"><b>🎯 Challenges</b><span>Hit the target, win the coins. Each player can win each challenge once.</span></div>
+          <div class="gm-ch-list" id="gmChList"><div class="gm-ch-empty">No challenges running right now. Watch Discord for the next one.</div></div>
+          <div class="gm-chw" id="gmChWins"></div>
+          <input type="file" id="gmChFile" accept="image/png,image/jpeg,image/webp" hidden>
+        </section>
+        <section class="gm-feed" aria-label="Latest rounds">
+          <div class="gm-feed-h"><span class="gm-live-dot"></span><b>Latest rounds</b><span class="gm-feed-s">Live from every Jammmy Game</span></div>
+          <div class="gm-feed-list" id="gmFeed"><div class="gm-feed-empty">No rounds yet. Be the first to play.</div></div>
+        </section>
+      </div>
+
+      <div class="gm-play" id="gmPlay" hidden>
+        <div class="gm-play-bar">
+          <button type="button" class="gm-back" onclick="gmLobby()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>All games</button>
+          <div class="gm-switch" id="gmSwitch"></div>
+        </div>
+        <iframe id="gmFrame" title="Jammmy Games" allow="autoplay; clipboard-write" loading="eager"></iframe>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- FRUIT RANKS -->
+  <section class="page" id="ranks">
+    <div class="rk">
+      <header class="rk-head">
+        <h1 class="rk-h1">Fruit Ranks</h1>
+        <p class="rk-sub">Every dollar you wager with us counts: partner casinos under code <b>JAMMMY</b> and Jammmy Games. Rank up for coins, a bigger daily claim and your fruit role on Discord.</p>
+      </header>
+
+      <div class="rk-top">
+        <div class="rk-me" id="rkMe">
+          <div class="rk-me-fruit" id="rkMeFruit"></div>
+          <div class="rk-me-info">
+            <span class="rk-me-l">Your rank</span>
+            <b class="rk-me-name" id="rkMeName">—</b>
+            <span class="rk-me-w" id="rkMeW">Log in to see your rank</span>
+            <div class="rk-bar"><i id="rkBar"></i></div>
+            <span class="rk-me-next" id="rkMeNext"></span>
+          </div>
+        </div>
+        <div class="rk-split" id="rkSplit">
+          <div><span>Partner casinos</span><b id="rkPartner">—</b></div>
+          <div><span>Jammmy Games</span><b id="rkGames">—</b><small>100 coins wagered = $1</small></div>
+          <div><span>Your daily claim</span><b id="rkDaily">—</b></div>
+        </div>
+      </div>
+
+      <h2 class="rk-h2">The ladder</h2>
+      <div class="rk-ladder" id="rkLadder"></div>
+
+      <div class="rk-lower">
+        <section class="rk-how">
+          <h2 class="rk-h2">How it works</h2>
+          <ol>
+            <li><b>Wager with us.</b> Play on our partner casinos under code JAMMMY (link your account on your Profile), or play Jammmy Games.</li>
+            <li><b>Your rank updates by itself</b> about every 10 minutes. Ranks never go down.</li>
+            <li><b>Get rewarded.</b> Each new rank pays its coins once, raises your daily claim and gives you the fruit role in Discord.</li>
+          </ol>
+        </section>
+        <section class="rk-recent">
+          <h2 class="rk-h2">Latest rank-ups</h2>
+          <div id="rkRecent" class="rk-recent-list"><div class="rk-empty">No rank-ups yet.</div></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
   <section class="page" id="leaderboards">
     <div class="lbx">
       <!-- header -->
@@ -5298,9 +5969,10 @@ body.on-admin .ambient-glow-blob{opacity:.35}
         <div class="lbx-kicker"><span class="lbx-live" id="lbxLivePill"><i></i><span id="lbxLiveTxt">LIVE</span></span><span id="lbxCasinoName">Power.win</span> wager leaderboard</div>
         <h1 class="lbx-title">Climb the <span class="g">Leaderboard</span></h1>
         <p class="lbx-sub" id="lbxSub">Wager under code <b>JAMMMY</b>, climb the ranks and win a share of the prize pool. Updated live.</p>
-        <div class="lbx-tabs solo" id="lbxTabs">
+        <div class="lbx-tabs" id="lbxTabs">
           <span class="lbx-tab-ind" id="lbxTabInd"></span>
           <button class="lbt active" onclick="lbTab(this,'powerwin')"><img src="powerwin.webp" alt="Power.win" class="pw"></button>
+          <button class="lbt" onclick="lbTab(this,'jammmygames')"><span class="lbt-jg"><img src="jar-clean.webp" alt="">Jammmy Games</span></button>
         </div>
         <div class="lbx-race-tog" id="lbxRaceTog" role="tablist" aria-label="Which race">
           <button type="button" class="on" data-r="current" onclick="lbRace('current')"><i class="dot"></i>Current<span class="lbx-tw"> leaderboard</span></button>
@@ -5331,6 +6003,7 @@ body.on-admin .ambient-glow-blob{opacity:.35}
         <div class="lbx-tile lbx-cta">
           <span class="lbx-lbl">USE CODE</span>
           <button class="lbx-code" onclick="copy(this.querySelector('b'),'JAMMMY')"><b>JAMMMY</b><span>Copy</span></button>
+          <button type="button" class="lbx-jgplay" onclick="nav('games')">Play Jammmy Games</button>
           <a id="lbJoinPowerwin" class="lbx-join" href="https://power.win/?aff=jammmy" target="_blank" rel="noopener"><img src="powerwin.webp" alt="" aria-hidden="true">Join Power.win <span aria-hidden="true">↗</span></a>
         </div>
       </div>
@@ -5351,7 +6024,7 @@ body.on-admin .ambient-glow-blob{opacity:.35}
             <button class="lbx-x" onclick="shareLeaderboardOnX()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Share</button>
           </div>
         </div>
-        <div class="lbx-row lbx-row-head" id="lbxHeadRow"><span>Rank</span><span>Player</span><span class="w">Wagered</span><span class="p">Prize</span></div>
+        <div class="lbx-row lbx-row-head" id="lbxHeadRow"><span>Rank</span><span>Player</span><span class="w">Points</span><span class="p">Prize</span></div>
         <div id="lbFullRows"><div class="lbx-empty">Connecting to live leaderboard&hellip;</div></div>
         <button class="lbx-more" id="lbxMore" onclick="lbxShowAll()" hidden></button>
       </div>
@@ -5373,6 +6046,8 @@ body.on-admin .ambient-glow-blob{opacity:.35}
   <section class="page" id="new">
     <div class="pwx">
       <div class="pwx-aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="pt-switch" id="ptSwitch"></div>
+      <div id="ptOther"></div>
 
       <!-- HERO -->
       <header class="pwx-hero">
@@ -5578,98 +6253,107 @@ body.on-admin .ambient-glow-blob{opacity:.35}
 
   <!-- LOYALTY -->
   <section class="page" id="loyalty">
-    <div class="loy2-wrap">
+    <div class="gd">
+      <header class="gd-head">
+        <h1 class="gd-h1">The Jammmy Guide</h1>
+        <p class="gd-sub">Everything about the site, Discord and Kick: how to earn Jammmy Coins, what each thing pays, and how to link your accounts. The numbers here are live.</p>
+      </header>
+      <div class="gd-body">
+        <nav class="gd-toc" aria-label="Guide chapters">
+          <a href="javascript:void(0)" data-go="gdStart">Start here</a>
+          <a href="javascript:void(0)" data-go="gdEarn">Earn coins</a>
+          <a href="javascript:void(0)" data-go="gdLink">Link your accounts</a>
+          <a href="javascript:void(0)" data-go="gdGames">Jammmy Games</a>
+          <a href="javascript:void(0)" data-go="gdRanks">Fruit Ranks</a>
+          <a href="javascript:void(0)" data-go="gdCash">Cash out</a>
+          <a href="javascript:void(0)" data-go="gdFaq">Questions</a>
+        </nav>
+        <div class="gd-main">
+          <section class="gd-sec" id="gdStart">
+            <h2>Start here</h2>
+            <ol class="gd-steps">
+              <li><b>Log in with Discord</b> at the top right. That's your account: no passwords, nothing to fill in.<img src="guide-1.webp" alt="The Login with Discord button at the top right of the site" loading="lazy"></li>
+              <li><b>Link your casino account</b> on your Profile so your wagering under code <b>JAMMMY</b> counts for you.<img src="guide-2.webp" alt="Picking your username from the casino leaderboard list on the Profile page" loading="lazy"></li>
+              <li><b>Collect coins everywhere</b>: the vault, daily claims, Kick, Discord, games, challenges and ranks. Then cash them out.<img src="guide-4.webp" alt="Your Jammmy Coins balance and the Claim Daily button on your Profile" loading="lazy"></li>
+            </ol>
+          </section>
 
-      <!-- Title -->
-      <div class="loy2-head reveal">
-        <h1 class="loy2-title">LOYALTY PROGRAM</h1>
-        <div class="loy2-underline"></div>
-      </div>
+          <section class="gd-sec" id="gdEarn">
+            <h2>Earn Jammmy Coins</h2>
+            <p class="gd-p"><b>100 coins = $1.</b> Here is everything that pays, with today's numbers.</p>
+            <div class="gd-tabs" role="tablist"><button class="on" data-t="site">On the site</button><button data-t="kick">On Kick</button><button data-t="discord">On Discord</button></div>
+            <div class="gd-earn" id="gdEarnList"></div>
+          </section>
 
-      <!-- Illustrated quick-start guide (real screenshots of the site) -->
-      <div class="lg-guide reveal">
-        <div class="lg-head">
-          <h2 class="loy2-card-title" style="margin:0">🚀 GET STARTED IN 4 STEPS</h2>
-          <p>From signing up to getting paid, in a couple of minutes.</p>
+          <section class="gd-sec" id="gdLink">
+            <h2>Link your accounts</h2>
+            <div class="gd-tabs" role="tablist"><button class="on" data-l="pw">Power.win</button><button data-l="p2">Our new partner</button><button data-l="kick">Kick</button><button data-l="dc">Discord</button></div>
+            <div class="gd-link" data-l="pw">
+              <ol class="gd-steps sm">
+                <li>Sign up on <a href="https://power.win/?aff=jammmy" target="_blank" rel="noopener">Power.win</a> with code <b>JAMMMY</b> and place a bet, so your name shows up on our leaderboard.</li>
+                <li>On jammmyrewards.com open <b>Profile</b> → <b>Your Casino Accounts</b> → Power.win and pick your username from the list.</li>
+                <li>An admin checks it against your Discord. Once it says <b>Approved</b>, your wagering counts for the vault, leaderboards and ranks.</li>
+              </ol>
+              <img class="gd-shot" src="guide-2.webp" alt="Choosing your Power.win username on the Profile page" loading="lazy">
+              <p class="gd-note">Changed your Power.win username? Tell an admin your new one so your wagering keeps counting.</p>
+            </div>
+            <div class="gd-link" data-l="p2" hidden>
+              <p class="gd-p">Our second partner casino is on its way. Linking works the same as Power.win: sign up with code <b>JAMMMY</b>, then pick your username on your Profile. Steps and screenshots land here the day it goes live.</p>
+            </div>
+            <div class="gd-link" data-l="kick" hidden>
+              <ol class="gd-steps sm">
+                <li>Open <b>Profile</b> → <b>Link your Kick</b> and press <b>Get my code</b>.</li>
+                <li>In <a href="https://kick.com/jammmyslots" target="_blank" rel="noopener">Jammy's Kick chat</a>, type <code>!link</code> followed by your code, e.g. <code>!link 7KQ2</code>. The code works for 15 minutes.</li>
+                <li>Jammmy Bot replies <b>✅ Linked!</b> From now on you earn coins for chatting, drops and subs while Jammy is live.</li>
+              </ol>
+              <div class="gd-demo"><span class="gd-kick">K</span><div><b>Jammmy Bot</b><span>@you ✅ Linked! You now earn Jammmy Coins for chatting on stream 🪙</span></div></div>
+            </div>
+            <div class="gd-link" data-l="dc" hidden>
+              <ol class="gd-steps sm">
+                <li>Join <a href="https://discord.gg/jammmy" target="_blank" rel="noopener">Jammy's Discord</a> with the same Discord account you log in with here. That's the link, nothing else to do.</li>
+                <li>Chat to earn coins, press <b>Claim</b> when Jammy goes live, and type your guess in the guesses channel during guess-the-win.</li>
+                <li>Roles come automatically: verified casino account, activity levels and your fruit rank.</li>
+              </ol>
+            </div>
+          </section>
+
+          <section class="gd-sec" id="gdGames">
+            <h2>Jammmy Games</h2>
+            <p class="gd-p">Blackjack, Mines, Plinko and HiLo, played with your Jammmy Coins. Every coin you wager counts for the monthly Jammmy Games leaderboard (40,000 coins to the top 20) and for your rank.</p>
+            <img class="gd-shot" src="guide-games.webp" alt="The Jammmy Games lobby" loading="lazy">
+            <div class="gd-two">
+              <div><h3>Provably fair</h3><p class="gd-p">Before you play you see a hash of the secret server seed. Your client seed and the bet number are mixed in. Rotate your seed pair to reveal the old server seed, then tap any of your bets to check it yourself.</p></div>
+              <img class="gd-shot sm" src="guide-fair.webp" alt="The provably fair window with seeds and Rotate seed pair" loading="lazy">
+            </div>
+            <p class="gd-p">There's a daily loss limit to keep it fun. Challenges on the Games page pay extra coins when you hit a target multiplier.</p>
+            <button type="button" class="gd-cta" onclick="nav('games')">Play Jammmy Games</button>
+          </section>
+
+          <section class="gd-sec" id="gdRanks">
+            <h2>Fruit Ranks</h2>
+            <p class="gd-p">Your rank comes from everything you wager: partner casinos plus Jammmy Games (100 coins wagered = $1). Each rank pays coins once, raises your daily claim and gives you the Discord role.</p>
+            <div class="gd-ranks" id="gdRanks2"></div>
+            <button type="button" class="gd-cta" onclick="nav('ranks')">See my rank</button>
+          </section>
+
+          <section class="gd-sec" id="gdCash">
+            <h2>Cash out</h2>
+            <div class="gd-two">
+              <div class="gd-box"><b id="gdMinP">2,000 coins</b><span>as Power.win balance</span></div>
+              <div class="gd-box"><b id="gdMinC">10,000 coins</b><span>as crypto (BSC, ETH or SOL)</span></div>
+            </div>
+            <p class="gd-p">Go to <b>Profile</b> → <b>Redeem</b>, choose how you want it and you get a transaction ID. Payouts are sent within 24 to 48 hours.</p>
+          </section>
+
+          <section class="gd-sec" id="gdFaq">
+            <h2>Questions</h2>
+            <details><summary>Do I need to link a casino to earn coins?</summary><p>No. Daily claims, Kick, Discord, games and challenges work with just your Discord login. Linking a casino adds the vault, leaderboard prizes and partner wager for ranks.</p></details>
+            <details><summary>Why is my claim still pending?</summary><p>An admin checks every casino account against your Discord to stop alt accounts. It's usually quick; you'll see it switch to Approved on your Profile.</p></details>
+            <details><summary>Can I have more than one account?</summary><p>No. Accounts that share devices or networks get flagged and can lose their rewards.</p></details>
+            <details><summary>How often do ranks update?</summary><p>About every 10 minutes, and right away whenever you open the Ranks page.</p></details>
+          </section>
         </div>
-        <div class="lg-grid">
-          <div class="lg-step">
-            <div class="lg-shot"><img src="guide-1.webp" loading="lazy" alt="The Login with Discord button at the top right of the site"></div>
-            <div class="lg-txt"><span class="lg-n">1</span><div><b>Log in with Discord</b>
-              <p>Tap <b>Login with Discord</b> at the top right. That's your account — no passwords to remember.</p></div></div>
-          </div>
-          <div class="lg-step">
-            <div class="lg-shot"><img src="guide-2.webp" loading="lazy" alt="Picking your username from the casino leaderboard list on the Profile page"></div>
-            <div class="lg-txt"><span class="lg-n">2</span><div><b>Claim your casino username</b>
-              <p>On your <b>Profile</b>, pick your exact name from the casino's leaderboard and add a screenshot. A mod verifies it.</p></div></div>
-          </div>
-          <div class="lg-step">
-            <div class="lg-shot"><img src="guide-3.webp" loading="lazy" alt="The community vault progress bar filling toward 10,000 coins"></div>
-            <div class="lg-txt"><span class="lg-n">3</span><div><b>Play under code JAMMMY</b>
-              <p>Every $1 you wager adds 0.1 coins to the community <b>Vault</b>. When it hits 10,000, every verified player gets paid their share.</p></div></div>
-          </div>
-          <div class="lg-step">
-            <div class="lg-shot"><img src="guide-4.webp" loading="lazy" alt="Your Jammmy Coins balance and the Claim Daily button on your Profile"></div>
-            <div class="lg-txt"><span class="lg-n">4</span><div><b>Collect &amp; redeem</b>
-              <p>Coins land on your Profile — plus free coins every day (2–20 in our October pumpkin lottery). Redeem from 2,000 coins ($20) as Power.win balance, or 10,000 coins ($100) as crypto.</p></div></div>
-          </div>
-        </div>
-        <div class="lg-cta">
-          <button class="lg-btn" onclick="nav('profile')">Open my Profile →</button>
-          <button class="loy2-btn outline-btn" onclick="nav('vault')">See the Vault</button>
-        </div>
       </div>
-
-      <!-- How to check coins -->
-      <div class="loy2-card cyan-card reveal">
-        <h2 class="loy2-card-title cyan"><span class="loy2-icon">👤</span> HOW TO CHECK YOUR JAMMMY COINS</h2>
-        <ol class="loy2-list">
-          <li>Log in to your account using Discord</li>
-          <li>Navigate to your Profile page</li>
-          <li>Your Jammmy Coins balance is shown right at the top, under "Jammmy Coins"</li>
-          <li>It updates automatically whenever you claim daily or get a wager claim approved</li>
-        </ol>
-      </div>
-
-      <!-- How to earn coins from wagering -->
-      <div class="loy2-card pink-card reveal">
-        <h2 class="loy2-card-title pink"><span class="loy2-icon">🪙</span> HOW TO EARN COINS FROM WAGERING</h2>
-        <ol class="loy2-list">
-          <li>Link your casino username from your Profile page, or claim it directly from the list on the Vault page</li>
-          <li>An admin manually verifies the claim against your Discord</li>
-          <li>Once approved, your wagering counts toward the shared community vault</li>
-          <li>When the vault collectively reaches 10,000 coins, everyone verified gets their own share paid out automatically — nothing else to do</li>
-          <li>Redeem from your Profile page: from 2,000 coins ($20) as Power.win balance, or from 10,000 coins ($100) as crypto. Your Power.win deposits in the last 7 days must be more than what you redeem (screenshot proof required)</li>
-        </ol>
-      </div>
-
-      <!-- Ways to earn coins -->
-      <div class="loy2-card green-card reveal">
-        <h2 class="loy2-card-title green" style="text-align:center;margin-bottom:28px">WAYS TO EARN COINS</h2>
-        <div class="loy2-earn-grid">
-          <div class="loy2-earn">
-            <div class="loy2-earn-icon">🎁</div>
-            <div class="loy2-earn-title">Daily Claim</div>
-            <div class="loy2-earn-desc">Free Jammmy Coins every 24 hours, just for logging in (in October: a 2–20 coin pumpkin lottery)</div>
-          </div>
-          <div class="loy2-earn">
-            <div class="loy2-earn-icon">🪙</div>
-            <div class="loy2-earn-title">Wager & Link</div>
-            <div class="loy2-earn-desc">0.1 coins per dollar wagered on a linked, verified casino account</div>
-          </div>
-          <div class="loy2-earn">
-            <div class="loy2-earn-icon">🎰</div>
-            <div class="loy2-earn-title">Suggest a Slot</div>
-            <div class="loy2-earn-desc">If Jammmy profits from a slot you suggested, he can gift you coins for it</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bottom action buttons -->
-      <div class="loy2-actions reveal">
-        <button class="loy2-btn outline-btn" onclick="nav('profile')">👤 Check Your Coins</button>
-      </div>
-
     </div>
   </section>
 
@@ -6100,11 +6784,74 @@ body.on-admin .ambient-glow-blob{opacity:.35}
           <button class="admin-tab" data-tab="adminSlotsTab" onclick="switchAdminTab('adminSlotsTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 9v6M12 9v6M16 9v6"/></svg><span class="al">Slot requests</span><span class="admin-badge" id="badgeSlots"></span></button>
           <button class="admin-tab" data-tab="adminBattlesTab" onclick="switchAdminTab('adminBattlesTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6M16 16l4 4M19 21l2-2"/><path d="M9.5 17.5L21 6V3h-3L6.5 14.5"/><path d="M11 19l-6-6M8 16l-4 4M5 21l-2-2"/></svg><span class="al">Battle requests</span><span class="admin-badge" id="badgeBattles"></span></button>
           <div class="adm-grp" data-admin-only>Community</div>
+          <button class="admin-tab" data-tab="adminGamesTab" onclick="switchAdminTab('adminGamesTab')" data-admin-only><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="7" width="19" height="11" rx="4"/><path d="M7 10.5v4M5 12.5h4"/><circle cx="15.5" cy="11.5" r="1"/><circle cx="17.5" cy="13.8" r="1"/></svg><span>Games</span></button>
+          <button class="admin-tab" data-tab="adminRanksTab" onclick="switchAdminTab('adminRanksTab')" data-admin-only><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4.5"/><circle cx="16.5" cy="14" r="4.5"/><path d="M8 10.5C9 6 12 4 15 3.5M16.5 9.5C15.8 6.5 15.5 5 15 3.5"/></svg><span>Ranks</span></button>
+          <button class="admin-tab" data-tab="adminPartnersTab" onclick="switchAdminTab('adminPartnersTab')" data-admin-only><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 12l3 3 5-5"/><path d="M3 12l4-4 3 2 4-3 3 2 4 3-4 4-3 3-3 1-4-4z"/></svg><span>Partners</span></button>
+          <button class="admin-tab" data-tab="adminChallengesTab" onclick="switchAdminTab('adminChallengesTab')" data-admin-only><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg><span>Challenges</span></button>
           <button class="admin-tab" data-tab="adminBotTab" onclick="switchAdminTab('adminBotTab')" data-admin-only><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4M9 13h.01M15 13h.01M9.5 16.5h5"/><circle cx="12" cy="3.5" r="1"/></svg><span class="al">Jammmy Bot</span></button>
+          <button class="admin-tab" data-tab="adminMaintTab" onclick="switchAdminTab('adminMaintTab')" data-admin-only><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg><span>Maintenance</span></button>
         </div>
 
+        <!-- GAMES TAB -->
+        <div id="adminGamesTab" class="admin-tab-panel" style="display:none">
+          <div class="bt-card" style="margin-bottom:14px">
+            <h4>🎮 Jammmy Games</h4>
+            <p class="ag-note">Switch each game on for players, set its max bet, and the most a player can lose in one day across all games (resets 00:00 UTC = 5:30 AM IST). 100 coins = $1. Admins can always play to test, even when a game is off.</p>
+            <div class="bt-row"><label class="bt-f" style="flex:0 0 220px">Daily loss cap per player (coins)<input type="number" id="agCap" min="0" step="100"></label><button class="bt-btn p" onclick="agSaveCap()">Save cap</button><span id="agCapMsg" class="bt-msg" style="margin:0"></span></div>
+          </div>
+          <div class="ag-grid" id="agGames">Loading&hellip;</div>
+          <div class="bt-card" style="margin-top:14px">
+            <h4>🏆 Jammmy Games leaderboard prizes</h4>
+            <p class="ag-note">Monthly, top 20 paid in coins (40,000 total). When a month ends, check the standings below and press <b>Pay prizes</b>. It can only pay once per month.</p>
+            <div class="bt-row"><select id="agLbMonth" onchange="agLoadLb()"></select><button class="bt-btn p" id="agLbPay" onclick="agPayLb()">Pay prizes</button><span id="agLbMsg" class="bt-msg" style="margin:0"></span></div>
+            <div id="agLb" style="margin-top:10px"></div>
+          </div>
+        </div>
+        <!-- RANKS TAB -->
+        <div id="adminRanksTab" class="admin-tab-panel" style="display:none">
+          <div class="bt-card">
+            <h4>🍒 Fruit ranks</h4>
+            <p class="ag-note">A player's rank comes from everything they've wagered: verified partner accounts plus Jammmy Games (100 coins wagered = $1). Reaching a rank pays its coins once, sets their daily claim, and the Discord bot gives the role (paste the role ID from Discord). Ranks update about every 10 minutes.</p>
+            <div class="bt-row"><label class="bt-f sw"><input type="checkbox" id="arkOn"> Ranks on</label><button class="bt-btn" onclick="arkSync()">Update everyone's rank now</button><span id="arkMsg" class="bt-msg" style="margin:0"></span></div>
+            <div style="overflow-x:auto;margin-top:12px"><table class="ag-tbl" id="arkTbl"></table></div>
+            <div class="bt-row" style="justify-content:space-between"><button class="bt-btn" onclick="arkAdd()">+ Add a rank</button><button class="bt-btn p" onclick="arkSave()">💾 Save ranks</button></div>
+          </div>
+        </div>
+        <!-- PARTNERS TAB -->
+        <div id="adminPartnersTab" class="admin-tab-panel" style="display:none">
+          <div class="bt-card">
+            <h4>🤝 Partners page</h4>
+            <p class="ag-note">Power.win keeps its own section. Add every other partner here: it shows up as a tab on the Partners page right after you save. One offer per line: <b>Title | text | tag</b> (tag is optional, e.g. NEW).</p>
+            <div id="aptList"></div>
+            <div class="bt-row" style="justify-content:space-between"><button class="bt-btn" onclick="aptAdd()">+ Add a partner</button><span id="aptMsg" class="bt-msg" style="margin:0"></span><button class="bt-btn p" onclick="aptSave()">💾 Save partners</button></div>
+          </div>
+        </div>
+        <!-- CHALLENGES TAB -->
+        <div id="adminChallengesTab" class="admin-tab-panel" style="display:none">
+          <div class="bt-card" style="margin-bottom:14px">
+            <h4>🎯 New challenge</h4>
+            <p class="ag-note"><b>Jammmy Games</b> challenges are checked and paid the moment a player hits the target. <b>Slot</b> challenges (at a partner casino) need a screenshot from the player, which you approve below. The bot posts every new challenge and every winner in the Discord announcements channel.</p>
+            <div class="bt-row">
+              <label class="bt-f" style="flex:0 0 170px">Type<select id="achKind" onchange="achKindChange()"><option value="mult">Jammmy Games</option><option value="slot">Slot (screenshot)</option></select></label>
+              <label class="bt-f" style="flex:0 0 160px" id="achGameW">Game<select id="achGame"><option value="any">Any game</option><option value="plinko">Plinko</option><option value="mines">Mines</option><option value="hilo">HiLo</option><option value="blackjack">Blackjack</option></select></label>
+              <label class="bt-f" style="flex:1 1 200px;display:none" id="achSlotW">Slot name<input id="achSlot" placeholder="e.g. Sweet Bonanza"></label>
+              <label class="bt-f" style="flex:0 0 130px">Target multiplier (×)<input id="achX" type="number" min="1.01" step="0.01" value="100"></label>
+            </div>
+            <div class="bt-row">
+              <label class="bt-f" style="flex:0 0 130px">Min bet<input id="achMin" type="number" min="0" value="0"></label>
+              <label class="bt-f" style="flex:0 0 140px">Reward (coins)<input id="achReward" type="number" min="1" value="500"></label>
+              <label class="bt-f" style="flex:0 0 120px">Winners<input id="achWinners" type="number" min="1" value="1"></label>
+              <label class="bt-f" style="flex:0 0 120px">Runs for (hours)<input id="achHours" type="number" min="1" value="24"></label>
+              <label class="bt-f" style="flex:1 1 200px">Title <span style="opacity:.6">(optional)</span><input id="achTitle" placeholder="Made from the target if empty"></label>
+            </div>
+            <div class="bt-row"><label class="bt-f sw"><input type="checkbox" id="achAnn" checked> Announce on Discord</label><span id="achCost" class="bt-msg" style="margin:0"></span><button class="bt-btn p" style="margin-left:auto" onclick="achCreate()">🎯 Start challenge</button></div>
+          </div>
+          <div class="bt-card" style="margin-bottom:14px"><h4>📸 Screenshots to check</h4><div id="achPending">Loading&hellip;</div></div>
+          <div class="bt-card"><h4>📋 Challenges</h4><div id="achList">Loading&hellip;</div></div>
+        </div>
         <!-- JAMMMY BOT TAB -->
         <div id="adminBotTab" class="admin-tab-panel" style="display:none">
+          <div class="bt-card" style="margin-bottom:16px"><h4>📖 What Jammmy Bot does</h4><div class="bt-guide" id="btGuide">Loading&hellip;</div></div>
           <div class="bt-grid">
             <div class="bt-card"><h4><span class="kl-k">K</span> Kick</h4><div id="btKick">Loading&hellip;</div></div>
             <div class="bt-card"><h4>💬 Discord</h4><div id="btDiscord">Loading&hellip;</div></div>
@@ -6114,9 +6861,10 @@ body.on-admin .ambient-glow-blob{opacity:.35}
             <div class="bt-card">
               <h4>🎮 Live controls <span id="btLive" class="bt-live"><i></i>Offline</span></h4>
               <div class="bt-row"><button class="bt-btn p" onclick="botDropDialog('kick')">🎁 Start Kick drop</button><button class="bt-btn p" onclick="botDropDialog('code')">🔑 Post code drop</button><button class="bt-btn" onclick="botAct('test')">🧪 Send test messages</button></div>
-              <div style="margin-top:14px;font-weight:700;font-size:.88rem">🎯 Bonus hunt guessing <span id="btHunt" style="color:var(--muted);font-weight:500"></span></div>
+              <div style="margin-top:14px;font-weight:700;font-size:.88rem">🎯 Guess the win <small style="color:var(--faint);font-weight:500">(Kick + Discord)</small> <span id="btHunt" style="color:var(--muted);font-weight:500"></span></div>
               <div class="bt-row"><input id="btHuntPrize" type="number" min="1" value="100" style="width:110px" title="Prize coins"><button class="bt-btn" onclick="botAct('hunt_open',{prize:document.getElementById('btHuntPrize').value})">Open guessing</button><button class="bt-btn" onclick="botAct('hunt_close')">Close guessing</button></div>
               <div class="bt-row"><input id="btHuntResult" type="text" placeholder="Final $ total, e.g. 1450" style="flex:1"><button class="bt-btn p" onclick="botAct('hunt_result',{result:document.getElementById('btHuntResult').value})">Settle &amp; pay winner</button></div>
+              <div id="btGuessList"></div>
               <div id="btActMsg" class="bt-msg"></div>
             </div>
             <div class="bt-card">
@@ -6138,6 +6886,16 @@ body.on-admin .ambient-glow-blob{opacity:.35}
           </div>
         </div>
         <!-- VAULT TAB -->
+        <!-- MAINTENANCE TAB -->
+        <div id="adminMaintTab" class="admin-tab-panel" style="display:none">
+          <div class="bt-card">
+            <h4>🛠 Maintenance mode</h4>
+            <p class="ag-note">While it's on, everyone except admins sees a "we'll be right back" screen and can't claim, redeem, play or link accounts. Mods are locked out too. Leaderboards and the vault keep showing on stream overlays, and the Kick and Discord bots keep running. Admins can log in and use the whole site as normal, so you can test before switching it off. It takes up to about 10 seconds to reach everyone.</p>
+            <div class="bt-row"><label class="bt-f sw"><input type="checkbox" id="amtOn"> Maintenance mode on</label><span id="amtState" class="bt-msg" style="margin:0"></span></div>
+            <label class="bt-f" style="display:block;margin-top:12px">Message players see<textarea id="amtMsg" rows="3" maxlength="300" style="width:100%;margin-top:6px"></textarea></label>
+            <div class="bt-row"><button class="bt-btn p" onclick="amtSave()">💾 Save</button><span id="amtSaveMsg" class="bt-msg" style="margin:0"></span></div>
+          </div>
+        </div>
         <div id="adminOverviewTab" class="admin-tab-panel">
           <div id="adminOverviewGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:28px">Loading&hellip;</div>
           <div style="background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:28px">
@@ -6330,7 +7088,7 @@ body.on-admin .ambient-glow-blob{opacity:.35}
             </div>
             <div class="rq-right">
               <span class="rq-count" id="slotQueueCount"></span>
-              <button class="rq-bigbtn vs-launch" id="vsLaunchBtn" onclick="vsCreate()" disabled title="Tap ⚔️ VS on 2 slot requests first">⚔️ New versus <b id="vsPickCount">0/2</b></button><button class="rq-bigbtn" id="slotBigBtn" onclick="toggleRqBig('adminSlotsList','slotBigBtn')">📺 Big view</button>
+              <button class="rq-bigbtn vs-launch" id="vsLaunchBtn" onclick="vsCreate()" disabled title="Tap ⚔️ VS on 2 slot requests for a versus, or on more for a tournament">⚔️ New versus <b id="vsPickCount">0</b></button><button class="rq-bigbtn" id="slotBigBtn" onclick="toggleRqBig('adminSlotsList','slotBigBtn')">📺 Big view</button>
               <button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminDeleteAllSlotRequests()" data-admin-only>🗑️ Delete All</button>
             </div>
           </div>
@@ -6505,9 +7263,11 @@ body.on-admin .ambient-glow-blob{opacity:.35}
       <h4>Quick Links</h4>
       <a onclick="nav('home')">Home</a>
       <a onclick="nav('leaderboards')">Leaderboards</a>
-      <a onclick="nav('new')">Power.win</a>
+      <a onclick="nav('games')">Jammmy Games</a>
+      <a onclick="nav('ranks')">Fruit Ranks</a>
+      <a onclick="nav('new')">Partners</a>
       <a onclick="nav('reviews')">Reviews</a>
-      <a onclick="nav('loyalty')">Loyalty Program</a>
+      <a onclick="nav('loyalty')">Guide</a>
       <a onclick="nav('vault')">Community Vault</a>
     </div>
 
@@ -6515,7 +7275,7 @@ body.on-admin .ambient-glow-blob{opacity:.35}
     <div class="foot-col">
       <h4>Resources</h4>
       <a href="https://www.begambleaware.org" target="_blank">Responsible Gambling</a>
-      <a onclick="nav('loyalty')">Loyalty Program</a>
+      <a onclick="nav('loyalty')">Guide</a>
       <a onclick="nav('vault')">Community Vault</a>
     </div>
 
@@ -6557,6 +7317,8 @@ window.addEventListener('resize',function(){
 });
 
 function showPage(id){
+  var gsub = null; if(id && id.indexOf('games/') === 0){ gsub = id.slice(6); id = 'games'; }
+  if(id !== 'games' && window.gmLobby && document.getElementById('gmPlay') && !document.getElementById('gmPlay').hidden) gmLobby(true);
   if(id==='bonuses') id='new';   /* Bonuses page was removed: old links go to the Power.win page */
   document.body.classList.toggle('on-admin', id==='admin');
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('show'));
@@ -6564,6 +7326,9 @@ function showPage(id){
   if(!pg){id='home';pg=document.getElementById('home');}
   pg.classList.add('show');
   if(id==='profile') loadProfile();
+  if(id==='games' && window.gmShow) gmShow(gsub);
+  if(id==='ranks' && window.rkShow) rkShow();
+  if(id==='loyalty' && window.gdShow) gdShow();
   if(id==='admin') loadAdminDashboard();
   if(id==='requestslot') loadRequestSlotPage();
   if(id==='requestbattle') loadRequestBattlePage();
@@ -6802,7 +7567,7 @@ function shareLeaderboardOnX(){
   var medals = ['1\u20e3','2\u20e3','3\u20e3'];
   var lines = top3.map(function(w, i){
     var wagered = (Math.round((w.wager||0) * 100) / 100).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
-    return medals[i] + ' ' + maskUsername(w.name) + ' - $' + wagered;
+    return medals[i] + ' ' + maskUsername(w.name) + (casino === 'powerwin' ? ' - ' + wagered + ' pts' : ' - $' + wagered);
   }).join('\n');
 
   var dates = document.getElementById('lb2-dates') ? document.getElementById('lb2-dates').textContent : '';
@@ -7051,9 +7816,14 @@ async function loadLeaderboard(casino){
 }
 var _lbxAll = [], _lbxShowAll = false, LBX_VISIBLE = 10;
 function lbxMoney(v){ return '$' + Number(v||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); }
+/* Power.win leaderboard shows race points (the vault still counts 1 point = $1). */
+function lbxPts(v){ return Number(v||0).toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:2}) + ' pts'; }
+function lbxIsPts(){ return typeof CURRENT_LB_CASINO !== 'undefined' && CURRENT_LB_CASINO === 'powerwin'; }
+function lbxVal(v){ return lbxIsPts() ? lbxPts(v) : lbxMoney(v); }
 function renderLeaderboardRows(wagers, rewards){
   var rowsEl = document.getElementById('lbFullRows');
   if(!rowsEl) return;
+  var _wh = document.querySelector('#lbxHeadRow .w'); if(_wh) _wh.textContent = lbxIsPts() ? 'Points' : 'Wagered';
   var fixedPrizes = LB_CASINO_PRIZES[CURRENT_LB_CASINO];
   if(fixedPrizes) rewards = Object.keys(fixedPrizes).map(function(k){ return {place:Number(k), winnings:fixedPrizes[k]}; });
   var prizeByRank = {};
@@ -7077,7 +7847,7 @@ function renderLeaderboardRows(wagers, rewards){
         + (rank === 1 ? '<span class="lbx-crown">'+(window.isHW && isHW() ? '🎃' : '👑')+'</span>' : '')
         + '<div class="lbx-av"><span>'+av+'</span><em class="lbx-rank">#'+rank+'</em></div>'
         + '<div class="lbx-name">'+(w ? pccEsc(maskUsername(w.name)) : 'Awaiting player')+'</div>'
-        + '<div class="lbx-wag">'+(w ? '<b>'+lbxMoney(w.wager)+'</b> wagered' : 'Could be you')+'</div>'
+        + '<div class="lbx-wag">'+(w ? '<b>'+lbxVal(w.wager)+'</b>'+(lbxIsPts() ? '' : ' wagered') : 'Could be you')+'</div>'
       + '</div>'
       + '<div class="lbx-step"><small>PRIZE</small><b>'+(prizeFor(rank) || '—')+'</b></div>';
   });
@@ -7106,9 +7876,9 @@ function renderLeaderboardRows(wagers, rewards){
         + '<span>'+rankHtml+'</span>'
         + '<span class="lbx-pl"><span class="a'+(w.avatarUrl ? ' pic' : '')+'">'+(w.avatarUrl ? '<img src="'+pccEsc(w.avatarUrl)+'" alt="" loading="lazy" referrerpolicy="no-referrer" data-i="'+initial+'" onerror="this.parentNode.classList.remove(\'pic\');this.replaceWith(document.createTextNode(this.dataset.i))">' : initial)+'</span>'
           + '<span class="n"><b>'+pccEsc(maskUsername(w.name))+'</b><span class="lbx-bar"><span style="width:'+pct.toFixed(1)+'%"></span></span>'
-          + (gap ? '<small class="lbx-gap">$'+Math.ceil(gap).toLocaleString()+' to the '+(window.isHW && isHW() ? 'graveyard' : 'prize')+' line</small>' : '')
+          + (gap ? '<small class="lbx-gap">'+(lbxIsPts() ? Math.ceil(gap).toLocaleString()+' pts' : '$'+Math.ceil(gap).toLocaleString())+' to the '+(window.isHW && isHW() ? 'graveyard' : 'prize')+' line</small>' : '')
           + '</span></span>'
-        + '<span class="w" data-v="'+(Number(w.wager)||0)+'">'+((w.wager && w.wager > 0) ? lbxMoney(w.wager) : '—')+'</span>'
+        + '<span class="w" data-v="'+(Number(w.wager)||0)+'">'+((w.wager && w.wager > 0) ? lbxVal(w.wager) : '—')+'</span>'
         + '<span class="p'+(paid ? ' win' : '')+'">'+(paid ? '<em>'+prize+(prev ? '<small> won</small>' : '')+'</em>' : '—')+'</span>'
       + '</div>' };
   });
@@ -7137,14 +7907,14 @@ function lbxCountUp(root){
   if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var els = [].slice.call(root.querySelectorAll('.lbx-row .w[data-v]'));
   var t0 = performance.now();
-  els.forEach(function(el, i){ el.dataset.d = Math.min(i*45, 600); el.textContent = lbxMoney(0); });
+  els.forEach(function(el, i){ el.dataset.d = Math.min(i*45, 600); el.textContent = lbxVal(0); });
   (function tick(now){
     var done = true;
     els.forEach(function(el){
       var v = Number(el.dataset.v) || 0, p = Math.min(1, Math.max(0, (now - t0 - el.dataset.d) / 1100));
       if(p < 1) done = false;
       var e = 1 - Math.pow(1 - p, 3);
-      el.textContent = v > 0 ? lbxMoney(v * e) : '—';
+      el.textContent = v > 0 ? lbxVal(v * e) : '—';
     });
     if(!done) requestAnimationFrame(tick);
   })(t0);
@@ -8335,6 +9105,67 @@ async function initAuth(){
     }
   }catch(e){ /* network hiccup — keep showing the cached state */ }
 }
+
+/* ══════ MAINTENANCE MODE ══════
+   Asks the worker whether maintenance is on. If it is, anyone who isn't a logged-in admin gets
+   the "we'll be right back" screen; admins get a small orange bar instead. Rechecked every
+   minute, so players' screens clear on their own when it's switched off. */
+var MAINT = { on:false, message:'' };
+function maintIsAdmin(){ try{ var u = JSON.parse(localStorage.getItem('jammy_user')||'null'); return !!(u && u.is_admin) && !!localStorage.getItem('jammy_session_token'); }catch(e){ return false; } }
+function maintPaint(){
+  var scr = document.getElementById('maintScreen'), bar = document.getElementById('maintBar');
+  if(!scr || !bar) return;
+  var admin = maintIsAdmin();
+  var lock = MAINT.on && !admin;
+  if(lock){
+    document.getElementById('maintText').textContent = MAINT.message || "We're upgrading Jammmy Rewards. We'll be back shortly. Your coins are safe.";
+    var lg = document.getElementById('maintLogo'), fav = document.querySelector('link[rel~="icon"]');
+    if(lg && !lg.getAttribute('src')){ if(fav && fav.href) lg.src = fav.href; else lg.style.display='none'; }
+  }
+  scr.classList.toggle('on', lock);
+  document.body.classList.toggle('maint-lock', lock);
+  bar.classList.toggle('on', MAINT.on && admin);
+}
+async function maintCheck(){
+  try{
+    var r = await fetch(AUTH_API + '/api/maintenance', { cache:'no-store' });
+    if(!r.ok) return;
+    var d = await r.json();
+    MAINT.on = !!d.on; MAINT.message = d.message || '';
+  }catch(e){ return; }
+  maintPaint();
+}
+(function(){
+  var orig = renderAuthUI;
+  renderAuthUI = function(u){ var out = orig.apply(this, arguments); try{ maintPaint(); }catch(e){} return out; };
+})();
+maintCheck();
+setInterval(function(){ if(!document.hidden) maintCheck(); }, 60000);
+document.addEventListener('visibilitychange', function(){ if(!document.hidden) maintCheck(); });
+
+async function amtLoad(){
+  var st = document.getElementById('amtState');
+  try{
+    var r = await fetch(AUTH_API + '/api/admin/maintenance', { headers:{ 'Authorization':'Bearer ' + localStorage.getItem('jammy_session_token') } });
+    var d = await r.json();
+    if(!r.ok) throw new Error(d.error || 'failed');
+    var m = d.maintenance || {};
+    document.getElementById('amtOn').checked = !!m.on;
+    document.getElementById('amtMsg').value = m.message || '';
+    st.textContent = m.on ? ('On since ' + new Date(m.since).toLocaleString()) : 'Off. The site is open to everyone.';
+  }catch(e){ st.textContent = 'Could not load: ' + e.message; }
+}
+async function amtSave(){
+  var on = document.getElementById('amtOn').checked, msg = document.getElementById('amtMsg').value, out = document.getElementById('amtSaveMsg');
+  out.textContent = 'Saving…';
+  try{
+    var r = await fetch(AUTH_API + '/api/admin/maintenance', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + localStorage.getItem('jammy_session_token') }, body: JSON.stringify({ on:on, message:msg }) });
+    var d = await r.json();
+    if(!r.ok) throw new Error(d.error || 'failed');
+    out.textContent = on ? 'Saved. Maintenance mode is on.' : 'Saved. The site is open to everyone again.';
+    MAINT.on = !!d.maintenance.on; MAINT.message = d.maintenance.message; maintPaint(); amtLoad();
+  }catch(e){ out.textContent = 'Not saved: ' + e.message; }
+}
 initAuth();
 loadVaultSettings(); /* covers the Home page's vault mini-stat/preview too, not just the dedicated Vault page */
 /* Was only ever fetched once on page load -- if an admin topped up the vault while someone
@@ -8988,6 +9819,11 @@ function switchAdminTab(tabId){
   if(tabId==='adminAuditTab') loadAuditLog(true);
   if(tabId==='adminSecurityTab') loadAdminSecurity();
   if(tabId==='adminBotTab') loadBotAdmin();
+  if(tabId==='adminGamesTab') agLoad();
+  if(tabId==='adminRanksTab') arkLoad();
+  if(tabId==='adminPartnersTab') aptLoad();
+  if(tabId==='adminChallengesTab') achLoad();
+  if(tabId==='adminMaintTab') amtLoad();
 }
 
 /* Backs both the Overview tab and the pending-count badges on every other tab button, so
@@ -9007,6 +9843,7 @@ var BOT_FIELDS = [
   ['Discord', [
     ['dc_on','bool','Discord bot on'],['dc_dm_on','bool','DM players (redemption paid, slot played, invite rewards)'],
     ['dc_announce_ch','text','Announcements channel ID','Right-click the channel in Discord → Copy Channel ID (turn on Developer Mode first).'],['dc_staff_ch','text','Staff alerts channel ID','New joins that look like alts or blocked players get posted here.'],
+    ['dc_guess_ch','text','Guesses channel ID','While guessing is open, every message in this channel counts as a guess (in $). The bot reacts ✅ when it is saved.'],
     ['dc_live_ping','text','Ping when live','e.g. @everyone, @here, <@&ROLE_ID> or leave empty.'],['dc_live_claim_coins','num','Coins on the "Claim" button when live'],['dc_live_claim_min','num','Minutes the live claim stays open'],
     ['dc_chat_on','bool','Coins for chatting in Discord'],['dc_chat_coins','num','Coins per reward'],['dc_chat_per_coin','num','Counted messages per reward'],['dc_chat_cooldown','num','Seconds between counted messages'],['dc_chat_min_chars','num','Minimum message length'],['dc_chat_cap','num','Max chat coins per person per day'],
     ['dc_ignore_channels','text','Channel IDs that don\'t count','Comma separated, e.g. a spam or bot-commands channel.'],
@@ -9062,7 +9899,8 @@ async function loadBotAdmin(){
   document.getElementById('btLedger').innerHTML = L.length ? '<table class="bt-log"><tr><th>When</th><th>Player</th><th>For</th><th class="hm">Where</th><th style="text-align:right">Coins</th></tr>'
     + L.map(function(r){ return '<tr><td>' + pccEsc(rqAgo(r.created_at)) + '</td><td>' + pccEsc(r.username || r.user_id) + '</td><td>' + pccEsc(KIND[r.kind] || r.kind) + '</td><td class="hm">' + pccEsc(r.platform || '') + '</td><td style="text-align:right;color:#fbbf24;font-weight:700">+' + Number(r.amount).toLocaleString() + '</td></tr>'; }).join('') + '</table>'
     : adminEmptyState('🤖', 'No bot payouts yet', 'They show up here as soon as the bot gives coins.');
-  if(!_botSettings) loadBotSettings();
+  if(!_botSettings) loadBotSettings().then(function(){ botGuide(); }); else botGuide();
+  botGuesses();
 }
 async function loadBotSettings(){
   var d = await botFetch('/api/admin/bot-settings');
@@ -11781,11 +12619,16 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   if(!cv) return;
   var ctx = cv.getContext('2d'), W, H, pts = [];
   var HWP = document.documentElement.classList.contains('hw'); /* Halloween: drifting embers instead of sky-blue motes */
+  var ICEP = document.documentElement.classList.contains('ice'); /* Ice theme: soft snow drifting down */
+  if(ICEP && document.documentElement.classList.contains('ice-rm')) return;
   var COUNT = window.innerWidth < 640 ? (HWP ? 18 : 14) : (HWP ? 40 : 26);
   function resize(){ W = cv.width = window.innerWidth; H = cv.height = window.innerHeight; }
   resize();
   window.addEventListener('resize', resize);
   function mkPt(){
+    if(ICEP) return { x: Math.random()*W, y: -10 - Math.random()*H, vx: (Math.random()-.5)*.25, vy: .35+Math.random()*.55,
+      r: 1+Math.random()*2.2, a: .35+Math.random()*.45, life: Math.random(), sw: Math.random()*6.28, snow: 1,
+      col: Math.random() > .35 ? 'rgba(240,249,255,' : 'rgba(186,230,253,' };
     return { x: Math.random()*W, y: H + Math.random()*100,
       vx: (Math.random()-.5)*.3, vy: -.2-Math.random()*.4,
       r: .8+Math.random()*1.6, a: .25+Math.random()*.4, life: Math.random(),
@@ -11799,6 +12642,8 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     if(!running) return;
     ctx.clearRect(0,0,W,H);
     pts.forEach(function(p){
+      if(p.snow){ p.sw += .012; p.x += p.vx + Math.sin(p.sw)*.35; p.y += p.vy; if(p.y > H + 10){ Object.assign(p, mkPt()); p.y = -10; }
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.28); ctx.fillStyle = p.col + p.a.toFixed(2) + ')'; ctx.fill(); return; }
       p.x += p.vx; p.y += p.vy; p.life += .003;
       if(p.life >= 1 || p.y < -20) Object.assign(p, mkPt());
       var a = p.a * Math.sin(p.life*Math.PI) * (HWP ? .7 + .3*Math.sin(p.life*60) : 1);
@@ -11822,7 +12667,12 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   var COUNT = 0;
   var STAR_COUNT = window.innerWidth < 640 ? 16 : 30;
   var HWS = document.documentElement.classList.contains('hw');
-  var STAR_COLORS = HWS ? [
+  var ICES = document.documentElement.classList.contains('ice');
+  var STAR_COLORS = ICES ? [
+    {glow:'rgba(125,211,252,0.95)', core:'rgba(240,250,255,1)', mid:'rgba(186,230,253,0.9)'},
+    {glow:'rgba(165,180,252,0.95)', core:'rgba(240,242,255,1)', mid:'rgba(199,210,254,0.9)'},
+    {glow:'rgba(94,234,212,0.95)',  core:'rgba(236,254,250,1)', mid:'rgba(153,246,228,0.9)'}
+  ] : HWS ? [
     {glow:'rgba(255,122,26,0.95)',  core:'rgba(255,244,214,1)', mid:'rgba(255,170,80,0.9)'},   /* Halloween: ember orange */
     {glow:'rgba(124,255,79,0.95)',  core:'rgba(236,255,224,1)', mid:'rgba(170,255,130,0.9)'},  /* toxic green */
     {glow:'rgba(168,85,247,0.95)',  core:'rgba(245,232,255,1)', mid:'rgba(196,150,255,0.9)'}   /* witch purple */
@@ -12438,7 +13288,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     };
     function renderTop(){
       var el = document.getElementById('hxlTop'); if(!el) return;
-      var short = function(v){ v = Number(v) || 0; return v >= 1e6 ? '$' + (v/1e6).toFixed(1).replace(/\.0$/, '') + 'M' : v >= 1e4 ? '$' + Math.round(v/1e3) + 'k' : v >= 1e3 ? '$' + (v/1e3).toFixed(1).replace(/\.0$/, '') + 'k' : '$' + Math.round(v); };
+      var short = function(v){ v = Number(v) || 0; return (v >= 1e6 ? (v/1e6).toFixed(1).replace(/\.0$/, '') + 'M' : v >= 1e4 ? Math.round(v/1e3) + 'k' : v >= 1e3 ? (v/1e3).toFixed(1).replace(/\.0$/, '') + 'k' : Math.round(v)) + ' pts'; };
       el.innerHTML = top3.map(function(w, i){
         var name = typeof maskUsername === 'function' ? maskUsername(w.name) : w.name;
         return '<li class="r' + (i + 1) + '"><span class="rk">' + (i + 1) + '</span><span class="n">' + esc(name) + '</span><span class="w">' + short(w.wager) + '</span></li>';
@@ -12762,6 +13612,1031 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     }
   });
 })();
+</script>
+<script>
+/* ================= ICE / GLACIER THEME: decorations =================
+   Runs only when <html> has .ice. It only ADDS decoration elements; it never changes
+   leaderboards, vault, coins, games or requests logic. Everything is static art except a
+   few cheap CSS animations, and lite mode (phones / weak devices) switches those off. */
+(function(){
+  var H = document.documentElement;
+  if(!H.classList.contains('ice')) return;
+  var LITE = H.classList.contains('ice-lite');
+  function mk(tag, cls, html){ var e = document.createElement(tag); if(cls) e.className = cls; if(html) e.innerHTML = html; return e; }
+  function safe(fn){ try{ fn(); }catch(e){ if(window.console) console.warn('[ice]', e); } }
+  var R = function(a, b){ return a + Math.random() * (b - a); };
+
+  var ICE = window.ICE_SVG = {
+    cap: '<svg viewBox="0 0 160 74" aria-hidden="true"><defs><linearGradient id="iceCapG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".7" stop-color="#e0f2fe"/><stop offset="1" stop-color="#bae6fd"/></linearGradient>'
+      + '<linearGradient id="iceCicG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0f9ff"/><stop offset="1" stop-color="#7dd3fc" stop-opacity=".2"/></linearGradient></defs>'
+      + '<path d="M30 48 l4 18 l4-18z M62 52 l3 13 l3-13z M98 52 l4 20 l4-20z M126 48 l3 12 l3-12z" fill="url(#iceCicG)"/>'
+      + '<path d="M8 46C5 31 22 19 42 21C50 8 72 3 86 11C101 3 124 8 132 20C150 18 159 33 153 46C141 53 124 50 113 55C100 50 87 57 74 53C60 57 47 51 34 55C23 51 12 53 8 46Z" fill="url(#iceCapG)" stroke="#bae6fd" stroke-width="1.2"/>'
+      + '<path d="M38 28C48 22 60 22 66 26M92 18C102 14 114 16 120 22" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".9"/>'
+      + '<circle cx="132" cy="34" r="2" fill="#fff"/><circle cx="24" cy="40" r="1.6" fill="#fff"/></svg>',
+    flake: function(c){ var p = ''; for(var i = 0; i < 6; i++) p += '<g transform="rotate(' + (i * 60) + ' 12 12)"><path d="M12 12V2.5M12 6l-2.6-2M12 6l2.6-2M12 9l-2-1.4M12 9l2-1.4"/></g>';
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="' + (c || '#fff') + '" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">' + p + '</svg>'; },
+    block: '<svg viewBox="0 0 200 92" aria-hidden="true"><defs><linearGradient id="iceBlkT" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0f9ff" stop-opacity=".95"/><stop offset="1" stop-color="#bae6fd" stop-opacity=".8"/></linearGradient>'
+      + '<linearGradient id="iceBlkF" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7dd3fc" stop-opacity=".55"/><stop offset=".55" stop-color="#38bdf8" stop-opacity=".35"/><stop offset="1" stop-color="#1e3a8a" stop-opacity=".55"/></linearGradient></defs>'
+      + '<path d="M18 24L100 6L182 24L100 42Z" fill="url(#iceBlkT)"/><path d="M18 24L100 42V90L18 70Z" fill="url(#iceBlkF)"/><path d="M182 24L100 42V90L182 70Z" fill="url(#iceBlkF)" opacity=".75"/>'
+      + '<path d="M18 24L100 42L182 24M100 42V90" fill="none" stroke="#e0f2fe" stroke-opacity=".8" stroke-width="1.4"/><path d="M40 40L62 60M140 44L126 66M70 22L118 14" stroke="#fff" stroke-opacity=".55" stroke-width="1.2"/></svg>',
+    glacier: '<svg viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="iceGl1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bae6fd" stop-opacity=".32"/><stop offset=".45" stop-color="#1e4f7a" stop-opacity=".6"/><stop offset="1" stop-color="#081a30" stop-opacity=".95"/></linearGradient>'
+      + '<linearGradient id="iceGl2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0f6ff" stop-opacity=".42"/><stop offset=".35" stop-color="#2a5f8f" stop-opacity=".7"/><stop offset="1" stop-color="#0a1f38"/></linearGradient></defs>'
+      + '<path d="M0 150V80L90 46L170 74L260 30L360 70L450 40L540 78L640 34L740 72L820 44L930 80L1030 36L1130 70L1220 42L1320 76L1440 50V150Z" fill="url(#iceGl1)"/>'
+      + '<path d="M248 35L260 30L276 40L262 44ZM628 39L640 34L656 44L642 47ZM1018 41L1030 36L1046 46L1032 49ZM440 44L450 40L464 49L452 51Z" fill="#e0f6ff" opacity=".55"/>'
+      + '<path d="M0 150V108L120 84L210 102L330 74L430 104L560 82L670 106L790 78L900 102L1010 86L1130 108L1250 82L1360 100L1440 90V150Z" fill="url(#iceGl2)"/></svg>'
+  };
+
+  /* icicles hanging under the big JAMMMYREWARDS wordmark */
+  function wmIcicles(){
+    /* uneven on purpose: a few long ones, many stubs, gaps here and there */
+    var s = '<svg viewBox="0 0 1000 44" preserveAspectRatio="none"><defs><linearGradient id="iceWmG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0f9ff" stop-opacity=".95"/><stop offset=".5" stop-color="#bae6fd" stop-opacity=".7"/><stop offset="1" stop-color="#7dd3fc" stop-opacity="0"/></linearGradient></defs>'
+      + '<path d="M40 2Q500 -1 960 2L960 4.5Q740 7 500 5.5Q260 7 40 4.5Z" fill="#e0f6ff" opacity=".8"/>';
+    var x = 52, k = 0;
+    while(x < 950){
+      var big = Math.random() < .22, w = big ? R(11, 17) : R(5, 10), h = big ? R(26, 42) : R(7, 17);
+      s += '<path d="M' + (x - w / 2).toFixed(1) + ' 3Q' + (x - w / 5).toFixed(1) + ' ' + (h * .5).toFixed(1) + ' ' + x.toFixed(1) + ' ' + h.toFixed(1) + 'Q' + (x + w / 5).toFixed(1) + ' ' + (h * .5).toFixed(1) + ' ' + (x + w / 2).toFixed(1) + ' 3Z" fill="url(#iceWmG)"/>';
+      if(big && !LITE && k++ % 2 === 0) s += '<circle class="ice-drop" style="animation-delay:' + R(-5, 0).toFixed(2) + 's" cx="' + x.toFixed(1) + '" cy="' + (h + 2).toFixed(1) + '" r="2" fill="#e0f6ff"/>';
+      x += w + R(6, 30);
+    }
+    return s + '</svg>';
+  }
+
+  /* 1. hero: icicles under the wordmark + aurora behind the jar */
+  safe(function(){
+    var wm = document.querySelector('.hx-wm');
+    if(wm && !document.querySelector('.ice-cicles-wm')){ var c = mk('div','ice-cicles-wm', wmIcicles()); c.setAttribute('aria-hidden','true'); wm.parentNode.insertBefore(c, wm.nextSibling); }
+    var par = document.querySelector('#hxStage .hx-stage-par');
+    if(par && !par.querySelector('.ice-aur')){ var a = mk('div','ice-aur','<i></i><i></i>'); a.setAttribute('aria-hidden','true'); par.insertBefore(a, par.firstChild); }
+  });
+
+  /* 2. snow caps on the Jammmy jar (nav brand, home jar, home vault mascot) */
+  safe(function(){
+    var br = document.querySelector('nav .brand');
+    if(br && br.querySelector('img') && !br.querySelector('.ice-cap')) br.insertBefore(mk('div','ice-cap', ICE.cap), br.firstChild);
+    var jar = document.querySelector('.hx-jar');
+    if(jar && !jar.querySelector('.ice-cap')) jar.appendChild(mk('div','ice-cap', ICE.cap));
+  });
+  /* place each cap on the jar's lid, measured from the jar element (video = square frame, image = full box) */
+  window.iceFitCaps = function(){
+    try{
+      document.querySelectorAll('.hx-jar > .ice-cap, .ice-vjar > .ice-cap').forEach(function(c){
+        var p = c.parentNode, el = p.querySelector('video, img.hx-jar-img, .jar-fb');
+        if(!el || !el.offsetWidth) return;
+        var k = el.tagName === 'VIDEO' ? {cx:.51, ly:.27, w:.5} : {cx:.47, ly:.085, w:.74};
+        var w = el.offsetWidth, ht = el.offsetHeight, cw = w * k.w, ch = cw * 74 / 160;
+        c.style.width = cw + 'px';
+        c.style.left = (el.offsetLeft + w * k.cx - cw / 2) + 'px';
+        c.style.top = (el.offsetTop + ht * k.ly - ch * .62) + 'px';
+      });
+    }catch(e){}
+  };
+
+  /* 3. vault page: the jar stands on a block of ice */
+  safe(function(){
+    var v = document.getElementById('vaultMascotVideo') || document.getElementById('vaultJarFb');
+    if(!v || v.parentNode.classList.contains('ice-vjar')) return;
+    var w = mk('span','ice-vjar');
+    v.parentNode.insertBefore(w, v); w.appendChild(v);
+    w.appendChild(mk('span','ice-block', ICE.block));
+    w.appendChild(mk('div','ice-cap', ICE.cap));
+  });
+
+  /* 4. icicles on card edges + a frost sweep on hover */
+  var CARD_SEL = '.hx-p,.prc,.bcard,.loy2-card,.pwx-card,.pf-card,.vp-link-card,.battle-card,.rsx-card,.rbx-card,.pcc-card,.lbx-board,.gm-card,.rk-card,.gd-card,.pt-card';
+  function edges(){
+    document.querySelectorAll(CARD_SEL).forEach(function(c){
+      if(c.dataset.ice || c.closest('#admin')) return;
+      if(!c.offsetWidth) return;
+      c.dataset.ice = '1';
+      if(getComputedStyle(c).position === 'static') c.style.position = 'relative';
+      var n = Math.max(2, Math.min(7, Math.round(c.offsetWidth / 80))), s = '';
+      for(var i = 0; i < n; i++){
+        s += '<i style="--x:' + ((i + .2 + Math.random() * .6) / n * 100).toFixed(1) + '%;--w:' + R(6, 12).toFixed(0) + 'px;--h:' + R(8, 22).toFixed(0) + 'px"></i>';
+      }
+      c.appendChild(mk('span','ice-edge', s)).setAttribute('aria-hidden','true');
+      c.classList.add('ice-card');
+      c.appendChild(mk('span','ice-frost')).setAttribute('aria-hidden','true');
+    });
+  }
+
+  /* 5. glacier strip above the footer, with a few twinkling ice crystals */
+  safe(function(){
+    var ft = document.querySelector('footer');
+    if(!ft || document.querySelector('.ice-glacier')) return;
+    var g = mk('div','ice-glacier', ICE.glacier); g.setAttribute('aria-hidden','true');
+    for(var i = 0; i < (LITE ? 5 : 12); i++){
+      var t = mk('i','ice-tw'); t.style.cssText = 'left:' + R(2, 98).toFixed(1) + '%;top:' + R(30, 85).toFixed(0) + '%;animation-delay:' + R(-3.4, 0).toFixed(2) + 's';
+      g.appendChild(t);
+    }
+    ft.parentNode.insertBefore(g, ft);
+  });
+
+  /* 6. launch banner: points people at the new Games page (dismiss = gone for good on this device) */
+  safe(function(){
+    var KEY = 'ice_ban_v1';
+    try{ if(localStorage.getItem(KEY)) return; }catch(e){}
+    var b = mk('div','ice-ban','<span class="ice-ban-ic">' + ICE.flake('#0b2540') + '</span><span class="ice-ban-t"><b>Winter is here</b><span>New Jammmy Games, ranks and more</span></span><button type="button" class="ice-ban-go">Play now</button><button type="button" class="ice-ban-x" aria-label="Close">×</button>');
+    b.setAttribute('role','status');
+    document.body.appendChild(b);
+    function close(){ b.classList.remove('in'); try{ localStorage.setItem(KEY, '1'); }catch(e){} setTimeout(function(){ b.remove(); }, 700); }
+    b.querySelector('.ice-ban-x').onclick = close;
+    b.querySelector('.ice-ban-go').onclick = function(){ close(); if(typeof nav === 'function' && document.getElementById('games')) nav('games'); };
+    setTimeout(function(){ b.classList.add('in'); }, 2200);
+  });
+
+  function decorate(){ safe(edges); window.iceFitCaps(); }
+  window.addEventListener('resize', window.iceFitCaps);
+  window.addEventListener('load', window.iceFitCaps);
+  document.addEventListener('loadedmetadata', window.iceFitCaps, true);
+  document.addEventListener('load', function(e){ if(e.target && e.target.tagName === 'IMG') window.iceFitCaps(); }, true);
+  decorate(); setTimeout(decorate, 1200); setTimeout(decorate, 3500);
+  var _sp = window.showPage;
+  if(typeof _sp === 'function') window.showPage = function(){ var r = _sp.apply(this, arguments); setTimeout(decorate, 60); setTimeout(decorate, 900); return r; };
+  var moT = null;
+  try{ new MutationObserver(function(){ if(moT) return; moT = setTimeout(function(){ moT = null; safe(edges); }, 600); }).observe(document.querySelector('main') || document.body, {childList:true, subtree:true}); }catch(e){}
+})();
+</script>
+<script>
+/* ================= JAMMMY GAMES page =================
+   Lobby of the four games; a game opens in a frame (games/<name>.html, same site, so it shares
+   the login). Each game sends its balance up here, so the coins at the top always match. */
+(function(){
+  var GAMES = { blackjack: 'Blackjack', mines: 'Mines', plinko: 'Plinko', hilo: 'HiLo' };
+  var ICON = { blackjack: '🃏', mines: '💎', plinko: '🟡', hilo: '🔼' };
+  var CUR = null, ENABLED = null, IS_ADMIN = false, FEED_T = 0;
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function fmt(n){ return Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: 2 }); }
+  function token(){ try{ return localStorage.getItem('jammy_session_token'); }catch(e){ return null; } }
+
+  var shownBal = null;
+  function setBal(v){
+    var b = $('gmBal'), w = $('gmWallet'); if(!b) return;
+    w.classList.remove('out'); w.onclick = null;
+    if(shownBal != null && v > shownBal){ b.classList.add('up'); setTimeout(function(){ b.classList.remove('up'); }, 900); }
+    shownBal = v; b.textContent = fmt(v);
+    document.querySelectorAll('.up-coins').forEach(function(el){ el.innerHTML = '<img src="jammmy-coin.webp" class="coin-icon" alt=""> ' + (typeof fmtCoins === 'function' ? fmtCoins(v) : fmt(v)); });
+  }
+  function loggedOut(){
+    var b = $('gmBal'), w = $('gmWallet'); if(!b) return;
+    w.classList.add('out'); b.textContent = 'Log in to play for coins';
+    w.onclick = function(){ if(typeof startDiscordLogin === 'function') startDiscordLogin(); };
+  }
+  function paintCards(){
+    document.querySelectorAll('.gm-card[data-game]').forEach(function(c){
+      var k = c.dataset.game, tag = c.querySelector('.gm-tag');
+      var open = !ENABLED || ENABLED[k] || IS_ADMIN;
+      tag.textContent = !ENABLED ? 'Play' : ENABLED[k] ? 'Play' : IS_ADMIN ? 'Admin test' : 'Try the demo';
+      tag.classList.toggle('off', !!ENABLED && !ENABLED[k]);
+      c.title = open ? 'Play ' + GAMES[k] : GAMES[k] + ' opens soon. You can try it with demo coins.';
+    });
+  }
+  async function loadState(){
+    var t = token(); if(!t){ loggedOut(); ENABLED = null; paintCards(); return; }
+    try{
+      var r = await fetch(AUTH_API + '/api/games/state', { headers: { 'Authorization': 'Bearer ' + t } });
+      var d = await r.json();
+      if(!r.ok){ if(r.status === 401) loggedOut(); return; }
+      IS_ADMIN = !!d.is_admin; ENABLED = d.enabled || null; setBal(d.balance); paintCards();
+    }catch(e){}
+  }
+
+  function rowHtml(x){
+    var won = x.payout > x.wagered;
+    return '<div class="gm-win"><i>' + (ICON[x.game] || '🎮') + '</i><span>' + esc(x.user) + '<small>' + (GAMES[x.game] || x.game) + ' · ' + (x.mult || 0).toFixed(2) + '×</small></span>'
+      + '<em class="' + (won ? '' : 'lo') + '">' + (won ? '+' + fmt(x.payout - x.wagered) : fmt(x.payout)) + '</em></div>';
+  }
+  async function pollFeed(){
+    clearTimeout(FEED_T);
+    var pg = $('games'); if(!pg || !pg.classList.contains('show') || document.hidden){ FEED_T = setTimeout(pollFeed, 8000); return; }
+    try{
+      var r = await fetch(AUTH_API + '/api/games/feed'); var d = await r.json();
+      var list = (d.recent || []).slice(0, 12);
+      $('gmFeed').innerHTML = list.length ? list.map(rowHtml).join('') : '<div class="gm-feed-empty">No rounds yet. Be the first to play.</div>';
+    }catch(e){}
+    FEED_T = setTimeout(pollFeed, 8000);
+  }
+
+  function paintSwitch(){
+    $('gmSwitch').innerHTML = Object.keys(GAMES).map(function(k){ return '<button type="button" class="' + (k === CUR ? 'on' : '') + '" data-g="' + k + '">' + GAMES[k] + '</button>'; }).join('');
+    $('gmSwitch').querySelectorAll('button').forEach(function(b){ b.onclick = function(){ gmOpen(b.dataset.g); }; });
+  }
+  window.gmOpen = function(k, fromHistory){
+    if(!GAMES[k]) return;
+    CUR = k;
+    $('gmLobby').hidden = true; $('gmPlay').hidden = false; $('games').classList.add('playing');
+    var f = $('gmFrame'), src = 'games/' + k + '.html';
+    if(f.getAttribute('src') !== src) f.setAttribute('src', src);
+    paintSwitch();
+    if(!fromHistory && window.history && history.pushState && location.hash !== '#games/' + k) history.pushState({ page: 'games/' + k }, '', '#games/' + k);
+    requestAnimationFrame(function(){ window.scrollTo(0, 0); });
+  };
+  window.gmLobby = function(fromHistory){
+    CUR = null;
+    var f = $('gmFrame'); if(f.getAttribute('src')) f.setAttribute('src', 'about:blank');
+    $('gmPlay').hidden = true; $('gmLobby').hidden = false; $('games').classList.remove('playing');
+    loadState();
+    if(!fromHistory && window.history && history.pushState && location.hash !== '#games') history.pushState({ page: 'games' }, '', '#games');
+  };
+  window.gmShow = function(sub){
+    loadState(); pollFeed();
+    if(sub && GAMES[sub]) gmOpen(sub, true); else if(CUR) gmLobby(true);
+  };
+
+  document.querySelectorAll('.gm-card[data-game]').forEach(function(c){ c.addEventListener('click', function(){ gmOpen(c.dataset.game); }); });
+
+  /* messages from the game frame */
+  window.addEventListener('message', function(e){
+    if(e.origin !== location.origin || !e.data || typeof e.data !== 'object') return;
+    if(e.data.type === 'jg-bal' && e.data.live) setBal(e.data.balance);
+    else if(e.data.type === 'jg-back') gmLobby();
+    else if(e.data.type === 'jg-login' && typeof startDiscordLogin === 'function') startDiscordLogin();
+  });
+})();
+</script>
+<script>
+/* Jammmy Games leaderboard: amounts are Jammmy Coins, not dollars; it runs per calendar month. */
+(function(){
+  if(typeof LB_CASINO_PRIZES === 'undefined') return;
+  LB_CASINO_PRIZES.jammmygames = {1:10000,2:8000,3:6000,4:4000,5:2000,6:1000,7:1000,8:1000,9:1000,10:1000,11:500,12:500,13:500,14:500,15:500,16:500,17:500,18:500,19:500,20:500};
+  CASINO_DISPLAY_NAMES.jammmygames = 'Jammmy Games';
+  var COINS = function(){ return CURRENT_LB_CASINO === 'jammmygames'; };
+  var COIN_IMG = '<img src="jammmy-coin.webp" alt="" aria-hidden="true">';
+  var _money = window.lbxMoney;
+  window.lbxMoney = lbxMoney = function(v){ return COINS() ? Number(v || 0).toLocaleString('en-US', { maximumFractionDigits: 0 }) + ' coins' : _money(v); };
+  var _tab = window.lbTab;
+  window.lbTab = lbTab = function(btn, casino){
+    var lb = document.getElementById('leaderboards'); if(lb) lb.classList.toggle('lb-coins', casino === 'jammmygames');
+    var sub = document.getElementById('lbxSub');
+    if(sub && LB_RACE !== 'previous') sub.innerHTML = casino === 'jammmygames'
+      ? 'Every coin you wager in <b>Jammmy Games</b> counts. The top 20 win Jammmy Coins every month.'
+      : 'Wager under code <b>JAMMMY</b>, climb the ranks and win a share of the prize pool. Updated live.';
+    var cl = document.querySelector('.lbx-cta .lbx-lbl'); if(cl) cl.textContent = casino === 'jammmygames' ? 'PLAY TO CLIMB' : 'USE CODE';
+    var pn = document.getElementById('lbxPaidN'); if(pn) pn.textContent = casino === 'jammmygames' ? 'Top 20 paid in Jammmy Coins' : 'Top 10 paid';
+    return _tab(btn, casino);
+  };
+  var _rows = window.renderLeaderboardRows;
+  window.renderLeaderboardRows = renderLeaderboardRows = function(wagers, rewards){
+    _rows(wagers, rewards);
+    if(!COINS()) return;
+    /* prizes and pool in coins */
+    var pool = document.getElementById('lbxPool'); if(pool) pool.textContent = '40,000';
+    document.querySelectorAll('#lbxPodium .lbx-step b, #lbFullRows .lbx-row .p em').forEach(function(el){
+      el.innerHTML = el.innerHTML.replace(/\$([\d,]+)/, '<span class="lbx-coin">' + COIN_IMG + '$1</span>');
+    });
+  };
+  var _draw = window.lbxDraw;
+  window.lbxDraw = lbxDraw = function(){
+    _draw();
+    if(!COINS()) return;
+    document.querySelectorAll('#lbFullRows .lbx-row .p em').forEach(function(el){ if(el.innerHTML.indexOf('lbx-coin') < 0) el.innerHTML = el.innerHTML.replace(/\$([\d,]+)/, '<span class="lbx-coin">' + COIN_IMG + '$1</span>'); });
+    document.querySelectorAll('#lbFullRows .lbx-gap').forEach(function(el){ el.textContent = el.textContent.replace(/^\$([\d,]+)/, '$1 coins'); });
+  };
+  var _cd = window.lbcd2;
+  window.lbcd2 = lbcd2 = function(){
+    if(COINS() && !_realPeriodOverride){ _realPeriodOverride = LB_RACE === 'previous' ? (function(){ var c = currentMonthlyPeriod(); var s = new Date(Date.UTC(c.start.getUTCFullYear(), c.start.getUTCMonth() - 1, 1)); return { start: s, end: c.start }; })() : currentMonthlyPeriod(); }
+    return _cd();
+  };
+})();
+</script>
+<script>
+/* Fruit rank icons (one flat style, 64×64). Used by the Ranks page, the nav pill and the profile. */
+window.FRUIT_SVG = {
+  cherry: '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 8c-2 10-9 18-15 26M32 8c3 10 8 17 14 24" fill="none" stroke="#4d7c0f" stroke-width="3" stroke-linecap="round"/><path d="M32 8c8-6 18-4 22 2-8 4-16 3-22-2z" fill="#65a30d"/><circle cx="18" cy="42" r="12" fill="#dc2626"/><circle cx="45" cy="40" r="12" fill="#e11d48"/><circle cx="14" cy="37" r="3.5" fill="#fff" opacity=".55"/><circle cx="41" cy="35" r="3.5" fill="#fff" opacity=".55"/></svg>',
+  grape: '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M33 6v9" stroke="#4d7c0f" stroke-width="3" stroke-linecap="round"/><path d="M34 10c7-6 16-5 20 1-8 4-15 4-20-1z" fill="#65a30d"/><g fill="#7c3aed"><circle cx="22" cy="22" r="8"/><circle cx="38" cy="21" r="8"/><circle cx="30" cy="33" r="8"/><circle cx="16" cy="35" r="7"/><circle cx="45" cy="34" r="7"/><circle cx="23" cy="46" r="7"/><circle cx="38" cy="46" r="7"/><circle cx="31" cy="57" r="6"/></g><g fill="#c4b5fd" opacity=".6"><circle cx="19" cy="19" r="2.3"/><circle cx="35" cy="18" r="2.3"/><circle cx="27" cy="30" r="2.3"/></g></svg>',
+  lemon: '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 34c3-14 16-22 30-20 8 1 13 5 16 8l4-1-1 4c2 10-4 22-18 26-14 4-26-1-30-10l-3 0z" fill="#facc15"/><path d="M14 30c4-8 12-12 20-11" fill="none" stroke="#fef9c3" stroke-width="3.5" stroke-linecap="round"/><path d="M40 14c4-7 12-8 16-4-5 4-10 5-16 4z" fill="#65a30d"/></svg>',
+  orange: '<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="36" r="22" fill="#f97316"/><path d="M32 14c-1-5 1-8 4-9" fill="none" stroke="#4d7c0f" stroke-width="3" stroke-linecap="round"/><path d="M35 12c6-6 15-6 19 0-7 5-14 5-19 0z" fill="#65a30d"/><g fill="#fdba74" opacity=".7"><circle cx="24" cy="30" r="1.4"/><circle cx="40" cy="44" r="1.4"/><circle cx="30" cy="48" r="1.4"/><circle cx="44" cy="30" r="1.4"/></g><path d="M18 30c2-6 7-10 13-11" fill="none" stroke="#fed7aa" stroke-width="3.5" stroke-linecap="round"/></svg>',
+  watermelon: '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M4 22h56c0 18-12 32-28 32S4 40 4 22z" fill="#16a34a"/><path d="M9 22h46c0 14-10 27-23 27S9 36 9 22z" fill="#f0fdf4"/><path d="M12 22h40c0 12-9 23-20 23S12 34 12 22z" fill="#ef4444"/><g fill="#1f2937"><ellipse cx="22" cy="29" rx="1.6" ry="2.4"/><ellipse cx="32" cy="33" rx="1.6" ry="2.4"/><ellipse cx="42" cy="29" rx="1.6" ry="2.4"/><ellipse cx="27" cy="39" rx="1.6" ry="2.4"/><ellipse cx="37" cy="39" rx="1.6" ry="2.4"/></g></svg>',
+  pineapple: '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 22c-3-8-10-14-16-14 5 4 8 9 9 14M32 22c3-9 10-15 17-15-5 4-9 9-10 15M32 22V4" fill="#16a34a" stroke="#15803d" stroke-width="3" stroke-linecap="round"/><ellipse cx="32" cy="42" rx="16" ry="20" fill="#eab308"/><path d="M20 30l24 24M18 40l18 18M26 24l22 22M44 30L20 54M46 40L28 58M38 24L16 46" stroke="#a16207" stroke-width="1.6" opacity=".7"/><path d="M22 34c2-5 5-8 9-9" fill="none" stroke="#fef08a" stroke-width="3" stroke-linecap="round"/></svg>',
+  dragonfruit: '<svg viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="32" cy="36" rx="20" ry="23" fill="#ec4899"/><g fill="#22c55e"><path d="M14 30c-6-2-9-6-10-10 6 1 10 4 13 8z"/><path d="M50 30c6-2 9-6 10-10-6 1-10 4-13 8z"/><path d="M18 48c-6 1-10-1-12-4 6-1 10 0 13 2z"/><path d="M46 48c6 1 10-1 12-4-6-1-10 0-13 2z"/><path d="M32 13c-2-5-1-9 2-11 2 4 2 8 0 11z"/><path d="M24 22c-5-3-6-7-6-10 4 2 7 5 8 8z"/><path d="M40 22c5-3 6-7 6-10-4 2-7 5-8 8z"/></g><path d="M22 34c2-6 6-10 11-11" fill="none" stroke="#fbcfe8" stroke-width="3.5" stroke-linecap="round"/></svg>',
+  none: '<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="38" r="18" fill="none" stroke="#7dd3fc" stroke-width="3" stroke-dasharray="6 6" opacity=".7"/><path d="M32 20v-8M32 12c5-5 12-5 15 0-5 4-10 4-15 0z" stroke="#4ade80" stroke-width="3" fill="#4ade80" stroke-linecap="round"/></svg>'
+};
+window.fruitSvg = function(key){ return (window.FRUIT_SVG[key] || window.FRUIT_SVG.none); };
+</script>
+<script>/* ================= FRUIT RANKS page + nav badge ================= */
+(function(){
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function usd(v){ v = Number(v || 0); return '$' + (v >= 1000 || v === Math.floor(v) ? v.toLocaleString('en-US', { maximumFractionDigits: 0 }) : v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })); }
+  function token(){ try{ return localStorage.getItem('jammy_session_token'); }catch(e){ return null; } }
+  var CFG = null, ME = null;
+
+  async function loadCfg(){ if(CFG) return CFG; try{ var r = await fetch(AUTH_API + '/api/ranks'); CFG = await r.json(); }catch(e){} return CFG; }
+  async function loadMe(){
+    var t = token(); if(!t) return null;
+    try{ var r = await fetch(AUTH_API + '/api/my-rank', { headers: { 'Authorization': 'Bearer ' + t } }); if(!r.ok) return null; ME = await r.json(); }catch(e){ return null; }
+    try{ sessionStorage.setItem('jr_rank', JSON.stringify({ at: Date.now(), rank: ME.rank })); }catch(e){}
+    if(ME.promoted && ME.promoted.coins && typeof toast === 'function') toast('You ranked up to ' + ME.promoted.name + '! +' + ME.promoted.coins + ' coins');
+    paintBadge(ME.rank);
+    return ME;
+  }
+  function tierName(k){ var t = CFG && CFG.tiers.filter(function(x){ return x.key === k; })[0]; return t ? t.name : 'No rank yet'; }
+
+  function paintMe(){
+    var me = ME;
+    $('rkMeFruit').innerHTML = fruitSvg(me && me.rank);
+    if(!me){
+      $('rkMeName').textContent = 'Unranked';
+      $('rkMeW').innerHTML = '<button type="button" onclick="startDiscordLogin()">Log in with Discord to see your rank</button>';
+      $('rkBar').style.width = '0%'; $('rkMeNext').textContent = '';
+      ['rkPartner','rkGames','rkDaily'].forEach(function(id){ $(id).textContent = '—'; });
+      return;
+    }
+    $('rkMeName').textContent = tierName(me.rank);
+    $('rkMeW').textContent = usd(me.wager_usd) + ' wagered in total';
+    var tiers = CFG.tiers, cur = tiers.filter(function(t){ return t.key === me.rank; })[0], lo = cur ? cur.min_usd : 0;
+    if(me.next){
+      var pct = Math.max(2, Math.min(100, (me.wager_usd - lo) / (me.next.min_usd - lo) * 100));
+      requestAnimationFrame(function(){ $('rkBar').style.width = pct.toFixed(1) + '%'; });
+      $('rkMeNext').innerHTML = '<b>' + usd(me.next.need_usd) + '</b> more to reach ' + esc(me.next.name);
+    } else { requestAnimationFrame(function(){ $('rkBar').style.width = '100%'; }); $('rkMeNext').textContent = 'Top rank reached. Legend.'; }
+    $('rkPartner').textContent = usd(me.partner_usd);
+    $('rkGames').textContent = usd(me.games_usd);
+    $('rkDaily').textContent = me.daily + ' coins';
+  }
+  function paintLadder(){
+    var me = ME, curIdx = -1;
+    CFG.tiers.forEach(function(t, i){ if(me && t.key === me.rank) curIdx = i; });
+    var L = $('rkLadder');
+    L.classList.remove('in');
+    L.innerHTML = CFG.tiers.map(function(t, i){
+      var cls = !me ? '' : i === curIdx ? 'cur got' : i < curIdx ? 'got' : 'locked';
+      return '<div class="rk-tier ' + cls + '" style="--i:' + i + '"><span class="f">' + fruitSvg(t.key) + '</span><span class="n">' + esc(t.name) + '</span>'
+        + '<span class="m"><b>' + usd(t.min_usd) + '</b> wagered</span>'
+        + '<ul><li><b>+' + Number(t.reward).toLocaleString() + '</b> coins once</li><li><b>' + t.daily + '</b> coins daily claim</li><li>' + esc(t.name) + ' role on Discord</li></ul>'
+        + '<span class="cnt">' + ((CFG.counts && CFG.counts[t.key]) || 0) + ' player' + (((CFG.counts && CFG.counts[t.key]) || 0) === 1 ? '' : 's') + '</span></div>';
+    }).join('');
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ L.classList.add('in'); }); });
+  }
+  function paintRecent(){
+    var R = (CFG && CFG.recent) || [];
+    $('rkRecent').innerHTML = R.length ? R.slice(0, 8).map(function(r){ return '<div class="rk-row">' + fruitSvg(r.rank) + '<span><b>' + esc(r.user) + '</b> reached ' + esc(r.name || tierName(r.rank)) + '</span></div>'; }).join('') : '<div class="rk-empty">No rank-ups yet. Be the first.</div>';
+  }
+  window.rkShow = async function(){
+    await loadCfg(); if(!CFG || !CFG.tiers) return;
+    await loadMe();
+    paintMe(); paintLadder(); paintRecent();
+  };
+
+  /* fruit badge on the nav user pill (kept for 5 minutes per tab) */
+  function paintBadge(rank){
+    var pill = document.querySelector('#authArea .user-pill'); if(!pill) return;
+    var b = pill.querySelector('.up-fruit');
+    if(!rank){ if(b) b.remove(); return; }
+    if(!b){ b = document.createElement('span'); b.className = 'up-fruit'; var c = pill.querySelector('.up-coins'); pill.insertBefore(b, c); }
+    b.innerHTML = fruitSvg(rank); b.title = 'Rank: ' + (CFG ? tierName(rank) : rank);
+  }
+  var _ra = window.renderAuthUI;
+  if(typeof _ra === 'function') window.renderAuthUI = renderAuthUI = function(user){
+    _ra(user);
+    if(!user) return;
+    var c = null; try{ c = JSON.parse(sessionStorage.getItem('jr_rank') || 'null'); }catch(e){}
+    if(c && Date.now() - c.at < 300000) paintBadge(c.rank);
+    else loadCfg().then(loadMe);
+  };
+})();
+</script>
+<script>/* ================= Admin: Games, Ranks, and a clearer Jammmy Bot tab ================= */
+(function(){
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function n0(v){ return Number(v || 0).toLocaleString('en-US', { maximumFractionDigits: 2 }); }
+  async function call(path, body){ return botFetch(path, body); }
+  var NAMES = { blackjack: 'Blackjack', mines: 'Mines', plinko: 'Plinko', hilo: 'HiLo' };
+
+  /* ── Games ── */
+  window.agLoad = async function(){
+    var d = await call('/api/admin/games-settings');
+    if(d.error){ $('agGames').textContent = d.error; return; }
+    var S = d.settings, st = {}; (d.stats || []).forEach(function(x){ st[x.game] = x; });
+    $('agCap').value = S.daily_loss_cap;
+    $('agGames').innerHTML = Object.keys(NAMES).map(function(k){
+      var g = S.games[k], x = st[k] || { rounds: 0, wagered: 0, paid: 0, wagered_today: 0, paid_today: 0 };
+      var profit = x.wagered - x.paid, today = x.wagered_today - x.paid_today;
+      return '<div class="bt-card ag-g"><h4>' + NAMES[k] + '<label class="bt-f sw sw2"><input type="checkbox" ' + (g.enabled ? 'checked' : '') + ' onchange="agSet(\'' + k + '\',{enabled:this.checked})"> Open to players</label></h4>'
+        + '<div class="bt-row"><label class="bt-f" style="flex:1">Max bet (coins)<input type="number" min="1" value="' + g.max_bet + '" onchange="agSet(\'' + k + '\',{max_bet:this.value})"></label>'
+        + (k === 'blackjack' ? '<label class="bt-f" style="flex:1">Max side bet (coins)<input type="number" min="1" value="' + g.max_side + '" onchange="agSet(\'' + k + '\',{max_side:this.value})"></label>' : '') + '</div>'
+        + '<div class="ag-stats"><div><span>Rounds</span><b>' + n0(x.rounds) + '</b></div><div><span>Wagered</span><b>' + n0(x.wagered) + '</b></div><div><span>Paid out</span><b>' + n0(x.paid) + '</b></div>'
+        + '<div><span>Site result, all time</span><b class="' + (profit >= 0 ? 'pos' : 'neg') + '">' + (profit >= 0 ? '+' : '') + n0(profit) + '</b></div><div><span>Wagered today</span><b>' + n0(x.wagered_today) + '</b></div><div><span>Site result today</span><b class="' + (today >= 0 ? 'pos' : 'neg') + '">' + (today >= 0 ? '+' : '') + n0(today) + '</b></div></div></div>';
+    }).join('');
+    agMonths(); agLoadLb();
+  };
+  window.agSet = async function(game, patch){
+    var d = await call('/api/admin/games-settings', Object.assign({ game: game }, patch));
+    if(d.error) return jmAlert(d.error);
+    agLoad();
+  };
+  window.agSaveCap = async function(){
+    var d = await call('/api/admin/games-settings', { daily_loss_cap: $('agCap').value });
+    $('agCapMsg').textContent = d.error ? d.error : 'Saved: ' + n0(d.settings.daily_loss_cap) + ' coins a day';
+  };
+  function agMonths(){
+    var sel = $('agLbMonth'); if(sel.options.length) return;
+    var d = new Date(), out = [];
+    for(var i = 0; i < 6; i++){ var m = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() - i, 1)); out.push(m.toISOString().slice(0, 7)); }
+    sel.innerHTML = out.map(function(m, i){ return '<option value="' + m + '"' + (i === 1 ? ' selected' : '') + '>' + new Date(m + '-01T00:00:00Z').toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' }) + (i === 0 ? ' (running)' : '') + '</option>'; }).join('');
+  }
+  window.agLoadLb = async function(){
+    var d = await call('/api/admin/games-lb?month=' + $('agLbMonth').value);
+    if(d.error){ $('agLb').textContent = d.error; return; }
+    var btn = $('agLbPay');
+    btn.disabled = !d.ended || !!d.paid || !d.standings.length;
+    btn.textContent = d.paid ? 'Paid ✓' : 'Pay prizes';
+    $('agLbMsg').textContent = d.paid ? 'Paid ' + new Date(d.paid.at).toLocaleString() + ' by ' + d.paid.by : !d.ended ? 'This month is still running.' : '';
+    $('agLb').innerHTML = d.standings.length ? '<table class="ag-tbl"><tr><th>#</th><th>Player</th><th>Wagered</th><th>Rounds</th><th>Prize</th></tr>' + d.standings.map(function(r){
+      return '<tr><td>' + r.rank + '</td><td>' + esc(r.name) + '</td><td>' + n0(r.wager) + '</td><td>' + n0(r.rounds) + '</td><td style="color:#fbbf24;font-weight:700">' + (r.prize ? n0(r.prize) : '—') + '</td></tr>'; }).join('') + '</table>' : adminEmptyState('🏆', 'Nobody played that month', 'Standings show up once players wager in Jammmy Games.');
+  };
+  window.agPayLb = async function(){
+    var m = $('agLbMonth').value;
+    if(!await jmConfirm('Pay the Jammmy Games prizes for ' + m + '? Coins go straight to the top 20. This can only be done once.')) return;
+    var d = await call('/api/admin/games-lb', { month: m });
+    if(d.error) return jmAlert(d.error);
+    jmAlert('Paid ' + d.paid.winners.length + ' winners for ' + m + '.');
+    agLoadLb();
+  };
+
+  /* ── Ranks ── */
+  var RK = null, RKC = {};
+  function arkRender(){
+    $('arkOn').checked = !!RK.enabled;
+    $('arkTbl').innerHTML = '<tr><th></th><th>Name</th><th>Key</th><th>Total wager ($)</th><th>Reward (coins, once)</th><th>Daily claim</th><th>Discord role ID</th><th>Players</th><th></th></tr>'
+      + RK.tiers.map(function(t, i){
+        return '<tr data-i="' + i + '"><td class="f">' + (window.fruitSvg ? fruitSvg(t.key) : '') + '</td><td><input data-k="name" value="' + esc(t.name) + '"></td><td><input data-k="key" value="' + esc(t.key) + '"></td>'
+          + '<td><input data-k="min_usd" type="number" min="0" value="' + t.min_usd + '"></td><td><input data-k="reward" type="number" min="0" value="' + t.reward + '"></td><td><input data-k="daily" type="number" min="0" value="' + t.daily + '"></td>'
+          + '<td><input data-k="role" value="' + esc(t.role || '') + '" placeholder="optional"></td><td>' + (RKC[t.key] || 0) + '</td><td><button class="x" title="Remove" onclick="arkDel(' + i + ')">✕</button></td></tr>';
+      }).join('');
+  }
+  window.arkLoad = async function(){
+    var d = await call('/api/admin/ranks'); if(d.error){ $('arkTbl').innerHTML = '<tr><td>' + esc(d.error) + '</td></tr>'; return; }
+    RK = d.settings; RKC = {}; (d.counts || []).forEach(function(c){ RKC[c.rank_key] = c.n; });
+    arkRender();
+  };
+  function arkRead(){
+    return [].map.call(document.querySelectorAll('#arkTbl tr[data-i]'), function(tr){
+      var o = {}; tr.querySelectorAll('input').forEach(function(inp){ o[inp.dataset.k] = inp.value; }); return o;
+    });
+  }
+  window.arkAdd = function(){ RK.tiers = arkRead(); RK.tiers.push({ key: 'rank' + (RK.tiers.length + 1), name: 'New rank', min_usd: 50000, reward: 0, daily: 5, role: '' }); arkRender(); };
+  window.arkDel = function(i){ RK.tiers = arkRead(); RK.tiers.splice(i, 1); arkRender(); };
+  window.arkSave = async function(){
+    if(!await jmConfirm('Save the ranks? Players who already reached a rank keep it; anyone who now qualifies for a new rank gets its reward on the next update.')) return;
+    var d = await call('/api/admin/ranks', { enabled: $('arkOn').checked, tiers: arkRead() });
+    $('arkMsg').textContent = d.error ? d.error : 'Saved ✓'; if(!d.error) arkLoad();
+  };
+  window.arkSync = async function(){
+    $('arkMsg').textContent = 'Updating…';
+    var d = await call('/api/admin/ranks', { sync: true });
+    $('arkMsg').textContent = d.error ? d.error : 'Updated ' + d.synced + ' players' + (d.promoted && d.promoted.length ? ', ' + d.promoted.length + ' ranked up' : '');
+    arkLoad();
+  };
+
+  /* ── Jammmy Bot: what it does, in plain words, with on/off status ── */
+  var GUIDE = [
+    ['💬', 'Coins for chatting on Kick', 'Linked viewers get coins for being active in chat while Jammy is live.', 'kick_watch_on'],
+    ['🎁', 'Kick chat drops', 'Every so often (or when you press <b>Start Kick drop</b>) the first viewers to type <code>!claim</code> win coins.', 'kick_drops_on'],
+    ['⭐', 'Sub rewards', 'New subs, resubs and gifted subs on Kick get coins automatically.', 'kick_on'],
+    ['🎰', 'Slot requests from Kick', 'Viewers type <code>!sr Sweet Bonanza</code> and it lands in Requests.', 'kick_sr_on'],
+    ['🎯', 'Guess the win', 'Open guessing below. Viewers type <code>!guess 1450</code> on Kick or just the number in the Discord guesses channel. Enter the final amount, the closest guess wins.', 'kick_guess_on'],
+    ['🤖', 'Kick commands', '<code>!link</code> <code>!balance</code> <code>!lb</code> <code>!code</code> <code>!discord</code> <code>!site</code> <code>!commands</code>. Mods: <code>!drop</code> and <code>!hunt open / close / result</code>.', 'kick_cmds_on'],
+    ['🔑', 'Code drops', 'Press <b>Post code drop</b>: a code goes to Kick and/or Discord, the first players to enter it on the site win.', null],
+    ['📣', 'Announcements', 'Write a message once, post it to Kick chat and the Discord announcements channel.', null],
+    ['🔴', 'Live alert + live claim', 'When Jammy goes live the bot posts in Discord with a <b>Claim</b> button for free coins.', 'dc_on'],
+    ['💜', 'Coins for chatting in Discord', 'Active members get a few coins a day for real messages (spam doesn’t count).', 'dc_chat_on'],
+    ['👋', 'Invite rewards', 'Members get coins when a friend they invited gets their Power.win account verified.', 'dc_invite_on'],
+    ['🏅', 'Automatic roles', 'Verified role, activity roles and fruit rank roles are given automatically (role IDs in settings and in Admin → Ranks).', null],
+    ['✉️', 'DMs', 'Players get a Discord DM when their redemption is paid or their slot gets played.', 'dc_dm_on'],
+    ['🎉', 'Giveaways', 'Staff type <code>/giveaway</code> in Discord: coins, minutes and number of winners.', null]
+  ];
+  window.botGuide = function(){
+    var S = _botSettings || {}, box = $('btGuide'); if(!box) return;
+    box.innerHTML = GUIDE.map(function(g){
+      var st = g[3] == null ? '' : '<em class="' + (S[g[3]] ? 'on' : 'off') + '">' + (S[g[3]] ? 'On' : 'Off') + '</em>';
+      return '<div><i>' + g[0] + '</i><p><b>' + g[1] + '.</b> ' + g[2] + '</p>' + st + '</div>';
+    }).join('');
+  };
+  window.botGuesses = async function(){
+    var box = $('btGuessList'); if(!box) return;
+    var d = await call('/api/admin/hunt');
+    if(d.error){ box.textContent = d.error; return; }
+    if(!d.hunt){ box.innerHTML = '<div class="bt-msg">No guessing yet.</div>'; return; }
+    var E = d.entries || [];
+    box.innerHTML = '<div class="bt-msg" style="margin:6px 0 0">' + (d.hunt.status === 'open' ? '🟢 Open' : d.hunt.status === 'closed' ? '🔒 Closed, waiting for the result' : '🏁 Finished at $' + n0(d.hunt.result)) + ' · prize ' + n0(d.hunt.prize) + ' coins · ' + E.length + ' guesses</div>'
+      + (E.length ? '<div class="bt-guesses"><table>' + E.map(function(e, i){ return '<tr' + (d.hunt.status === 'done' && i === 0 ? ' class="win"' : '') + '><td>' + (d.hunt.status === 'done' && i === 0 ? '🏆 ' : '') + esc(e.username || e.kick_username) + '</td><td>' + (e.source === 'discord' ? 'Discord' : 'Kick') + '</td><td style="text-align:right">$' + n0(e.guess) + '</td></tr>'; }).join('') + '</table></div>' : '');
+  };
+})();
+</script>
+<script>
+/* ===== Versus + Tournament (extends the slot Versus above) ===== */
+(function(){
+  if(typeof vsSyncPickUi !== 'function') return;
+  var MAX = 16;
+  _vsPicks = (_vsPicks || []).slice(0, MAX);
+  window.vsTogglePick = vsTogglePick = function(id){
+    id = String(id);
+    var i = _vsPicks.indexOf(id);
+    if(i > -1) _vsPicks.splice(i, 1);
+    else { if(_vsPicks.length >= MAX){ jmAlert('A tournament can have up to ' + MAX + ' slots.'); return; } _vsPicks.push(id); }
+    vsSave(); vsSyncPickUi();
+  };
+  var _sync = vsSyncPickUi;
+  window.vsSyncPickUi = vsSyncPickUi = function(){
+    _sync();
+    var c = document.getElementById('vsPickCount'), b = document.getElementById('vsLaunchBtn'), n = _vsPicks.length;
+    if(c) c.textContent = n ? String(n) : '0';
+    if(b){
+      b.disabled = n < 2;
+      b.innerHTML = (n > 2 ? '🏆 New tournament ' : '⚔️ New versus ') + '<b id="vsPickCount">' + n + '</b>';
+      b.title = n < 2 ? 'Tap ⚔️ VS on 2 slot requests for a versus, or on more for a tournament' : n === 2 ? 'Start a 1 vs 1 showdown' : 'Start a tournament with ' + n + ' slots';
+    }
+  };
+  var _create = vsCreate;
+  window.vsCreate = vsCreate = function(){
+    if(_vsPicks.length < 3) return _create();
+    var sides = _vsPicks.map(function(id){ return _adminSlotRows[id]; }).filter(Boolean).map(vsSideFrom);
+    if(sides.length < 3) return;
+    var t = { id: 't' + Date.now() + Math.random().toString(36).slice(2, 6), kind: 't', sides: sides, revealed: false, created: Date.now() };
+    _vsList.unshift(t); _vsPicks = []; vsSave(); vsSyncPickUi(); vsOpen(t.id);
+  };
+  function tMult(s){ return vsMult(s); }
+  function tRanked(t){ return t.sides.map(function(s, i){ return { s: s, i: i, m: tMult(s) }; }).filter(function(x){ return isFinite(x.m); }).sort(function(a, b){ return b.m - a.m; }); }
+  var MEDAL = ['🥇', '🥈', '🥉'];
+  function tRender(){
+    var o = document.getElementById('vsOverlay'), t = _vsState; if(!o || !t) return;
+    var idx = vsFind(_vsCur), many = _vsList.length > 1, done = t.sides.every(function(s){ return isFinite(tMult(s)); });
+    o.innerHTML = '<div class="vs-wrap">'
+      + '<div class="vs-top"><div class="vs-title"><small>Jammmy</small>Slot Tournament</div><div class="vs-tools">'
+        + (many ? '<button type="button" onclick="vsStep(-1)" aria-label="Previous">‹</button><span class="vs-pos">' + (idx + 1) + ' / ' + _vsList.length + '</span><button type="button" onclick="vsStep(1)" aria-label="Next">›</button>' : '')
+        + '<button type="button" onclick="tReset()">↺ Reset results</button><button type="button" onclick="vsFull()">⛶ Fullscreen</button><button type="button" class="vs-del" onclick="vsDelete(_vsCur)">🗑 Delete</button><button type="button" onclick="vsClose()">✕ Close</button></div></div>'
+      + '<div class="tn-bar"><button type="button" class="vs-reveal" id="tnReveal" onclick="tReveal()"' + (done ? '' : ' disabled') + '>' + (t.revealed ? '↺ Hide result' : '👑 Crown winner') + '</button>'
+        + '<span class="tn-verdict" id="tnVerdict"></span><button type="button" class="vs-ann" id="tnAnn" onclick="tAnnounce(this)" style="display:none">📣 Announce in chat</button>'
+        + '<span style="color:rgba(255,255,255,.55);font-size:.85rem" id="tnLeft"></span></div>'
+      + '<div class="tn-grid' + (t.revealed ? ' tn-on' : '') + '" id="tnGrid">' + t.sides.map(function(d, i){
+        var art = d.image ? '<img src="' + pccEsc(d.image) + '" alt="" onerror="this.outerHTML=\'🎰\'">' : '🎰';
+        return '<div class="tn-card" id="tnC' + i + '"><span class="tn-place" id="tnP' + i + '"></span><div class="tn-art">' + art + '</div><div class="tn-slot">' + pccEsc(d.slot) + '</div>'
+          + '<div class="tn-who">' + uavHtml(d.avatar, d.user, 24) + '<span>picked by <b>' + pccEsc(d.user) + '</b></span></div>'
+          + '<div class="tn-in"><label>Bet<input inputmode="decimal" autocomplete="off" placeholder="0.00" value="' + pccEsc(d.bet) + '" oninput="tInput(' + i + ',\'bet\',this.value)"></label>'
+          + '<label>Bonus win<input inputmode="decimal" autocomplete="off" placeholder="0.00" value="' + pccEsc(d.win) + '" oninput="tInput(' + i + ',\'win\',this.value)"></label></div>'
+          + '<div class="tn-x"><small>MULTIPLIER</small><b id="tnX' + i + '">' + vsFmtX(tMult(d)) + '</b></div></div>';
+      }).join('') + '</div></div>';
+    tUpdate(false);
+  }
+  window.tInput = function(i, f, v){ _vsState.sides[i][f] = v; _vsState.revealed = false; vsSave(); tUpdate(false); };
+  function tUpdate(celebrate){
+    var t = _vsState; if(!t || t.kind !== 't') return;
+    var left = 0;
+    t.sides.forEach(function(s, i){ var m = tMult(s); if(!isFinite(m)) left++; var x = document.getElementById('tnX' + i); if(x) x.textContent = vsFmtX(m); });
+    var btn = document.getElementById('tnReveal'); if(btn){ btn.disabled = left > 0; btn.textContent = t.revealed ? '↺ Hide result' : '👑 Crown winner'; }
+    var L = document.getElementById('tnLeft'); if(L) L.textContent = left ? left + ' slot' + (left === 1 ? '' : 's') + ' still to play' : 'All slots played';
+    var g = document.getElementById('tnGrid'); if(!g) return;
+    g.classList.toggle('tn-on', !!t.revealed);
+    var V = document.getElementById('tnVerdict'), A = document.getElementById('tnAnn');
+    t.sides.forEach(function(s, i){ var c = document.getElementById('tnC' + i); if(c) c.className = 'tn-card'; var p = document.getElementById('tnP' + i); if(p) p.textContent = ''; });
+    if(V) V.textContent = ''; if(A) A.style.display = 'none';
+    if(!t.revealed || left) return;
+    var R = tRanked(t);
+    R.forEach(function(r, pos){
+      var c = document.getElementById('tnC' + r.i), p = document.getElementById('tnP' + r.i);
+      if(c) c.classList.add(pos < 3 ? 'p' + (pos + 1) : 'out');
+      if(p) p.textContent = pos < 3 ? MEDAL[pos] : String(pos + 1);
+    });
+    var tie = R.length > 1 && Math.abs(R[0].m - R[1].m) < 1e-9;
+    if(V) V.textContent = tie ? '🤝 Tie for first!' : '🏆 ' + R[0].s.user + ' wins with ' + R[0].s.slot + '!';
+    if(A && !tie){ A.style.display = ''; A.disabled = false; A.textContent = '📣 Announce in chat'; }
+    if(celebrate && !tie) vsConfetti();
+  }
+  window.tReveal = function(){ _vsState.revealed = !_vsState.revealed; vsSave(); tUpdate(_vsState.revealed); };
+  window.tReset = async function(){ if(!await jmConfirm('Clear every bet and win in this tournament?')) return; _vsState.sides.forEach(function(s){ s.bet = ''; s.win = ''; }); _vsState.revealed = false; vsSave(); tRender(); };
+  window.tAnnounce = async function(btn){
+    var R = tRanked(_vsState); if(!R.length) return;
+    var text = '🏆 SLOT TOURNAMENT (' + _vsState.sides.length + ' slots): ' + R.slice(0, 3).map(function(r, i){ return MEDAL[i] + ' ' + r.s.slot + ' ' + vsFmtX(r.m) + ' (' + r.s.user + ')'; }).join(' · ');
+    btn.disabled = true; btn.textContent = 'Sending…';
+    try{
+      var res = await fetch(AUTH_API + '/api/admin/bot-action', { method: 'POST', headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jammy_session_token'), 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'announce', text: text }) });
+      var d = await res.json(); btn.textContent = res.ok ? '✓ ' + (d.message || 'Sent') : (d.error || 'Failed');
+    }catch(e){ btn.textContent = 'Network error'; btn.disabled = false; }
+  };
+  var _open = vsOpen;
+  window.vsOpen = vsOpen = function(id){
+    var i = vsFind(id); if(i < 0) return;
+    if(_vsList[i].kind !== 't') return _open(id);
+    _vsCur = id; _vsState = _vsList[i];
+    var o = document.getElementById('vsOverlay');
+    if(!o){ o = document.createElement('div'); o.id = 'vsOverlay'; o.setAttribute('role', 'dialog'); o.setAttribute('aria-label', 'Slot tournament'); document.body.appendChild(o); }
+    tRender(); o.scrollTop = 0; o.classList.add('open'); document.documentElement.style.overflow = 'hidden';
+  };
+  var _del = vsDelete;
+  window.vsDelete = vsDelete = async function(id){
+    var i = vsFind(id); if(i < 0) return;
+    var v = _vsList[i];
+    if(v.kind !== 't') return _del(id);
+    if(!await jmConfirm('Delete this tournament (' + v.sides.length + ' slots)?')) return;
+    _vsList.splice(i, 1); vsSave();
+    if(_vsCur === id) vsClose(); else vsSyncPickUi();
+  };
+  var _list = vsRenderList;
+  window.vsRenderList = vsRenderList = function(){
+    var box = document.getElementById('vsListBox'); if(!box) return;
+    var T = _vsList.filter(function(v){ return v.kind === 't'; });
+    if(!T.length) return _list();
+    var keep = _vsList; _vsList = keep.filter(function(v){ return v.kind !== 't'; });
+    try{ _list(); } finally { _vsList = keep; }
+    box.style.display = '';
+    if(!box.querySelector('.vsl-head')) box.innerHTML = '<div class="vsl-head"><span>⚔️ Showdowns</span></div>';
+    var head = box.querySelector('.vsl-head span'); if(head) head.innerHTML = '⚔️ Versus &amp; tournaments <b>' + _vsList.length + '</b>';
+    box.insertAdjacentHTML('beforeend', T.map(function(t){
+      var R = t.revealed ? tRanked(t) : [];
+      return '<div class="vsl-row"><button type="button" class="vsl-open" onclick="vsOpen(\'' + t.id + '\')"><span class="vsl-names"><span class="vsl-t">TOURNAMENT</span><b>' + t.sides.length + ' slots</b></span>'
+        + '<span class="vsl-who">' + pccEsc(t.sides.map(function(s){ return s.slot; }).join(' · ')) + '</span></button>'
+        + (R.length ? '<span class="vsl-res">👑 ' + pccEsc(R[0].s.user) + '</span>' : '')
+        + '<button type="button" class="vsl-del" title="Delete this tournament" aria-label="Delete this tournament" onclick="vsDelete(\'' + t.id + '\')">🗑</button></div>';
+    }).join(''));
+  };
+  var _step = vsStep;
+  window.vsStep = vsStep = function(dir){ var i = vsFind(_vsCur); if(i < 0 || _vsList.length < 2) return; var nx = _vsList[(i + dir + _vsList.length) % _vsList.length]; var o = document.getElementById('vsOverlay'); if(o) o.classList.remove('open'); vsOpen(nx.id); };
+  /* keep tournaments that were saved in this browser */
+  try{ var v = JSON.parse(localStorage.getItem(VS_KEY) || 'null'); if(v && Array.isArray(v.list)){ var have = {}; _vsList.forEach(function(x){ have[x.id] = 1; }); v.list.forEach(function(x){ if(x && x.kind === 't' && x.sides && !have[x.id]) _vsList.push(x); }); _vsList.sort(function(a, b){ return (b.created || 0) - (a.created || 0); }); } }catch(e){}
+  try{ vsSyncPickUi(); }catch(e){}
+})();
+</script>
+<script>
+/* Partners page: Power.win's own section + partners added from the admin panel */
+(function(){
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  var P = [], CUR = 'powerwin';
+  function hexA(h, a){ var n = parseInt(String(h).slice(1), 16); return 'rgba(' + (n >> 16 & 255) + ',' + (n >> 8 & 255) + ',' + (n & 255) + ',' + a + ')'; }
+  function paintSwitch(){
+    var sw = document.getElementById('ptSwitch'); if(!sw) return;
+    sw.innerHTML = '<div class="pt-h">Our partners</div><button type="button" class="pt-chip' + (CUR === 'powerwin' ? ' on' : '') + '" data-k="powerwin"><img src="powerwin.webp" alt="Power.win"></button>'
+      + P.map(function(p){ return '<button type="button" class="pt-chip' + (CUR === p.key ? ' on' : '') + '" data-k="' + esc(p.key) + '">' + (p.logo ? '<img src="' + esc(p.logo) + '" alt="' + esc(p.name) + '">' : esc(p.name)) + '</button>'; }).join('');
+    sw.querySelectorAll('.pt-chip').forEach(function(b){ b.onclick = function(){ ptShow(b.dataset.k); }; });
+  }
+  window.ptShow = function(k){
+    CUR = k; paintSwitch();
+    var root = document.querySelector('#new .pwx'), box = document.getElementById('ptOther');
+    if(k === 'powerwin'){ root.classList.remove('pt-alt'); if(typeof pwxInit === 'function') setTimeout(pwxInit, 30); return; }
+    var p = P.filter(function(x){ return x.key === k; })[0]; if(!p) return;
+    root.classList.add('pt-alt');
+    box.style.setProperty('--pc', p.color); box.style.setProperty('--pc-glow', hexA(p.color, .55));
+    box.innerHTML = '<div class="pt-hero">' + (p.logo ? '<img src="' + esc(p.logo) + '" alt="' + esc(p.name) + '">' : '') + '<h2>' + esc(p.name) + '</h2>' + (p.tagline ? '<p>' + esc(p.tagline) + '</p>' : '')
+      + '<div class="pt-cta">' + (p.code ? '<button type="button" class="pt-code" onclick="copy(this.querySelector(\'b\'),\'' + esc(p.code) + '\')">Code <b>' + esc(p.code) + '</b></button>' : '') + (p.url ? '<a class="pt-go" href="' + esc(p.url) + '" target="_blank" rel="noopener">Sign up on ' + esc(p.name) + ' →</a>' : '') + '</div></div>'
+      + (p.offers.length ? '<div class="pt-offers">' + p.offers.map(function(o){ return '<div class="pt-card">' + (o.tag ? '<span class="tag">' + esc(o.tag) + '</span>' : '') + '<h3>' + esc(o.title) + '</h3><p>' + esc(o.text) + '</p></div>'; }).join('') + '</div>' : '<div class="pt-empty">Offers coming soon.</div>');
+  };
+  async function load(){ try{ var r = await fetch(AUTH_API + '/api/partners'); var d = await r.json(); P = d.partners || []; }catch(e){ P = []; } paintSwitch(); }
+  load();
+  window.ptReload = load;
+})();
+</script>
+<script>
+(function(){
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  var L = [];
+  function row(p, i){
+    var offers = (p.offers || []).map(function(o){ return [o.title, o.text, o.tag].filter(function(x, j){ return j < 2 || x; }).join(' | '); }).join('\n');
+    return '<div class="bt-card" style="margin:12px 0;background:rgba(0,0,0,.18)" data-i="' + i + '"><div class="bt-row">'
+      + '<label class="bt-f" style="flex:1 1 160px">Name<input data-k="name" value="' + esc(p.name) + '"></label>'
+      + '<label class="bt-f" style="flex:1 1 120px">Code<input data-k="code" value="' + esc(p.code) + '"></label>'
+      + '<label class="bt-f" style="flex:0 0 110px">Colour<input data-k="color" type="color" value="' + esc(p.color || '#38bdf8') + '"></label>'
+      + '<label class="bt-f sw" style="flex:0 0 auto"><input data-k="enabled" type="checkbox"' + (p.enabled !== false ? ' checked' : '') + '> Show</label>'
+      + '<button class="bt-btn" style="color:#fb7185" onclick="aptDel(' + i + ')">Remove</button></div>'
+      + '<div class="bt-row"><label class="bt-f" style="flex:1 1 260px">Sign-up link (https://…)<input data-k="url" value="' + esc(p.url) + '"></label><label class="bt-f" style="flex:1 1 260px">Logo image link (https://…)<input data-k="logo" value="' + esc(p.logo) + '"></label></div>'
+      + '<div class="bt-row"><label class="bt-f" style="flex:1">Tagline<input data-k="tagline" value="' + esc(p.tagline) + '"></label></div>'
+      + '<div class="bt-row"><label class="bt-f" style="flex:1">Offers<textarea data-k="offers" rows="5" placeholder="100% deposit match | Up to $500 on your first deposit | NEW">' + esc(offers) + '</textarea></label></div></div>';
+  }
+  function paint(){ document.getElementById('aptList').innerHTML = L.length ? L.map(row).join('') : '<div class="bt-msg">No extra partners yet.</div>'; }
+  function read(){
+    return [].map.call(document.querySelectorAll('#aptList [data-i]'), function(c){
+      var o = {}; c.querySelectorAll('[data-k]').forEach(function(el){ o[el.dataset.k] = el.type === 'checkbox' ? el.checked : el.value; });
+      o.offers = String(o.offers || '').split('\n').map(function(l){ var a = l.split('|').map(function(x){ return x.trim(); }); return { title: a[0] || '', text: a[1] || '', tag: a[2] || '' }; }).filter(function(x){ return x.title || x.text; });
+      return o;
+    });
+  }
+  window.aptLoad = async function(){ var d = await botFetch('/api/admin/partners'); if(d.error){ document.getElementById('aptList').textContent = d.error; return; } L = d.partners || []; paint(); };
+  window.aptAdd = function(){ L = read(); L.push({ name: 'New partner', code: 'JAMMMY', color: '#38bdf8', enabled: true, offers: [] }); paint(); };
+  window.aptDel = async function(i){ if(!await jmConfirm('Remove this partner from the Partners page?')) return; L = read(); L.splice(i, 1); paint(); };
+  window.aptSave = async function(){
+    var d = await botFetch('/api/admin/partners', { partners: read() });
+    document.getElementById('aptMsg').textContent = d.error ? d.error : 'Saved ✓ (' + d.partners.length + ')';
+    if(!d.error){ L = d.partners; paint(); if(window.ptReload) ptReload(); }
+  };
+})();
+</script>
+<script>
+/* ================= Share on X: a fresh caption and a fresh picture every time =================
+   The picture is drawn in the browser from the live standings (one of several looks, picked at
+   random), so every share is different. On phones "Share" hands picture + caption straight to
+   the X app; elsewhere: download the picture, then "Post on X" opens X with the caption. */
+(function(){
+  function pick(a){ return a[Math.floor(Math.random() * a.length)]; }
+  function money(v, coins){ return coins ? Number(v || 0).toLocaleString('en-US', { maximumFractionDigits: 0 }) + ' coins' : '$' + Number(v || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  var CAPS = [
+    '🏆 {CASINO} LEADERBOARD 🏆\n\n{TOP}\n\n💰 {POOL} up for grabs\n⏰ Ends in {ENDS}\n🔑 Code: JAMMMY\n\n{URL}',
+    '❄️ The {CASINO} race is heating up ❄️\n\n{TOP}\n\nStill time to climb: {ENDS} left!\nCode JAMMMY 👉 {URL}',
+    'Who\'s taking the crown this time? 👑\n\n{TOP}\n\n{CASINO} leaderboard · {POOL} prize pool\nUse code JAMMMY\n{URL}',
+    '📊 Live standings, {CASINO}\n\n{TOP}\n\n⏳ {ENDS} to go. Wager under JAMMMY and get on the board!\n{URL}',
+    'The leaderboard doesn\'t lie 🔥\n\n{TOP}\n\n{POOL} on the line · code JAMMMY\n{URL}',
+    '🎰 {CASINO} x Jammmy\n\n{TOP}\n\nThink you can beat them? {ENDS} left ⏰\nCode: JAMMMY\n{URL}',
+    'Top 3 right now 👀\n\n{TOP}\n\n🏁 Race ends in {ENDS}\n💎 {POOL} prize pool\n🔑 JAMMMY\n{URL}',
+    'Frozen at the top? Not for long 🧊\n\n{TOP}\n\n{CASINO} leaderboard · code JAMMMY · {ENDS} left\n{URL}'
+  ];
+  var FINAL = [
+    '🏁 {CASINO} LEADERBOARD: FINAL RESULTS 🏁\n\n{TOP}\n\nGG to everyone who played! Next race is live now.\nCode JAMMMY 👉 {URL}',
+    'And the winners are… 🥁\n\n{TOP}\n\n{CASINO} race is done. New one already started, code JAMMMY!\n{URL}',
+    '👑 Congrats to our {CASINO} champions!\n\n{TOP}\n\nYour turn next: code JAMMMY\n{URL}'
+  ];
+  var MED = ['🥇', '🥈', '🥉'];
+  var LOOKS = [
+    { name: 'Glacier', bg: ['#04223f', '#0b3d6b', '#071426'], acc: '#7dd3fc', acc2: '#e0f6ff', glow: 'rgba(125,211,252,.55)', snow: true },
+    { name: 'Aurora', bg: ['#071a2b', '#0f2f46', '#140b2e'], acc: '#5eead4', acc2: '#a5b4fc', glow: 'rgba(94,234,212,.5)', aurora: true },
+    { name: 'Gold rush', bg: ['#1a1205', '#3a2507', '#0f0a03'], acc: '#fbbf24', acc2: '#fde68a', glow: 'rgba(251,191,36,.5)', rays: true },
+    { name: 'Neon', bg: ['#14062b', '#2a0b4d', '#08030f'], acc: '#e879f9', acc2: '#a5b4fc', glow: 'rgba(232,121,249,.5)', grid: true }
+  ];
+  function loadImg(src){ return new Promise(function(r){ var i = new Image(); i.onload = function(){ r(i); }; i.onerror = function(){ r(null); }; i.src = src; }); }
+  function rr(ctx, x, y, w, h, r){ ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+  async function draw(look, d){
+    var W = 1200, H = 675, c = document.createElement('canvas'); c.width = W; c.height = H;
+    var x = c.getContext('2d');
+    try{ await document.fonts.load('400 40px "Lilita One"'); await document.fonts.load('700 20px Poppins'); }catch(e){}
+    var g = x.createLinearGradient(0, 0, W, H); g.addColorStop(0, look.bg[0]); g.addColorStop(.55, look.bg[1]); g.addColorStop(1, look.bg[2]);
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    var rg = x.createRadialGradient(W * .72, H * .2, 20, W * .72, H * .2, 520); rg.addColorStop(0, look.glow); rg.addColorStop(1, 'rgba(0,0,0,0)');
+    x.fillStyle = rg; x.fillRect(0, 0, W, H);
+    if(look.aurora){ for(var a = 0; a < 3; a++){ x.save(); x.globalAlpha = .22; x.filter = 'blur(30px)'; x.fillStyle = a % 2 ? look.acc2 : look.acc; x.beginPath(); x.ellipse(W * (.3 + a * .25), 120 + a * 40, 360, 50, -.15 + a * .12, 0, 6.28); x.fill(); x.restore(); } }
+    if(look.rays){ x.save(); x.translate(W * .72, H * .22); for(var r = 0; r < 18; r++){ x.rotate(Math.PI / 9); x.fillStyle = 'rgba(251,191,36,.05)'; x.beginPath(); x.moveTo(0, 0); x.lineTo(900, -60); x.lineTo(900, 60); x.fill(); } x.restore(); }
+    if(look.grid){ x.save(); x.strokeStyle = 'rgba(232,121,249,.08)'; x.lineWidth = 1; for(var gx = 0; gx < W; gx += 40){ x.beginPath(); x.moveTo(gx, 0); x.lineTo(gx, H); x.stroke(); } for(var gy = 0; gy < H; gy += 40){ x.beginPath(); x.moveTo(0, gy); x.lineTo(W, gy); x.stroke(); } x.restore(); }
+    if(look.snow){ x.fillStyle = 'rgba(240,249,255,.7)'; for(var s = 0; s < 70; s++){ x.beginPath(); x.arc(Math.random() * W, Math.random() * H, Math.random() * 2.4 + .6, 0, 6.28); x.fill(); } }
+    /* header */
+    var jar = await loadImg('jar-clean.webp'), coin = await loadImg('jammmy-coin.webp');
+    if(jar) x.drawImage(jar, 48, 34, 74, 74);
+    x.fillStyle = '#fff'; x.font = '400 46px "Lilita One"'; x.textBaseline = 'middle';
+    x.fillText('JammmyRewards', 136, 72);
+    x.font = '700 22px Poppins'; x.fillStyle = look.acc2; x.fillText(d.title, 138, 112);
+    /* code pill */
+    x.save(); rr(x, W - 300, 44, 252, 64, 18); x.fillStyle = 'rgba(0,0,0,.35)'; x.fill(); x.setLineDash([7, 6]); x.strokeStyle = look.acc; x.lineWidth = 2; x.stroke(); x.restore();
+    x.fillStyle = 'rgba(255,255,255,.7)'; x.font = '700 16px Poppins'; x.fillText('CODE', W - 278, 77);
+    x.fillStyle = look.acc; x.font = '400 34px "Lilita One"'; x.fillText('JAMMMY', W - 214, 78);
+    /* podium */
+    var P = [{ i: 1, cx: 270, top: 300, h: 230 }, { i: 0, cx: 600, top: 240, h: 290 }, { i: 2, cx: 930, top: 330, h: 200 }];
+    var tone = ['#fbbf24', '#cbd5e1', '#e0915c'];
+    P.forEach(function(p){
+      var w = d.top[p.i]; var bw = 290;
+      x.save(); rr(x, p.cx - bw / 2, p.top, bw, p.h, 24);
+      var pg = x.createLinearGradient(0, p.top, 0, p.top + p.h); pg.addColorStop(0, 'rgba(255,255,255,.13)'); pg.addColorStop(1, 'rgba(255,255,255,.03)');
+      x.fillStyle = pg; x.fill(); x.lineWidth = 2; x.strokeStyle = tone[p.i]; x.globalAlpha = .9; x.stroke(); x.restore();
+      x.textAlign = 'center';
+      x.font = '400 64px "Lilita One"'; x.fillStyle = tone[p.i]; x.fillText('#' + (p.i + 1), p.cx, p.top + 54);
+      x.font = '700 30px Poppins'; x.fillStyle = '#fff'; x.fillText(w ? w.name : 'Could be you', p.cx, p.top + 116);
+      x.font = '400 34px "Lilita One"'; x.fillStyle = look.acc2; x.fillText(w ? w.amount : '—', p.cx, p.top + 164);
+      if(w && w.prize){ x.font = '700 20px Poppins'; x.fillStyle = 'rgba(255,255,255,.7)'; x.fillText('Prize ' + w.prize, p.cx, p.top + 204); }
+      x.textAlign = 'left';
+    });
+    /* footer */
+    x.fillStyle = 'rgba(0,0,0,.4)'; x.fillRect(0, H - 82, W, 82);
+    if(coin) x.drawImage(coin, 48, H - 62, 42, 42);
+    x.font = '700 24px Poppins'; x.fillStyle = '#fff'; x.fillText(d.pool + ' prize pool', 102, H - 40);
+    x.textAlign = 'right'; x.fillStyle = look.acc2; x.fillText(d.ends ? (d.final ? d.ends : 'Ends in ' + d.ends) : 'jammmyrewards.com', W - 48, H - 40); x.textAlign = 'left';
+    return c;
+  }
+  function data(){
+    var casino = CURRENT_LB_CASINO, coins = casino === 'jammmygames', name = (CASINO_DISPLAY_NAMES[casino] || casino);
+    var top = (_lastLbWagers || []).slice(0, 3), prizes = LB_CASINO_PRIZES[casino] || {};
+    var pool = 0; Object.keys(prizes).forEach(function(k){ pool += Number(prizes[k]) || 0; });
+    var cd = document.getElementById('lb-cd2') ? document.getElementById('lb-cd2').textContent : '';
+    var final = LB_RACE === 'previous';
+    return { casino: name, coins: coins, final: final,
+      title: name.toUpperCase() + (final ? ' LEADERBOARD · FINAL RESULTS' : ' LEADERBOARD · LIVE'),
+      pool: coins ? pool.toLocaleString() + ' coins' : '$' + pool.toLocaleString(),
+      ends: final ? 'Final results' : (cd && cd !== 'ENDED' ? cd : ''),
+      top: top.map(function(w, i){ return { name: maskUsername(w.name), amount: money(w.wager, coins), prize: prizes[i + 1] ? (coins ? Number(prizes[i + 1]).toLocaleString() + ' coins' : '$' + Number(prizes[i + 1]).toLocaleString()) : '' }; }) };
+  }
+  function caption(d){
+    var pool = d.final ? FINAL : CAPS, tpl = pick(pool), n = 0;
+    while(tpl === _lastTpl && n++ < 6) tpl = pick(pool);
+    _lastTpl = tpl;
+    var top = d.top.map(function(t, i){ return MED[i] + ' ' + t.name + ' · ' + t.amount; }).join('\n');
+    return tpl.replace(/\{CASINO\}/g, d.casino.toUpperCase() === d.casino ? d.casino : d.casino).replace('{TOP}', top).replace(/\{POOL\}/g, d.pool).replace(/\{ENDS\}/g, d.ends || 'soon').replace(/\{URL\}/g, 'https://jammmyrewards.com/#leaderboards');
+  }
+  var CUR = null, _lastTpl = null;
+  async function render(){
+    var d = data(); if(!d.top.length){ jmAlert('Leaderboard data is still loading. Try again in a moment.'); return false; }
+    var look = pick(LOOKS.filter(function(l){ return !CUR || l !== CUR.look; }));
+    var cv = await draw(look, d), cap = caption(d);
+    var blob = await new Promise(function(r){ cv.toBlob(r, 'image/png'); });
+    if(CUR && CUR.url) URL.revokeObjectURL(CUR.url);
+    CUR = { look: look, blob: blob, url: URL.createObjectURL(blob), cap: cap, file: 'jammmy-' + CURRENT_LB_CASINO + '-leaderboard.png' };
+    var m = document.getElementById('shareXModal'); if(!m) return true;
+    m.querySelector('.sx-img').src = CUR.url;
+    m.querySelector('.sx-cap').value = cap;
+    m.querySelector('.sx-dl').href = CUR.url; m.querySelector('.sx-dl').setAttribute('download', CUR.file);
+    m.querySelector('.sx-look').textContent = look.name + ' look';
+    return true;
+  }
+  window.shareLeaderboardOnX = shareLeaderboardOnX = async function(){
+    closeShareXModal();
+    var o = document.createElement('div'); o.id = 'shareXModal'; o.className = 'sx-o';
+    o.onclick = function(e){ if(e.target === o) closeShareXModal(); };
+    o.innerHTML = '<div class="sx-box" role="dialog" aria-label="Share on X"><button class="sx-x" onclick="closeShareXModal()" aria-label="Close">✕</button>'
+      + '<div class="sx-h">Share the leaderboard</div><div class="sx-imgw"><img class="sx-img" alt="Leaderboard picture"><span class="sx-look"></span></div>'
+      + '<textarea class="sx-cap" rows="6" aria-label="Post text"></textarea>'
+      + '<div class="sx-btns"><button type="button" class="sx-b sx-shuffle" onclick="sxShuffle()">🎲 New look</button><a class="sx-b sx-dl">⬇ Download picture</a>'
+      + '<button type="button" class="sx-b sx-native" onclick="sxNative()" hidden>📤 Share</button><button type="button" class="sx-b sx-post" onclick="sxPost()">Post on 𝕏</button></div>'
+      + '<p class="sx-tip">Download the picture, then Post on 𝕏 and add it to your post. On a phone, Share sends both at once.</p></div>';
+    document.body.appendChild(o);
+    if(!(await render())){ closeShareXModal(); return; }
+    try{ if(navigator.canShare && navigator.canShare({ files: [new File([CUR.blob], CUR.file, { type: 'image/png' })] })) o.querySelector('.sx-native').hidden = false; }catch(e){}
+  };
+  window.sxShuffle = function(){ render(); };
+  window.sxPost = function(){ var t = document.querySelector('#shareXModal .sx-cap').value; window.open('https://x.com/intent/post?text=' + encodeURIComponent(t), '_blank', 'noopener'); };
+  window.sxNative = async function(){
+    var t = document.querySelector('#shareXModal .sx-cap').value;
+    try{ await navigator.share({ files: [new File([CUR.blob], CUR.file, { type: 'image/png' })], text: t }); }catch(e){}
+  };
+})();
+</script>
+<script>/* ================= GUIDE page: live numbers, tabs, chapter index ================= */
+(function(){
+  function $(id){ return document.getElementById(id); }
+  function n(v){ return v === undefined || v === null || v === '' ? '—' : Number(v).toLocaleString('en-US', { maximumFractionDigits: 2 }); }
+  var G = null, TAB = 'site';
+  function items(){
+    var g = G || {}, k = g.kick || {}, d = g.discord || {}, cd = g.code_drop || {}, r = g.ranks || [];
+    var top = r.length ? r[r.length - 1] : null;
+    return {
+      site: [
+        ['🎁', 'Daily claim', 'Claim free coins once every 24 hours on your Profile.', n(g.daily_base) + ' coins a day' + (top ? ', up to ' + n(top.daily) + ' with your rank' : ''), true],
+        ['🏦', 'Community Vault', 'Wager on a partner casino under code JAMMMY with a linked account. Your share of the vault pays out automatically.', n(g.vault_coins_per_usd) + ' coins per $1 wagered', true],
+        ['🏆', 'Leaderboards', 'Climb the Power.win race and the monthly Jammmy Games leaderboard.', 'Cash and coin prizes', true],
+        ['🎯', 'Challenges', 'Hit the target multiplier on the Games page, or on a slot at a partner casino.', 'Coins per challenge', true],
+        ['🍒', 'Fruit Ranks', 'Each new rank pays coins once and raises your daily claim.', r.length ? 'From ' + n(r[0].reward) + ' to ' + n(top.reward) + ' coins' : 'Coins per rank', r.length > 0],
+        ['🔑', 'Code drops', 'Jammy posts a code on Kick or Discord. The first players to enter it on your Profile win.', n(cd.amount) + ' coins · first ' + n(cd.winners), true]
+      ],
+      kick: [
+        ['💬', 'Chat on stream', 'Linked viewers earn coins for being active in chat while Jammy is live.', n(k.watch_coins) + ' coin' + (k.watch_coins == 1 ? '' : 's') + ' every ' + n(k.watch_every) + ' active minutes · up to ' + n(k.watch_cap) + ' a stream', k.on && k.watch_on],
+        ['⚡', 'Chat drops', 'When a drop starts, be one of the first to type !claim.', n(k.drop_amount) + ' coins · ' + n(k.drop_winners) + ' winners', k.on && k.drops_on],
+        ['⭐', 'Subs and gifts', 'Subscribing, resubbing or gifting subs on Kick pays coins automatically.', n(k.sub_coins) + ' per sub · ' + n(k.gift_coins) + ' per gift', k.on],
+        ['🎯', 'Guess the win', 'During guessing, type !guess and your number. The closest guess wins.', 'Prize set by Jammy', k.on && k.guess_on],
+        ['🎰', 'Slot requests', 'Type !sr and the slot name to send Jammy a request.', 'Can win coins when played', k.on && k.sr_on]
+      ],
+      discord: [
+        ['💜', 'Chat in Discord', 'Real messages count (spam doesn\'t).', n(d.chat_coins) + ' coin' + (d.chat_coins == 1 ? '' : 's') + ' per ' + n(d.chat_per_coin) + ' messages · up to ' + n(d.chat_cap) + ' a day', d.on && d.chat_on],
+        ['🔴', 'Live claim', 'When Jammy goes live, press Claim on the bot\'s post.', n(d.live_claim) + ' coins', d.on],
+        ['👋', 'Invite friends', 'Paid when your friend gets their casino account verified.', n(d.invite_coins) + ' coins per friend', d.on && d.invite_on],
+        ['🎯', 'Guess the win', 'Type your guess in the guesses channel while guessing is open.', 'Closest guess wins', d.on && d.guess_channel],
+        ['🎉', 'Giveaways', 'Press Enter on giveaway posts.', 'Coins per winner', d.on]
+      ]
+    };
+  }
+  function paintEarn(){
+    var L = items()[TAB];
+    $('gdEarnList').innerHTML = L.map(function(e, i){ return '<div class="gd-e' + (e[4] ? '' : ' off') + '" style="animation-delay:' + (i * 50) + 'ms"><i>' + e[0] + '</i><div><b>' + e[1] + '</b><span>' + e[2] + '</span><em>' + (e[4] ? e[3] : 'Off right now') + '</em></div></div>'; }).join('');
+  }
+  function paintRanks(){
+    var r = (G && G.ranks) || [];
+    $('gdRanks2').innerHTML = r.map(function(t){ var k = String(t.name).toLowerCase().replace(/[^a-z]/g, ''); return '<span>' + (window.fruitSvg ? fruitSvg(k) : '') + '<b>' + t.name + '</b> $' + n(t.min_usd) + '</span>'; }).join('');
+    if(G){ $('gdMinP').textContent = n(G.redeem_min_platform) + ' coins'; $('gdMinC').textContent = n(G.redeem_min_crypto) + ' coins'; }
+  }
+  window.gdShow = async function(){
+    if(!G){ try{ var r = await fetch(AUTH_API + '/api/guide-info'); G = await r.json(); }catch(e){ G = {}; } }
+    paintEarn(); paintRanks();
+  };
+  document.querySelectorAll('#gdEarn .gd-tabs button').forEach(function(b){ b.onclick = function(){ TAB = b.dataset.t; document.querySelectorAll('#gdEarn .gd-tabs button').forEach(function(x){ x.classList.toggle('on', x === b); }); paintEarn(); }; });
+  document.querySelectorAll('#gdLink .gd-tabs button').forEach(function(b){ b.onclick = function(){ document.querySelectorAll('#gdLink .gd-tabs button').forEach(function(x){ x.classList.toggle('on', x === b); }); document.querySelectorAll('#gdLink .gd-link').forEach(function(p){ p.hidden = p.dataset.l !== b.dataset.l; }); }; });
+  document.querySelectorAll('.gd-toc a').forEach(function(a){ a.onclick = function(){ var t = $(a.dataset.go); if(t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }; });
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ document.querySelectorAll('.gd-toc a').forEach(function(a){ a.classList.toggle('on', a.dataset.go === e.target.id); }); } }); }, { rootMargin: '-40% 0px -55% 0px' });
+    document.querySelectorAll('.gd-sec').forEach(function(s){ io.observe(s); });
+  }
+})();
+</script>
+<script>
+/* Challenges (Games page) + live billboard (home) */
+(function(){
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function fmt(n){ return Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: 2 }); }
+  function left(ms){ var s = Math.max(0, Math.floor((ms - Date.now()) / 1000)); if(s >= 86400) return Math.floor(s / 86400) + 'd ' + Math.floor(s / 3600) % 24 + 'h'; if(s >= 3600) return Math.floor(s / 3600) + 'h ' + Math.floor(s / 60) % 60 + 'm'; return Math.floor(s / 60) + 'm'; }
+  var GN = { blackjack: 'Blackjack', mines: 'Mines', plinko: 'Plinko', hilo: 'HiLo' };
+  var CH = null, SENT = {};
+  try{ SENT = JSON.parse(localStorage.getItem('jr_ch_sent') || '{}') || {}; }catch(e){}
+  async function loadCh(){ try{ var r = await fetch(AUTH_API + '/api/challenges'); CH = await r.json(); }catch(e){} return CH; }
+  function paintCh(){
+    if(!CH || !$('gmChList')) return;
+    var A = CH.active || [];
+    $('gmChList').innerHTML = A.length ? A.map(function(c){
+      var pct = c.max_winners ? c.winners / c.max_winners * 100 : 0, slots = c.max_winners - c.winners;
+      var btn = c.kind === 'mult'
+        ? '<button type="button" class="go" onclick="gmOpen(\'' + (c.game && c.game !== 'any' ? c.game : 'plinko') + '\')">Play ' + (c.game && c.game !== 'any' ? GN[c.game] : 'now') + '</button>'
+        : (SENT[c.id] ? '<button type="button" class="go sent" disabled>Screenshot sent ✓</button>' : '<button type="button" class="go" onclick="chSend(' + c.id + ')">Send your screenshot</button>');
+      return '<div class="chc"><span class="r"><img src="jammmy-coin.webp" alt="">' + fmt(c.reward) + '</span><div class="t">' + esc(c.title) + '</div>'
+        + '<div class="m">' + (c.kind === 'slot' ? 'At a partner casino · screenshot checked by Jammy' : 'Checked and paid instantly') + (c.min_bet ? ' · min bet ' + fmt(c.min_bet) : '') + '</div>'
+        + '<div class="m">' + slots + ' of ' + c.max_winners + ' prize' + (c.max_winners === 1 ? '' : 's') + ' left · ends in ' + left(c.ends_at) + '</div>'
+        + '<div class="bar"><i style="width:' + pct.toFixed(0) + '%"></i></div>' + btn + '</div>';
+    }).join('') : '<div class="gm-ch-empty">No challenges running right now. Watch Discord for the next one.</div>';
+    var W = (CH.winners || []).slice(0, 8);
+    $('gmChWins').innerHTML = W.map(function(w){ return '<span>🏅 <b>' + esc(w.user) + '</b> won the challenge and got <b>' + fmt(w.reward) + '</b> coins</span>'; }).join('');
+  }
+  var _ch = 0;
+  window.chSend = function(id){
+    if(!localStorage.getItem('jammy_session_token')){ if(typeof startDiscordLogin === 'function') startDiscordLogin(); return; }
+    _ch = id; $('gmChFile').value = ''; $('gmChFile').click();
+  };
+  document.addEventListener('change', function(e){
+    if(!e.target || e.target.id !== 'gmChFile' || !e.target.files || !e.target.files[0]) return;
+    var f = e.target.files[0];
+    shrink(f, async function(data){
+      if(!data){ jmAlert('That picture could not be read. Try a PNG or JPG screenshot.'); return; }
+      try{
+        var r = await fetch(AUTH_API + '/api/challenges/claim', { method: 'POST', headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jammy_session_token'), 'Content-Type': 'application/json' }, body: JSON.stringify({ id: _ch, proof: data }) });
+        var d = await r.json();
+        if(!r.ok) return jmAlert(d.error || 'Could not send it.');
+        SENT[_ch] = 1; try{ localStorage.setItem('jr_ch_sent', JSON.stringify(SENT)); }catch(e){}
+        jmAlert('Screenshot sent! Jammy checks it and the coins land on your account once it is approved.');
+        paintCh();
+      }catch(err){ jmAlert('Network error, try again.'); }
+    });
+  });
+  /* screenshots are shrunk in the browser so they upload fast (max 1280px, JPEG) */
+  function shrink(file, cb){
+    var rd = new FileReader();
+    rd.onload = function(){ var im = new Image(); im.onload = function(){ var k = Math.min(1, 1280 / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); cb(c.toDataURL('image/jpeg', .82)); }; im.onerror = function(){ cb(null); }; im.src = rd.result; };
+    rd.onerror = function(){ cb(null); }; rd.readAsDataURL(file);
+  }
+  var _gs = window.gmShow;
+  if(_gs) window.gmShow = function(sub){ _gs(sub); loadCh().then(paintCh); };
+  setInterval(function(){ var g = $('games'); if(g && g.classList.contains('show') && !document.hidden) loadCh().then(paintCh); }, 20000);
+  window.addEventListener('message', function(e){ if(e.origin === location.origin && e.data && e.data.type === 'jg-challenge') setTimeout(function(){ loadCh().then(paintCh); }, 1500); });
+
+  /* home billboard: today's biggest wins + latest rounds + challenge winners */
+  var ICON = { blackjack: '🃏', mines: '💎', plinko: '🟡', hilo: '🔼' };
+  async function bb(){
+    var home = $('home'); if(!home || !home.classList.contains('show') || document.hidden) return;
+    try{
+      var r = await Promise.all([fetch(AUTH_API + '/api/games/feed').then(function(x){ return x.json(); }), loadCh()]);
+      var F = r[0] || {}, C = r[1] || {}, items = [], seen = {};
+      (F.big || []).concat(F.recent || []).forEach(function(x){ if(seen[x.id] || !(x.payout > x.wagered)) return; seen[x.id] = 1;
+        items.push('<span class="bb-it"><span class="g">' + (ICON[x.game] || '🎮') + '</span><b>' + esc(x.user) + '</b> won <em>+' + fmt(x.payout - x.wagered) + '</em> on ' + (GN[x.game] || x.game) + ' <small>' + (x.mult || 0).toFixed(2) + '×</small></span>'); });
+      (C.winners || []).slice(0, 6).forEach(function(w){ items.push('<span class="bb-it"><span class="g">🏅</span><b>' + esc(w.user) + '</b> won a challenge <em class="ch">+' + fmt(w.reward) + ' coins</em></span>'); });
+      var box = $('homeBB'), tr = $('homeBBTr');
+      if(items.length < 3){ box.hidden = true; return; }
+      items = items.slice(0, 24);
+      tr.innerHTML = items.join('') + items.join('');
+      tr.style.setProperty('--bbd', Math.max(25, items.length * 5) + 's');
+      box.hidden = false;
+    }catch(e){}
+  }
+  bb(); setInterval(bb, 25000);
+  var _sp = window.showPage;
+  if(_sp) window.showPage = function(id){ var r = _sp.apply(this, arguments); if(id === 'home') setTimeout(bb, 300); return r; };
+})();
+</script>
+<script>
+(function(){
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function n0(v){ return Number(v || 0).toLocaleString('en-US', { maximumFractionDigits: 2 }); }
+  window.achKindChange = function(){ var s = $('achKind').value === 'slot'; $('achGameW').style.display = s ? 'none' : ''; $('achSlotW').style.display = s ? '' : 'none'; achCostUpd(); };
+  function achCostUpd(){ var c = (Number($('achReward').value) || 0) * (Number($('achWinners').value) || 0); $('achCost').textContent = 'Most it can pay: ' + n0(c) + ' coins ($' + (c / 100).toFixed(2) + ')'; }
+  ['achReward','achWinners'].forEach(function(id){ document.addEventListener('input', function(e){ if(e.target && e.target.id === id) achCostUpd(); }); });
+  window.achLoad = async function(){
+    achCostUpd();
+    var d = await botFetch('/api/admin/challenges');
+    if(d.error){ $('achList').textContent = d.error; return; }
+    var P = d.pending || [];
+    $('achPending').innerHTML = P.length ? P.map(function(p){
+      return '<div class="bt-line" style="align-items:flex-start;gap:14px"><a href="' + p.proof + '" target="_blank" rel="noopener"><img src="' + p.proof + '" alt="screenshot" style="width:160px;border-radius:10px;display:block"></a>'
+        + '<div style="flex:1"><b>' + esc(p.username) + '</b> · ' + esc(p.slot_name) + ' · target ' + n0(p.target_mult) + '×' + (p.mult ? ' · says ' + n0(p.mult) + '×' : '') + '<br><span style="color:var(--faint);font-size:.8rem">' + new Date(p.created_at).toLocaleString() + (p.note ? ' · ' + esc(p.note) : '') + '</span>'
+        + '<div class="bt-row"><button class="bt-btn p" onclick="achReview(' + p.challenge_id + ',\'' + p.user_id + '\',true)">✓ Approve &amp; pay ' + n0(p.reward) + '</button><button class="bt-btn" onclick="achReview(' + p.challenge_id + ',\'' + p.user_id + '\',false)">✗ Reject</button></div></div></div>';
+    }).join('') : '<div class="bt-msg">Nothing to check.</div>';
+    var C = d.challenges || [];
+    $('achList').innerHTML = C.length ? '<table class="ag-tbl"><tr><th>Challenge</th><th>Reward</th><th>Winners</th><th>Ends</th><th></th></tr>' + C.map(function(c){
+      var live = c.status === 'active' && c.ends_at > Date.now();
+      return '<tr><td>' + esc(c.title) + '<br><small style="color:var(--faint)">' + (c.kind === 'slot' ? 'Slot · screenshot' : 'Jammmy Games · instant') + ' · by ' + esc(c.created_by || '') + '</small></td><td>' + n0(c.reward) + '</td><td>' + c.winners + ' / ' + c.max_winners + '</td><td>' + (live ? new Date(c.ends_at).toLocaleString() : '<span style="color:var(--faint)">Ended</span>') + '</td><td>' + (live ? '<button class="bt-btn" onclick="achEnd(' + c.id + ')">End now</button>' : '') + '</td></tr>';
+    }).join('') + '</table>' : '<div class="bt-msg">No challenges yet.</div>';
+  };
+  window.achCreate = async function(){
+    var b = { kind: $('achKind').value, game: $('achGame').value, slot_name: $('achSlot').value, target_mult: $('achX').value, min_bet: $('achMin').value, reward: $('achReward').value, max_winners: $('achWinners').value, hours: $('achHours').value, title: $('achTitle').value, announce: $('achAnn').checked };
+    if(!await jmConfirm('Start this challenge? ' + ($('achAnn').checked ? 'It gets announced on Discord right away.' : ''))) return;
+    var d = await botFetch('/api/admin/challenges', b);
+    if(d.error) return jmAlert(d.error);
+    jmAlert('Challenge started: ' + d.challenge.title); $('achTitle').value = ''; achLoad();
+  };
+  window.achEnd = async function(id){ if(!await jmConfirm('End this challenge now?')) return; await botFetch('/api/admin/challenges', { end: id }); achLoad(); };
+  window.achReview = async function(cid, uid, ok){
+    if(ok && !await jmConfirm('Approve this screenshot and pay the reward?')) return;
+    var d = await botFetch('/api/admin/challenges', { review: { challenge_id: cid, user_id: uid, approve: ok } });
+    if(d.error) jmAlert(d.error); achLoad();
+  };
+})();
+</script>
+<script>
+(function(){ try{
+  var h = location.hash ? decodeURIComponent(location.hash.slice(1)) : '';
+  if(!h || h === 'home' || h === 'admin') return;
+  var base = h.split('/')[0];
+  if(document.getElementById(base) && document.getElementById(base).classList.contains('page')){
+    if(window.history && history.replaceState) history.replaceState({ page: h }, '', '#' + h);
+    showPage(h);
+  }
+}catch(e){} })();
 </script>
 </body>
 </html>
