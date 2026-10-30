@@ -5113,7 +5113,7 @@ html.ice .lbx-tab-ind{background:linear-gradient(180deg,rgba(56,189,248,.28),rgb
 @media(max-width:640px){.lbx-tabs .lbt .lbt-jg{font-size:.9rem}.lbx-tabs .lbt .lbt-jg img{height:22px}}
 </style>
 <style>/* ================= FRUIT RANKS page ================= */
-.rk{padding:34px 0 40px}
+.rk-page{padding:34px 0 40px}
 .rk-head{text-align:center;max-width:680px;margin:0 auto 26px}
 .rk-h1{font:400 clamp(2.4rem,6vw,3.8rem)/1 'Lilita One',sans-serif;background:linear-gradient(100deg,#fda4af,#facc15 35%,#4ade80 65%,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 20px rgba(250,204,21,.18))}
 .rk-sub{color:var(--muted);margin-top:10px}
@@ -5177,7 +5177,7 @@ html.ice .lbx-tab-ind{background:linear-gradient(180deg,rgba(56,189,248,.28),rgb
 
 @media(max-width:1100px){.rk-ladder{grid-template-columns:repeat(4,minmax(0,1fr))}.rk-ladder::before{display:none}}
 @media(max-width:760px){
-  .rk{padding:18px 0 30px}
+  .rk-page{padding:18px 0 30px}
   .rk-top,.rk-lower{grid-template-columns:1fr}
   .rk-me{padding:16px;gap:14px}.rk-me-fruit{width:88px;height:88px;border-radius:22px}.rk-me-fruit svg{width:62px;height:62px}.rk-me-name{font-size:1.6rem}
   .rk-ladder{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
@@ -5918,7 +5918,7 @@ body.maint-lock{overflow:hidden}
 
   <!-- FRUIT RANKS -->
   <section class="page" id="ranks">
-    <div class="rk">
+    <div class="rk-page">
       <header class="rk-head">
         <h1 class="rk-h1">Fruit Ranks</h1>
         <p class="rk-sub">Every dollar you wager with us counts: partner casinos under code <b>JAMMMY</b> and Jammmy Games. Rank up for coins, a bigger daily claim and your fruit role on Discord.</p>
@@ -12622,28 +12622,66 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   var ICEP = document.documentElement.classList.contains('ice'); /* Ice theme: soft snow drifting down */
   if(ICEP && document.documentElement.classList.contains('ice-rm')) return;
   var COUNT = window.innerWidth < 640 ? (HWP ? 18 : 14) : (HWP ? 40 : 26);
+  /* Ice theme snow: three depths. Far flakes are tiny, dim and slow; near flakes are bigger,
+     soft-edged and faster; a few near ones are six-armed crystals that turn as they fall. A slow
+     wind gust leans the whole fall left and right. Every flake is a pre-drawn sprite, so each
+     frame is just drawImage calls. */
+  if(ICEP){
+    var LITE = document.documentElement.classList.contains('ice-lite');
+    COUNT = window.innerWidth < 640 ? 38 : (LITE ? 70 : 110);
+    var SNOW_SPR = (function(){
+      function soft(r, core){ var d = Math.ceil(r*4), c = document.createElement('canvas'); c.width = c.height = d; var x = c.getContext('2d');
+        var g = x.createRadialGradient(d/2,d/2,0,d/2,d/2,d/2); g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(core,'rgba(240,249,255,.85)'); g.addColorStop(1,'rgba(186,230,253,0)');
+        x.fillStyle = g; x.fillRect(0,0,d,d); return c; }
+      function crystal(r){ var d = Math.ceil(r*2.8), c = document.createElement('canvas'); c.width = c.height = d; var x = c.getContext('2d');
+        x.translate(d/2,d/2); x.strokeStyle = 'rgba(240,249,255,.95)'; x.lineCap = 'round'; x.shadowColor = 'rgba(125,211,252,.9)'; x.shadowBlur = r*.5;
+        for(var i = 0; i < 6; i++){ x.save(); x.rotate(i*Math.PI/3); x.lineWidth = Math.max(1, r*.11);
+          x.beginPath(); x.moveTo(0,0); x.lineTo(0,-r); x.stroke();
+          x.lineWidth = Math.max(.8, r*.07);
+          [[.45,.3],[.72,.22]].forEach(function(b){ var y = -r*b[0], l = r*b[1]; x.beginPath(); x.moveTo(-l*.8,y-l*.7); x.lineTo(0,y); x.lineTo(l*.8,y-l*.7); x.stroke(); });
+          x.restore(); }
+        return c; }
+      return { far: soft(1.4,.35), mid: soft(2.4,.3), near: soft(4,.18), cry: crystal(9) };
+    })();
+    var wind = 0, windT = Math.random()*100;
+    var snowPt = function(seed){
+      var z = Math.random(), layer = z < .5 ? 0 : z < .85 ? 1 : 2, cry = layer === 2 && Math.random() < .35;
+      var sz = layer === 0 ? .7+Math.random()*.5 : layer === 1 ? .8+Math.random()*.5 : .8+Math.random()*.6;
+      return { x: Math.random()*W, y: seed ? Math.random()*H : -20 - Math.random()*60, layer: layer, cry: cry, s: sz,
+        vy: [.35,.7,1.15][layer] * (.8+Math.random()*.4), drift: [.3,.55,.9][layer],
+        a: [.45,.7,.85][layer] * (.75+Math.random()*.25), sw: Math.random()*6.28, sws: .008+Math.random()*.014,
+        rot: Math.random()*6.28, vr: (Math.random()-.5)*.02, snow: 1 };
+    };
+    var drawSnow = function(p){
+      var t = performance.now() + windT*1000; wind = Math.sin(t/9000)*.6 + Math.sin(t/3700)*.25;
+      p.sw += p.sws; p.x += (wind + Math.sin(p.sw)*.45) * p.drift; p.y += p.vy;
+      if(p.y > H + 20 || p.x < -40 || p.x > W + 40){ Object.assign(p, snowPt()); if(p.x < 0) p.x += W; }
+      var spr = p.cry ? SNOW_SPR.cry : p.layer === 0 ? SNOW_SPR.far : p.layer === 1 ? SNOW_SPR.mid : SNOW_SPR.near, d = spr.width * p.s;
+      ctx.globalAlpha = p.a;
+      if(p.cry){ p.rot += p.vr; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.drawImage(spr, -d/2, -d/2, d, d); ctx.restore(); }
+      else ctx.drawImage(spr, p.x - d/2, p.y - d/2, d, d);
+      ctx.globalAlpha = 1;
+    };
+  }
   function resize(){ W = cv.width = window.innerWidth; H = cv.height = window.innerHeight; }
   resize();
   window.addEventListener('resize', resize);
   function mkPt(){
-    if(ICEP) return { x: Math.random()*W, y: -10 - Math.random()*H, vx: (Math.random()-.5)*.25, vy: .35+Math.random()*.55,
-      r: 1+Math.random()*2.2, a: .35+Math.random()*.45, life: Math.random(), sw: Math.random()*6.28, snow: 1,
-      col: Math.random() > .35 ? 'rgba(240,249,255,' : 'rgba(186,230,253,' };
+    if(ICEP) return snowPt();
     return { x: Math.random()*W, y: H + Math.random()*100,
       vx: (Math.random()-.5)*.3, vy: -.2-Math.random()*.4,
       r: .8+Math.random()*1.6, a: .25+Math.random()*.4, life: Math.random(),
       col: HWP ? ['rgba(255,140,40,','rgba(255,190,90,','rgba(255,110,30,','rgba(124,255,79,'][Math.floor(Math.random()*4)]
                : (Math.random() > .5 ? 'rgba(56,189,248,' : 'rgba(125,211,252,') };
   }
-  for(var i=0; i<COUNT; i++) pts.push(mkPt());
+  for(var i=0; i<COUNT; i++) pts.push(ICEP ? snowPt(true) : mkPt());
   var running = true;
   document.addEventListener('visibilitychange', function(){ running = !document.hidden; if(running) requestAnimationFrame(draw); });
   function draw(){
     if(!running) return;
     ctx.clearRect(0,0,W,H);
     pts.forEach(function(p){
-      if(p.snow){ p.sw += .012; p.x += p.vx + Math.sin(p.sw)*.35; p.y += p.vy; if(p.y > H + 10){ Object.assign(p, mkPt()); p.y = -10; }
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.28); ctx.fillStyle = p.col + p.a.toFixed(2) + ')'; ctx.fill(); return; }
+      if(p.snow){ drawSnow(p); return; }
       p.x += p.vx; p.y += p.vy; p.life += .003;
       if(p.life >= 1 || p.y < -20) Object.assign(p, mkPt());
       var a = p.a * Math.sin(p.life*Math.PI) * (HWP ? .7 + .3*Math.sin(p.life*60) : 1);
@@ -13671,10 +13709,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
 
   /* 2. snow caps on the Jammmy jar (nav brand, home jar, home vault mascot) */
   safe(function(){
-    var br = document.querySelector('nav .brand');
-    if(br && br.querySelector('img') && !br.querySelector('.ice-cap')) br.insertBefore(mk('div','ice-cap', ICE.cap), br.firstChild);
-    var jar = document.querySelector('.hx-jar');
-    if(jar && !jar.querySelector('.ice-cap')) jar.appendChild(mk('div','ice-cap', ICE.cap));
+    /* removed: the snow caps read as a cloud on the logo and the jar */
   });
   /* place each cap on the jar's lid, measured from the jar element (video = square frame, image = full box) */
   window.iceFitCaps = function(){
@@ -13698,7 +13733,6 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     var w = mk('span','ice-vjar');
     v.parentNode.insertBefore(w, v); w.appendChild(v);
     w.appendChild(mk('span','ice-block', ICE.block));
-    w.appendChild(mk('div','ice-cap', ICE.cap));
   });
 
   /* 4. icicles on card edges + a frost sweep on hover */
