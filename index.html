@@ -3519,6 +3519,8 @@ body::before{
 }
 
 /* ── AURORA LAYER ── */
+.bg-paused .aurora,.bg-paused .ambient-glow-blob,.bg-paused .ice-aur i{animation-play-state:paused!important}
+.bg-paused #skyParticles,.bg-paused #neonBg{visibility:hidden}
 .aurora{position:fixed;inset:0;z-index:-3;pointer-events:none;opacity:.9;
   background:
     radial-gradient(ellipse 130% 65% at 82% -18%,rgba(168,85,247,.45),transparent 58%),
@@ -9547,6 +9549,17 @@ async function amtSave(){
   var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting && e.intersectionRatio > .5) start(e.target); else stop(e.target); }); }, { threshold: [0, .5, .8] });
   vids.forEach(function(v){ io.observe(v); });
 })();
+
+/* Jammmy Games needs the whole device: pause the snow, stars and aurora behind the site while
+   the Games page is open, and start them again on every other page. */
+(function(){
+  function sync(){ var g = document.getElementById('games'); document.documentElement.classList.toggle('bg-paused', !!(g && g.classList.contains('show'))); }
+  var _sp = window.showPage;
+  if(typeof _sp === 'function') window.showPage = function(){ var r = _sp.apply(this, arguments); sync(); return r; };
+  var g = document.getElementById('games');
+  if(g && 'MutationObserver' in window) new MutationObserver(sync).observe(g, { attributes: true, attributeFilter: ['class'] });
+  sync();
+})();
 initAuth();
 loadVaultSettings(); /* covers the Home page's vault mini-stat/preview too, not just the dedicated Vault page */
 /* Was only ever fetched once on page load -- if an admin topped up the vault while someone
@@ -13060,6 +13073,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   document.addEventListener('visibilitychange', function(){ running = !document.hidden; if(running) requestAnimationFrame(draw); });
   function draw(){
     if(!running) return;
+    if(document.documentElement.classList.contains('bg-paused')){ ctx.clearRect(0,0,W,H); setTimeout(function(){ requestAnimationFrame(draw); }, 500); return; }   /* paused while on Jammmy Games */
     ctx.clearRect(0,0,W,H);
     pts.forEach(function(p){
       if(p.snow){ drawSnow(p); return; }
@@ -13274,6 +13288,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
        not rescheduling requestAnimationFrame breaks the loop with zero ongoing cost; the
        visibilitychange listener below kicks it back off once the tab is visible again. */
     if(document.hidden) return;
+    if(document.documentElement.classList.contains('bg-paused')){ ctx.clearRect(0,0,W,H); setTimeout(function(){ requestAnimationFrame(tick); }, 500); return; }   /* paused while on Jammmy Games */
     if(ts - lastTs < FRAME_GAP){ requestAnimationFrame(tick); return; }
     var dt=Math.min(ts-lastTs,80); lastTs=ts;
     ctx.clearRect(0,0,W,H);
@@ -14235,6 +14250,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   }
   window.gmOpen = function(k, fromHistory){
     if(!GAMES[k]) return;
+    document.documentElement.classList.add('bg-paused');
     CUR = k;
     $('gmLobby').hidden = true; $('gmPlay').hidden = false; $('games').classList.add('playing');
     var f = $('gmFrame'), src = 'games/' + k + '.html';
