@@ -14582,9 +14582,9 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     document.querySelectorAll('.gm-card[data-game]').forEach(function(c){
       var k = c.dataset.game, tag = c.querySelector('.gm-tag');
       var open = !ENABLED || ENABLED[k] || IS_ADMIN;
-      tag.textContent = !ENABLED ? 'Play' : ENABLED[k] ? 'Play' : IS_ADMIN ? 'Admin test' : 'Try the demo';
+      tag.textContent = !ENABLED ? 'Play' : ENABLED[k] ? 'Play' : IS_ADMIN ? 'Admin test' : 'Coming soon';
       tag.classList.toggle('off', !!ENABLED && !ENABLED[k]);
-      c.title = open ? 'Play ' + GAMES[k] : GAMES[k] + ' opens soon. You can try it with demo coins.';
+      c.title = open ? 'Play ' + GAMES[k] : GAMES[k] + ' opens soon.';
     });
   }
   async function loadState(){
