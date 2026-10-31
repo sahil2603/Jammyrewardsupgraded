@@ -61,6 +61,8 @@ button{font-family:inherit;color:inherit}
 .amt input::-webkit-outer-spin-button,.amt input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .amt input[type=number]{-moz-appearance:textfield}
 .amt .q{flex:none;height:34px;min-width:40px;padding:0 10px;border-radius:10px;border:0;background:rgba(255,255,255,.07);font:700 .8rem 'Poppins';cursor:pointer;transition:background .15s}
+.amt .q.qmax{color:#fde68a}
+.amt .q.qs{height:30px;min-width:34px;padding:0 8px;font-size:.74rem}
 .amt .q:hover{background:rgba(255,255,255,.14)}
 .sides{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .fld label em{font-style:normal;display:inline-flex;align-items:center;gap:5px}
@@ -143,7 +145,7 @@ button{font-family:inherit;color:inherit}
 .panel .foot button:hover{color:#fff}
 
 /* ── table ── */
-.table{position:relative;border-radius:26px;overflow:hidden;min-height:600px;background:radial-gradient(120% 90% at 50% 18%,var(--felt1) 0%,var(--felt2) 55%,var(--felt3) 100%);border:1px solid rgba(255,255,255,.07);box-shadow:inset 0 0 120px rgba(0,0,0,.55),0 30px 80px -30px rgba(0,0,0,.8);isolation:isolate}
+.table{position:relative;border-radius:26px;overflow:hidden;min-height:clamp(460px,calc(100vh - 250px),600px);background:radial-gradient(120% 90% at 50% 18%,var(--felt1) 0%,var(--felt2) 55%,var(--felt3) 100%);border:1px solid rgba(255,255,255,.07);box-shadow:inset 0 0 120px rgba(0,0,0,.55),0 30px 80px -30px rgba(0,0,0,.8);isolation:isolate}
 .table::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.7;pointer-events:none;z-index:0}
 .arc{position:absolute;left:0;right:0;top:0;width:100%;height:100%;pointer-events:none;z-index:1}
 .arc text{font:700 13px 'Poppins';letter-spacing:.32em;fill:rgba(233,213,255,.42)}
@@ -361,6 +363,10 @@ body{background:radial-gradient(1100px 600px at 70% -10%,rgba(56,189,248,.18),tr
 .t.open{background:#071528}
 .amt,.amt-in{border-color:rgba(125,211,252,.18)}
 
+.net-wait{position:relative;transform:scale(.97);filter:brightness(1.15);transition:transform .08s}
+.net-wait::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.28) 50%,transparent 70%);background-size:220% 100%;animation:netWait .6s linear infinite}
+@keyframes netWait{from{background-position:120% 0}to{background-position:-120% 0}}
+.fair-chk{margin-top:14px;font-size:.84rem;color:var(--muted,#9fb3d1)}.fair-chk a{color:#7dd3fc}
 </style>
 </head>
 <body>
@@ -384,11 +390,11 @@ body{background:radial-gradient(1100px 600px at 70% -10%,rgba(56,189,248,.18),tr
       </div>
       <div class="fld">
         <label for="bet"><span id="betLbl" style="color:inherit;font-weight:inherit">Bet amount</span> <span id="betUsd">≈ $0.10</span></label>
-        <div class="amt"><img src="../jammmy-coin.webp" alt=""><input id="bet" type="number" inputmode="numeric" min="10" step="1" value="10" aria-label="Bet amount in Jammmy Coins"><button class="q" type="button" data-q="half">½</button><button class="q" type="button" data-q="double">2×</button></div>
+        <div class="amt"><img src="../jammmy-coin.webp" alt=""><input id="bet" type="number" inputmode="numeric" min="10" step="1" value="10" aria-label="Bet amount in Jammmy Coins"><button class="q" type="button" data-q="half">½</button><button class="q" type="button" data-q="double">2×</button><button class="q qmax" type="button" data-q="max" title="Bet all your coins, up to the max bet">Max</button></div>
       </div>
       <div class="sides">
-        <div class="fld"><label for="pp"><em>Perfect Pairs<button type="button" class="sbi" data-sb="pp" aria-label="Perfect Pairs payouts" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8v.01"/></svg></button></em><span>25:1</span></label><div class="amt"><input id="pp" type="number" inputmode="numeric" min="0" step="1" value="0" aria-label="Perfect Pairs side bet"></div></div>
-        <div class="fld"><label for="t21"><em>21+3<button type="button" class="sbi" data-sb="t21" aria-label="21+3 payouts" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8v.01"/></svg></button></em><span>100:1</span></label><div class="amt"><input id="t21" type="number" inputmode="numeric" min="0" step="1" value="0" aria-label="21+3 side bet"></div></div>
+        <div class="fld"><label for="pp"><em>Perfect Pairs<button type="button" class="sbi" data-sb="pp" aria-label="Perfect Pairs payouts" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8v.01"/></svg></button></em><span>25:1</span></label><div class="amt"><input id="pp" type="number" inputmode="numeric" min="0" step="1" value="0" aria-label="Perfect Pairs side bet"><button class="q qs" type="button" data-sq="half" data-for="pp" aria-label="Halve Perfect Pairs">½</button><button class="q qs" type="button" data-sq="double" data-for="pp" aria-label="Double Perfect Pairs">2×</button></div></div>
+        <div class="fld"><label for="t21"><em>21+3<button type="button" class="sbi" data-sb="t21" aria-label="21+3 payouts" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8v.01"/></svg></button></em><span>100:1</span></label><div class="amt"><input id="t21" type="number" inputmode="numeric" min="0" step="1" value="0" aria-label="21+3 side bet"><button class="q qs" type="button" data-sq="half" data-for="t21" aria-label="Halve 21+3">½</button><button class="q qs" type="button" data-sq="double" data-for="t21" aria-label="Double 21+3">2×</button></div></div>
         <div class="sbpop" id="sbpop" role="region" aria-live="polite">
           <div class="sbp" data-sb="pp">
             <div class="h"><b>Perfect Pairs</b><button type="button" class="x" aria-label="Close">✕</button></div>
@@ -1338,7 +1344,19 @@ function refreshBetInfo() {
   store.set('jbj_bet', betEl.value); store.set('jbj_pp', ppEl.value); store.set('jbj_t21', t21El.value);
 }
 [betEl, ppEl, t21El].forEach(function (e) { e.addEventListener('input', refreshBetInfo); e.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); deal(); } }); });
-document.querySelectorAll('.q').forEach(function (b) { b.onclick = function () { var v = Math.floor(+betEl.value || 10); v = b.dataset.q === 'half' ? Math.max(10, Math.floor(v / 2)) : Math.min(SETTINGS.max_bet, Math.max(10, v * 2)); betEl.value = v; refreshBetInfo(); SND.chip(); }; });
+document.querySelectorAll('.q[data-q]').forEach(function (b) { b.onclick = function () {
+  var v = Math.floor(+betEl.value || 10);
+  if (b.dataset.q === 'max') {
+    /* everything you have, up to the max bet, after the side bets and hands you've picked */
+    var hands = typeof HANDS !== 'undefined' ? HANDS : 1, sides = (Math.floor(+$('pp').value || 0) + Math.floor(+$('t21').value || 0));
+    v = Math.max(10, Math.min(SETTINGS.max_bet, Math.floor(BAL / hands - sides)));
+  } else v = b.dataset.q === 'half' ? Math.max(10, Math.floor(v / 2)) : Math.min(SETTINGS.max_bet, Math.max(10, v * 2));
+  betEl.value = v; refreshBetInfo(); SND.chip(); }; });
+/* side bets: ½ and 2× (0 doubles to 1), capped at the side bet max */
+document.querySelectorAll('.q[data-sq]').forEach(function (b) { b.onclick = function () {
+  var el = $(b.dataset.for), v = Math.floor(+el.value || 0);
+  v = b.dataset.sq === 'half' ? Math.floor(v / 2) : Math.min(SETTINGS.max_side || 500, Math.max(1, v * 2));
+  el.value = v; el.dispatchEvent(new Event('input', { bubbles: true })); refreshBetInfo(); SND.chip(); }; });
 document.querySelectorAll('#handsSeg button').forEach(function (b) { b.onclick = function () { if (BUSY || inPlay(ROUND)) return; HANDS = +b.dataset.h; store.set('jbj_hands', HANDS); SND.chip(); refreshBetInfo(); }; });
 function applyLast() { if (!LAST) return false; betEl.value = LAST.bet; ppEl.value = LAST.pp; t21El.value = LAST.t21; HANDS = LAST.hands || 1; store.set('jbj_hands', HANDS); refreshBetInfo(); return true; }
 $('rebetBtn').onclick = function () { if (BUSY || inPlay(ROUND)) return; if (applyLast()) { SND.chip(); toast('Last bet restored'); } };
@@ -1416,7 +1434,15 @@ function setBalance(v, animate) {
   if (to > from) { $('bal').classList.remove('flash'); void $('bal').offsetWidth; $('bal').classList.add('flash'); }
 }
 
+/* instant feedback: whatever you just pressed shows it's working while the server answers */
+var _pressEl = null;
+document.addEventListener('pointerdown', function (e) { _pressEl = e.target && e.target.closest ? e.target.closest('button, .tile, #mgrid > *, [data-act]') : null; }, true);
 async function api(path, body) {
+  var _el = body ? _pressEl : null; _pressEl = null;
+  if (_el) _el.classList.add('net-wait');
+  try { return await apiNow(path, body); } finally { if (_el) _el.classList.remove('net-wait'); }
+}
+async function apiNow(path, body) {
   var res = await fetch(API + path, body ? { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : { headers: token ? { 'Authorization': 'Bearer ' + token } : {} });
   var d = {}; try { d = await res.json(); } catch (e) {}
   if (d && d.challenge) { var c = d.challenge; jgPost({ type: 'jg-challenge', challenge: c }); setTimeout(function () { toast('🏅 Challenge complete! ' + c.title + ' · +' + fmt(c.reward) + ' coins'); if (SND.bigwin) SND.bigwin(); }, 2600); }
@@ -1576,6 +1602,7 @@ function fillFairLive() {
     + '<button class="sbtn p wide" type="button" id="rotBtn" onclick="rotateSeeds()">Rotate seed pair</button>'
     + '<p class="fine">Rotating reveals the active server seed, makes the next one active and saves your client seed. It works for all four games at once.</p>'
     + '<h3>Check a bet</h3><div id="fCheck"><p>Open <b>My bets</b> below and tap a bet to check it.</p></div>';
+  box.insertAdjacentHTML('beforeend', '<p class="fair-chk">Want to check a bet yourself? Open the <a href="../verify.html" target="_blank" rel="noopener">seed checker</a>: paste a revealed server seed, your client seed and the bet number.</p>');
 }
 async function rotateSeeds() {
   var b = $('rotBtn'); if (b) { b.disabled = true; b.textContent = 'Rotating…'; }

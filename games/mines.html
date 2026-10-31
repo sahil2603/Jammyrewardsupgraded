@@ -61,6 +61,7 @@ button{font-family:inherit;color:inherit}
 .amt input::-webkit-outer-spin-button,.amt input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .amt input[type=number]{-moz-appearance:textfield}
 .amt .q{flex:none;height:34px;min-width:40px;padding:0 10px;border-radius:10px;border:0;background:rgba(255,255,255,.07);font:700 .8rem 'Poppins';cursor:pointer;transition:background .15s}
+.amt .q.qmax{color:#fde68a}
 .amt .q:hover{background:rgba(255,255,255,.14)}
 .tot{display:flex;justify-content:space-between;font-size:.82rem;color:var(--muted);padding:2px 2px 0}
 .tot b{color:#fff;font-variant-numeric:tabular-nums}
@@ -167,7 +168,7 @@ button{font-family:inherit;color:inherit}
 tr.chk{cursor:pointer}
 tr.chk:hover td{background:rgba(255,255,255,.03)}
 
-.stage{position:relative;border-radius:26px;overflow:hidden;min-height:600px;background:radial-gradient(120% 90% at 50% 12%,#2d1757 0%,#1a0d35 55%,#0e0720 100%);border:1px solid rgba(255,255,255,.07);box-shadow:inset 0 0 120px rgba(0,0,0,.55),0 30px 80px -30px rgba(0,0,0,.8);isolation:isolate}
+.stage{position:relative;border-radius:26px;overflow:hidden;min-height:clamp(420px,calc(100vh - 250px),600px);background:radial-gradient(120% 90% at 50% 12%,#2d1757 0%,#1a0d35 55%,#0e0720 100%);border:1px solid rgba(255,255,255,.07);box-shadow:inset 0 0 120px rgba(0,0,0,.55),0 30px 80px -30px rgba(0,0,0,.8);isolation:isolate}
 .stage::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.7;pointer-events:none;z-index:0}
 .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;padding:4px;border-radius:14px;background:#0b0615;border:1px solid var(--line2)}
 .seg button{height:38px;border:0;border-radius:10px;background:none;font:700 .86rem 'Poppins';color:var(--muted);cursor:pointer;transition:background .15s,color .15s}
@@ -262,7 +263,7 @@ tr.chk:hover td{background:rgba(255,255,255,.03)}
 @keyframes bump{40%{transform:scale(1.18)}}
 .nextp{font:700 .8rem 'Poppins';color:#a5f3fc;padding:5px 10px;border-radius:999px;background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.3)}
 .nextp:empty{display:none}
-.mgrid{position:relative;z-index:2;width:min(560px,100%);aspect-ratio:1;flex:none;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:clamp(6px,1.6%,12px);padding:clamp(8px,1.8%,14px);border-radius:22px;background:rgba(5,2,12,.35);box-shadow:inset 0 2px 12px rgba(0,0,0,.4)}
+.mgrid{position:relative;z-index:2;width:min(560px,100%,calc(100vh - 290px));min-width:min(300px,100%);aspect-ratio:1;flex:none;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:clamp(6px,1.6%,12px);padding:clamp(8px,1.8%,14px);border-radius:22px;background:rgba(5,2,12,.35);box-shadow:inset 0 2px 12px rgba(0,0,0,.4)}
 .t{position:relative;border:0;padding:0;border-radius:clamp(9px,14%,16px);cursor:default;background:linear-gradient(180deg,#4a2c86 0%,#33196a 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 -3px 0 rgba(0,0,0,.25),0 5px 0 #1d0e3d,0 8px 16px rgba(0,0,0,.35);transition:transform .14s var(--ease),filter .15s,box-shadow .15s,background .2s}
 .t::after{content:'';position:absolute;inset:18% 18% 50% 18%;border-radius:40%;background:radial-gradient(closest-side,rgba(255,255,255,.12),transparent);pointer-events:none}
 .mgrid.live .t:not(.open){cursor:pointer}
@@ -314,6 +315,10 @@ body{background:radial-gradient(1100px 600px at 70% -10%,rgba(56,189,248,.18),tr
 .t.open{background:#071528}
 .amt,.amt-in{border-color:rgba(125,211,252,.18)}
 
+.net-wait{position:relative;transform:scale(.97);filter:brightness(1.15);transition:transform .08s}
+.net-wait::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.28) 50%,transparent 70%);background-size:220% 100%;animation:netWait .6s linear infinite}
+@keyframes netWait{from{background-position:120% 0}to{background-position:-120% 0}}
+.fair-chk{margin-top:14px;font-size:.84rem;color:var(--muted,#9fb3d1)}.fair-chk a{color:#7dd3fc}
 </style>
 </head>
 <body>
@@ -333,7 +338,7 @@ body{background:radial-gradient(1100px 600px at 70% -10%,rgba(56,189,248,.18),tr
       <div class="seg" id="modeSeg" role="group" aria-label="Mode"><button type="button" data-m="manual" class="on">Manual</button><button type="button" data-m="auto">Auto</button></div>
       <div class="fld">
         <label for="bet">Bet amount <span>min 1</span></label>
-        <div class="amt"><img src="../jammmy-coin.webp" alt=""><input id="bet" type="number" inputmode="decimal" min="1" step="1" aria-label="Bet amount in coins"><button class="q" type="button" data-q="half" data-for="bet">½</button><button class="q" type="button" data-q="double" data-for="bet">2×</button></div>
+        <div class="amt"><img src="../jammmy-coin.webp" alt=""><input id="bet" type="number" inputmode="decimal" min="1" step="1" aria-label="Bet amount in coins"><button class="q" type="button" data-q="half" data-for="bet">½</button><button class="q" type="button" data-q="double" data-for="bet">2×</button><button class="q qmax" type="button" data-q="max" data-for="bet" title="Bet all your coins, up to the max bet">Max</button></div>
       </div>
       <div class="duo">
         <div class="fld"><label for="mines">Mines</label><div class="sel"><select id="mines" aria-label="Number of mines"></select></div></div>
@@ -748,7 +753,8 @@ function betBox(inputId, minBet) {
   document.querySelectorAll('.q[data-for="' + inputId + '"]').forEach(function (b) {
     b.onclick = function () {
       var v = Number(el.value) || minBet;
-      v = b.dataset.q === 'half' ? Math.max(minBet, Math.floor(v / 2 * 100) / 100) : Math.min(LIMITS.maxBet, Math.max(minBet, v * 2));
+      if (b.dataset.q === 'max') v = Math.max(minBet, Math.floor(Math.min(LIMITS.maxBet, BAL) * 100) / 100);   /* everything you have, up to the max bet */
+      else v = b.dataset.q === 'half' ? Math.max(minBet, Math.floor(v / 2 * 100) / 100) : Math.min(LIMITS.maxBet, Math.max(minBet, v * 2));
       el.value = v; store.set(key, el.value); SND.chip(); if (GAME.onBetChange) GAME.onBetChange();
     };
   });
@@ -800,7 +806,15 @@ function saveClientSeed() { var v = $('fClient').value.trim().slice(0, 64); if (
 
 /* ───────────── live mode: real Jammmy Coins, every result decided on the server ───────────── */
 var LIVE = false, API = 'https://jammy-lb-proxy.sahil-sah2603.workers.dev', TOKEN = store.get('jammy_session_token', null), LIVE_SEEDS = null, REVEALED = [], LIMITS_LIVE = null;
+/* instant feedback: whatever you just pressed shows it's working while the server answers */
+var _pressEl = null;
+document.addEventListener('pointerdown', function (e) { _pressEl = e.target && e.target.closest ? e.target.closest('button, .tile, #mgrid > *, [data-act]') : null; }, true);
 async function api(path, body) {
+  var _el = body ? _pressEl : null; _pressEl = null;
+  if (_el) _el.classList.add('net-wait');
+  try { return await apiNow(path, body); } finally { if (_el) _el.classList.remove('net-wait'); }
+}
+async function apiNow(path, body) {
   var res = await fetch(API + path, body ? { method: 'POST', headers: { 'Authorization': 'Bearer ' + TOKEN, 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : { headers: TOKEN ? { 'Authorization': 'Bearer ' + TOKEN } : {} });
   var d = {}; try { d = await res.json(); } catch (e) {}
   if (!res.ok) { var err = new Error(d.error || ('Something went wrong (' + res.status + ')')); err.data = d; err.status = res.status; throw err; }
@@ -836,6 +850,7 @@ function fillFairLive() {
     + (REVEALED.length ? '<h3>Revealed server seeds</h3>' + REVEALED.slice(0, 5).map(function (r) {
       return '<div class="seedrow"><label>' + new Date(r.rotated_at).toLocaleString() + ' · ' + r.nonces + ' bet' + (r.nonces === 1 ? '' : 's') + '</label><div class="v"><code>' + esc(r.server_seed) + '</code></div></div>';
     }).join('') : '');
+  box.insertAdjacentHTML('beforeend', '<p class="fair-chk">Want to check a bet yourself? Open the <a href="../verify.html" target="_blank" rel="noopener">seed checker</a>: paste a revealed server seed, your client seed and the bet number.</p>');
 }
 async function rotateSeeds() {
   var b = $('rotBtn'); if (b) { b.disabled = true; b.textContent = 'Rotating…'; }
