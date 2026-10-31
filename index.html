@@ -5443,6 +5443,40 @@ html.ice-lite .rk-me-fruit svg,html.ice-rm .rk-me-fruit svg{animation:none}
 .ag-tbl input{width:100%;min-width:70px;padding:7px 8px;border-radius:8px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.14);color:#fff;font:500 .85rem 'Poppins'}
 .ag-tbl td.f svg{width:28px;height:28px;display:block}
 .ag-tbl .x{background:none;border:0;color:#fb7185;cursor:pointer;font-size:1rem}
+/* ===== Admin → Jammmy Bot (v2): status at a glance, one section at a time ===== */
+.bx-hero{position:relative;overflow:hidden;border-radius:20px;padding:20px;margin-bottom:14px;background:radial-gradient(80% 140% at 0% 0%,rgba(139,92,246,.22),transparent 60%),radial-gradient(60% 120% at 100% 100%,rgba(83,252,24,.08),transparent 60%),rgba(255,255,255,.025);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.bx-hero-id{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.bx-ava{width:52px;height:52px;flex:none;border-radius:16px;display:grid;place-items:center;font-size:1.7rem;background:linear-gradient(135deg,rgba(139,92,246,.35),rgba(56,189,248,.25));box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.bx-hero h3{margin:0;font:700 1.25rem 'Poppins',sans-serif;color:#fff}
+.bx-hero p{margin:2px 0 0;font-size:.84rem;color:var(--adm-mu,#a19bb5)}
+.bx-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.bx-t{position:relative;padding:12px 14px;border-radius:14px;background:rgba(0,0,0,.25);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);min-width:0}
+.bx-t span{display:block;font-size:.74rem;color:var(--adm-fa,#77718a)}
+.bx-t b{display:flex;align-items:center;gap:7px;margin-top:3px;font-size:.95rem;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bx-t b::before{content:'';width:9px;height:9px;flex:none;border-radius:50%;background:var(--dot,#77718a);box-shadow:0 0 10px var(--dot,transparent)}
+.bx-t.ok{--dot:#4ade80}.bx-t.bad{--dot:#f87171}.bx-t.live{--dot:#ef4444}.bx-t.live b{color:#fca5a5}
+.bx-t#bxtBud b::before{display:none}
+.bx-mini{display:block;height:5px;margin-top:8px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden}
+.bx-mini em{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#4ade80,#facc15,#f87171);background-size:300% 100%;transition:width 1s}
+.bx-tabs{display:flex;gap:6px;margin:0 0 14px;padding:5px;border-radius:14px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);overflow-x:auto;scrollbar-width:none}
+.bx-tabs::-webkit-scrollbar{display:none}
+.bx-tabs button{flex:none;border:0;border-radius:10px;padding:9px 14px;font:600 .84rem 'Poppins',sans-serif;color:var(--adm-mu,#a19bb5);background:transparent;cursor:pointer;white-space:nowrap}
+.bx-tabs button:hover{color:#fff;background:rgba(255,255,255,.05)}
+.bx-tabs button.on{color:#fff;background:rgba(139,92,246,.2);box-shadow:inset 0 0 0 1px rgba(139,92,246,.4)}
+.bx-tabs button:focus-visible{outline:2px solid #a78bfa;outline-offset:2px}
+.bx-sec[hidden]{display:none!important}
+.bx-sec{animation:gdIn .3s ease}
+.bx .bt-acts{margin-bottom:0}
+.bx .bt-card{border-radius:18px}
+.bx .bt-card h4{display:flex;align-items:center;gap:8px;font-size:1rem;margin:0 0 12px}
+.bx .bt-btn{padding:10px 14px;border-radius:12px;font-size:.84rem}
+.bx .bt-btn.p{background:linear-gradient(135deg,#8b5cf6,#6d28d9);border-color:transparent}
+.bx .bt-row{gap:8px;flex-wrap:wrap}
+.bx .bt-line{padding:10px 0}
+.bx-two{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.bx-pay{display:grid;grid-template-columns:minmax(260px,340px) minmax(0,1fr);gap:14px;align-items:start}
+.bx textarea#btAnnText{min-height:110px}
+@media (max-width:900px){.bx-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.bx-t b{white-space:normal;font-size:.86rem;align-items:flex-start}.bx-t b::before{margin-top:5px}.bx-two,.bx-pay,.bx .bt-acts{grid-template-columns:1fr!important}}
 .bt-guide{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 18px;margin-top:6px}
 .bt-guide div{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:.84rem}
 .bt-guide i{font-style:normal;font-size:1.1rem;line-height:1.3}
@@ -7218,13 +7252,24 @@ body.maint-lock{overflow:hidden}
           <div class="bt-card"><h4>📋 Challenges</h4><div id="achList">Loading&hellip;</div></div>
         </div>
         <!-- JAMMMY BOT TAB -->
-        <div id="adminBotTab" class="admin-tab-panel" style="display:none">
-          <div class="bt-card" style="margin-bottom:16px"><h4>📖 What Jammmy Bot does</h4><div class="bt-guide" id="btGuide">Loading&hellip;</div></div>
-          <div class="bt-grid">
-            <div class="bt-card"><h4><span class="kl-k">K</span> Kick</h4><div id="btKick">Loading&hellip;</div></div>
-            <div class="bt-card"><h4>💬 Discord</h4><div id="btDiscord">Loading&hellip;</div></div>
-            <div class="bt-card"><h4>🪙 This week's budget</h4><div id="btBudget">Loading&hellip;</div></div>
+        <div id="adminBotTab" class="admin-tab-panel bx" style="display:none">
+          <div class="bx-hero">
+            <div class="bx-hero-id"><span class="bx-ava" aria-hidden="true">🤖</span><div><h3>Jammmy Bot</h3><p>Pays coins for watching, chatting and drops on Kick and Discord, inside a weekly budget.</p></div></div>
+            <div class="bx-tiles" id="bxTiles">
+              <div class="bx-t" id="bxtKick"><span>Kick bot</span><b>…</b></div>
+              <div class="bx-t" id="bxtDc"><span>Discord bot</span><b>…</b></div>
+              <div class="bx-t" id="bxtLive"><span>Jammy's stream</span><b>…</b></div>
+              <div class="bx-t" id="bxtBud"><span>Budget this week</span><b>…</b><i class="bx-mini"><em id="bxBudBar"></em></i></div>
+            </div>
           </div>
+          <nav class="bx-tabs" role="tablist" aria-label="Bot sections">
+            <button type="button" role="tab" data-bx="live" class="on">🎮 Live</button>
+            <button type="button" role="tab" data-bx="status">🔌 Connections</button>
+            <button type="button" role="tab" data-bx="pay">🪙 Budget &amp; payouts</button>
+            <button type="button" role="tab" data-bx="set">⚙️ Settings</button>
+            <button type="button" role="tab" data-bx="guide">📖 What it does</button>
+          </nav>
+          <section class="bx-sec" data-bx="live">
           <div class="bt-acts">
             <div class="bt-card">
               <h4>🎮 Live controls <span id="btLive" class="bt-live"><i></i>Offline</span></h4>
@@ -7243,15 +7288,32 @@ body.maint-lock{overflow:hidden}
               <div style="margin-top:12px;font-size:.8rem;color:var(--faint)">Players type <b style="color:#fff">!commands</b> in Kick chat to see everything the bot can do. Mods can also use <b style="color:#fff">!drop</b> and <b style="color:#fff">!hunt open/close/result</b>.</div>
             </div>
           </div>
+          </section>
+          <section class="bx-sec" data-bx="status" hidden>
+            <div class="bt-grid bx-two">
+            <div class="bt-card"><h4><span class="kl-k">K</span> Kick</h4><div id="btKick">Loading&hellip;</div></div>
+            <div class="bt-card"><h4>💬 Discord</h4><div id="btDiscord">Loading&hellip;</div></div>
+            </div>
+          </section>
+          <section class="bx-sec" data-bx="pay" hidden>
+            <div class="bx-pay">
+            <div class="bt-card"><h4>🪙 This week's budget</h4><div id="btBudget">Loading&hellip;</div></div>
+          <div class="bt-card">
+            <h4>🧾 Recent bot payouts</h4>
+            <div id="btLedger" style="overflow-x:auto">Loading&hellip;</div>
+          </div>
+            </div>
+          </section>
+          <section class="bx-sec" data-bx="set" hidden>
           <div class="bt-sets">
             <div class="bt-savebar"><h4 style="margin:0">⚙️ Bot settings</h4><div style="display:flex;gap:10px;align-items:center"><span id="btSaveMsg" class="bt-msg" style="margin:0"></span><button class="bt-btn p" id="btSaveBtn" onclick="saveBotSettings()" disabled>Save settings</button></div></div>
             <div id="btSettings">Loading&hellip;</div>
             <div style="display:flex;justify-content:flex-end;padding-top:14px"><button class="bt-btn p" onclick="saveBotSettings()" style="padding:11px 20px">💾 Save settings</button></div>
           </div>
-          <div class="bt-card" style="margin-bottom:16px">
-            <h4>🧾 Recent bot payouts</h4>
-            <div id="btLedger" style="overflow-x:auto">Loading&hellip;</div>
-          </div>
+          </section>
+          <section class="bx-sec" data-bx="guide" hidden>
+          <div class="bt-card" style="margin-bottom:16px"><h4>📖 What Jammmy Bot does</h4><div class="bt-guide" id="btGuide">Loading&hellip;</div></div>
+          </section>
         </div>
         <!-- VAULT TAB -->
         <!-- MAINTENANCE TAB -->
@@ -9813,6 +9875,31 @@ window.jrMountains = function(host){
   setInterval(kick, 1000);   /* resumes after the Games page un-pauses the background */
 };
 
+
+/* Admin → Jammmy Bot: section tabs and the status tiles at the top */
+(function(){
+  function show(id){
+    document.querySelectorAll('#adminBotTab .bx-tabs button').forEach(function(b){ var on = b.dataset.bx === id; b.classList.toggle('on', on); b.setAttribute('aria-selected', on ? 'true' : 'false'); });
+    document.querySelectorAll('#adminBotTab .bx-sec').forEach(function(sec){ sec.hidden = sec.dataset.bx !== id; });
+  }
+  document.querySelectorAll('#adminBotTab .bx-tabs button').forEach(function(b){ b.addEventListener('click', function(){ show(b.dataset.bx); }); });
+  function tile(id, cls, text){ var t = document.getElementById(id); if(!t) return; t.className = 'bx-t' + (cls ? ' ' + cls : ''); t.querySelector('b').textContent = text; }
+  var _lb = window.loadBotAdmin;
+  if(typeof _lb === 'function') window.loadBotAdmin = loadBotAdmin = async function(){
+    var r = await _lb.apply(this, arguments);
+    var st = window._botState || (typeof _botState !== 'undefined' ? _botState : null);
+    if(st){
+      var K = st.kick || {}, D = st.discord || {}, seen = D.last_seen, online = seen && Date.now() - seen.at < 5 * 60000;
+      tile('bxtKick', K.bot && K.channel ? 'ok' : 'bad', K.bot && K.channel ? 'Connected' : (K.bot ? 'Channel not connected' : 'Not connected'));
+      tile('bxtDc', online ? 'ok' : 'bad', online ? 'Online' : (seen ? 'Offline' : 'Never connected'));
+      var live = st.stream && st.stream.live; tile('bxtLive', live ? 'live' : '', live ? 'LIVE now' : 'Offline');
+      var B = st.budget || {}, pct = B.budget > 0 ? Math.min(100, B.used / B.budget * 100) : 0;
+      tile('bxtBud', '', Number(B.used || 0).toLocaleString() + ' / ' + Number(B.budget || 0).toLocaleString());
+      var bar = document.getElementById('bxBudBar'); if(bar){ bar.style.width = pct.toFixed(1) + '%'; bar.style.backgroundPosition = pct.toFixed(0) + '% 0'; }
+    }
+    return r;
+  };
+})();
 initAuth();
 loadVaultSettings(); /* covers the Home page's vault mini-stat/preview too, not just the dedicated Vault page */
 /* Was only ever fetched once on page load -- if an admin topped up the vault while someone
@@ -14883,7 +14970,7 @@ window.fruitSvg = function(key){
   /* ── Ranks ── */
   var RK = null, RKC = {};
   function arkRender(){
-    $('arkOn').checked = !!RK.enabled;
+    $('arkOn').checked = !!(RK.enabled && RK.start_at);   /* ticked only once counting has really started */
     $('arkTbl').innerHTML = '<tr><th></th><th>Name</th><th>Key</th><th>Total wager ($)</th><th>Reward (coins, once)</th><th>Daily claim</th><th>Discord role ID</th><th>Players</th><th></th></tr>'
       + RK.tiers.map(function(t, i){
         return '<tr data-i="' + i + '"><td class="f">' + (window.fruitSvg ? fruitSvg(t.key) : '') + '</td><td><input data-k="name" value="' + esc(t.name) + '"></td><td><input data-k="key" value="' + esc(t.key) + '"></td>'
