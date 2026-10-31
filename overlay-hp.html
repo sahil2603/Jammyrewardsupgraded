@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jammmy health bars (OBS)</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+<!--
+  OBS browser source for the two health bars at the top of Jammy's overlay.
+  Add it ABOVE the overlay image, 1920 x 1080. The admin moves the bars in Admin → Slot Showdown.
+  ?test=1   plays a demo fight so you can line it up without the admin panel
+  ?labels=0 hides the names and numbers inside the bars
+-->
+<style>
+html,body{margin:0;background:transparent;overflow:hidden}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;font-family:'Lilita One',system-ui,sans-serif}
+.bar{position:absolute;overflow:hidden}
+/* the inside of each bar in the overlay art, measured on the 1920 x 1080 overlay */
+#A{left:233px;top:261px;width:483px;height:35px;clip-path:polygon(0 17px,12px 0,472px 0,483px 17px,472px 35px,12px 35px)}
+#B{left:926px;top:262px;width:363px;height:34px;clip-path:polygon(0 17px,16px 0,355px 0,363px 17px,355px 34px,16px 34px)}
+.well{position:absolute;inset:0;background:linear-gradient(180deg,#050407,#121016 55%,#050407)}
+.ghost,.fill{position:absolute;top:0;bottom:0;width:100%}
+#A .ghost,#A .fill{left:0;transform-origin:0 50%}
+#B .ghost,#B .fill{right:0;transform-origin:100% 50%}
+.ghost{background:linear-gradient(180deg,#fff7d6,#ffb4a2);transition:transform .6s cubic-bezier(.4,0,.2,1) .45s}
+.fill{transition:transform .32s cubic-bezier(.2,.8,.2,1),filter .3s}
+#A .fill{background:linear-gradient(180deg,#d4ff8a 0,#9dff3a 18%,#6cf51a 52%,#46b80c 100%)}
+#B .fill{background:linear-gradient(180deg,#e2b8ff 0,#b45cff 18%,#9b30ff 52%,#6216c4 100%)}
+.fill::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 22px,rgba(255,255,255,.08) 22px 26px);mix-blend-mode:screen}
+.fill::before{content:"";position:absolute;left:0;right:0;top:3px;height:3px;background:rgba(255,255,255,.55);filter:blur(.5px)}
+.low .fill{animation:low .7s ease-in-out infinite alternate}
+@keyframes low{to{filter:saturate(1.6) brightness(1.25) hue-rotate(-60deg)}}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.hit .flash{animation:flash .35s ease-out}
+@keyframes flash{0%{opacity:.85}100%{opacity:0}}
+.heal .fill{animation:heal .7s ease-out}
+@keyframes heal{0%{filter:brightness(2.2)}100%{filter:brightness(1)}}
+.shake{animation:shake .35s linear}
+@keyframes shake{20%{transform:translate(-3px,1px)}40%{transform:translate(3px,-1px)}60%{transform:translate(-2px,0)}80%{transform:translate(2px,1px)}}
+.lab{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:21px;line-height:1;color:#fff;letter-spacing:.02em;
+  text-shadow:0 2px 0 #000,0 0 3px #000,1px 0 0 #000,-1px 0 0 #000;white-space:nowrap}
+#B .lab{flex-direction:row-reverse}
+.lab .who{overflow:hidden;text-overflow:ellipsis;max-width:72%}
+.lab .n{font-size:23px}
+.off .lab{opacity:0}
+.lab{transition:opacity .3s}
+/* K.O. */
+#ko{position:absolute;left:0;right:0;top:370px;text-align:center;pointer-events:none;opacity:0}
+#ko b{display:block;font-size:210px;line-height:.9;color:#fff2a8;-webkit-text-stroke:6px #2a0a00;paint-order:stroke fill;
+  text-shadow:0 10px 0 #b8360a,0 18px 30px rgba(0,0,0,.7);letter-spacing:.04em;transform:rotate(-4deg)}
+#ko span{display:inline-block;margin-top:14px;font-size:54px;color:#fff;padding:6px 26px;border-radius:14px;background:rgba(10,4,20,.82);-webkit-text-stroke:0;text-shadow:0 3px 0 #000}
+#ko.on{animation:ko 4.2s cubic-bezier(.2,.9,.2,1) forwards}
+@keyframes ko{0%{opacity:0;transform:scale(2.6)}9%{opacity:1;transform:scale(.92)}14%{transform:scale(1.04)}18%{transform:scale(1)}86%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.08)}}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bar off" id="A"><div class="well"></div><div class="ghost"></div><div class="fill"></div><div class="flash"></div><div class="lab"><span class="who"></span><span class="n"></span></div></div>
+  <div class="bar off" id="B"><div class="well"></div><div class="ghost"></div><div class="fill"></div><div class="flash"></div><div class="lab"><span class="who"></span><span class="n"></span></div></div>
+  <div id="ko"><b>K.O.!</b><span></span></div>
+</div>
+<script>
+(function(){
+  var Q = new URLSearchParams(location.search);
+  var API = (Q.get('api') || 'https://jammy-lb-proxy.sahil-sah2603.workers.dev') + '/api/overlay/hp';
+  var LABELS = Q.get('labels') !== '0';
+  var stage = document.getElementById('stage');
+  function fit(){ var s = Math.min(innerWidth / 1920, innerHeight / 1080) || 1; stage.style.transform = 'scale(' + s + ')'; }
+  addEventListener('resize', fit); fit();
+
+  var last = { a: null, b: null }, lastRev = -1, koShown = '';
+  function paint(k, side, show){
+    var el = document.getElementById(k === 'a' ? 'A' : 'B');
+    var hp = show ? Math.max(0, Math.min(100, Number(side.hp))) : 100;
+    if(!isFinite(hp)) hp = 100;
+    var prev = last[k];
+    var g = el.querySelector('.ghost');
+    if(prev === null || hp >= prev){ g.style.transition = 'none'; g.style.transform = 'scaleX(' + (hp / 100) + ')'; void g.offsetWidth; g.style.transition = ''; }
+    else g.style.transform = 'scaleX(' + (hp / 100) + ')';
+    el.querySelector('.fill').style.transform = 'scaleX(' + (hp / 100) + ')';
+    el.classList.toggle('off', !show || !LABELS);
+    el.classList.toggle('low', show && hp > 0 && hp <= 25);
+    el.querySelector('.who').textContent = side.user || '';
+    el.querySelector('.n').textContent = Math.round(hp);
+    if(prev !== null && hp !== prev){
+      var cls = hp < prev ? 'hit' : 'heal';
+      el.classList.remove('hit', 'heal', 'shake'); void el.offsetWidth; el.classList.add(cls);
+      if(cls === 'hit' && prev - hp >= 10) el.classList.add('shake');
+      clearTimeout(el._t); el._t = setTimeout(function(){ el.classList.remove('hit', 'heal', 'shake'); }, 800);
+    }
+    last[k] = hp;
+  }
+  function ko(s){
+    var dead = s.show ? (s.a.hp <= 0 ? 'a' : s.b.hp <= 0 ? 'b' : '') : '';
+    var key = dead ? dead + '|' + s.a.user + '|' + s.b.user : '';
+    if(key && key !== koShown){
+      var win = s[dead === 'a' ? 'b' : 'a'];
+      var box = document.getElementById('ko');
+      box.querySelector('span').textContent = win.user ? win.user + ' wins!' : 'Winner!';
+      box.querySelector('span').style.display = win.user ? '' : 'none';
+      box.classList.remove('on'); void box.offsetWidth; box.classList.add('on');
+    }
+    koShown = key;
+  }
+  function apply(s){
+    if(!s || !s.a || !s.b) return;
+    paint('a', s.a, !!s.show); paint('b', s.b, !!s.show); ko(s);
+  }
+
+  if(Q.get('test') === '1'){
+    var T = { show: true, a: { hp: 100, user: 'sahil2603.' }, b: { hp: 100, user: 'jammmyslots' } }, step = 0;
+    var script = [['b', -12], ['a', -8], ['b', -25], ['a', +10], ['a', -30], ['b', -20], ['a', -15], ['b', -43], ['reset']];
+    apply(T);
+    setInterval(function(){
+      var m = script[step++ % script.length];
+      if(m[0] === 'reset'){ T.a.hp = 100; T.b.hp = 100; }
+      else T[m[0]].hp = Math.max(0, Math.min(100, T[m[0]].hp + m[1]));
+      apply(T);
+    }, 1400);
+    return;
+  }
+
+  var busy = false;
+  async function poll(){
+    if(busy) return; busy = true;
+    try{
+      var r = await fetch(API, { cache: 'no-store' });
+      if(r.ok){ var s = await r.json(); if(s.rev !== lastRev){ lastRev = s.rev; apply(s); } }
+    }catch(e){}
+    busy = false;
+  }
+  apply({ show: false, a: { hp: 100 }, b: { hp: 100 } });
+  poll(); setInterval(poll, 1000);
+})();
+</script>
+</body>
+</html>
