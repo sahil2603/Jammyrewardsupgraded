@@ -9180,7 +9180,7 @@ async function refreshClaimStatus(){
     btns = document.querySelectorAll('.claim-daily-btn'); /* re-query: DOM may have changed while this was in flight */
     btns.forEach(function(btn){
       if(data.can_claim){
-        btn.textContent = data.lottery ? '🎃 Daily pumpkin lottery (' + data.min + '–' + data.max + ' coins)' : '🎁 Claim Daily (+5)';
+        btn.textContent = '🎁 Claim Daily (+' + (Number(data.amount) > 0 ? Number(data.amount).toLocaleString('en-US') : 5) + ')';
         btn.disabled = false;
       } else {
         btn.textContent = '🕒 Next claim in ' + formatCountdown(data.remaining_ms);
