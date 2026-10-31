@@ -1687,6 +1687,21 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .lbx-pod.empty .lbx-av span{filter:grayscale(.6);opacity:.6}
 
 /* board */
+.lbx-how{max-width:760px;margin:14px auto 0;border-radius:18px;background:rgba(10,16,34,.7);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);text-align:left}
+.lbx-how summary{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;list-style:none;font-weight:600;font-size:.9rem;color:#e0f2fe}
+.lbx-how summary::-webkit-details-marker{display:none}
+.lbx-how summary svg{margin-left:auto;transition:transform .25s}
+.lbx-how[open] summary svg{transform:rotate(180deg)}
+.lbx-how-ic{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:800 .78rem 'Poppins';color:#0b1630;background:#7dd3fc}
+.lbx-how-b{padding:0 18px 18px;color:var(--muted);font-size:.88rem;line-height:1.6}
+.lbx-how-b[hidden]{display:none}
+.lbx-how-b b{color:#fff}
+.lbx-formula{margin:10px 0 14px;padding:12px 14px;border-radius:12px;background:rgba(125,211,252,.08);font:700 1rem 'Poppins';color:#e0f2fe;text-align:center}
+.lbx-formula small{display:block;margin-top:3px;font-weight:500;font-size:.76rem;color:var(--faint)}
+.lbx-how-t{display:grid;gap:6px;margin:10px 0}
+.lbx-how-t>div{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:9px 12px;border-radius:10px;background:rgba(255,255,255,.04)}
+.lbx-how-t em{font-style:normal;color:var(--faint);margin-left:6px;font-size:.8rem}
+.lbx-how-s{font-size:.8rem;color:var(--faint);margin:6px 0 0}
 .lbx-board{display:block!important;max-height:none!important;overflow:visible!important;margin:34px auto 0;border-radius:22px;background:linear-gradient(180deg,rgba(24,16,42,.85),rgba(12,8,22,.92));border:1px solid rgba(255,255,255,.08);box-shadow:0 30px 60px -30px rgba(0,0,0,.8);padding:8px 8px 12px;animation:lbxUp .7s .15s cubic-bezier(.16,1,.3,1) both}
 .lbx-board-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 14px 12px}
 .lbx-board-top h3{margin:0;font:400 1.4rem 'Lilita One',sans-serif}
@@ -2220,6 +2235,15 @@ html.lenis{scroll-behavior:auto!important}
   .hx-hero .hx-cta .hx-btn:not(.hx-btn-p){flex:1 1 40%;padding:0 12px;font-size:.86rem}
 }
 .hx-fc-cd{white-space:nowrap}
+.adm-quick{margin:-8px 0 26px}
+.adm-qrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.adm-qp{display:flex;align-items:center;gap:10px;padding:14px 16px;border-radius:16px;border:0;cursor:pointer;text-align:left;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line);color:var(--text);font:inherit;transition:transform .15s,box-shadow .15s}
+.adm-qp:hover{transform:translateY(-2px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2)}
+.adm-qp i{width:10px;height:10px;border-radius:50%;flex:none;background:#4ade80;box-shadow:0 0 10px #4ade80}
+.adm-qp.warn i{background:#f59e0b;box-shadow:0 0 10px #f59e0b}
+.adm-qp span{font-size:.82rem;color:var(--muted)}
+.adm-qp b{margin-left:auto;font-size:.86rem}
+.adm-qp.warn b{color:#fbbf24}
 .lc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .lc-grid label{display:flex;flex-direction:column;gap:6px;font-size:.8rem;color:var(--faint);min-width:0}
 .lc-grid input[type=text]{padding:11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff;font:500 .9rem 'Poppins';min-width:0}
@@ -2984,6 +3008,8 @@ html.lenis{scroll-behavior:auto!important}
 .pfx-tabs a:hover{color:#fff}
 .pfx-tabs a.on{color:#160b2e;background:linear-gradient(135deg,#e9d5ff,#a5f3fc)}
 .pfx-tabs a:focus-visible{outline:2px solid #a5f3fc;outline-offset:2px}
+#profileContent [hidden]{display:none!important}
+#profileContent .pfx-on{animation:gdIn .35s ease}
 .pf-card.pfx-c{position:relative;scroll-margin-top:150px;border:0;border-radius:22px;background:linear-gradient(160deg,rgba(var(--ac),.09),rgba(255,255,255,.015) 45%),var(--panel);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
 .pf-card.pfx-c::before{content:'';position:absolute;left:24px;right:24px;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(var(--ac),.9),transparent)}
 .pf-card.pfx-c .pf-h{font:400 1.25rem 'Lilita One',sans-serif;letter-spacing:.01em}
@@ -5511,6 +5537,10 @@ html.ice-lite .rk-me-fruit svg,html.ice-rm .rk-me-fruit svg{animation:none}
 .gd-toc{position:sticky;top:90px;display:flex;flex-direction:column;gap:4px;padding:10px;border-radius:18px;background:rgba(10,24,44,.7);border:1px solid rgba(125,211,252,.14)}
 .gd-toc a{padding:9px 12px;border-radius:11px;color:var(--muted);text-decoration:none;font-weight:600;font-size:.9rem;transition:background .2s,color .2s}
 .gd-toc a:hover,.gd-toc a.on{background:rgba(56,189,248,.14);color:#fff}
+.gd-toc a.on{box-shadow:inset 3px 0 0 #7dd3fc}
+.gd-sec[hidden]{display:none!important}
+.gd-sec:not([hidden]){animation:gdIn .35s ease}
+@keyframes gdIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .gd-main{min-width:0;display:grid;gap:22px}
 .gd-sec{padding:24px;border-radius:24px;background:linear-gradient(170deg,rgba(16,36,61,.85),rgba(12,12,32,.92));border:1px solid rgba(255,255,255,.07);scroll-margin-top:90px}
 .gd-sec h2{font:400 1.8rem 'Lilita One',sans-serif;margin:0 0 12px}
@@ -5585,6 +5615,14 @@ html.ice-lite .rk-me-fruit svg,html.ice-rm .rk-me-fruit svg{animation:none}
 .gm-chw{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .gm-chw span{font-size:.8rem;padding:6px 12px;border-radius:999px;background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.25);color:#fde68a}
 .gm-chw span b{color:#fff}
+.gm-off{max-width:560px;margin:40px auto;padding:40px 28px;text-align:center;border-radius:26px;background:linear-gradient(160deg,rgba(56,189,248,.12),rgba(168,85,247,.08)),rgba(10,16,34,.8);box-shadow:inset 0 0 0 1px rgba(125,211,252,.2)}
+.gm-off[hidden],.gm-offbar[hidden]{display:none}
+.gm-off-art{font-size:3rem;margin-bottom:10px;animation:rxBob 3.4s ease-in-out infinite}
+.gm-off h2{font:400 1.8rem 'Lilita One',sans-serif;margin:0 0 10px;color:#fff}
+.gm-off p{color:var(--muted);line-height:1.6;margin:0 0 22px}
+.gm-off-btn{border:0;border-radius:14px;padding:12px 22px;font:700 .92rem 'Poppins',sans-serif;color:#0b1630;background:linear-gradient(135deg,#7dd3fc,#c4b5fd);cursor:pointer}
+.gm-offbar{margin:0 0 16px;padding:10px 16px;border-radius:14px;font-weight:600;font-size:.88rem;color:#1a1204;background:#f59e0b}
+body.games-off #gmLobby,body.games-off #gmPlay{display:none!important}
 /* Live wins: a strip of win cards at the top of the Games lobby */
 .bb{position:relative;display:flex;align-items:stretch;margin:0 0 22px;border-radius:20px;padding:6px;background:linear-gradient(135deg,rgba(14,40,70,.85),rgba(20,14,44,.88));box-shadow:inset 0 0 0 1px rgba(125,211,252,.16),0 18px 40px -24px rgba(56,189,248,.5);overflow:hidden}
 .bb-l{flex:none;display:flex;align-items:center;gap:11px;padding:0 18px 0 14px;margin-right:4px;border-radius:15px;background:linear-gradient(135deg,rgba(74,222,128,.16),rgba(74,222,128,.04));box-shadow:inset 0 0 0 1px rgba(74,222,128,.22);z-index:1;white-space:nowrap}
@@ -6090,6 +6128,13 @@ body.maint-lock{overflow:hidden}
         </div>
       </header>
 
+      <div class="gm-off" id="gmOff" hidden>
+        <div class="gm-off-art" aria-hidden="true">🛠️</div>
+        <h2>Jammmy Games are getting an upgrade</h2>
+        <p id="gmOffMsg"></p>
+        <button type="button" class="gm-off-btn" onclick="nav('leaderboards')">See the leaderboards</button>
+      </div>
+      <div class="gm-offbar" id="gmOffBar" hidden>🚧 The Games page is off for players. Only admins can play right now.</div>
       <div class="gm-lobby" id="gmLobby">
         <div class="bb" id="homeBB" hidden aria-label="Live wins">
           <div class="bb-l"><span class="bb-dot"></span><span class="bb-lt"><b>Live wins</b><small>Last 24 hours</small></span></div>
@@ -6239,6 +6284,20 @@ body.maint-lock{overflow:hidden}
           <button type="button" data-r="previous" onclick="lbRace('previous')">🏁 Previous<span class="lbx-tw"> leaderboard</span></button>
         </div>
         <div class="lbx-notice" id="lbxNotice"></div>
+        <details class="lbx-how" id="lbxHow">
+          <summary><span class="lbx-how-ic" aria-hidden="true">?</span><span id="lbxHowT">How points work</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <div class="lbx-how-b" data-for="powerwin">
+            <p>Power.win ranks this leaderboard by <b>points</b>, not dollars. Games where the house keeps less (higher RTP) earn fewer points per dollar, so every game is fair to climb with:</p>
+            <p class="lbx-formula">Points = Bet × (100% − RTP) ÷ 4%<small>never more than 1 point per $1 bet</small></p>
+            <div class="lbx-how-t"><div><span>Blackjack <em>99.6% RTP</em></span><b>$100 bet = 10 pts</b></div><div><span>Roulette <em>97.3% RTP</em></span><b>$100 bet = 67.5 pts</b></div><div><span>Power.win Originals <em>99% RTP</em></span><b>$100 bet = 25 pts</b></div><div><span>Slots <em>96% RTP or lower</em></span><b>$100 bet = 100 pts</b></div></div>
+            <p class="lbx-how-s">For the Community Vault, 1 point counts as $1 wagered.</p>
+          </div>
+          <div class="lbx-how-b" data-for="jammmygames" hidden>
+            <p>Every coin you wager in Jammmy Games counts, weighted by <b>the multiplier you play for</b>. Safe, low-multiplier play counts less, so nobody can farm the board.</p>
+            <div class="lbx-how-t"><div><span>Mines and HiLo at <em>2× or more</em></span><b>100% counts</b></div><div><span>Mines and HiLo at <em>1.5× to 2×</em></span><b>50% counts</b></div><div><span>Mines and HiLo <em>under 1.5×</em></span><b>25% counts</b></div><div><span>Plinko <em>high / medium / low risk</em></span><b>100% / 50% / 25%</b></div><div><span>Blackjack <em>main bet / side bets</em></span><b>50% / 100%</b></div></div>
+            <p class="lbx-how-s">Mines and HiLo: the multiplier you cash out at, or the one your last pick was going for. Example: 100 coins on Mines cashed out at 3.2× counts 100; at 1.2× it counts 25.</p>
+          </div>
+        </details>
       </div>
 
       <!-- race info -->
@@ -7062,38 +7121,52 @@ body.maint-lock{overflow:hidden}
         <div class="adm-top"><div><h1 id="adminHeading">Admin</h1><p id="adminSubhead">Players, payouts and requests in one place.</p></div><span class="adm-date" id="admDate"></span></div>
 
         <div class="admin-tabs">
-          <div class="adm-grp">Dashboard</div>
+          <div class="adm-grp">To do</div>
           <button class="admin-tab active" data-tab="adminOverviewTab" onclick="switchAdminTab('adminOverviewTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="al">Overview</span></button>
-          <button class="admin-tab" data-tab="adminAnalyticsTab" onclick="switchAdminTab('adminAnalyticsTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V11M11 20V5M17 20v-6M3 20h18"/></svg><span class="al">Analytics</span></button>
-          <button class="admin-tab" data-tab="adminAuditTab" onclick="switchAdminTab('adminAuditTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg><span class="al">Activity log</span></button>
+          <button class="admin-tab" data-tab="adminVerifyTab" onclick="switchAdminTab('adminVerifyTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.2l2.4 2.4 4.6-4.8"/></svg><span class="al">Verify players</span><span class="admin-badge" id="badgeVerify"></span></button>
+          <button class="admin-tab" data-tab="adminRedemptionsTab" onclick="switchAdminTab('adminRedemptionsTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 12h.01M18 12h.01"/></svg><span class="al">Redemptions</span><span class="admin-badge" id="badgeRedemptions"></span></button>
+          <button class="admin-tab" data-tab="adminSlotsTab" onclick="switchAdminTab('adminSlotsTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 9v6M12 9v6M16 9v6"/></svg><span class="al">Slot requests</span><span class="admin-badge" id="badgeSlots"></span></button>
+          <button class="admin-tab" data-tab="adminBattlesTab" onclick="switchAdminTab('adminBattlesTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6M16 16l4 4M19 21l2-2"/><path d="M9.5 17.5L21 6V3h-3L6.5 14.5"/><path d="M11 19l-6-6M8 16l-4 4M5 21l-2-2"/></svg><span class="al">Battle requests</span><span class="admin-badge" id="badgeBattles"></span></button>
           <div class="adm-grp">Players</div>
           <button class="admin-tab" data-tab="adminUsersTab" onclick="switchAdminTab('adminUsersTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c2 .7 3.2 2.4 3.6 5.2"/></svg><span class="al">Users</span></button>
           <button class="admin-tab" data-tab="adminActiveTab" onclick="switchAdminTab('adminActiveTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg><span class="al">Active users</span></button>
-          <button class="admin-tab" data-tab="adminVerifyTab" onclick="switchAdminTab('adminVerifyTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.2l2.4 2.4 4.6-4.8"/></svg><span class="al">Verify players</span><span class="admin-badge" id="badgeVerify"></span></button>
           <button class="admin-tab" data-tab="adminSecurityTab" onclick="switchAdminTab('adminSecurityTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.4 8-8 9-4.6-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span class="al">Security</span><span class="admin-badge" id="badgeSecurity"></span></button>
-          <div class="adm-grp">Payouts</div>
-          <button class="admin-tab" data-tab="adminRedemptionsTab" onclick="switchAdminTab('adminRedemptionsTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 12h.01M18 12h.01"/></svg><span class="al">Redemptions</span><span class="admin-badge" id="badgeRedemptions"></span></button>
-          <button class="admin-tab" data-tab="adminVaultTab" onclick="switchAdminTab('adminVaultTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="15" rx="2"/><circle cx="12" cy="12.5" r="3"/><path d="M12 9.5v-1M12 16.5v-1M7 20v1.5M17 20v1.5"/></svg><span class="al">Vault</span></button>
-          <div class="adm-grp">Requests</div>
-          <button class="admin-tab" data-tab="adminSlotsTab" onclick="switchAdminTab('adminSlotsTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 9v6M12 9v6M16 9v6"/></svg><span class="al">Slot requests</span><span class="admin-badge" id="badgeSlots"></span></button>
-          <button class="admin-tab" data-tab="adminBattlesTab" onclick="switchAdminTab('adminBattlesTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6M16 16l4 4M19 21l2-2"/><path d="M9.5 17.5L21 6V3h-3L6.5 14.5"/><path d="M11 19l-6-6M8 16l-4 4M5 21l-2-2"/></svg><span class="al">Battle requests</span><span class="admin-badge" id="badgeBattles"></span></button>
-          <div class="adm-grp" data-admin-only>Community</div>
+          <div class="adm-grp" data-admin-only>Site</div>
+          <button class="admin-tab" data-tab="adminHomeTab" onclick="switchAdminTab('adminHomeTab')" data-admin-only><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg><span class="al">Homepage &amp; alerts</span></button>
           <button class="admin-tab" data-tab="adminGamesTab" onclick="switchAdminTab('adminGamesTab')" data-admin-only><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="7" width="19" height="11" rx="4"/><path d="M7 10.5v4M5 12.5h4"/><circle cx="15.5" cy="11.5" r="1"/><circle cx="17.5" cy="13.8" r="1"/></svg><span>Games</span></button>
           <button class="admin-tab" data-tab="adminRanksTab" onclick="switchAdminTab('adminRanksTab')" data-admin-only><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4.5"/><circle cx="16.5" cy="14" r="4.5"/><path d="M8 10.5C9 6 12 4 15 3.5M16.5 9.5C15.8 6.5 15.5 5 15 3.5"/></svg><span>Ranks</span></button>
-          <button class="admin-tab" data-tab="adminPartnersTab" onclick="switchAdminTab('adminPartnersTab')" data-admin-only><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 12l3 3 5-5"/><path d="M3 12l4-4 3 2 4-3 3 2 4 3-4 4-3 3-3 1-4-4z"/></svg><span>Partners</span></button>
           <button class="admin-tab" data-tab="adminChallengesTab" onclick="switchAdminTab('adminChallengesTab')" data-admin-only><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg><span>Challenges</span></button>
+          <button class="admin-tab" data-tab="adminPartnersTab" onclick="switchAdminTab('adminPartnersTab')" data-admin-only><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 12l3 3 5-5"/><path d="M3 12l4-4 3 2 4-3 3 2 4 3-4 4-3 3-3 1-4-4z"/></svg><span>Partners</span></button>
+          <button class="admin-tab" data-tab="adminVaultTab" onclick="switchAdminTab('adminVaultTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="15" rx="2"/><circle cx="12" cy="12.5" r="3"/><path d="M12 9.5v-1M12 16.5v-1M7 20v1.5M17 20v1.5"/></svg><span class="al">Vault</span></button>
+          <div class="adm-grp" data-admin-only>Bot &amp; settings</div>
           <button class="admin-tab" data-tab="adminBotTab" onclick="switchAdminTab('adminBotTab')" data-admin-only><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4M9 13h.01M15 13h.01M9.5 16.5h5"/><circle cx="12" cy="3.5" r="1"/></svg><span class="al">Jammmy Bot</span></button>
           <button class="admin-tab" data-tab="adminMaintTab" onclick="switchAdminTab('adminMaintTab')" data-admin-only><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg><span>Maintenance</span></button>
+          <div class="adm-grp">Reports</div>
+          <button class="admin-tab" data-tab="adminAnalyticsTab" onclick="switchAdminTab('adminAnalyticsTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V11M11 20V5M17 20v-6M3 20h18"/></svg><span class="al">Analytics</span></button>
+          <button class="admin-tab" data-tab="adminAuditTab" onclick="switchAdminTab('adminAuditTab')"><svg class="ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg><span class="al">Activity log</span></button>
         </div>
 
         <!-- GAMES TAB -->
         <div id="adminGamesTab" class="admin-tab-panel" style="display:none">
+          <div class="bt-card" style="margin-bottom:14px">
+            <h4>🚧 Games page</h4>
+            <p class="ag-note">Switch the whole Jammmy Games page off while you work on it. Players see your message instead of the games; admins can still play to test.</p>
+            <div class="bt-row"><label class="bt-f sw"><input type="checkbox" id="agPageOn"> Games page open to players</label><span id="agPageMsgOut" class="bt-msg" style="margin:0"></span></div>
+            <label class="bt-f" style="display:block;margin-top:10px">Message players see when it's off<textarea id="agPageMsg" rows="2" maxlength="300" style="width:100%;margin-top:6px"></textarea></label>
+            <div class="bt-row"><button class="bt-btn p" onclick="agSavePage()">💾 Save</button></div>
+          </div>
           <div class="bt-card" style="margin-bottom:14px">
             <h4>🎮 Jammmy Games</h4>
             <p class="ag-note">Switch each game on for players, set its max bet, and the most a player can lose in one day across all games (resets 00:00 UTC = 5:30 AM IST). 100 coins = $1. Admins can always play to test, even when a game is off.</p>
             <div class="bt-row"><label class="bt-f" style="flex:0 0 220px">Daily loss cap per player (coins)<input type="number" id="agCap" min="0" step="100"></label><button class="bt-btn p" onclick="agSaveCap()">Save cap</button><span id="agCapMsg" class="bt-msg" style="margin:0"></span></div>
           </div>
           <div class="ag-grid" id="agGames">Loading&hellip;</div>
+          <div class="bt-card" style="margin-top:14px">
+            <h4>🔐 Seeds</h4>
+            <p class="ag-note">Every player's seeds. Active server seeds are only shown hashed (the real seed would let anyone predict that player's next results). After a player rotates, the old seed is revealed here in full: press <b>Check</b> to recompute it in the <a href="verify.html" target="_blank" rel="noopener">seed checker</a>.</p>
+            <div class="bt-row"><button class="bt-btn" onclick="agSeeds()">Load seeds</button></div>
+            <div id="agSeedsOut" style="overflow-x:auto;margin-top:10px"></div>
+          </div>
           <div class="bt-card" style="margin-top:14px">
             <h4>🏆 Jammmy Games leaderboard prizes</h4>
             <p class="ag-note">Monthly, top 20 paid in coins (40,000 total). When a month ends, check the standings below and press <b>Pay prizes</b>. It can only pay once per month.</p>
@@ -7193,6 +7266,9 @@ body.maint-lock{overflow:hidden}
         </div>
         <div id="adminOverviewTab" class="admin-tab-panel">
           <div id="adminOverviewGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:28px">Loading&hellip;</div>
+          <div id="admQuick" class="adm-quick" data-admin-only></div>
+        </div>
+        <div id="adminHomeTab" class="admin-tab-panel" style="display:none">
           <div style="background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:28px">
             <h3 style="margin:0 0 6px">📣 Notifications</h3>
             <div id="adminPushStats" style="color:var(--muted);font-size:.86rem;margin-bottom:14px">Loading&hellip;</div>
@@ -9439,18 +9515,28 @@ function maintPaint(){
   document.body.classList.toggle('maint-lock', lock);
   bar.classList.toggle('on', MAINT.on && admin);
 }
+function gamesOffPaint(){
+  var admin = maintIsAdmin(), off = !!MAINT.gamesOff;
+  var o = document.getElementById('gmOff'), bar = document.getElementById('gmOffBar');
+  if(!o) return;
+  document.body.classList.toggle('games-off', off && !admin);
+  o.hidden = !(off && !admin); bar.hidden = !(off && admin);
+  var m = document.getElementById('gmOffMsg'); if(m) m.textContent = MAINT.gamesMsg || "We're working on Jammmy Games and making them even better. Back very soon!";
+  if(off && !admin && typeof gmLobby === 'function' && document.getElementById('games').classList.contains('playing')) gmLobby();
+}
 async function maintCheck(){
   try{
     var r = await fetch(AUTH_API + '/api/maintenance', { cache:'no-store' });
     if(!r.ok) return;
     var d = await r.json();
     MAINT.on = !!d.on; MAINT.message = d.message || '';
+    MAINT.gamesOff = !!d.games_off; MAINT.gamesMsg = d.games_msg || '';
   }catch(e){ return; }
-  maintPaint();
+  maintPaint(); gamesOffPaint();
 }
 (function(){
   var orig = renderAuthUI;
-  renderAuthUI = function(u){ var out = orig.apply(this, arguments); try{ maintPaint(); }catch(e){} return out; };
+  renderAuthUI = function(u){ var out = orig.apply(this, arguments); try{ maintPaint(); gamesOffPaint(); }catch(e){} return out; };
 })();
 maintCheck();
 setInterval(function(){ if(!document.hidden) maintCheck(); }, 60000);
@@ -9510,7 +9596,7 @@ async function amtSave(){
       html.push('<span class="pfx-chip rk">' + (t && window.fruitSvg ? fruitSvg(t.key) : '') + esc(t ? t.name : 'No rank yet') + '</span>');
       var prog = $('pfxProg');
       if(me.next){
-        var prevMin = t ? t.min_usd : 0, span = Math.max(1, me.next.min_usd - prevMin), pct = Math.max(2, Math.min(100, (me.wager_usd - prevMin) / span * 100));
+        var prevMin = t ? t.min_usd : 0, span = Math.max(1, me.next.min_usd - prevMin), rp = Math.max(0, Math.min(100, (me.wager_usd - prevMin) / span * 100)), pct = rp > 0 ? Math.max(2, rp) : 0;
         $('pfxNext').innerHTML = '<b>' + usd(me.next.need_usd) + '</b> more wagered to reach ' + esc(me.next.name);
         prog.hidden = false; setTimeout(function(){ $('pfxBar').style.width = pct.toFixed(1) + '%'; }, 60);
       } else if(t){
@@ -9541,14 +9627,21 @@ async function amtSave(){
     });
     hero.addEventListener('mouseleave', function(){ hero.classList.remove('tilting'); hero.style.setProperty('--rx', '0deg'); hero.style.setProperty('--ry', '0deg'); });
   }
-  /* section tabs: smooth scroll + highlight the section in view */
+  /* section tabs: only the chosen section shows */
   var tabs = $('pfxTabs');
   if(tabs){
-    tabs.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); var t = $(a.dataset.t); if(t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }); });
-    if('IntersectionObserver' in window){
-      var io = new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){ tabs.querySelectorAll('a').forEach(function(a){ a.classList.toggle('on', a.dataset.t === en.target.id); }); } }); }, { rootMargin: '-40% 0px -55% 0px' });
-      ['pfxAccounts','pfxEarn','pfxRedeem','pfxHistory'].forEach(function(id){ var el = $(id); if(el) io.observe(el); });
-    }
+    var group = function(id){ var el = $(id); if(!el) return null; return id === 'pfxAccounts' ? el : el.parentNode; };
+    var pfTab = function(id){
+      ['pfxAccounts','pfxEarn','pfxRedeem','pfxHistory'].forEach(function(k){ var g = group(k); if(g){ g.hidden = k !== id; g.classList.toggle('pfx-on', k === id); } });
+      tabs.querySelectorAll('a').forEach(function(a){ var on = a.dataset.t === id; a.classList.toggle('on', on); a.setAttribute('aria-selected', on ? 'true' : 'false'); });
+      try{ sessionStorage.setItem('jr_pf', id); }catch(e){}
+    };
+    window.pfTab = pfTab;
+    tabs.setAttribute('role', 'tablist');
+    tabs.querySelectorAll('a').forEach(function(a){ a.setAttribute('role', 'tab'); a.addEventListener('click', function(e){ e.preventDefault(); pfTab(a.dataset.t); }); });
+    pfTab('pfxAccounts');
+    var _spP = window.showPage;
+    if(typeof _spP === 'function') window.showPage = function(id){ var r = _spP.apply(this, arguments); if(id === 'profile') pfTab(window._pfWant || 'pfxAccounts'); window._pfWant = null; return r; };
   }
 })();
 
@@ -9596,7 +9689,7 @@ window.jrMountains = function(host){
   }
   /* a range = a handful of big peaks (sharp tops, long slopes) plus fine rocky detail */
   function heights(r, n, o){
-    var pk = [], k = o.count, i, out = new Array(n + 1);
+    var pk = [], k = Math.max(3, Math.round(o.count * Math.min(1, W / DPR / 1300))), i, out = new Array(n + 1);   /* fewer, wider peaks on phones */
     for(i = 0; i < k; i++) pk.push({ x: (i + .15 + r() * .7) / k * n, h: o.amp * (.38 + Math.pow(r(), .7) * .62), wl: n / k * (.55 + r() * .5), wr: n / k * (.55 + r() * .5) });
     var noise = ridge(r, n, 0, o.amp * .2, .6); var noise2 = ridge(r, n, 0, o.amp * .07, .8);
     for(i = 0; i <= n; i++){
@@ -10378,6 +10471,7 @@ function switchAdminTab(tabId){
   if(tabId==='adminPartnersTab') aptLoad();
   if(tabId==='adminChallengesTab') achLoad();
   if(tabId==='adminMaintTab') amtLoad();
+  if(tabId==='adminHomeTab'){ if(typeof loadLiveCardSettings==='function') loadLiveCardSettings(); if(typeof loadAdminPushStats==='function') loadAdminPushStats(); }
 }
 
 /* Backs both the Overview tab and the pending-count badges on every other tab button, so
@@ -10647,8 +10741,22 @@ async function saveLiveCard(){
   }catch(e){ out.textContent = 'Network error — try again.'; out.style.color = '#f87171'; }
   btn.disabled = false;
 }
+/* overview: the switches Jammy checks most, as one-tap status pills */
+async function loadAdminQuick(){
+  var q = document.getElementById('admQuick'); if(!q) return;
+  try{
+    var r = await Promise.all([fetch(AUTH_API + '/api/maintenance', { cache: 'no-store' }).then(function(x){ return x.json(); }), fetch(AUTH_API + '/api/ranks').then(function(x){ return x.json(); })]);
+    var m = r[0] || {}, rk = r[1] || {};
+    var pill = function(on, label, state, tab, good){ return '<button type="button" class="adm-qp ' + (good ? 'ok' : 'warn') + '" onclick="switchAdminTab(\'' + tab + '\')"><i></i><span>' + label + '</span><b>' + state + '</b></button>'; };
+    q.innerHTML = '<div class="adm-sec">Switches</div><div class="adm-qrow">'
+      + pill(m.on, 'Maintenance', m.on ? 'On: site closed' : 'Off: site open', 'adminMaintTab', !m.on)
+      + pill(m.games_off, 'Games page', m.games_off ? 'Off for players' : 'Open', 'adminGamesTab', !m.games_off)
+      + pill(rk.enabled, 'Fruit ranks', rk.enabled ? 'Counting' : 'Not started', 'adminRanksTab', !!rk.enabled)
+      + '</div>';
+  }catch(e){}
+}
 async function loadAdminOverview(){
-  loadLiveCardSettings();
+  loadAdminQuick();
   var token = localStorage.getItem('jammy_session_token');
   if(!token) return;
   try{
@@ -13208,7 +13316,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     };
     var drawSnow = function(p){
       var t = performance.now() + windT*1000; wind = Math.sin(t/9000)*.6 + Math.sin(t/3700)*.25;
-      p.sw += p.sws; p.x += (wind + Math.sin(p.sw)*.45) * p.drift; p.y += p.vy;
+      p.sw += p.sws * _k; p.x += (wind + Math.sin(p.sw)*.45) * p.drift * _k; p.y += p.vy * _k;
       if(p.y > H + 20 || p.x < -40 || p.x > W + 40){ Object.assign(p, snowPt()); if(p.x < 0) p.x += W; }
       var spr = p.cry ? SNOW_SPR.cry : p.layer === 0 ? SNOW_SPR.far : p.layer === 1 ? SNOW_SPR.mid : SNOW_SPR.near, d = spr.width * p.s;
       ctx.globalAlpha = p.a;
@@ -13230,22 +13338,27 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   }
   for(var i=0; i<COUNT; i++) pts.push(ICEP ? snowPt(true) : mkPt());
   var running = true;
-  document.addEventListener('visibilitychange', function(){ running = !document.hidden; if(running) requestAnimationFrame(draw); });
-  function draw(){
+  /* one loop only: coming back to the tab used to start a second loop, making the snow fall twice as fast */
+  var _rafD = 0, _lastD = 0, _k = 1;
+  function schedDraw(){ if(!_rafD) _rafD = requestAnimationFrame(function(t){ _rafD = 0; draw(t); }); }
+  document.addEventListener('visibilitychange', function(){ running = !document.hidden; _lastD = 0; if(running) schedDraw(); });
+  function draw(t){
     if(!running) return;
-    if(document.documentElement.classList.contains('bg-paused')){ ctx.clearRect(0,0,W,H); setTimeout(function(){ requestAnimationFrame(draw); }, 500); return; }   /* paused while on Jammmy Games */
+    /* speed follows real time, not frame count (120 Hz screens no longer fall faster) */
+    _k = _lastD && t ? Math.min(3, (t - _lastD) / 16.667) : 1; _lastD = t || 0;
+    if(document.documentElement.classList.contains('bg-paused')){ ctx.clearRect(0,0,W,H); _lastD = 0; setTimeout(schedDraw, 500); return; }   /* paused while on Jammmy Games */
     ctx.clearRect(0,0,W,H);
     pts.forEach(function(p){
       if(p.snow){ drawSnow(p); return; }
-      p.x += p.vx; p.y += p.vy; p.life += .003;
+      p.x += p.vx * _k; p.y += p.vy * _k; p.life += .003 * _k;
       if(p.life >= 1 || p.y < -20) Object.assign(p, mkPt());
       var a = p.a * Math.sin(p.life*Math.PI) * (HWP ? .7 + .3*Math.sin(p.life*60) : 1);
       ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.28);
       ctx.fillStyle = p.col + a.toFixed(2) + ')'; ctx.fill();
     });
-    requestAnimationFrame(draw);
+    schedDraw();
   }
-  draw();
+  schedDraw();
 })();
 </script>
 <script>
@@ -13441,6 +13554,8 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
 
   var lastTs=0;
   var FRAME_GAP = 33; /* ~30fps cap — half the CPU cost of 60fps, still looks smooth */
+  var _rafT = 0;
+  function schedTick(){ if(!_rafT) _rafT = requestAnimationFrame(function(t){ _rafT = 0; tick(t); }); }
   function tick(ts){
     /* Stop entirely while the browser tab itself isn't visible (switched to another tab,
        window minimized) — same "don't animate what nobody can see" principle as the
@@ -13448,8 +13563,8 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
        not rescheduling requestAnimationFrame breaks the loop with zero ongoing cost; the
        visibilitychange listener below kicks it back off once the tab is visible again. */
     if(document.hidden) return;
-    if(document.documentElement.classList.contains('bg-paused')){ ctx.clearRect(0,0,W,H); setTimeout(function(){ requestAnimationFrame(tick); }, 500); return; }   /* paused while on Jammmy Games */
-    if(ts - lastTs < FRAME_GAP){ requestAnimationFrame(tick); return; }
+    if(document.documentElement.classList.contains('bg-paused')){ ctx.clearRect(0,0,W,H); setTimeout(schedTick, 500); return; }   /* paused while on Jammmy Games */
+    if(ts - lastTs < FRAME_GAP){ schedTick(); return; }
     var dt=Math.min(ts-lastTs,80); lastTs=ts;
     ctx.clearRect(0,0,W,H);
 
@@ -13496,12 +13611,12 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
       return true;
     });
 
-    requestAnimationFrame(tick);
+    schedTick();
   }
   if(!window.matchMedia('(prefers-reduced-motion:reduce)').matches){
-    requestAnimationFrame(tick);
+    schedTick();
     document.addEventListener('visibilitychange', function(){
-      if(!document.hidden) requestAnimationFrame(tick);
+      if(!document.hidden){ lastTs = 0; schedTick(); }
     });
   }
 })();
@@ -14395,7 +14510,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     var pg = $('games'); if(!pg || !pg.classList.contains('show') || document.hidden){ FEED_T = setTimeout(pollFeed, 8000); return; }
     try{
       var r = await fetch(AUTH_API + '/api/games/feed'); var d = await r.json();
-      var list = (d.recent || []).slice(0, 12);
+      var list = (d.recent || []).slice(0, 10);
       $('gmFeed').innerHTML = list.length ? list.map(rowHtml).join('') : '<div class="gm-feed-empty">No rounds yet. Be the first to play.</div>';
     }catch(e){}
     FEED_T = setTimeout(pollFeed, 8000);
@@ -14454,10 +14569,12 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     var lb = document.getElementById('leaderboards'); if(lb) lb.classList.toggle('lb-coins', casino === 'jammmygames');
     var sub = document.getElementById('lbxSub');
     if(sub && LB_RACE !== 'previous') sub.innerHTML = casino === 'jammmygames'
-      ? 'Every coin you wager in <b>Jammmy Games</b> counts. The top 20 win Jammmy Coins every month.'
+      ? 'Every coin you wager in <b>Jammmy Games</b> counts, weighted by the multiplier you play for. The top 20 win Jammmy Coins.'
       : 'Wager under code <b>JAMMMY</b>, climb the ranks and win a share of the prize pool. Updated live.';
     var cl = document.querySelector('.lbx-cta .lbx-lbl'); if(cl) cl.textContent = casino === 'jammmygames' ? 'PLAY TO CLIMB' : 'USE CODE';
     var pn = document.getElementById('lbxPaidN'); if(pn) pn.textContent = casino === 'jammmygames' ? 'Top 20 paid in Jammmy Coins' : 'Top 10 paid';
+    document.querySelectorAll('#lbxHow .lbx-how-b').forEach(function(b){ b.hidden = b.dataset.for !== (casino === 'jammmygames' ? 'jammmygames' : 'powerwin'); });
+    var ht = document.getElementById('lbxHowT'); if(ht) ht.textContent = casino === 'jammmygames' ? 'How Jammmy Games wagers are weighted' : 'How Power.win points work';
     return _tab(btn, casino);
   };
   var _rows = window.renderLeaderboardRows;
@@ -14537,7 +14654,7 @@ window.FRUIT_SVG = {
 /* the five rank badges (lemon to dragon fruit) are painted artwork; the SVGs above stay as a fallback */
 window.FRUIT_BADGE = { lemon: 1, orange: 1, watermelon: 1, pineapple: 1, dragonfruit: 1 };
 window.fruitSvg = function(key){
-  if(window.FRUIT_BADGE[key]) return '<svg viewBox="0 0 96 96" class="fr-badge" aria-hidden="true"><image href="rank-' + key + '.webp" width="96" height="96"/></svg>';
+  if(window.FRUIT_BADGE[key]) return '<svg viewBox="0 0 96 96" class="fr-badge" aria-hidden="true"><image href="rank-' + key + '.webp?v=2" width="96" height="96"/></svg>';
   return (window.FRUIT_SVG[key] || window.FRUIT_SVG.none);
 };
 </script>
@@ -14585,9 +14702,10 @@ window.fruitSvg = function(key){
     $('rkMeW').textContent = usd(me.wager_usd) + ' wagered in total';
     var tiers = CFG.tiers, cur = tiers.filter(function(t){ return t.key === me.rank; })[0], lo = cur ? cur.min_usd : 0;
     if(me.next){
-      var pct = Math.max(2, Math.min(100, (me.wager_usd - lo) / (me.next.min_usd - lo) * 100));
+      var real = Math.max(0, Math.min(100, (me.wager_usd - lo) / (me.next.min_usd - lo) * 100));
+      var pct = real > 0 ? Math.max(2, real) : 0;   /* a sliver of bar once you've started, nothing at $0 */
       requestAnimationFrame(function(){ requestAnimationFrame(function(){ $('rkBar').style.width = pct.toFixed(1) + '%'; }); });
-      setRing(pct); $('rxPct').textContent = Math.floor(pct) + '% to ' + me.next.name;
+      setRing(pct); $('rxPct').textContent = real >= 1 ? Math.floor(real) + '% to ' + me.next.name : (real > 0 ? 'Under 1% to ' + me.next.name : '');
       $('rkMeNext').innerHTML = '<b>' + usd(me.next.need_usd) + '</b> more to reach ' + esc(me.next.name);
       var nt = tiers.filter(function(t){ return t.key === me.next.key; })[0];
       nx.innerHTML = fruitSvg(me.next.key) + '<span>Next up: <b>' + esc(me.next.name) + '</b>' + (nt ? ' · +' + Number(nt.reward).toLocaleString() + ' coins and ' + nt.daily + ' a day' : '') + '</span>';
@@ -14694,11 +14812,29 @@ window.fruitSvg = function(key){
   var NAMES = { blackjack: 'Blackjack', mines: 'Mines', plinko: 'Plinko', hilo: 'HiLo' };
 
   /* ── Games ── */
+  window.agSeeds = async function(){
+    var o = $('agSeedsOut'); o.textContent = 'Loading…';
+    var d = await call('/api/admin/game-seeds'); if(d.error){ o.textContent = d.error; return; }
+    var short = function(h){ return '<code title="' + esc(h) + '">' + esc(String(h || '').slice(0, 16)) + '…</code>'; };
+    o.innerHTML = '<b>Active seeds (hashed)</b><table class="ag-tbl"><tr><th>Player</th><th>Server seed hash</th><th>Next hash</th><th>Client seed</th><th>Bets</th></tr>'
+      + (d.active.map(function(r){ return '<tr><td>' + esc(r.username || r.user_id) + '</td><td>' + short(r.server_hash) + '</td><td>' + short(r.next_hash) + '</td><td><code>' + esc(r.client_seed) + '</code></td><td>' + r.nonce + '</td></tr>'; }).join('') || '<tr><td colspan="5">None yet</td></tr>') + '</table>'
+      + '<b style="display:block;margin-top:14px">Revealed seeds (unhashed)</b><table class="ag-tbl"><tr><th>Player</th><th>Server seed</th><th>Hash</th><th>Client seed</th><th>Bets</th><th></th></tr>'
+      + (d.revealed.map(function(r){ var q = 'verify.html?game=mines&server=' + encodeURIComponent(r.server_seed) + '&hash=' + encodeURIComponent(r.server_hash) + '&client=' + encodeURIComponent(r.client_seed) + '&nonce=1';
+          return '<tr><td>' + esc(r.username || r.user_id) + '</td><td>' + short(r.server_seed) + '</td><td>' + short(r.server_hash) + '</td><td><code>' + esc(r.client_seed) + '</code></td><td>' + r.nonces + '</td><td><a href="' + q + '" target="_blank" rel="noopener">Check</a></td></tr>'; }).join('') || '<tr><td colspan="6">No rotations yet</td></tr>') + '</table>';
+  };
+  window.agSavePage = async function(){
+    var on = $('agPageOn').checked;
+    var d = await call('/api/admin/games-settings', { page_off: !on, page_msg: $('agPageMsg').value });
+    $('agPageMsgOut').textContent = d.error ? d.error : (on ? 'Saved. Games are open to players.' : 'Saved. Games page is off for players.');
+    if(!d.error && typeof maintCheck === 'function') maintCheck();
+  };
   window.agLoad = async function(){
     var d = await call('/api/admin/games-settings');
     if(d.error){ $('agGames').textContent = d.error; return; }
     var S = d.settings, st = {}; (d.stats || []).forEach(function(x){ st[x.game] = x; });
     $('agCap').value = S.daily_loss_cap;
+    $('agPageOn').checked = !S.page_off; $('agPageMsg').value = S.page_msg || '';
+    $('agPageMsgOut').textContent = S.page_off ? 'Off: players see your message.' : 'On: players can play.';
     $('agGames').innerHTML = Object.keys(NAMES).map(function(k){
       var g = S.games[k], x = st[k] || { rounds: 0, wagered: 0, paid: 0, wagered_today: 0, paid_today: 0 };
       var profit = x.wagered - x.paid, today = x.wagered_today - x.paid_today;
@@ -15202,11 +15338,19 @@ window.fruitSvg = function(key){
   };
   document.querySelectorAll('#gdEarn .gd-tabs button').forEach(function(b){ b.onclick = function(){ TAB = b.dataset.t; document.querySelectorAll('#gdEarn .gd-tabs button').forEach(function(x){ x.classList.toggle('on', x === b); }); paintEarn(); }; });
   document.querySelectorAll('#gdLink .gd-tabs button').forEach(function(b){ b.onclick = function(){ document.querySelectorAll('#gdLink .gd-tabs button').forEach(function(x){ x.classList.toggle('on', x === b); }); document.querySelectorAll('#gdLink .gd-link').forEach(function(p){ p.hidden = p.dataset.l !== b.dataset.l; }); }; });
-  document.querySelectorAll('.gd-toc a').forEach(function(a){ a.onclick = function(){ var t = $(a.dataset.go); if(t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }; });
-  if('IntersectionObserver' in window){
-    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ document.querySelectorAll('.gd-toc a').forEach(function(a){ a.classList.toggle('on', a.dataset.go === e.target.id); }); } }); }, { rootMargin: '-40% 0px -55% 0px' });
-    document.querySelectorAll('.gd-sec').forEach(function(s){ io.observe(s); });
+  /* chapters work as tabs: only the chosen chapter is shown */
+  function gdTab(id, scroll){
+    var any = false;
+    document.querySelectorAll('.gd-sec').forEach(function(sec){ var on = sec.id === id; sec.hidden = !on; if(on) any = true; });
+    if(!any){ id = 'gdStart'; var f = $('gdStart'); if(f) f.hidden = false; }
+    document.querySelectorAll('.gd-toc a').forEach(function(a){ var on = a.dataset.go === id; a.classList.toggle('on', on); a.setAttribute('aria-current', on ? 'true' : 'false'); if(on && a.scrollIntoView && window.innerWidth <= 900) a.scrollIntoView({ inline: 'center', block: 'nearest' }); });
+    try{ sessionStorage.setItem('jr_gd', id); }catch(e){}
+    if(scroll){ var main = document.querySelector('.gd-body'); if(main && main.getBoundingClientRect().top < 0) main.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   }
+  window.gdTab = gdTab;
+  document.querySelectorAll('.gd-toc a').forEach(function(a){ a.onclick = function(e){ e.preventDefault(); gdTab(a.dataset.go, true); }; });
+  var last = null; try{ last = sessionStorage.getItem('jr_gd'); }catch(e){}
+  gdTab(last || 'gdStart', false);
 })();
 </script>
 <script>
