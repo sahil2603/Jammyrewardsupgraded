@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jammmy Games seed checker</title>
+<link rel="icon" href="favicon-32.png">
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070b18;--panel:#0f1730;--line:rgba(255,255,255,.09);--txt:#e6f0ff;--muted:#9fb3d1;--acc:#7dd3fc;--ok:#4ade80;--bad:#f87171}
+[hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;background:radial-gradient(80% 60% at 50% 0%,#14224a,var(--bg));color:var(--txt);font:15px/1.6 Poppins,system-ui,sans-serif;min-height:100vh}
+main{max-width:860px;margin:0 auto;padding:32px 16px 60px}
+h1{font:400 clamp(1.8rem,5vw,2.6rem)/1.1 'Lilita One',sans-serif;margin:0 0 8px}
+.lead{color:var(--muted);margin:0 0 22px}
+.card{background:var(--panel);border-radius:18px;padding:20px;box-shadow:inset 0 0 0 1px var(--line);margin-bottom:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:flex;flex-direction:column;gap:5px;font-size:.8rem;color:var(--muted);min-width:0}
+input,select{background:#070d1f;border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:10px 12px;font:500 .9rem 'Poppins';min-width:0;width:100%}
+input:focus,select:focus{outline:2px solid var(--acc);outline-offset:1px}
+.full{grid-column:1/-1}
+button{border:0;border-radius:12px;padding:12px 20px;font:700 .95rem 'Poppins';color:#0b1630;background:linear-gradient(135deg,#7dd3fc,#c4b5fd);cursor:pointer;margin-top:14px}
+h2{font:400 1.25rem 'Lilita One',sans-serif;margin:0 0 10px}
+.check{padding:12px 14px;border-radius:12px;font-weight:600}
+.check.ok{background:rgba(74,222,128,.12);color:var(--ok)}.check.bad{background:rgba(248,113,113,.12);color:var(--bad)}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.8rem;word-break:break-all;color:#c7d8f5}
+table{width:100%;border-collapse:collapse;font-size:.8rem}td,th{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-weight:600}
+.mines{display:grid;grid-template-columns:repeat(5,44px);gap:6px;margin-top:8px}.mines i{height:44px;border-radius:10px;display:grid;place-items:center;font-style:normal;background:#13204a}.mines i.m{background:#4c1d24}
+.cards{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.cards span{min-width:44px;padding:8px 6px;border-radius:8px;background:#f8fbff;color:#0b2540;font-weight:700;text-align:center}.cards span.r{color:#dc2626}
+.note{color:var(--muted);font-size:.84rem}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style></head><body><main>
+<h1>Seed checker</h1>
+<p class="lead">Check any Jammmy Games bet yourself. Paste the revealed server seed, your client seed and the nonce. This page works it out in your browser from scratch, and shows every step so you can repeat it with any SHA-256 / HMAC-SHA256 tool.</p>
+<div class="card"><div class="grid">
+  <label>Game<select id="game"><option value="mines">Mines</option><option value="plinko">Plinko</option><option value="hilo">HiLo</option><option value="blackjack">Blackjack</option></select></label>
+  <label>Nonce (bet number)<input id="nonce" type="number" min="0" value="1"></label>
+  <label class="full">Server seed (revealed, unhashed)<input id="server" placeholder="64 characters, shown after you rotate your seed pair" spellcheck="false"></label>
+  <label class="full">Server seed hash you were shown before playing (optional)<input id="hash" spellcheck="false"></label>
+  <label class="full">Client seed<input id="client" spellcheck="false"></label>
+  <label id="pMines">Mines<input id="mines" type="number" min="1" max="24" value="3"></label>
+  <label id="pRows" hidden>Rows<input id="rows" type="number" min="8" max="16" value="8"></label>
+  <label id="pRisk" hidden>Risk<select id="risk"><option>low</option><option>medium</option><option>high</option></select></label>
+</div><button id="go" type="button">Check this bet</button></div>
+<div id="out"></div>
+<div class="card"><h2>How it works</h2>
+<p class="note">1. Before you play, you're shown <b>SHA-256(server seed)</b>. The seed itself stays secret, so the result is locked in but nobody can see it yet.<br>
+2. Each bet's random numbers come from <b>HMAC-SHA256(key = server seed, message = "client seed:nonce:round")</b>, round = 0, 1, 2… Each 32-byte result gives 8 numbers between 0 and 1 (4 bytes each: b0/256 + b1/256² + b2/256³ + b3/256⁴).<br>
+3. <b>Mines</b>: those numbers shuffle the 25 tiles (Fisher–Yates); the first tiles of the shuffle are the mines. <b>Plinko</b>: one number per row, under 0.5 = left, otherwise right. <b>HiLo</b>: card = floor(number × 52), one number per guess. <b>Blackjack</b>: the 6-deck shoe (312 cards) is shuffled with whole 32-bit numbers from the same HMAC.<br>
+4. When you rotate your seed pair, the old server seed is revealed. Anyone can hash it and check it matches what you were shown, then recompute every bet made with it.<br>
+HiLo note: the first card on the table before you bet is just a random starting card (you can skip it for free); every card after you bet comes from the seeds.</p></div>
+<script>
+var PLINKO = {"low":{"8":[6,2.5,1.2,0.8,0.6,0.8,1.2,2.5,6],"9":[5.2,2.7,1.6,0.9,0.7,0.7,0.9,1.6,2.7,5.2],"10":[9.2,3.9,2.2,1.1,0.7,0.6,0.7,1.1,2.2,3.9,9.2],"11":[8,4.6,2.3,1.4,0.8,0.7,0.7,0.8,1.4,2.3,4.6,8],"12":[9.8,5.1,2.7,1.6,1,0.8,0.6,0.8,1,1.6,2.7,5.1,9.8],"13":[8.8,4.8,2.7,1.8,1.2,0.9,0.7,0.7,0.9,1.2,1.8,2.7,4.8,8.8],"14":[6.9,4.2,2.9,1.9,1.4,1,0.8,0.7,0.8,1,1.4,1.9,2.9,4.2,6.9],"15":[15,7.8,4.5,2.9,1.7,1.1,0.8,0.7,0.7,0.8,1.1,1.7,2.9,4.5,7.8,15],"16":[17,9.2,5.3,3,2,1.4,1,0.7,0.6,0.7,1,1.4,2,3,5.3,9.2,17]},"medium":{"8":[14,3,1.3,0.6,0.5,0.6,1.3,3,14],"9":[22,4.1,1.6,0.7,0.6,0.6,0.7,1.6,4.1,22],"10":[22,5.9,2.2,1,0.6,0.6,0.6,1,2.2,5.9,22],"11":[19,7.3,2.7,1.3,0.8,0.6,0.6,0.8,1.3,2.7,7.3,19],"12":[33,9.5,3.5,1.6,0.9,0.7,0.6,0.7,0.9,1.6,3.5,9.5,33],"13":[45,12,4.7,2.1,1.1,0.8,0.6,0.6,0.8,1.1,2.1,4.7,12,45],"14":[57,18,6.3,2.7,1.4,0.9,0.7,0.5,0.7,0.9,1.4,2.7,6.3,18,57],"15":[88,25,8.6,3.8,1.9,1,0.7,0.6,0.6,0.7,1,1.9,3.8,8.6,25,88],"16":[110,33,11,4.7,2.2,1.2,0.8,0.7,0.6,0.7,0.8,1.2,2.2,4.7,11,33,110]},"high":{"8":[31,3.4,0.9,0.5,0.4,0.5,0.9,3.4,31],"9":[43,5.3,1.3,0.6,0.5,0.5,0.6,1.3,5.3,43],"10":[76,8.9,1.9,0.8,0.5,0.4,0.5,0.8,1.9,8.9,76],"11":[120,14,2.8,0.9,0.6,0.5,0.5,0.6,0.9,2.8,14,120],"12":[170,22,4.4,1.4,0.7,0.5,0.5,0.5,0.7,1.4,4.4,22,170],"13":[260,33,6.5,1.9,0.9,0.6,0.5,0.5,0.6,0.9,1.9,6.5,33,260],"14":[420,52,9.9,2.8,1.2,0.7,0.5,0.5,0.5,0.7,1.2,2.8,9.9,52,420],"15":[620,79,15,4.1,1.6,0.8,0.6,0.5,0.5,0.6,0.8,1.6,4.1,15,79,620],"16":[1000,110,23,5.8,2.2,1.1,0.7,0.5,0.5,0.5,0.7,1.1,2.2,5.8,23,110,1000]}}, PLINKO_MAXWIN = 100000;
+function minesLayout(floats, mines) {
+  var a = []; for (var i = 0; i < 25; i++) a.push(i);
+  for (var k = 24, n = 0; k > 0; k--, n++) { var j = Math.floor(floats[n] * (k + 1)); var t = a[k]; a[k] = a[j]; a[j] = t; }
+  return a.slice(0, mines).sort(function (x, y) { return x - y; });
+}
+
+function plinkoPath(floats, rows) { var p = []; for (var i = 0; i < rows; i++) p.push(floats[i] < 0.5 ? 0 : 1); return p; }
+var enc = new TextEncoder();
+function hex(b){ return Array.from(new Uint8Array(b), function(x){ return x.toString(16).padStart(2,'0'); }).join(''); }
+async function sha256(s){ return hex(await crypto.subtle.digest('SHA-256', enc.encode(s))); }
+async function hmacBlocks(server, client, nonce, count){
+  var key = await crypto.subtle.importKey('raw', enc.encode(server), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  var out = []; for (var i = 0; i < count; i++){ var msg = client + ':' + nonce + ':' + i; out.push({ msg: msg, bytes: new Uint8Array(await crypto.subtle.sign('HMAC', key, enc.encode(msg))) }); }
+  return out;
+}
+function floatsOf(blocks){ var f = []; blocks.forEach(function(b){ for (var j = 0; j + 4 <= 32; j += 4) f.push(b.bytes[j] / 256 + b.bytes[j+1] / 65536 + b.bytes[j+2] / 16777216 + b.bytes[j+3] / 4294967296); }); return f; }
+var R = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'], S = ['♠','♥','♦','♣'];
+function card(c, mod){ var r = R[c % 13], s = S[Math.floor(c / 13) % 4]; return '<span class="' + (s === '♥' || s === '♦' ? 'r' : '') + '">' + r + s + '</span>'; }
+function esc(t){ return String(t).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+async function run(){
+  var g = $('game').value, server = $('server').value.trim(), client = $('client').value.trim(), nonce = Math.floor(+$('nonce').value || 0), hash = $('hash').value.trim().toLowerCase();
+  var out = $('out'); if (!server || !client){ out.innerHTML = '<div class="card check bad">Paste the server seed and client seed first.</div>'; return; }
+  var h = await sha256(server), html = '<div class="card"><h2>1. Server seed hash</h2><p class="note">SHA-256 of the server seed:</p><code>' + h + '</code>';
+  if (hash) html += '<div class="check ' + (h === hash ? 'ok">✓ Matches the hash you were shown. The server seed was fixed before you played.' : 'bad">✗ Does not match the hash you entered.') + '</div>';
+  html += '</div>';
+  var need = g === 'blackjack' ? 39 : g === 'plinko' ? 2 : g === 'hilo' ? 2 : 3;
+  var blocks = await hmacBlocks(server, client, nonce, need), f = floatsOf(blocks);
+  html += '<div class="card"><h2>2. Random numbers</h2><p class="note">HMAC-SHA256 with the server seed as key. Paste any message into an online HMAC-SHA256 tool with the same key to see the same result.</p><table><tr><th>Message</th><th>HMAC-SHA256 (hex)</th></tr>';
+  blocks.slice(0, Math.min(blocks.length, 4)).forEach(function(b){ html += '<tr><td><code>' + esc(b.msg) + '</code></td><td><code>' + hex(b.bytes) + '</code></td></tr>'; });
+  if (blocks.length > 4) html += '<tr><td colspan="2" class="note">… ' + (blocks.length - 4) + ' more (Blackjack needs 312 numbers for the shoe)</td></tr>';
+  html += '</table><p class="note" style="margin-top:10px">First numbers: ' + f.slice(0, 8).map(function(x){ return x.toFixed(6); }).join(', ') + '</p></div>';
+  html += '<div class="card"><h2>3. Result</h2>';
+  if (g === 'mines'){
+    var m = Math.max(1, Math.min(24, Math.floor(+$('mines').value || 3))), set = minesLayout(f, m), cells = '';
+    for (var i = 0; i < 25; i++) cells += '<i class="' + (set.indexOf(i) >= 0 ? 'm' : '') + '">' + (set.indexOf(i) >= 0 ? '💣' : '💎') + '</i>';
+    html += '<p class="note">Mine tiles (0 = top left, counting across): <b>' + set.join(', ') + '</b></p><div class="mines">' + cells + '</div>';
+  } else if (g === 'plinko'){
+    var rows = Math.max(8, Math.min(16, Math.floor(+$('rows').value || 8))), risk = $('risk').value, path = plinkoPath(f, rows), slot = path.reduce(function(a, b){ return a + b; }, 0);
+    html += '<p class="note">Bounces: <b>' + path.map(function(x){ return x ? 'R' : 'L'; }).join(' ') + '</b><br>Landed in slot ' + slot + ' of ' + rows + ' → <b>' + PLINKO[risk][rows][slot] + '×</b></p>';
+  } else if (g === 'hilo'){
+    html += '<p class="note">Cards after you bet, in order (one per guess or skip):</p><div class="cards">' + f.slice(0, 12).map(function(x){ return card(Math.floor(x * 52)); }).join('') + '</div>';
+  } else {
+    var ints = []; blocks.forEach(function(b){ for (var j = 0; j + 4 <= 32; j += 4) ints.push(((b.bytes[j] << 24) >>> 0) + (b.bytes[j+1] << 16) + (b.bytes[j+2] << 8) + b.bytes[j+3]); });
+    var shoe = []; for (var d = 0; d < 6; d++) for (var c = 0; c < 52; c++) shoe.push(c);
+    for (var k = shoe.length - 1, n = 0; k > 0; k--, n++){ var r = ints[n] % (k + 1); var t = shoe[k]; shoe[k] = shoe[r]; shoe[r] = t; }
+    html += '<p class="note">The shoe is dealt from the top. With 1 hand: your 1st card, dealer up card, your 2nd card, dealer hole card, then hits in order.</p><div class="cards">' + shoe.slice(0, 14).map(function(c){ return card(c); }).join('') + '</div>';
+  }
+  out.innerHTML = html + '</div>';
+}
+function $(id){ return document.getElementById(id); }
+function sync(){ var g = $('game').value; $('pMines').hidden = g !== 'mines'; $('pRows').hidden = $('pRisk').hidden = g !== 'plinko'; }
+$('game').onchange = sync; $('go').onclick = run;
+var q = new URLSearchParams(location.search); ['game','server','hash','client','nonce','mines','rows','risk'].forEach(function(k){ if (q.get(k) !== null) $(k).value = q.get(k); });
+sync(); if (q.get('server')) run();
+</script></main></body></html>
