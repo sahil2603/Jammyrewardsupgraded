@@ -5169,6 +5169,33 @@ html.ice .hx-wm-glow{background:radial-gradient(ellipse 38% 50% at 28% 55%,rgba(
 .gm-win span small{display:block;color:var(--faint);font-size:.72rem}
 .gm-win em{font-style:normal;font-weight:800;color:#86efac;font-variant-numeric:tabular-nums}
 .gm-win em.lo{color:var(--faint);font-weight:600}
+#gmFeed.gm-feed-list{display:block}
+.gm-row{display:grid;grid-template-columns:minmax(150px,1.3fr) minmax(110px,1fr) 90px 100px 100px 110px;align-items:center;gap:12px;padding:8px 12px;border-radius:12px;font-size:.86rem;font-variant-numeric:tabular-nums}
+.gm-row:not(.gm-rhead){animation:gmIn .45s cubic-bezier(.2,.9,.3,1.2)}
+.gm-row:not(.gm-rhead):nth-child(even){background:rgba(255,255,255,.03)}
+.gm-rhead{font-size:.72rem;font-weight:600;color:var(--faint);padding-top:2px;padding-bottom:6px}
+.gm-rhead span{font-size:.72rem!important;color:var(--faint)!important;font-weight:600!important}
+.gm-row .c-b,.gm-row .c-m,.gm-row .c-r{text-align:right}
+.gm-row .c-g{display:flex;align-items:center;gap:10px;min-width:0}
+.gm-row .c-g b{font-weight:600;color:#fff}
+.gm-row .c-g small{display:none;color:var(--faint);font-size:.72rem}
+.gm-row .c-u{color:#e2e8f0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gm-row .c-t{color:var(--faint);font-size:.8rem}
+.gm-row .c-b{color:#e2e8f0}
+.gm-row .gm-wi{width:30px;height:30px;flex:none;padding:2px;border-radius:9px;background:rgba(5,16,30,.6);display:grid;place-items:center;font-style:normal}
+.gm-row .gm-wi svg{width:100%;height:100%}
+.gm-row .c-m{font-weight:700;color:#cbd5e1}
+.gm-row .c-r{font-weight:800}
+.gm-row.w .c-m,.gm-row.w .c-r{color:#86efac}
+.gm-row.l .c-r{color:#fca5a5}
+.gm-row.e .c-r{color:#cbd5e1}
+.gm-row.hot .c-m,.gm-row.hot .c-r{color:#fde047}
+@media (max-width:700px){
+  .gm-row{grid-template-columns:minmax(0,1fr) 64px 76px;gap:8px;padding:8px 8px}
+  .gm-row .c-u,.gm-row .c-t,.gm-row .c-b{display:none}
+  .gm-row .c-g small{display:block}
+  .gm-rhead .c-u,.gm-rhead .c-t{display:none}
+}
 @keyframes gmIn{from{opacity:0;transform:translateY(8px) scale(.98)}}
 
 .gm-play-bar{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
@@ -14597,18 +14624,33 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     }catch(e){}
   }
 
-  function rowHtml(x){
-    var won = x.payout > x.wagered;
-    return '<div class="gm-win"><i>' + (ICON[x.game] || '🎮') + '</i><span>' + esc(x.user) + '<small>' + (GAMES[x.game] || x.game) + ' · ' + (x.mult || 0).toFixed(2) + '×</small></span>'
-      + '<em class="' + (won ? '' : 'lo') + '">' + (won ? '+' + fmt(x.payout - x.wagered) : fmt(x.payout)) + '</em></div>';
+  /* each round: game art, player and how long ago, the bet, and the result (profit / loss / even) with its multiplier */
+  var ART = {};
+  document.querySelectorAll('.gm-card[data-game]').forEach(function(c){ var sv = c.querySelector('.gm-art svg'); if(sv) ART[c.dataset.game] = sv.outerHTML; });
+  function ago(t){
+    var s = Math.max(0, Math.round((Date.now() - Number(t || 0)) / 1000));
+    if(!t) return ''; if(s < 45) return 'just now'; if(s < 3600) return Math.round(s / 60) + 'm ago'; if(s < 86400) return Math.round(s / 3600) + 'h ago'; return Math.round(s / 86400) + 'd ago';
   }
+  function rowHtml(x){
+    var w = Number(x.wagered) || 0, p = Number(x.payout) || 0, net = Math.round((p - w) * 100) / 100, m = Number(x.mult) || 0;
+    var kind = net > 0 ? 'w' : net < 0 ? 'l' : 'e';
+    var res = kind === 'w' ? '+' + fmt(net) : kind === 'l' ? '−' + fmt(-net) : '0';
+    return '<div class="gm-row ' + kind + (m >= 10 ? ' hot' : '') + '">'
+      + '<span class="c-g"><i class="gm-wi">' + (ART[x.game] || ICON[x.game] || '🎮') + '</i><span><b>' + (GAMES[x.game] || x.game) + '</b><small>' + esc(x.user) + '</small></span></span>'
+      + '<span class="c-u">' + esc(x.user) + '</span>'
+      + '<span class="c-t">' + ago(x.at) + '</span>'
+      + '<span class="c-b">' + fmt(w) + '</span>'
+      + '<span class="c-m">' + m.toFixed(2) + '×</span>'
+      + '<span class="c-r">' + res + '</span></div>';
+  }
+  var FEED_HEAD = '<div class="gm-row gm-rhead"><span class="c-g">Game</span><span class="c-u">Player</span><span class="c-t">Time</span><span class="c-b">Bet</span><span class="c-m">Multiplier</span><span class="c-r">Profit</span></div>';
   async function pollFeed(){
     clearTimeout(FEED_T);
     var pg = $('games'); if(!pg || !pg.classList.contains('show') || document.hidden){ FEED_T = setTimeout(pollFeed, 8000); return; }
     try{
       var r = await fetch(AUTH_API + '/api/games/feed'); var d = await r.json();
       var list = (d.recent || []).slice(0, 10);
-      $('gmFeed').innerHTML = list.length ? list.map(rowHtml).join('') : '<div class="gm-feed-empty">No rounds yet. Be the first to play.</div>';
+      $('gmFeed').innerHTML = list.length ? FEED_HEAD + list.map(rowHtml).join('') : '<div class="gm-feed-empty">No rounds yet. Be the first to play.</div>';
     }catch(e){}
     FEED_T = setTimeout(pollFeed, 8000);
   }
