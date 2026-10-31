@@ -320,6 +320,37 @@ body{background:radial-gradient(1100px 600px at 70% -10%,rgba(56,189,248,.18),tr
 @keyframes netWait{from{background-position:120% 0}to{background-position:-120% 0}}
 .fair-chk{margin-top:14px;font-size:.84rem;color:var(--muted,#9fb3d1)}.fair-chk a{color:#7dd3fc}
 </style>
+<style>
+/* login gate: games are played with real Jammmy Coins only (no demo) */
+.game{position:relative}
+.jg-gate{position:absolute;inset:-2px;z-index:60;display:grid;place-items:center;padding:20px;border-radius:22px;background:rgba(6,10,22,.62);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+.jg-gate-card{max-width:380px;text-align:center;padding:26px 26px 24px;border-radius:20px;background:linear-gradient(180deg,#14203a,#0c1426);border:1px solid rgba(125,211,252,.22);box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.jg-gate-card img{width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 6px 14px rgba(0,0,0,.4))}
+.jg-gate-card h3{margin:10px 0 6px;font-size:1.3rem;color:#fff}
+.jg-gate-card p{margin:0 0 16px;color:#b6c4dc;font-size:.92rem;line-height:1.5}
+.jg-gate-card a,.jg-gate-card button{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:12px;border:0;background:#5865f2;color:#fff;font:700 .95rem inherit;text-decoration:none;cursor:pointer}
+.jg-gate-card a:hover,.jg-gate-card button:hover{background:#4752c4}
+.jg-gate-card a svg{width:20px;height:20px}
+body.jg-gated .bal{visibility:hidden}
+</style>
+<script>
+/* Shows the login gate over the game. why: 'login' | 'soon' | 'blocked' | 'net' */
+function jgGate(why, name) {
+  document.body.classList.add('jg-gated');
+  var g = document.querySelector('.game'); if (!g) return;
+  var old = g.querySelector('.jg-gate'); if (old) old.remove();
+  var dc = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.3 4.4A19.6 19.6 0 0 0 15.4 3l-.6 1.3a18 18 0 0 0-5.6 0L8.6 3a19.6 19.6 0 0 0-4.9 1.5C.6 9.1-.3 13.6.1 18.1a19.8 19.8 0 0 0 6 3l1.3-2.1a12.8 12.8 0 0 1-2-1l.5-.4a14.1 14.1 0 0 0 12.2 0l.5.4a12.8 12.8 0 0 1-2 1l1.3 2.1a19.7 19.7 0 0 0 6-3c.5-5.2-.9-9.7-3.6-13.7zM8.3 15.3c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4zm7.4 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4z"/></svg>';
+  var t, p, btn;
+  if (why === 'soon') { t = (name || 'This game') + ' is coming soon'; p = 'It opens for everyone very soon. Check back shortly.'; btn = ''; }
+  else if (why === 'blocked') { t = 'You can\'t play right now'; p = 'Your account can\'t play Jammmy Games. Contact a mod on Discord if you think this is a mistake.'; btn = ''; }
+  else if (why === 'net') { t = 'Couldn\'t reach the server'; p = 'Check your connection and try again.'; btn = '<button type="button" onclick="location.reload()">Try again</button>'; }
+  else { t = 'Log in to play'; p = 'Jammmy Games are played with your Jammmy Coins. Log in with Discord to start playing.'; btn = '<a href="../" target="_top" onclick="return jgLogin()">' + dc + 'Log in with Discord</a>'; }
+  g.insertAdjacentHTML('beforeend', '<div class="jg-gate" role="dialog" aria-label="' + t + '"><div class="jg-gate-card"><img src="../jar-clean.webp" alt=""><h3>' + t + '</h3><p>' + p + '</p>' + btn + '</div></div>');
+  var n = document.getElementById('notices'); if (n) n.innerHTML = '';
+}
+/* no playing behind the gate with the keyboard */
+window.addEventListener('keydown', function (e) { if (document.body.classList.contains('jg-gated') && !/INPUT|TEXTAREA|SELECT/.test((e.target.tagName || ''))) e.stopImmediatePropagation(); }, true);
+</script>
 </head>
 <body>
 <header class="top">
@@ -597,7 +628,7 @@ var JX = (function () {
     var tab = document.createElement('button'); tab.className = 'tab'; tab.type = 'button'; tab.dataset.tab = 'session'; tab.textContent = 'Session stats';
     var tabs = head.querySelectorAll('.tab'); tabs[tabs.length - 1].after(tab);
     var box = document.createElement('div'); box.className = 'jx-sess hide'; box.id = 'jxSess';
-    box.innerHTML = '<div class="jx-tiles" id="jxTiles"></div><div class="jx-gw"><canvas id="jxGraph" aria-label="Profit graph for this session"></canvas></div><div class="jx-foot"><span>Since you opened this game. Demo coins.</span><button type="button" id="jxReset">Reset stats</button></div>';
+    box.innerHTML = '<div class="jx-tiles" id="jxTiles"></div><div class="jx-gw"><canvas id="jxGraph" aria-label="Profit graph for this session"></canvas></div><div class="jx-foot"><span>Since you opened this game.</span><button type="button" id="jxReset">Reset stats</button></div>';
     table.after(box);
     head.querySelectorAll('.tab').forEach(function (t) {
       t.addEventListener('click', function () {
@@ -984,11 +1015,7 @@ async function commonInit() {
   try { BETS.mine = JSON.parse(store.get('jo_bets_' + GAME.key, '[]')) || []; } catch (e) { BETS.mine = []; }
   BETS.all = BETS.mine.slice();
   renderBets();
-  var why = live.why === 'soon' ? '<b>' + GAME.name + ' is coming soon.</b> Try it now with demo coins.'
-    : live.why === 'blocked' ? '<b>Your account can\'t play for coins.</b> You can still try the demo.'
-    : live.why === 'net' ? '<b>Couldn\'t reach the server.</b> Playing with demo coins for now.'
-    : '<b>Demo coins.</b> <a href="../" target="_top" onclick="return jgLogin()">Log in with Discord</a> to play with your Jammmy Coins.';
-  notice('<span>' + why + '</span><button type="button" class="sw" onclick="refillDemo()">Refill demo coins</button>');
+  jgGate(live.why, GAME.name);
   await fairInit();
   return null;
 }
