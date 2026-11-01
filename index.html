@@ -14958,11 +14958,11 @@ window.fruitSvg = function(key){
     var o = $('agSeedsOut'); o.textContent = 'Loading…';
     var d = await call('/api/admin/game-seeds'); if(d.error){ o.textContent = d.error; return; }
     var short = function(h){ return '<code title="' + esc(h) + '">' + esc(String(h || '').slice(0, 16)) + '…</code>'; };
-    o.innerHTML = '<b>Active seeds (hashed)</b><table class="ag-tbl"><tr><th>Player</th><th>Server seed hash</th><th>Next hash</th><th>Client seed</th><th>Bets</th></tr>'
-      + (d.active.map(function(r){ return '<tr><td>' + esc(r.username || r.user_id) + '</td><td>' + short(r.server_hash) + '</td><td>' + short(r.next_hash) + '</td><td><code>' + esc(r.client_seed) + '</code></td><td>' + r.nonce + '</td></tr>'; }).join('') || '<tr><td colspan="5">None yet</td></tr>') + '</table>'
-      + '<b style="display:block;margin-top:14px">Revealed seeds (unhashed)</b><table class="ag-tbl"><tr><th>Player</th><th>Server seed</th><th>Hash</th><th>Client seed</th><th>Bets</th><th></th></tr>'
-      + (d.revealed.map(function(r){ var q = 'verify.html?game=mines&server=' + encodeURIComponent(r.server_seed) + '&hash=' + encodeURIComponent(r.server_hash) + '&client=' + encodeURIComponent(r.client_seed) + '&nonce=1';
-          return '<tr><td>' + esc(r.username || r.user_id) + '</td><td>' + short(r.server_seed) + '</td><td>' + short(r.server_hash) + '</td><td><code>' + esc(r.client_seed) + '</code></td><td>' + r.nonces + '</td><td><a href="' + q + '" target="_blank" rel="noopener">Check</a></td></tr>'; }).join('') || '<tr><td colspan="6">No rotations yet</td></tr>') + '</table>';
+    o.innerHTML = '<b>Active seeds (hashed)</b><table class="ag-tbl"><tr><th>Player</th><th>Game</th><th>Server seed hash</th><th>Next hash</th><th>Client seed</th><th>Bets</th></tr>'
+      + (d.active.map(function(r){ return '<tr><td>' + esc(r.username || r.user_id) + '</td><td>' + esc(NAMES[r.game] || r.game || '') + '</td><td>' + short(r.server_hash) + '</td><td>' + short(r.next_hash) + '</td><td><code>' + esc(r.client_seed) + '</code></td><td>' + r.nonce + '</td></tr>'; }).join('') || '<tr><td colspan="5">None yet</td></tr>') + '</table>'
+      + '<b style="display:block;margin-top:14px">Revealed seeds (unhashed)</b><table class="ag-tbl"><tr><th>Player</th><th>Game</th><th>Server seed</th><th>Hash</th><th>Client seed</th><th>Bets</th><th></th></tr>'
+      + (d.revealed.map(function(r){ var q = 'verify.html?game=' + (r.game || 'mines') + '&server=' + encodeURIComponent(r.server_seed) + '&hash=' + encodeURIComponent(r.server_hash) + '&client=' + encodeURIComponent(r.client_seed) + '&nonce=1';
+          return '<tr><td>' + esc(r.username || r.user_id) + '</td><td>' + esc(r.game ? (NAMES[r.game] || r.game) : 'All (old)') + '</td><td>' + short(r.server_seed) + '</td><td>' + short(r.server_hash) + '</td><td><code>' + esc(r.client_seed) + '</code></td><td>' + r.nonces + '</td><td><a href="' + q + '" target="_blank" rel="noopener">Check</a></td></tr>'; }).join('') || '<tr><td colspan="6">No rotations yet</td></tr>') + '</table>';
   };
   window.agSavePage = async function(){
     var on = $('agPageOn').checked;
