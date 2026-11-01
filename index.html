@@ -10610,8 +10610,12 @@ var BOT_FIELDS = [
     ['kick_live_msg','area','Message when the stream starts']]],
   ['Discord', [
     ['dc_on','bool','Discord bot on'],['dc_dm_on','bool','DM players (redemption paid, slot played, invite rewards)'],
-    ['dc_announce_ch','text','Announcements channel ID','Right-click the channel in Discord → Copy Channel ID (turn on Developer Mode first).'],['dc_staff_ch','text','Staff alerts channel ID','New joins that look like alts or blocked players get posted here.'],
-    ['dc_guess_ch','text','Guesses channel ID','While guessing is open, every message in this channel counts as a guess (in $). The bot reacts ✅ when it is saved.'],
+    ['dc_announce_ch','text','Live notis channel ID','Going live, your announcements and tests. Also used for any channel below that is left empty. Right-click the channel in Discord → Copy Channel ID (turn on Developer Mode first).'],
+    ['dc_drops_ch','text','Drops channel ID','Code drops.'],
+    ['dc_results_ch','text','Results channel ID','Bonus hunt results and challenge winners.'],
+    ['dc_challenges_ch','text','Challenges channel ID','New challenges.'],
+    ['dc_guess_ch','text','Guess the balance channel ID','While guessing is open, every message in this channel counts as a guess (in $). The bot reacts ✅ when it is saved. Someone who guesses here AND on Kick gets 5 minutes to send their final guess, otherwise one is picked at random.'],
+    ['dc_staff_ch','text','Staff log channel ID','Blocked invite rewards and other staff alerts.'],
     ['dc_live_ping','text','Ping when live','e.g. @everyone, @here, <@&ROLE_ID> or leave empty.'],['dc_live_claim_coins','num','Coins on the "Claim" button when live'],['dc_live_claim_min','num','Minutes the live claim stays open'],
     ['dc_chat_on','bool','Coins for chatting in Discord'],['dc_chat_coins','num','Coins per reward'],['dc_chat_per_coin','num','Counted messages per reward'],['dc_chat_cooldown','num','Seconds between counted messages'],['dc_chat_min_chars','num','Minimum message length'],['dc_chat_cap','num','Max chat coins per person per day'],
     ['dc_ignore_channels','text','Channel IDs that don\'t count','Comma separated, e.g. a spam or bot-commands channel.'],
@@ -10689,7 +10693,7 @@ async function loadBotSettings(){
 async function saveBotSettings(){
   var body = {}, btn = document.getElementById('btSaveBtn'), msg = document.getElementById('btSaveMsg');
   document.querySelectorAll('#btSettings [data-bk]').forEach(function(el){ body[el.dataset.bk] = el.type === 'checkbox' ? el.checked : el.value; });
-  var badId = ['dc_announce_ch','dc_staff_ch','dc_verified_role'].filter(function(k){ return body[k] && /[^0-9\s]/.test(body[k]); });
+  var badId = ['dc_announce_ch','dc_staff_ch','dc_verified_role','dc_guess_ch','dc_drops_ch','dc_results_ch','dc_challenges_ch'].filter(function(k){ return body[k] && /[^0-9\s]/.test(body[k]); });
   if(badId.length){ msg.textContent = 'IDs are numbers only. Check: ' + badId.map(function(k){ return document.querySelector('[data-bk="' + k + '"]').parentNode.firstChild.textContent; }).join(', '); msg.style.color = '#f87171'; return; }
   btn.disabled = true; msg.textContent = 'Saving…'; msg.style.color = 'var(--muted)';
   var d = await botFetch('/api/admin/bot-settings', body);
@@ -15101,7 +15105,7 @@ window.fruitSvg = function(key){
     if(!d.hunt){ box.innerHTML = '<div class="bt-msg">No guessing yet.</div>'; return; }
     var E = d.entries || [];
     box.innerHTML = '<div class="bt-msg" style="margin:6px 0 0">' + (d.hunt.status === 'open' ? '🟢 Open' : d.hunt.status === 'closed' ? '🔒 Closed, waiting for the result' : d.hunt.status === 'cancelled' ? '❌ Cancelled, nobody paid' : '🏁 Finished at $' + n0(d.hunt.result)) + ' · prize ' + n0(d.hunt.prize) + ' coins · ' + E.length + ' guesses</div>'
-      + (E.length ? '<div class="bt-guesses"><table>' + E.map(function(e, i){ return '<tr' + (d.hunt.status === 'done' && i === 0 ? ' class="win"' : '') + '><td>' + (d.hunt.status === 'done' && i === 0 ? '🏆 ' : '') + esc(e.username || e.kick_username) + '</td><td>' + (e.source === 'discord' ? 'Discord' : 'Kick') + '</td><td style="text-align:right">$' + n0(e.guess) + '</td></tr>'; }).join('') + '</table></div>' : '');
+      + (E.length ? '<div class="bt-guesses"><table>' + E.map(function(e, i){ return '<tr' + (d.hunt.status === 'done' && i === 0 ? ' class="win"' : '') + '><td>' + (d.hunt.status === 'done' && i === 0 ? '🏆 ' : '') + esc(e.username || e.kick_username) + '</td><td>' + (e.source === 'discord' ? 'Discord' : 'Kick') + (e.confirm_by ? ' <span title="Guessed on both Kick and Discord: waiting for their final guess, otherwise one is picked at random" style="color:#fcd34d">⏳ choosing</span>' : '') + '</td><td style="text-align:right">$' + n0(e.guess) + (e.confirm_by && e.alt_guess != null ? ' <span style="color:var(--faint)">or $' + n0(e.alt_guess) + '</span>' : '') + '</td></tr>'; }).join('') + '</table></div>' : '');
   };
 })();
 </script>
