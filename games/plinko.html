@@ -280,9 +280,8 @@ body{background:radial-gradient(1100px 600px at 70% -10%,rgba(56,189,248,.18),tr
 .t.open{background:#071528}
 .amt,.amt-in{border-color:rgba(125,211,252,.18)}
 
-.net-wait{position:relative;transform:scale(.97);filter:brightness(1.15);transition:transform .08s}
-.net-wait::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.28) 50%,transparent 70%);background-size:220% 100%;animation:netWait .6s linear infinite}
-@keyframes netWait{from{background-position:120% 0}to{background-position:-120% 0}}
+.net-wait{transform:scale(.98);animation:netPulse .7s ease-in-out infinite;transition:transform .08s}
+@keyframes netPulse{50%{opacity:.75}}
 .fair-chk{margin-top:14px;font-size:.84rem;color:var(--muted,#9fb3d1)}.fair-chk a{color:#7dd3fc}
 @media (min-width:901px){.stage{align-self:start;position:sticky;top:12px;height:calc(100vh - 250px);min-height:440px!important}.pwrap{min-height:0!important}}
 </style>
@@ -821,7 +820,7 @@ function liveSeeds(sd) { if (sd) { LIVE_SEEDS = sd; fillFair(); } }
 /* a server answer while live: errors become a message, the balance is synced */
 function liveErr(e) { setMsg(e && e.message ? e.message : 'Network error, try again.'); if (e && e.data && typeof e.data.balance === 'number') liveBalance(e.data.balance); }
 function liveHist(r) { return { id: 'r' + r.id, rid: r.id, user: 'You', wagered: r.wagered, payout: r.payout, mult: r.mult, at: r.at, server_hash: r.server_hash, client_seed: r.client_seed, nonce: r.nonce, p: r.p }; }
-async function loadRevealed() { try { var d = await api('/api/games/seeds'); REVEALED = d.seeds || []; } catch (e) {} }
+async function loadRevealed() { try { var d = await api('/api/games/seeds?game=' + GAME.key); REVEALED = d.seeds || []; } catch (e) {} }
 function fillFairLive() {
   var box = $('fairBody'); if (!box) return;
   var sd = LIVE_SEEDS || {};
@@ -841,7 +840,7 @@ function fillFairLive() {
 async function rotateSeeds() {
   var b = $('rotBtn'); if (b) { b.disabled = true; b.textContent = 'Rotating…'; }
   try {
-    var d = await api('/api/games/rotate', { client_seed: ($('fClient') && $('fClient').value || '').trim() });
+    var d = await api('/api/games/rotate', { game: GAME.key, client_seed: ($('fClient') && $('fClient').value || '').trim() });
     LIVE_SEEDS = d.seeds; REVEALED.unshift({ server_seed: d.revealed.server_seed, server_hash: d.revealed.server_hash, client_seed: d.revealed.client_seed, nonces: d.revealed.nonces, rotated_at: Date.now() });
     toast('Seed pair rotated, old server seed revealed'); fillFair();
   } catch (e) { toast(e.message); if (b) { b.disabled = false; b.textContent = 'Rotate seed pair'; } }
@@ -1097,6 +1096,7 @@ function contact(b, r) { return { x: G.cx + (b.R[r] - r / 2) * G.s, y: G.y0 + r 
 function ballPos(b, now) {
   if (b.n !== G.n) return null;
   var t = (now - b.t0) / SP, n = b.path.length;
+  if (b.wait && t >= FIRST) { var cw = contact(b, 0), hop = Math.abs(Math.sin((t - FIRST) / 140)); return { x: G.cx, y: cw.y - G.s * 0.22 * hop * Math.max(0.35, 1 - (t - FIRST) / 900), a: 1 }; }
   if (t < FIRST) { var c0 = contact(b, 0), u = t / FIRST; return { x: G.cx, y: G.top + G.s * 0.15 + (c0.y - G.top - G.s * 0.15) * u * u, a: 1 }; }
   t -= FIRST;
   var r = Math.floor(t / SEG);
@@ -1111,13 +1111,14 @@ function ballPos(b, now) {
 function loop(now) {
   /* events: peg hits and landings */
   balls.forEach(function (b) {
+    if (b.wait) return;
     var t = (now - b.t0) / SP, n = b.path.length;
     var hit = t < FIRST ? -1 : Math.min(n - 1, Math.floor((t - FIRST) / SEG));
     while (b.hit < hit) { b.hit++; glow[b.hit + ':' + (b.R[b.hit] + 1)] = now; sPeg(); }
     if (!b.done && t >= FIRST + (n - 1) * SEG + LAST * 0.8) { b.done = true; land(b, now); }
   });
   var before = balls.length;
-  balls = balls.filter(function (b) { return !b.done || (now - b.t0) / SP < FIRST + (b.path.length - 1) * SEG + LAST + 40; });
+  balls = balls.filter(function (b) { return b.wait || !b.done || (now - b.t0) / SP < FIRST + (b.path.length - 1) * SEG + LAST + 40; });
   if (before && !balls.length) paintInfo();
   draw(now);
   if (balls.length || Object.keys(bounce).length || Object.keys(glow).length) RAF = requestAnimationFrame(loop); else RAF = 0;
@@ -1153,17 +1154,28 @@ async function drop(betOverride, auto) {
   if (LIVE) {
     INFLIGHT++; paintInfo();
     if (AUTO && auto) AUTO.req = (AUTO.req || 0) + 1;
+    /* the ball starts falling now: the drop to the first peg is the same every time, and it waits
+       there (hopping) until the server's answer says which way it goes */
+    var wb = { t0: performance.now(), wait: true, path: [], R: [0], n: ROWS, hit: -1, done: false, bet: bet, auto: !!auto };
+    balls.push(wb); walletAdd(-bet); SND.chip(); kick();
     try { var d = await api('/api/games/bet', { game: 'plinko', bet: bet, rows: ROWS, risk: RISK }); }
     catch (e) {
+      balls = balls.filter(function (x) { return x !== wb; }); walletAdd(bet); kick();
       INFLIGHT--; if (AUTO && auto) AUTO.req--; paintInfo();
       /* a busy moment ("too fast") is not a reason to stop auto: that ball is simply skipped */
       if (AUTO && auto && e.data && e.data.retry) return false;
       liveErr(e); if (AUTO) stopAuto(e.message); return false;
     }
     if (AUTO && auto) AUTO.req--;
-    INFLIGHT--;
     round = d.round; res = d.round.state; bal = d.balance; liveSeeds(d.seeds);
-    walletAdd(-bet); INFLIGHT++; paintInfo();
+    var R0 = [0];
+    for (var k = 0; k < res.path.length; k++) R0.push(R0[k] + res.path[k]);
+    var nowT = performance.now();
+    if ((nowT - wb.t0) / SP > FIRST) wb.t0 = nowT - FIRST * SP;   /* carry on from the first peg */
+    wb.path = res.path; wb.R = R0; wb.slot = res.slot; wb.mult = res.mult; wb.payout = res.payout; wb.n = res.path.length; wb.round = round; wb.bal = bal; wb.wait = false;
+    kick();
+    setTimeout(function () { INFLIGHT--; paintInfo(); }, (FIRST + (ROWS - 1) * SEG + LAST) * SP + 60);
+    return true;
   } else {
     walletAdd(-bet); INFLIGHT++; paintInfo();
     seeds = await fairTake(); var floats = await joFloats(seeds.server, seeds.client, seeds.nonce, ROWS);

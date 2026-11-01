@@ -315,9 +315,8 @@ body{background:radial-gradient(1100px 600px at 70% -10%,rgba(56,189,248,.18),tr
 .t.open{background:#071528}
 .amt,.amt-in{border-color:rgba(125,211,252,.18)}
 
-.net-wait{position:relative;transform:scale(.97);filter:brightness(1.15);transition:transform .08s}
-.net-wait::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.28) 50%,transparent 70%);background-size:220% 100%;animation:netWait .6s linear infinite}
-@keyframes netWait{from{background-position:120% 0}to{background-position:-120% 0}}
+.net-wait{transform:scale(.98);animation:netPulse .7s ease-in-out infinite;transition:transform .08s}
+@keyframes netPulse{50%{opacity:.75}}
 .fair-chk{margin-top:14px;font-size:.84rem;color:var(--muted,#9fb3d1)}.fair-chk a{color:#7dd3fc}
 </style>
 <style>
@@ -866,7 +865,7 @@ function liveSeeds(sd) { if (sd) { LIVE_SEEDS = sd; fillFair(); } }
 /* a server answer while live: errors become a message, the balance is synced */
 function liveErr(e) { setMsg(e && e.message ? e.message : 'Network error, try again.'); if (e && e.data && typeof e.data.balance === 'number') liveBalance(e.data.balance); }
 function liveHist(r) { return { id: 'r' + r.id, rid: r.id, user: 'You', wagered: r.wagered, payout: r.payout, mult: r.mult, at: r.at, server_hash: r.server_hash, client_seed: r.client_seed, nonce: r.nonce, p: r.p }; }
-async function loadRevealed() { try { var d = await api('/api/games/seeds'); REVEALED = d.seeds || []; } catch (e) {} }
+async function loadRevealed() { try { var d = await api('/api/games/seeds?game=' + GAME.key); REVEALED = d.seeds || []; } catch (e) {} }
 function fillFairLive() {
   var box = $('fairBody'); if (!box) return;
   var sd = LIVE_SEEDS || {};
@@ -886,7 +885,7 @@ function fillFairLive() {
 async function rotateSeeds() {
   var b = $('rotBtn'); if (b) { b.disabled = true; b.textContent = 'Rotating…'; }
   try {
-    var d = await api('/api/games/rotate', { client_seed: ($('fClient') && $('fClient').value || '').trim() });
+    var d = await api('/api/games/rotate', { game: GAME.key, client_seed: ($('fClient') && $('fClient').value || '').trim() });
     LIVE_SEEDS = d.seeds; REVEALED.unshift({ server_seed: d.revealed.server_seed, server_hash: d.revealed.server_hash, client_seed: d.revealed.client_seed, nonces: d.revealed.nonces, rotated_at: Date.now() });
     toast('Seed pair rotated, old server seed revealed'); fillFair();
   } catch (e) { toast(e.message); if (b) { b.disabled = false; b.textContent = 'Rotate seed pair'; } }

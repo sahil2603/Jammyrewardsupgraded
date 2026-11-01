@@ -363,9 +363,8 @@ body{background:radial-gradient(1100px 600px at 70% -10%,rgba(56,189,248,.18),tr
 .t.open{background:#071528}
 .amt,.amt-in{border-color:rgba(125,211,252,.18)}
 
-.net-wait{position:relative;transform:scale(.97);filter:brightness(1.15);transition:transform .08s}
-.net-wait::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.28) 50%,transparent 70%);background-size:220% 100%;animation:netWait .6s linear infinite}
-@keyframes netWait{from{background-position:120% 0}to{background-position:-120% 0}}
+.net-wait{transform:scale(.98);animation:netPulse .7s ease-in-out infinite;transition:transform .08s}
+@keyframes netPulse{50%{opacity:.75}}
 .fair-chk{margin-top:14px;font-size:.84rem;color:var(--muted,#9fb3d1)}.fair-chk a{color:#7dd3fc}
 </style>
 <style>
@@ -1207,17 +1206,24 @@ async function clearTable() {
 window.addEventListener('resize', function () { measureBase(); if (shown) fitCards(shown.hands.length); drawArc(); felt.querySelectorAll('.card,.chip,.val').forEach(function (e) { e.style.transition = 'none'; }); layout(); requestAnimationFrame(function () { felt.querySelectorAll('.card').forEach(function (e) { e.style.transition = ''; }); felt.querySelectorAll('.chip,.val').forEach(function (e) { e.style.transition = ''; }); }); });
 
 /* ───────────── playing out a round on the table ───────────── */
-async function animateDeal(pub) {
+/* the part of the deal that doesn't need the server: clear the table, shuffle, put the chips down.
+   It runs while the bet is on its way, so the cards come out as soon as the answer is back. */
+async function animatePrep(o) {
   await clearTable();
   $('idle').style.opacity = 0;
   SND.shuffle();
-  var seats = pub.seats || 1, i;
+  var seats = o.seats || 1, i;
   shown = { dealer: [], hands: [] };
   for (i = 0; i < seats; i++) shown.hands.push([]);
   fitCards(seats);
-  for (i = 0; i < seats; i++) placeChip('main', pub.bet, i);
-  if (pub.side && pub.side.pp) placeChip('pp', pub.side.pp.bet); if (pub.side && pub.side.t21) placeChip('t21', pub.side.t21.bet);
+  for (i = 0; i < seats; i++) placeChip('main', o.bet, i);
+  if (o.pp > 0) placeChip('pp', o.pp); if (o.t21 > 0) placeChip('t21', o.t21);
   await wait(560 * SP);
+}
+async function animateDeal(pub, prep) {
+  if (prep) await prep;
+  else await animatePrep({ seats: pub.seats || 1, bet: pub.bet, pp: pub.side && pub.side.pp ? pub.side.pp.bet : 0, t21: pub.side && pub.side.t21 ? pub.side.t21.bet : 0 });
+  var seats = pub.seats || 1, i;
   /* round the table: first card to every hand, dealer up card, second card to every hand, hole card */
   for (i = 0; i < seats; i++) { var c1 = pub.hands[i].cards[0]; shown.hands[i].push(c1); addCard('h' + i + 'c0', c1, true); await wait(230 * SP); }
   shown.dealer.push(pub.dealer[0]); addCard('d0', pub.dealer[0], true); await wait(260 * SP);
@@ -1467,7 +1473,7 @@ function setBalance(v, animate) {
 
 /* instant feedback: whatever you just pressed shows it's working while the server answers */
 var _pressEl = null;
-document.addEventListener('pointerdown', function (e) { _pressEl = e.target && e.target.closest ? e.target.closest('button, .tile, #mgrid > *, [data-act]') : null; }, true);
+document.addEventListener('pointerdown', function (e) { _pressEl = e.target && e.target.closest ? e.target.closest('button, .tile, #mgrid > *, [data-act]') : null; if (_pressEl && _pressEl.closest('#insq')) _pressEl = null; }, true);
 async function api(path, body) {
   var _el = body ? _pressEl : null; _pressEl = null;
   if (_el) _el.classList.add('net-wait');
@@ -1492,9 +1498,11 @@ async function deal() {
   BUSY = true; updateControls();
   try {
     var pub, newBal;
+    var prep = null;
     if (MODE === 'live') {
+      prep = animatePrep({ seats: n.hands, bet: n.bet, pp: n.pp, t21: n.t21 });
       var d = await api('/api/games/bet', { game: 'blackjack', bet: n.bet, pp: n.pp, t21: n.t21, hands: n.hands });
-      if (d.error) { setMsg(d.error); if (d.resume) await loadState(); return; }
+      if (d.error) { await prep; await clearTable(); $('idle').style.opacity = 1; setMsg(d.error); if (d.resume) await loadState(); return; }
       pub = fromG(d.round); newBal = d.balance; SEEDS = d.seeds || SEEDS;
       setBalance(pub.phase === 'done' ? newBal - pub.result.total : newBal, false);
     } else {
@@ -1503,7 +1511,7 @@ async function deal() {
       setBalance(pub.phase === 'done' ? BAL - pub.result.total : BAL, false);
     }
     ROUND = pub;
-    await animateDeal(pub);
+    await animateDeal(pub, prep);
     if (pub.phase === 'done') { await animateFinish(pub); roundDone(pub, newBal); }
   } catch (e) { setMsg('Connection problem. Try again.'); console.error(e); }
   finally { BUSY = false; updateControls(); }
@@ -1514,6 +1522,7 @@ async function act(a) {
   var cost = a === 'insurance' ? ROUND.bet * (ROUND.seats || 1) / 2 : (a === 'double' || a === 'split') ? ROUND.hands[ROUND.active].bet : 0;
   if (cost > BAL) return setMsg(a === 'insurance' ? 'Not enough Jammmy Coins for insurance.' : 'Not enough Jammmy Coins to ' + a + '.');
   BUSY = true; updateControls();
+  if (a === 'insurance' || a === 'noinsurance') hideIns();
   try {
     var pub, newBal;
     if (MODE === 'live') {
@@ -1637,7 +1646,7 @@ function fillFairLive() {
 }
 async function rotateSeeds() {
   var b = $('rotBtn'); if (b) { b.disabled = true; b.textContent = 'Rotating…'; }
-  var d = await api('/api/games/rotate', { client_seed: ($('fClient').value || '').trim() });
+  var d = await api('/api/games/rotate', { game: 'blackjack', client_seed: ($('fClient').value || '').trim() });
   if (d.error) { toast(d.error); if (b) { b.disabled = false; b.textContent = 'Rotate seed pair'; } return; }
   SEEDS = d.seeds; REVEALED.unshift(d.revealed); toast('Seed pair rotated, old server seed revealed'); fillFair();
 }
@@ -1678,7 +1687,7 @@ async function loadState() {
     $('balTag').textContent = '';
     setBalance(d.balance, false);
     MINE = (d.mine || []).map(histG);
-    api('/api/games/seeds').then(function (x) { REVEALED = x.seeds || []; });
+    api('/api/games/seeds?game=' + 'blackjack').then(function (x) { REVEALED = x.seeds || []; });
     if (d.round) { ROUND = fromG(d.round); await renderStatic(ROUND); setMsg('Your hand is still in play.'); }
     if (IS_ADMIN) adminBar(); else notice('');
     return true;
