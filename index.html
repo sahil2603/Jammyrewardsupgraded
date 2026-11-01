@@ -8712,13 +8712,16 @@ function renderVaultPlayers(){
   var listEl = document.getElementById('vaultPlayers');
   if(!listEl) return;
   var f = _vaultPlayerCasinoFilter;
-  var filtered = !f ? _casinoWagersData
-    : f === 'verified' ? _casinoWagersData.filter(function(w){ return w.status === 'approved'; })
-    : f === 'unclaimed' ? _casinoWagersData.filter(function(w){ return w.status !== 'approved'; })
-    : _casinoWagersData.filter(function(w){ return w.casino === f; });
+  /* Jammy's own account isn't listed among the vault players (the totals above still include it) */
+  var VAULT_HIDE = ['liquiddogj'];
+  var list = _casinoWagersData.filter(function(w){ return VAULT_HIDE.indexOf(String(w.name || '').trim().toLowerCase()) < 0; });
+  var filtered = !f ? list
+    : f === 'verified' ? list.filter(function(w){ return w.status === 'approved'; })
+    : f === 'unclaimed' ? list.filter(function(w){ return w.status !== 'approved'; })
+    : list.filter(function(w){ return w.casino === f; });
 
   var countEl = document.querySelector('.vp-players .vpp-count');
-  if(countEl) countEl.textContent = '● ' + _casinoWagersData.length + ' Player' + (_casinoWagersData.length===1?'':'s');
+  if(countEl) countEl.textContent = '● ' + list.length + ' Player' + (list.length===1?'':'s');
 
   if(!filtered.length){
     listEl.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--faint)">'+(f === 'unclaimed' ? 'Everyone has claimed their username 🎉' : f === 'verified' ? 'No verified players yet.' : 'No wagering found here yet.')+'</div>';
