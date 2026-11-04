@@ -1787,6 +1787,17 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .lbx-note{display:flex;gap:10px;align-items:flex-start;padding:15px 18px;border-radius:14px;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.28)}
 .lbx-note p{margin:0;color:var(--muted);font-size:.87rem}.lbx-note b{color:#f59e0b}
 .lbx-note.cyan{background:rgba(34,211,238,.07);border-color:rgba(34,211,238,.28)}.lbx-note.cyan b{color:#22d3ee}
+.lbx-note a{color:#f59e0b;font-weight:700}
+.lbx-tc{border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);overflow:hidden}
+.lbx-tc summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px;cursor:pointer;font-weight:700;font-size:.92rem;color:#e2e8f0}
+.lbx-tc summary::-webkit-details-marker{display:none}
+.lbx-tc summary i{font-style:normal;color:var(--faint);transition:transform .2s}
+.lbx-tc[open] summary i{transform:rotate(45deg)}
+.lbx-tc summary:hover{background:rgba(255,255,255,.03)}
+.lbx-tc summary:focus-visible{outline:2px solid #f59e0b;outline-offset:-2px}
+.lbx-tc ol{margin:0;padding:4px 22px 18px 40px;display:grid;gap:10px;color:var(--muted);font-size:.86rem;line-height:1.55}
+.lbx-tc ol b{color:#e2e8f0}
+.lbx-tc ol a{color:#7dd3fc}
 @keyframes lbxUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @media (max-width:900px){.lbx-info{grid-template-columns:1fr 1fr}.lbx-cd{grid-column:1/-1;order:-1}}
 @media (max-width:640px){
@@ -2495,6 +2506,7 @@ html.lenis{scroll-behavior:auto!important}
 .hx-p-btns{display:flex;gap:10px}
 .hx-p-btns .hx-btn{flex:1}
 .hx-note{max-width:980px;margin:18px auto 140px;text-align:center;color:rgba(255,255,255,.5);font-size:.84rem;line-height:1.6}
+.hx-note a{color:#fbbf24;font-weight:600}
 .hx-note b{color:#f59e0b}
 
 /* ---------- LIVE ---------- */
@@ -6136,7 +6148,7 @@ body.maint-lock{overflow:hidden}
           </div>
         </article>
       </div>
-      <p class="hx-note hx-rv"><b>Leaderboard rule:</b> users must deposit more than the placement prize. If the deposit is less than the prize, the prize will be voided.</p>
+      <p class="hx-note hx-rv"><b>Leaderboard rules:</b> winners claim their prize by opening a ticket in our Discord, and wager abuse voids all rewards. <a href="#leaderboards" onclick="event.preventDefault(); showPage('leaderboards'); setTimeout(function(){ var t = document.getElementById('lbTerms'); if(t){ t.open = true; t.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }, 400)">Read the full terms</a></p>
 
       <!-- ===================== WATCH LIVE ===================== -->
       <section class="hx-live hx-rv" aria-label="Watch live">
@@ -6412,7 +6424,20 @@ body.maint-lock{overflow:hidden}
       </div>
 
       <div class="lbx-notes">
-        <div class="lbx-note"><span>⚠️</span><p><b>Note:</b> Users must deposit more than the placement prize. If the deposit is less than the prize, the prize will be voided.</p></div>
+        <div class="lbx-note"><span>⚠️</span><p><b>To claim a prize</b> open a ticket in our <a href="https://discord.gg/jammmy" target="_blank" rel="noopener">Discord</a> after the race ends. Wager abuse voids all rewards.</p></div>
+        <details class="lbx-tc" id="lbTerms">
+          <summary><span>📜 Leaderboard terms &amp; conditions</span><i aria-hidden="true">＋</i></summary>
+          <ol>
+            <li><b>Who can take part.</b> Only wagers on Power.win made under code <b>JAMMMY</b> during the race count. You must be 18 or older and allowed to gamble where you live.</li>
+            <li><b>One account per person.</b> Using more than one account, or playing on someone else's, gets every account involved disqualified.</li>
+            <li><b>Wager abuse.</b> If we find wager abuse, we hold every right to reject or withhold the rewards. This includes, but isn't limited to: bets placed only to farm wager with almost no risk, betting both sides or hedging between accounts, working with other players, bots or scripts, and exploiting bugs or promotions. Decisions are made by the Jammmy team and are final.</li>
+            <li><b>Claiming your prize.</b> Prizes are not sent automatically. Winners must open a ticket in our <a href="https://discord.gg/jammmy" target="_blank" rel="noopener">Discord</a> within <b>7 days</b> of the race ending, with their Power.win username and finishing place. Prizes not claimed within 7 days are void.</li>
+            <li><b>Proving it's you.</b> We may ask you to show that the Power.win account is yours, for example a screenshot while logged in. If you play with a hidden (incognito) name, you must be able to prove which account is yours to be paid.</li>
+            <li><b>Final standings.</b> The final places come from Power.win's own figures when the race ends. The live board on this page is for guidance and can be a few minutes behind.</li>
+            <li><b>Changes.</b> We can change, pause or end the leaderboard, its prizes or these terms at any time. Power.win's own terms apply to all play on Power.win.</li>
+            <li><b>Play responsibly.</b> Only gamble what you can afford to lose. If gambling stops being fun, take a break and reach out for support.</li>
+          </ol>
+        </details>
       </div>
     </div>
   </section>
