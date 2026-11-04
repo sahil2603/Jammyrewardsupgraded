@@ -15469,6 +15469,13 @@ window.fruitSvg = function(key){
 /* body: section menu on the left, content on the right */
 .uf-main{display:grid;grid-template-columns:210px 1fr;min-height:0}
 .uf-tabs{display:flex;flex-direction:column;gap:3px;padding:16px 12px;border-right:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.015);overflow:auto}
+#ufWrap .uf-tabs{scrollbar-width:none}
+#ufWrap .uf-tabs::-webkit-scrollbar{display:none}
+#ufWrap .uf-body,#ufWrap .uf-scroll{scrollbar-width:thin;scrollbar-color:rgba(148,163,184,.3) transparent}
+#ufWrap .uf-body::-webkit-scrollbar,#ufWrap .uf-scroll::-webkit-scrollbar{width:8px;height:8px}
+#ufWrap .uf-body::-webkit-scrollbar-track,#ufWrap .uf-scroll::-webkit-scrollbar-track{background:transparent}
+#ufWrap .uf-body::-webkit-scrollbar-thumb,#ufWrap .uf-scroll::-webkit-scrollbar-thumb{background:rgba(148,163,184,.28);border-radius:8px;border:2px solid #0a0f1e}
+#ufWrap .uf-body::-webkit-scrollbar-thumb:hover{background:rgba(148,163,184,.45)}
 .uf-tabs button{display:flex;align-items:center;gap:10px;padding:11px 12px;border:0;border-radius:12px;background:none;color:#94a3b8;font:600 .86rem 'Poppins';cursor:pointer;text-align:left}
 .uf-tabs button .ic{width:28px;height:28px;flex:none;display:grid;place-items:center;border-radius:9px;background:rgba(255,255,255,.05);font-size:.95rem}
 .uf-tabs button i{margin-left:auto;font-style:normal;font-size:.7rem;padding:1px 7px;border-radius:999px;background:rgba(255,255,255,.07);color:#cbd5e1}
