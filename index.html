@@ -8738,7 +8738,7 @@ function renderVaultPlayers(){
   if(!listEl) return;
   var f = _vaultPlayerCasinoFilter;
   /* Jammy's own account isn't listed among the vault players (the totals above still include it) */
-  var VAULT_HIDE = ['liquiddogj'];
+  var VAULT_HIDE = ['liquiddogj', 'jammmyraw'];
   var list = _casinoWagersData.filter(function(w){ return VAULT_HIDE.indexOf(String(w.name || '').trim().toLowerCase()) < 0; });
   var filtered = !f ? list
     : f === 'verified' ? list.filter(function(w){ return w.status === 'approved'; })
