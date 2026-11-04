@@ -11193,12 +11193,14 @@ async function loadAdminUsers(){
       var glow = u.is_admin ? '251,191,36' : u.is_mod ? '96,165,250' : '129,140,248';
       var safeName = u.username.replace(/'/g,"\\'");
       var actionsHtml = _adminModOnly ? '' : ('<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">'
+              + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#0ea5e9,#6366f1)" onclick="ufOpen(\''+u.discord_id+'\')">👤 Full profile</button>'
               + '<button class="admin-btn-row-action" onclick="adminAddCoinsPrompt(\''+u.discord_id+'\',\''+safeName+'\',1)">+ Add Coins</button>'
               + '<button class="admin-btn-row-action" style="background:linear-gradient(135deg,#dc2626,#991b1b)" onclick="adminAddCoinsPrompt(\''+u.discord_id+'\',\''+safeName+'\',-1)">− Deduct Coins</button>'
               + '<button class="admin-btn-row-action" style="background:'+(u.is_admin?'linear-gradient(135deg,#6b7280,#4b5563)':'linear-gradient(135deg,#f59e0b,#d97706)')+'" onclick="adminToggleAdmin(\''+u.discord_id+'\',\''+safeName+'\','+(!u.is_admin)+')">'+(u.is_admin?'Remove Admin':'Make Admin')+'</button>'
               + (u.is_admin ? '' : '<button class="admin-btn-row-action" style="background:'+(u.is_mod?'linear-gradient(135deg,#6b7280,#4b5563)':'linear-gradient(135deg,#3b82f6,#1d4ed8)')+'" onclick="adminToggleMod(\''+u.discord_id+'\',\''+safeName+'\','+(!u.is_mod)+')">'+(u.is_mod?'Remove Mod':'Make Mod')+'</button>')
             + '</div>');
-      return '<div class="battle-card" style="animation-delay:'+(Math.min(i,10)*0.04)+'s;--glow:'+glow+'">'
+      var openAttr = _adminModOnly ? '' : ' role="button" tabindex="0" title="Open full player file" onclick="if(!event.target.closest(\'button,a\'))ufOpen(\''+u.discord_id+'\')" onkeydown="if(event.key===\'Enter\'&&event.target===this)ufOpen(\''+u.discord_id+'\')"';
+      return '<div class="battle-card'+(_adminModOnly?'':' admin-user-open')+'"'+openAttr+' style="animation-delay:'+(Math.min(i,10)*0.04)+'s;--glow:'+glow+'">'
         + '<div class="battle-card-topbar" style="background:linear-gradient(90deg,rgb('+glow+'),rgba('+glow+',.4))"></div>'
         + '<div style="display:flex;gap:14px;padding:16px 18px;flex-wrap:wrap;--glow:'+glow+'">'
           + uavHtml(u.avatar, u.username, 46, 'uav-ring')
@@ -11265,7 +11267,7 @@ async function submitCoinModal(){
       body: JSON.stringify({ discord_id: _coinModal.id, amount: amt * _coinModal.dir, note: note })
     });
     var data = await res.json();
-    if(res.ok){ closeCoinModal(); if(document.getElementById('adminActiveTab').style.display === 'block') loadAdminActive(); else loadAdminUsers(); }
+    if(res.ok){ closeCoinModal(); if(document.getElementById('adminActiveTab').style.display === 'block') loadAdminActive(); else loadAdminUsers(); ufRefreshIfOpen(_coinModal.id); }
     else { err.textContent = data.error || 'Failed to adjust coins.'; validateCoinModal(); }
   }catch(e){ console.error('Add coins failed:', e); err.textContent = 'Network error — try again.'; validateCoinModal(); }
 }
@@ -11678,7 +11680,9 @@ async function secSetBlocked(id, blocked, reason){
   var d = await res.json().catch(function(){ return {}; });
   if(!res.ok) throw new Error(d.error || 'Failed.');
 }
+function ufRefreshIfOpen(id){ var w = document.getElementById('ufWrap'); if(w && w.classList.contains('on') && typeof ufOpen === 'function') ufOpen(id || _blk.id); }
 function secRefreshViews(){
+  ufRefreshIfOpen(_blk.id);
   var sec = document.getElementById('adminSecurityTab'), red = document.getElementById('adminRedemptionsTab');
   if(sec && sec.style.display !== 'none'){ loadAdminSecurity(); if(document.getElementById('secLookQ').value.trim() && document.getElementById('secLookOut').innerHTML) secLookup(); }
   if(red && red.style.display !== 'none') loadAdminRedemptions(_currentRedemptionFilter);
@@ -15422,6 +15426,243 @@ window.fruitSvg = function(key){
   };
   var _delAll = typeof vsDeleteAll === 'function' ? vsDeleteAll : null;
   if(_delAll) window.vsDeleteAll = vsDeleteAll = async function(){ await _delAll(); if(liveId() && vsFind(liveId()) < 0){ setLiveId(''); push(true); } };
+})();
+</script>
+<style>
+/* ===== Admin: player file (click a user in Admin → Users) ===== */
+#ufWrap{position:fixed;inset:0;z-index:9000;display:none}
+#ufWrap.on{display:block}
+#ufWrap .uf-dim{position:absolute;inset:0;background:rgba(3,6,16,.62);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);animation:ufFade .2s ease}
+#ufWrap .uf-panel{position:absolute;top:0;right:0;bottom:0;width:min(1040px,100%);background:#0b1020;border-left:1px solid rgba(125,211,252,.18);box-shadow:-30px 0 80px rgba(0,0,0,.55);display:flex;flex-direction:column;animation:ufIn .28s cubic-bezier(.2,.9,.25,1)}
+@keyframes ufIn{from{transform:translateX(40px);opacity:0}to{transform:none;opacity:1}}
+@keyframes ufFade{from{opacity:0}}
+.uf-head{padding:18px 22px 0;border-bottom:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,#121a33,#0b1020)}
+.uf-top{display:flex;gap:16px;align-items:center;flex-wrap:wrap;padding-right:52px}
+.uf-who{flex:1;min-width:220px}
+.uf-who h2{margin:0;font:400 1.6rem 'Lilita One',sans-serif;color:#fff;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.uf-who .uf-id{font:500 .78rem ui-monospace,monospace;color:var(--faint);cursor:pointer}
+.uf-who .uf-id:hover{color:#7dd3fc}
+.uf-badge{font:700 .66rem 'Poppins';letter-spacing:.06em;padding:3px 8px;border-radius:999px;border:1px solid;font-family:'Poppins'}
+.uf-badge.adm{color:#fbbf24;border-color:rgba(251,191,36,.4);background:rgba(251,191,36,.1)}
+.uf-badge.mod{color:#60a5fa;border-color:rgba(96,165,250,.4);background:rgba(96,165,250,.1)}
+.uf-badge.blk{color:#fca5a5;border-color:rgba(248,113,113,.5);background:rgba(220,38,38,.15)}
+.uf-badge.warn{color:#fcd34d;border-color:rgba(252,211,77,.4);background:rgba(252,211,77,.08)}
+.uf-bal{text-align:right}
+.uf-bal b{display:block;font:400 1.9rem 'Lilita One',sans-serif;color:#fbbf24;line-height:1}
+.uf-bal small{color:var(--faint);font-size:.78rem}
+.uf-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.uf-acts button{padding:8px 13px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#fff;font:600 .8rem 'Poppins';cursor:pointer}
+.uf-acts button:hover{background:rgba(255,255,255,.12)}
+.uf-acts .add{border-color:rgba(74,222,128,.45);color:#bbf7d0}
+.uf-acts .sub{border-color:rgba(248,113,113,.45);color:#fecaca}
+.uf-x{position:absolute;top:14px;right:16px;width:38px;height:38px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:#fff;font-size:1.2rem;cursor:pointer;z-index:2}
+.uf-tabs{display:flex;gap:4px;margin-top:14px;overflow-x:auto;scrollbar-width:none}
+.uf-tabs::-webkit-scrollbar{display:none}
+.uf-tabs button{flex:none;padding:10px 14px;border:0;border-bottom:2px solid transparent;background:none;color:var(--faint);font:600 .86rem 'Poppins';cursor:pointer}
+.uf-tabs button.on{color:#fff;border-bottom-color:#7dd3fc}
+.uf-tabs button i{font-style:normal;margin-left:5px;font-size:.7rem;padding:1px 6px;border-radius:999px;background:rgba(255,255,255,.08);color:#cbd5e1}
+.uf-body{flex:1;overflow:auto;padding:20px 22px 40px}
+.uf-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:18px}
+.uf-tile{padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07)}
+.uf-tile span{display:block;font-size:.72rem;color:var(--faint);margin-bottom:4px}
+.uf-tile b{font:700 1.05rem 'Poppins';color:#fff;font-variant-numeric:tabular-nums}
+.uf-tile b.pos{color:#86efac}.uf-tile b.neg{color:#fca5a5}.uf-tile b.gold{color:#fbbf24}
+.uf-tile small{display:block;color:var(--faint);font-size:.7rem;margin-top:2px}
+.uf-sec{margin:0 0 20px}
+.uf-sec h3{margin:0 0 10px;font:400 1.1rem 'Lilita One',sans-serif;color:#e2e8f0}
+.uf-sec p.uf-note{margin:-4px 0 10px;color:var(--faint);font-size:.78rem}
+.uf-tbl{width:100%;border-collapse:collapse;font-size:.82rem;font-variant-numeric:tabular-nums}
+.uf-tbl th{text-align:left;font-weight:600;color:var(--faint);font-size:.72rem;padding:6px 8px;border-bottom:1px solid rgba(255,255,255,.08);white-space:nowrap}
+.uf-tbl td{padding:8px;border-bottom:1px solid rgba(255,255,255,.05);color:#e2e8f0;vertical-align:top}
+.uf-tbl td.r,.uf-tbl th.r{text-align:right}
+.uf-tbl .pos{color:#86efac}.uf-tbl .neg{color:#fca5a5}.uf-tbl .dim{color:var(--faint)}
+.uf-tbl code{font:500 .74rem ui-monospace,monospace;color:#cbd5e1;word-break:break-all}
+.uf-scroll{overflow-x:auto;border:1px solid rgba(255,255,255,.06);border-radius:12px}
+.uf-kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.uf-kv div{padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);font-size:.84rem;color:#e2e8f0}
+.uf-kv div span{display:block;font-size:.7rem;color:var(--faint);margin-bottom:2px}
+.uf-st{display:inline-block;font:700 .68rem 'Poppins';padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.08);color:#cbd5e1}
+.uf-st.paid,.uf-st.approved,.uf-st.done{background:rgba(74,222,128,.14);color:#86efac}
+.uf-st.pending,.uf-st.play{background:rgba(252,211,77,.12);color:#fcd34d}
+.uf-st.rejected,.uf-st.cancelled{background:rgba(248,113,113,.14);color:#fca5a5}
+.uf-empty{padding:14px;border-radius:12px;background:rgba(255,255,255,.025);color:var(--faint);font-size:.84rem}
+.uf-flag{padding:10px 14px;border-radius:12px;margin-bottom:10px;font-size:.85rem;border:1px solid}
+.uf-flag.bad{background:rgba(220,38,38,.12);border-color:rgba(248,113,113,.4);color:#fecaca}
+.uf-flag.warn{background:rgba(252,211,77,.08);border-color:rgba(252,211,77,.35);color:#fde68a}
+.uf-filter{width:100%;max-width:320px;margin:0 0 10px;padding:9px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#fff;font:500 .84rem 'Poppins'}
+.uf-load{padding:60px 0;text-align:center;color:var(--faint)}
+.admin-user-open{cursor:pointer}
+#coinModal,#blkModal{z-index:9100}
+@media (max-width:640px){ .uf-head{padding:14px 14px 0} .uf-body{padding:16px 14px 40px} .uf-bal{text-align:left;width:100%} .uf-who h2{font-size:1.3rem} }
+</style>
+<script>
+/* ===== Admin: player file. Click a player in Admin → Users to see everything about them. ===== */
+(function(){
+  var UF = { id: null, d: null, tab: 'overview' };
+  var TX_NAMES = { rank_reward: 'Rank rewards', rank_reward_reversal: 'Rank rewards taken back', redemption: 'Redeemed', redemption_refund: 'Redemption refunds',
+    vault_distribution: 'Vault payouts', wager_revoked: 'Vault wager taken back', challenge: 'Challenges', games_lb_prize: 'Games leaderboard prizes',
+    slot_request_reward: 'Slot request rewards', daily: 'Daily claims', daily_claim: 'Daily claims', admin: 'Staff changes', admin_adjust: 'Staff changes', manual: 'Staff changes' };
+  var GAME = { blackjack: 'Blackjack', mines: 'Mines', plinko: 'Plinko', hilo: 'HiLo' };
+  function e(v){ return pccEsc(v == null ? '' : v); }
+  function c(n){ return fmtCoins(Number(n) || 0); }
+  function usd(n){ return '$' + (Number(n) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function txName(t){ return TX_NAMES[t] || String(t || 'other').replace(/_/g, ' ').replace(/^./, function(x){ return x.toUpperCase(); }); }
+  function when(v){
+    if(v == null || v === '') return '—';
+    var d = typeof v === 'number' || /^\d{10,}$/.test(String(v)) ? new Date(Number(v)) : new Date(String(v).indexOf('T') < 0 && String(v).indexOf('Z') < 0 ? String(v).replace(' ', 'T') + 'Z' : v);
+    if(isNaN(d)) return e(v);
+    return d.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  }
+  function ago(v){
+    if(!v) return '';
+    var d = typeof v === 'number' || /^\d{10,}$/.test(String(v)) ? Number(v) : Date.parse(String(v).indexOf('T') < 0 && String(v).indexOf('Z') < 0 ? String(v).replace(' ', 'T') + 'Z' : v);
+    if(!isFinite(d)) return ''; var s = (Date.now() - d) / 1000;
+    return s < 3600 ? Math.max(1, Math.round(s / 60)) + 'm ago' : s < 86400 ? Math.round(s / 3600) + 'h ago' : Math.round(s / 86400) + 'd ago';
+  }
+  function tile(label, val, cls, sub){ return '<div class="uf-tile"><span>' + label + '</span><b class="' + (cls || '') + '">' + val + '</b>' + (sub ? '<small>' + sub + '</small>' : '') + '</div>'; }
+  function sec(title, inner, note){ return '<div class="uf-sec"><h3>' + title + '</h3>' + (note ? '<p class="uf-note">' + note + '</p>' : '') + inner + '</div>'; }
+  function tbl(head, rows, empty){
+    if(!rows.length) return '<div class="uf-empty">' + (empty || 'Nothing yet.') + '</div>';
+    return '<div class="uf-scroll"><table class="uf-tbl"><tr>' + head.map(function(h){ var r = h.charAt(0) === '>'; return '<th' + (r ? ' class="r"' : '') + '>' + (r ? h.slice(1) : h) + '</th>'; }).join('') + '</tr>' + rows.join('') + '</table></div>';
+  }
+  function st(s){ return '<span class="uf-st ' + e(s) + '">' + e(s || '—') + '</span>'; }
+  function signed(n){ n = Number(n) || 0; return '<span class="' + (n > 0 ? 'pos' : n < 0 ? 'neg' : 'dim') + '">' + (n > 0 ? '+' : n < 0 ? '−' : '') + c(Math.abs(n)) + '</span>'; }
+
+  function ensure(){
+    var w = document.getElementById('ufWrap'); if(w) return w;
+    w = document.createElement('div'); w.id = 'ufWrap'; w.setAttribute('role', 'dialog'); w.setAttribute('aria-modal', 'true'); w.setAttribute('aria-label', 'Player file');
+    w.innerHTML = '<div class="uf-dim" onclick="ufClose()"></div><div class="uf-panel"><button class="uf-x" onclick="ufClose()" aria-label="Close">✕</button><div id="ufHead" class="uf-head"></div><div id="ufBody" class="uf-body"></div></div>';
+    document.body.appendChild(w);
+    document.addEventListener('keydown', function(ev){ if(ev.key === 'Escape' && w.classList.contains('on')) ufClose(); });
+    return w;
+  }
+  window.ufClose = function(){ var w = document.getElementById('ufWrap'); if(w) w.classList.remove('on'); document.body.style.overflow = ''; };
+  window.ufOpen = async function(id){
+    var w = ensure(); UF.id = id; UF.tab = 'overview';
+    w.classList.add('on'); document.body.style.overflow = 'hidden';
+    document.getElementById('ufHead').innerHTML = '<div style="height:70px"></div>';
+    document.getElementById('ufBody').innerHTML = '<div class="uf-load">Loading player file…</div>';
+    try{
+      var res = await fetch(AUTH_API + '/api/admin/user-detail?id=' + encodeURIComponent(id), { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jammy_session_token') } });
+      var d = await res.json();
+      if(UF.id !== id) return;
+      if(!res.ok){ document.getElementById('ufBody').innerHTML = '<div class="uf-empty">' + e(d.error || 'Could not load this player.') + '</div>'; return; }
+      UF.d = d; paintHead(); paint();
+    }catch(err){ document.getElementById('ufBody').innerHTML = '<div class="uf-empty">Network error — try again.</div>'; }
+  };
+  window.ufTab = function(t){ UF.tab = t; paintHead(); paint(); document.getElementById('ufBody').scrollTop = 0; };
+  window.ufCopy = function(v){ try{ navigator.clipboard.writeText(v); }catch(e){} };
+
+  function paintHead(){
+    var d = UF.d, u = d.user, nm = String(u.username || '').replace(/'/g, "\\'");
+    var flags = (u.is_admin ? '<span class="uf-badge adm">ADMIN</span>' : '') + (u.is_mod ? '<span class="uf-badge mod">MOD</span>' : '') + (u.is_blocked ? '<span class="uf-badge blk">BLOCKED</span>' : '')
+      + (d.security.linked.length ? '<span class="uf-badge warn">' + d.security.linked.length + ' linked account' + (d.security.linked.length > 1 ? 's' : '') + '</span>' : '');
+    var tabs = [['overview', 'Overview'], ['coins', 'Coins', d.coins.recent.length], ['redeem', 'Redemptions', d.redemptions.count], ['games', 'Games', d.games.rounds],
+      ['community', 'Community'], ['security', 'Security', d.security.ips.length], ['log', 'Staff log', d.staff_log.length]];
+    document.getElementById('ufHead').innerHTML = '<div class="uf-top">' + uavHtml(u.avatar, u.username || '?', 58, 'uav-ring')
+      + '<div class="uf-who"><h2>' + e(u.username) + ' ' + flags + '</h2><span class="uf-id" title="Copy Discord ID" onclick="ufCopy(\'' + e(u.discord_id) + '\');this.textContent=\'Copied ✓\'">' + e(u.discord_id) + ' ⧉</span></div>'
+      + '<div class="uf-bal"><b><img src="jammmy-coin.webp" class="coin-icon" alt=""> ' + c(u.coin_balance) + '</b><small>≈ ' + usd((Number(u.coin_balance) || 0) / 100) + ' · balance now</small></div></div>'
+      + '<div class="uf-acts"><button class="add" onclick="adminAddCoinsPrompt(\'' + e(u.discord_id) + '\',\'' + e(nm) + '\',1)">+ Add coins</button>'
+      + '<button class="sub" onclick="adminAddCoinsPrompt(\'' + e(u.discord_id) + '\',\'' + e(nm) + '\',-1)">− Deduct coins</button>'
+      + (u.is_admin ? '' : u.is_blocked ? '<button onclick="ufUnblock()">Unblock</button>' : '<button class="sub" onclick="openBlk(\'' + e(u.discord_id) + '\',\'' + e(nm) + '\')">Block</button>')
+      + '<button onclick="ufOpen(\'' + e(u.discord_id) + '\')">↻ Refresh</button></div>'
+      + '<div class="uf-tabs" role="tablist">' + tabs.map(function(t){ return '<button role="tab" class="' + (UF.tab === t[0] ? 'on' : '') + '" onclick="ufTab(\'' + t[0] + '\')">' + t[1] + (t[2] ? '<i>' + t[2] + '</i>' : '') + '</button>'; }).join('') + '</div>';
+  }
+  window.ufUnblock = async function(){ try{ await secSetBlocked(UF.id, false, ''); ufOpen(UF.id); }catch(err){ jmAlert(err.message); } };
+
+  function paint(){
+    var d = UF.d, b = document.getElementById('ufBody'), f = { overview: pOverview, coins: pCoins, redeem: pRedeem, games: pGames, community: pCommunity, security: pSecurity, log: pLog }[UF.tab];
+    b.innerHTML = f(d);
+  }
+  function pOverview(d){
+    var u = d.user, g = d.games, r = d.redemptions, a = d.accounts, cm = d.community, s = d.security;
+    var net = (g.paid || 0) - (g.wagered || 0), vis = cm.visits;
+    var out = '';
+    if(u.is_blocked) out += '<div class="uf-flag bad">Blocked' + (u.blocked_reason ? ': ' + e(u.blocked_reason) : '') + '</div>';
+    if(s.linked.length) out += '<div class="uf-flag warn">Shares a network, device or payout address with ' + s.linked.map(function(x){ return '<b>' + e(x.username || x.id) + '</b>'; }).join(', ') + '. See Security.</div>';
+    if(s.ips.some(function(x){ return x.vpn; })) out += '<div class="uf-flag warn">Has logged in from a VPN or hosting network.</div>';
+    if(g.open.length) out += '<div class="uf-flag warn">' + g.open.length + ' game round' + (g.open.length > 1 ? 's' : '') + ' still open (' + g.open.map(function(o){ return GAME[o.game] || o.game; }).join(', ') + ').</div>';
+    out += '<div class="uf-tiles">'
+      + tile('Balance', c(u.coin_balance), 'gold')
+      + tile('Coins received, all time', c(d.coins.earned), 'pos', 'everything credited')
+      + tile('Coins removed, all time', c(d.coins.spent), 'neg', 'redeems + deductions')
+      + tile('Redeemed (paid)', usd(r.paid_usd), '', c(r.paid_coins) + ' coins' + (r.pending_usd ? ' · ' + usd(r.pending_usd) + ' pending' : ''))
+      + tile('Games wagered', c(g.wagered), '', (g.rounds || 0).toLocaleString() + ' rounds')
+      + tile('Games result', (net >= 0 ? '+' : '−') + c(Math.abs(net)), net > 0 ? 'pos' : net < 0 ? 'neg' : '', net > 0 ? 'player is up' : net < 0 ? 'player is down' : '')
+      + tile('Joined', when(u.created_at).split(',')[0], '', ago(u.created_at))
+      + tile('Last on the site', vis && vis.last_at ? ago(vis.last_at) : '—', '', vis ? vis.days + ' days visited' : '')
+      + '</div>';
+    var casinos = a.casinos.length ? a.casinos.map(function(l){ return e(CASINO_DISPLAY_NAMES[l.casino] || l.casino) + ': <b>' + e(l.casino_username) + '</b> ' + st(l.status); }).join('<br>') : 'none';
+    var rk = a.rank, lb = g.monthly_lb;
+    out += sec('Accounts', '<div class="uf-kv">'
+      + '<div><span>Casino accounts</span>' + casinos + '</div>'
+      + '<div><span>Kick</span>' + (a.kick ? '<b>' + e(a.kick.kick_username) + '</b> · linked ' + when(a.kick.linked_at).split(',')[0] : 'not linked') + '</div>'
+      + '<div><span>Fruit rank</span>' + (rk && rk.rank_key ? '<b>' + e(rk.rank_key) + '</b> · ' + usd(rk.wager_usd) + ' counted' : 'no rank yet' + (rk ? ' · ' + usd(rk.wager_usd) + ' counted' : '')) + '</div>'
+      + '<div><span>Jammmy Games leaderboard (this month)</span>' + (lb ? (lb.staff ? 'staff, not ranked' : '<b>#' + lb.place + '</b> · ' + c(lb.wagered) + ' counted' + (lb.prize ? ' · prize ' + c(lb.prize) : '')) : 'not on the board') + '</div>'
+      + '<div><span>Daily claim</span>' + (u.last_daily_claim_at ? 'last ' + when(u.last_daily_claim_at) : 'never claimed') + (u.streak ? ' · ' + u.streak + '-day streak' : '') + '</div>'
+      + '<div><span>Discord</span>' + (cm.discord ? (Number(cm.discord.counted) || 0).toLocaleString() + ' counted messages · ' + c(cm.discord.coins) + ' coins' : 'no tracked activity') + '</div>'
+      + '</div>');
+    return out;
+  }
+  function pCoins(d){
+    var types = d.coins.by_type.map(function(t){ return '<tr><td>' + e(txName(t.type)) + '</td><td class="r">' + t.n + '</td><td class="r pos">' + (t.plus ? '+' + c(t.plus) : '—') + '</td><td class="r neg">' + (t.minus ? '−' + c(Math.abs(t.minus)) : '—') + '</td></tr>'; });
+    var rec = d.coins.recent.map(function(t){ return '<tr data-q="' + e((txName(t.type) + ' ' + (t.note || '')).toLowerCase()) + '"><td class="dim">' + when(t.created_at) + '</td><td>' + e(txName(t.type)) + '</td><td>' + e(t.note || '') + '</td><td class="r">' + signed(t.amount) + '</td></tr>'; });
+    return '<div class="uf-tiles">' + tile('Received, all time', c(d.coins.earned), 'pos') + tile('Removed, all time', c(d.coins.spent), 'neg') + tile('Balance now', c(d.user.coin_balance), 'gold') + '</div>'
+      + sec('Where their coins came from and went', tbl(['Type', '>Times', '>Credited', '>Removed'], types, 'No coin history.'), 'Jammmy Games bets and wins are on the Games tab, not here.')
+      + sec('Every coin movement (newest 150)', '<input class="uf-filter" placeholder="Filter, e.g. vault, rank, redeem…" oninput="ufFilter(this)">' + tbl(['When', 'Type', 'Note', '>Amount'], rec, 'No coin history.'));
+  }
+  window.ufFilter = function(inp){ var q = inp.value.trim().toLowerCase(); inp.parentNode.querySelectorAll('tr[data-q]').forEach(function(r){ r.style.display = !q || r.dataset.q.indexOf(q) >= 0 ? '' : 'none'; }); };
+  function pRedeem(d){
+    var r = d.redemptions;
+    var rows = r.list.map(function(x){
+      var to = x.wallet ? '<code>' + e(x.wallet) + '</code>' : x.platform_username ? e(x.platform_username) : '—';
+      return '<tr><td class="dim">' + when(x.created_at) + '</td><td><code>' + e(x.id) + '</code></td><td class="r">' + c(x.coins) + '</td><td class="r">' + usd(x.usd) + '</td><td>' + e(x.crypto || x.method || '') + '</td><td>' + to + '</td><td>' + st(x.status) + (x.reject_reason ? '<br><span class="dim">' + e(x.reject_reason) + '</span>' : '') + '</td><td class="dim">' + (x.paid_at ? when(x.paid_at) : '—') + '</td></tr>';
+    });
+    return '<div class="uf-tiles">' + tile('Paid out', usd(r.paid_usd), 'pos', c(r.paid_coins) + ' coins') + tile('Waiting', usd(r.pending_usd), r.pending_usd ? 'gold' : '') + tile('Requests', r.count) + '</div>'
+      + sec('Redemptions', tbl(['Requested', 'ID', '>Coins', '>Value', 'Method', 'Paid to', 'Status', 'Paid'], rows, 'No redemptions.'));
+  }
+  function pGames(d){
+    var g = d.games, net = (g.paid || 0) - (g.wagered || 0);
+    var per = g.by_game.map(function(x){ var n = (x.paid || 0) - (x.wagered || 0);
+      return '<tr><td><b>' + e(GAME[x.game] || x.game) + '</b></td><td class="r">' + x.rounds + '</td><td class="r">' + c(x.wagered) + '</td><td class="r">' + c(x.paid) + '</td><td class="r">' + signed(n) + '</td><td class="r">' + Math.round((x.wins || 0) / Math.max(1, x.rounds) * 100) + '%</td><td class="r">' + (Number(x.best_mult) || 0).toFixed(2) + '×</td><td class="r">' + c(x.best_payout) + '</td><td class="dim">' + ago(x.last_at) + '</td></tr>'; });
+    var rec = g.recent.map(function(x){ var n = (x.payout || 0) - (x.wagered || 0);
+      return '<tr><td class="dim">' + when(x.settled_at || x.created_at) + '</td><td>' + e(GAME[x.game] || x.game) + '</td><td class="r">' + c(x.wagered) + '</td><td class="r">' + (Number(x.mult) || 0).toFixed(2) + '×</td><td class="r">' + (x.phase === 'play' ? st('play') : signed(n)) + '</td><td class="r dim">#' + e(x.nonce) + '</td></tr>'; });
+    return '<div class="uf-tiles">' + tile('Rounds', (g.rounds || 0).toLocaleString()) + tile('Wagered', c(g.wagered)) + tile('Paid back', c(g.paid))
+      + tile('Player result', (net >= 0 ? '+' : '−') + c(Math.abs(net)), net > 0 ? 'pos' : net < 0 ? 'neg' : '', 'RTP ' + (g.wagered ? (g.paid / g.wagered * 100).toFixed(1) + '%' : '—'))
+      + tile('This month’s board', g.monthly_lb ? (g.monthly_lb.staff ? 'staff' : '#' + g.monthly_lb.place) : '—') + '</div>'
+      + sec('By game', tbl(['Game', '>Rounds', '>Wagered', '>Paid back', '>Result', '>Win rate', '>Best ×', '>Best win', 'Last played'], per, 'Hasn’t played any Jammmy Games yet.'))
+      + sec('Latest 40 rounds', tbl(['When', 'Game', '>Bet', '>Multiplier', '>Result', '>Round no.'], rec, 'No rounds.'), 'Round no. is the nonce for checking a round on the verify page.');
+  }
+  function pCommunity(d){
+    var cm = d.community, ib = cm.invited_by;
+    var out = '<div class="uf-tiles">'
+      + tile('Discord messages', cm.discord ? (Number(cm.discord.msgs) || 0).toLocaleString() : '—', '', cm.discord ? (Number(cm.discord.counted) || 0).toLocaleString() + ' counted · ' + c(cm.discord.coins) + ' coins' : '')
+      + tile('Site visits', cm.visits ? (Number(cm.visits.visits) || 0).toLocaleString() : '—', '', cm.visits ? cm.visits.days + ' days · ' + (Number(cm.visits.live_visits) || 0) + ' during streams' : '')
+      + tile('Invited', cm.invites.length, '', cm.invites.filter(function(x){ return x.rewarded; }).length + ' rewarded')
+      + tile('Hunt guesses', cm.hunt_guesses, '', cm.hunt_wins.length + ' won')
+      + tile('Challenges won', cm.challenge_wins.length)
+      + tile('Slot / battle requests', cm.slot_requests.length + ' / ' + cm.battles)
+      + '</div>';
+    out += sec('Invited by', ib ? '<div class="uf-kv"><div><span>Inviter</span><b>' + e(ib.inviter_name || ib.inviter_id || 'unknown') + '</b> · code ' + e(ib.code || '—') + ' · joined ' + when(ib.joined_at) + (ib.rewarded ? ' · inviter rewarded' : '') + '</div></div>' : '<div class="uf-empty">Joined without a tracked invite.</div>');
+    out += sec('People they invited', tbl(['Player', 'Joined', 'Rewarded'], cm.invites.map(function(x){ return '<tr><td>' + e(x.username || x.invitee_id) + '</td><td class="dim">' + when(x.joined_at) + '</td><td>' + (x.rewarded ? '✓' : '—') + '</td></tr>'; }), 'Nobody yet.'));
+    out += sec('Coins from the bot (Kick + Discord)', tbl(['Where', 'For', '>Times', '>Coins'], cm.bot.map(function(x){ return '<tr><td>' + e(x.platform || '') + '</td><td>' + e(String(x.kind || '').replace(/_/g, ' ')) + '</td><td class="r">' + x.n + '</td><td class="r pos">+' + c(x.coins) + '</td></tr>'; }), 'No bot coins.'));
+    out += sec('Hunt wins', tbl(['When', '>Final total', '>Prize'], cm.hunt_wins.map(function(x){ return '<tr><td class="dim">' + when(x.created_at) + '</td><td class="r">$' + (Number(x.result) || 0).toLocaleString() + '</td><td class="r pos">+' + c(x.prize) + '</td></tr>'; }), 'No hunt wins.'));
+    out += sec('Challenge wins', tbl(['When', '>Hit', '>Reward', 'Status'], cm.challenge_wins.map(function(x){ return '<tr><td class="dim">' + when(x.created_at) + '</td><td class="r">' + (Number(x.mult) || 0).toFixed(2) + '×</td><td class="r">' + c(x.reward) + '</td><td>' + st(x.status) + '</td></tr>'; }), 'No challenge wins.'));
+    out += sec('Slot requests', tbl(['When', 'Slot', 'Status', 'Result', '>Coins'], cm.slot_requests.map(function(x){ return '<tr><td class="dim">' + when(x.created_at) + '</td><td>' + e(x.slot) + '</td><td>' + st(x.status) + '</td><td>' + e(x.result || '—') + '</td><td class="r">' + (x.coins ? '+' + c(x.coins) : '—') + '</td></tr>'; }), 'No slot requests.'));
+    return out;
+  }
+  function pSecurity(d){
+    var s = d.security;
+    var ips = s.ips.map(function(x){ return '<tr><td><code>' + e(x.ip) + '</code></td><td>' + e(x.country || '—') + '</td><td>' + e(x.org || '—') + (x.vpn ? ' <span class="uf-badge warn">VPN / hosting</span>' : '') + '</td><td class="dim">' + when(x.first_seen) + '</td><td class="dim">' + when(x.last_seen) + '</td><td class="r">' + (x.hits || 0) + '</td></tr>'; });
+    var lk = s.linked.map(function(x){ return '<tr><td><b>' + e(x.username || x.id) + '</b>' + (x.blocked ? ' <span class="uf-badge blk">BLOCKED</span>' : '') + '<br><span class="dim"><code>' + e(x.id) + '</code></span></td><td>' + e((x.why || []).join(', ')) + '</td><td class="r">' + (x.coins != null ? c(x.coins) : '—') + (x.redeemed_usd ? '<br><span class="dim">' + usd(x.redeemed_usd) + ' redeemed</span>' : '') + '</td><td><button class="admin-btn-row-action" onclick="ufOpen(\'' + e(x.id) + '\')">Open</button></td></tr>'; });
+    return '<div class="uf-tiles">' + tile('Networks (IPs)', s.ips.length) + tile('Devices', s.devices) + tile('Linked accounts', s.linked.length, s.linked.length ? 'neg' : '') + '</div>'
+      + sec('Linked accounts', tbl(['Account', 'What they share', '>Balance', ''], lk, 'No other account shares a network, device or payout address with this one.'))
+      + sec('Networks they logged in from', tbl(['IP', 'Country', 'Network', 'First seen', 'Last seen', '>Visits'], ips, 'No networks recorded yet.'), 'IPs are stored partly hidden for privacy. They are still matched in full to find shared networks.');
+  }
+  function pLog(d){
+    var rows = d.staff_log.map(function(x){ return '<tr><td class="dim">' + when(x.created_at || x.at) + '</td><td>' + e(x.actor_name || x.actor_id) + '</td><td>' + e(x.summary || x.action) + '</td></tr>'; });
+    return sec('What staff did to this account', tbl(['When', 'Who', 'What'], rows, 'No staff actions on this account yet.'));
+  }
 })();
 </script>
 <script>
