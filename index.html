@@ -15800,8 +15800,10 @@ window.fruitSvg = function(key){
     var net = (g.paid || 0) - (g.wagered || 0), vis = cm.visits;
     var out = '';
     if(u.is_blocked) out += '<div class="uf-flag bad">Blocked' + (u.blocked_reason ? ': ' + e(u.blocked_reason) : '') + '</div>';
-    if(s.linked.length) out += '<div class="uf-flag warn">Shares a network, device or payout address with ' + s.linked.map(function(x){ return '<b>' + e(x.username || x.id) + '</b>'; }).join(', ') + '. See Security.</div>';
-    if(s.ips.some(function(x){ return x.vpn; })) out += '<div class="uf-flag warn">Has logged in from a VPN or hosting network.</div>';
+    /* the two warnings are hidden on Sahil's and Harsh's own profiles only (they share a network on purpose) */
+    var noFlags = String(u.discord_id) === '436003903818170368' || String(u.username || '').toLowerCase() === 'harsh057584';
+    if(!noFlags && s.linked.length) out += '<div class="uf-flag warn">Shares a network, device or payout address with ' + s.linked.map(function(x){ return '<b>' + e(x.username || x.id) + '</b>'; }).join(', ') + '. See Security.</div>';
+    if(!noFlags && s.ips.some(function(x){ return x.vpn; })) out += '<div class="uf-flag warn">Has logged in from a VPN or hosting network.</div>';
     if(g.open.length) out += '<div class="uf-flag warn">' + g.open.length + ' game round' + (g.open.length > 1 ? 's' : '') + ' still open (' + g.open.map(function(o){ return GAME[o.game] || o.game; }).join(', ') + ').</div>';
     out += '<div class="uf-tiles">'
       + tile('Balance', c(u.coin_balance), 'gold')
