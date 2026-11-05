@@ -1215,10 +1215,10 @@ function totalText(cards) {
 }
 function updateVals() {
   if (!shown) return;
-  var dv = valEl('dealer'); if (!dv.dataset.final) dv.textContent = totalText(shown.dealer); dv.style.opacity = shown.dealer.length ? 1 : 0;
+  var dv = valEl('dealer'); if (!dv.dataset.final) dv.textContent = totalText(shown.dealer); dv.style.opacity = shown.dealer.some(function (c) { return c >= 0; }) ? 1 : 0;
   shown.hands.forEach(function (cards, hi) {
-    var v = valEl('h' + hi); if (!v.dataset.final) v.textContent = totalText(cards); v.style.opacity = cards.length ? 1 : 0;
-    var t = bjTotal(cards).total; v.classList.toggle('bust', t > 21);
+    var v = valEl('h' + hi); if (!v.dataset.final) v.textContent = totalText(cards); v.style.opacity = cards.some(function (c) { return c >= 0; }) ? 1 : 0;
+    var t = bjTotal(cards.filter(function (c) { return c >= 0; })).total; v.classList.toggle('bust', t > 21);
     v.classList.toggle('active', !!(ROUND && ROUND.phase === 'player' && shown.hands.length > 1 && ROUND.active === hi));
   });
   felt.querySelectorAll('.val[data-k^="h"]').forEach(function (v) { if (+v.dataset.k.slice(1) >= shown.hands.length) v.remove(); });
@@ -1298,17 +1298,35 @@ async function animatePrep(o) {
   fitCards(seats);
   for (i = 0; i < seats; i++) placeChip('main', o.bet, i);
   if (o.pp > 0) placeChip('pp', o.pp); if (o.t21 > 0) placeChip('t21', o.t21);
-  await wait(560 * SP);
+  /* like Stake: the cards fly out face down straight away, while the bet is still on its way to the server.
+     They turn over the moment the answer is back, so there is no empty table to stare at. */
+  var STEP = 150;
+  await wait(90);
+  for (i = 0; i < seats; i++) { shown.hands[i].push(-1); addCard('h' + i + 'c0', -1, false); await wait(STEP); }
+  shown.dealer.push(-1); addCard('d0', -1, false); await wait(STEP);
+  for (i = 0; i < seats; i++) { shown.hands[i].push(-1); addCard('h' + i + 'c1', -1, false); await wait(STEP); }
+  shown.dealer.push(-1); addCard('d1', -1, false); await wait(260);
+}
+function dropPending(hi) {
+  var have = shown.hands[hi]; if (!have || have[have.length - 1] !== -1) return;
+  var k = 'h' + hi + 'c' + (have.length - 1); have.pop();
+  if (els[k]) { els[k].remove(); delete els[k]; }
+  layout();
+}
+function turnUp(key, c) {
+  var el = els[key]; if (!el) return;
+  setFace(el, c); el.classList.add('up'); SND.flip();
 }
 async function animateDeal(pub, prep) {
   if (prep) await prep;
   else await animatePrep({ seats: pub.seats || 1, bet: pub.bet, pp: pub.side && pub.side.pp ? pub.side.pp.bet : 0, t21: pub.side && pub.side.t21 ? pub.side.t21.bet : 0 });
   var seats = pub.seats || 1, i;
-  /* round the table: first card to every hand, dealer up card, second card to every hand, hole card */
-  for (i = 0; i < seats; i++) { var c1 = pub.hands[i].cards[0]; shown.hands[i].push(c1); addCard('h' + i + 'c0', c1, true); await wait(230 * SP); }
-  shown.dealer.push(pub.dealer[0]); addCard('d0', pub.dealer[0], true); await wait(260 * SP);
-  for (i = 0; i < seats; i++) { var c2 = pub.hands[i].cards[1]; shown.hands[i].push(c2); addCard('h' + i + 'c1', c2, true); await wait(230 * SP); }
-  shown.dealer.push(-1); addCard('d1', -1, false); await wait(420 * SP);
+  /* turn them over in dealing order: first cards, dealer's up card, second cards (the hole card stays down) */
+  for (i = 0; i < seats; i++) { shown.hands[i][0] = pub.hands[i].cards[0]; turnUp('h' + i + 'c0', shown.hands[i][0]); await wait(90); }
+  shown.dealer[0] = pub.dealer[0]; turnUp('d0', pub.dealer[0]); await wait(90);
+  for (i = 0; i < seats; i++) { shown.hands[i][1] = pub.hands[i].cards[1]; turnUp('h' + i + 'c1', shown.hands[i][1]); await wait(90); }
+  await wait(260);
+  updateVals();
   showSideResults(pub);
 }
 function showSideResults(pub) {
@@ -1350,6 +1368,9 @@ async function animateTo(pub) {
   }
   for (var hi = 0; hi < pub.hands.length; hi++) {
     var want = pub.hands[hi].cards, have = shown.hands[hi];
+    /* a card that already flew out face down (Hit / Double) just turns over */
+    for (var pi = 0; pi < have.length; pi++) if (have[pi] === -1 && want[pi] != null) { have[pi] = want[pi]; turnUp('h' + hi + 'c' + pi, want[pi]); await wait(260 * SP); }
+    while (have.length > want.length && have[have.length - 1] === -1) dropPending(hi);
     while (have.length < want.length) {
       var c = want[have.length]; have.push(c);
       addCard('h' + hi + 'c' + (have.length - 1), c, true);
@@ -1606,8 +1627,15 @@ async function act(a) {
   try {
     var pub, newBal;
     if (MODE === 'live') {
-      var d = await api('/api/games/act', { game: 'blackjack', action: a });
-      if (d.error) { setMsg(d.error); if (d.round) { ROUND = fromG(d.round); } return; }
+      /* Hit / Double: the card leaves the shoe face down right away and turns over when the answer is back */
+      var pendHi = -1;
+      if ((a === 'hit' || a === 'double') && shown && shown.hands[ROUND.active]) {
+        pendHi = ROUND.active; var hv = shown.hands[pendHi]; hv.push(-1); addCard('h' + pendHi + 'c' + (hv.length - 1), -1, false);
+      }
+      var d;
+      try { d = await api('/api/games/act', { game: 'blackjack', action: a }); }
+      catch (e) { if (pendHi >= 0) dropPending(pendHi); throw e; }
+      if (d.error) { if (pendHi >= 0) dropPending(pendHi); setMsg(d.error); if (d.round) { ROUND = fromG(d.round); } return; }
       pub = fromG(d.round); newBal = d.balance;
       setBalance(pub.phase === 'done' ? newBal - pub.result.total : newBal, false);
     } else {
