@@ -738,7 +738,7 @@ var fmt = function (n) { return Number(n || 0).toLocaleString('en-US', { maximum
 var fmtX = function (m) { return (m >= 100 ? fmt(Math.round(m * 100) / 100) : Number(m).toFixed(2)) + '×'; };
 var wait = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
 var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-var SP = REDUCED ? 0.3 : 0.5;   /* animation speed factor: snappier (was 1) */
+var SP = REDUCED ? 0.3 : 0.4;   /* animation speed factor: snappier (was 1) */
 var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
 function rndHex(n) { var a = new Uint8Array(n); crypto.getRandomValues(a); return Array.from(a, function (b) { return b.toString(16).padStart(2, '0'); }).join(''); }
 var LIMITS = { minBet: 1, maxBet: 5000, maxWin: 100000 };
@@ -1387,8 +1387,28 @@ async function liveResume(d) {
   function warm() {
     var t = tok(); if (!t || document.hidden) return;
     if (Date.now() - last < 15000) return; last = Date.now();
-    try { fetch(API + '/api/games/warm?game=' + encodeURIComponent(game), { headers: { 'Authorization': 'Bearer ' + t }, cache: 'no-store', keepalive: true }).catch(function () {}); } catch (e) {}
+    try { fetch(API + '/api/games/warm?game=' + encodeURIComponent(game), { headers: { 'Authorization': 'Bearer ' + t }, cache: 'no-store', keepalive: true }).then(function (r) { return r.json(); }).then(function (d) { if (d && d.admin) { isAdmin = true; colo = d.colo || ''; } }).catch(function () {}); } catch (e) {}
   }
+  /* admins only: a small "⚡ 180 ms" pill in the game bar showing how long the last bet/move took to come back */
+  var pill = null, isAdmin = false, colo = '';
+  function showMs(ms) {
+    if (!isAdmin) return;
+    if (!pill) {
+      var bar = document.querySelector('.top'); if (!bar) return;
+      pill = document.createElement('span');
+      pill.style.cssText = 'font:600 .72rem Poppins,sans-serif;padding:4px 9px;border-radius:99px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#cbd5e1;white-space:nowrap;margin-left:auto';
+      pill.title = 'Server reply time for your last bet or move (only admins see this)';
+      var bal = bar.querySelector('.bal, .balance, #balPill'); bar.insertBefore(pill, bal || bar.children[1] || null);
+    }
+    pill.textContent = '⚡ ' + Math.round(ms) + ' ms' + (colo ? ' · ' + colo : '');
+    pill.style.color = ms < 250 ? '#86efac' : ms < 600 ? '#fde68a' : '#fca5a5';
+  }
+  var of = window.fetch;
+  window.fetch = function (u, o) {
+    var t = performance.now(), p = of.apply(this, arguments);
+    if (typeof u === 'string' && /\/api\/games\/(bet|act)/.test(u)) p.then(function () { showMs(performance.now() - t); }, function () {});
+    return p;
+  };
   setTimeout(warm, 600);
   setInterval(warm, 25000);
   document.addEventListener('visibilitychange', function () { if (!document.hidden) warm(); });

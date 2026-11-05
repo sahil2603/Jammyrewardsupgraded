@@ -1027,7 +1027,7 @@ var DEMO = { state: null, server: null, client: null, nonce: 0 };
 var fmt = function (n) { return Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: 2 }); };
 var wait = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
 var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-var SP = REDUCED ? 0.3 : 0.5;   /* animation speed factor: snappier (was 1) */   /* animation speed factor */
+var SP = REDUCED ? 0.3 : 0.4;   /* snappier pace, close to Stake */   /* animation speed factor: snappier (was 1) */   /* animation speed factor */
 
 /* ───────────── sound: all synthesised, no files to load ───────────── */
 var SND = (function () {
@@ -1278,7 +1278,7 @@ async function clearTable() {
     list.forEach(function (el, i) { el.style.transition = 'transform ' + (0.45 * SP) + 's cubic-bezier(.4,0,.2,1), opacity .35s'; el.classList.remove('up', 'glow', 'dim'); pos(el, g.discardX + i * 0.6, g.discardY - i * 0.6, 6); el.style.zIndex = 4; });
     [].concat(chips.main, [chips.pp, chips.t21, chips.ins]).forEach(function (c) { if (c) { c.style.opacity = 0; } });
     stacks.forEach(function (st) { st.els.forEach(function (e) { e.style.opacity = 0; }); if (st.tag) st.tag.style.opacity = 0; });
-    await wait(480 * SP);
+    await wait(330 * SP);
     list.forEach(function (el) { el.remove(); });
   }
   felt.querySelectorAll('.chip,.val,.paytag').forEach(function (c) { c.remove(); });
@@ -1301,12 +1301,11 @@ async function animatePrep(o) {
   if (o.pp > 0) placeChip('pp', o.pp); if (o.t21 > 0) placeChip('t21', o.t21);
   /* like Stake: the cards fly out face down straight away, while the bet is still on its way to the server.
      They turn over the moment the answer is back, so there is no empty table to stare at. */
-  var STEP = 150;
-  await wait(90);
+  var STEP = 95;
   for (i = 0; i < seats; i++) { shown.hands[i].push(-1); addCard('h' + i + 'c0', -1, false); await wait(STEP); }
   shown.dealer.push(-1); addCard('d0', -1, false); await wait(STEP);
   for (i = 0; i < seats; i++) { shown.hands[i].push(-1); addCard('h' + i + 'c1', -1, false); await wait(STEP); }
-  shown.dealer.push(-1); addCard('d1', -1, false); await wait(260);
+  shown.dealer.push(-1); addCard('d1', -1, false); await wait(140);
 }
 function dropPending(hi) {
   var have = shown.hands[hi]; if (!have || have[have.length - 1] !== -1) return;
@@ -1323,10 +1322,10 @@ async function animateDeal(pub, prep) {
   else await animatePrep({ seats: pub.seats || 1, bet: pub.bet, pp: pub.side && pub.side.pp ? pub.side.pp.bet : 0, t21: pub.side && pub.side.t21 ? pub.side.t21.bet : 0 });
   var seats = pub.seats || 1, i;
   /* turn them over in dealing order: first cards, dealer's up card, second cards (the hole card stays down) */
-  for (i = 0; i < seats; i++) { shown.hands[i][0] = pub.hands[i].cards[0]; turnUp('h' + i + 'c0', shown.hands[i][0]); await wait(90); }
-  shown.dealer[0] = pub.dealer[0]; turnUp('d0', pub.dealer[0]); await wait(90);
-  for (i = 0; i < seats; i++) { shown.hands[i][1] = pub.hands[i].cards[1]; turnUp('h' + i + 'c1', shown.hands[i][1]); await wait(90); }
-  await wait(260);
+  for (i = 0; i < seats; i++) { shown.hands[i][0] = pub.hands[i].cards[0]; turnUp('h' + i + 'c0', shown.hands[i][0]); await wait(55); }
+  shown.dealer[0] = pub.dealer[0]; turnUp('d0', pub.dealer[0]); await wait(55);
+  for (i = 0; i < seats; i++) { shown.hands[i][1] = pub.hands[i].cards[1]; turnUp('h' + i + 'c1', shown.hands[i][1]); await wait(55); }
+  await wait(170);
   updateVals();
   showSideResults(pub);
 }
@@ -1882,8 +1881,28 @@ async function adminBar() {
   function warm() {
     var t = tok(); if (!t || document.hidden) return;
     if (Date.now() - last < 15000) return; last = Date.now();
-    try { fetch(API + '/api/games/warm?game=' + encodeURIComponent(game), { headers: { 'Authorization': 'Bearer ' + t }, cache: 'no-store', keepalive: true }).catch(function () {}); } catch (e) {}
+    try { fetch(API + '/api/games/warm?game=' + encodeURIComponent(game), { headers: { 'Authorization': 'Bearer ' + t }, cache: 'no-store', keepalive: true }).then(function (r) { return r.json(); }).then(function (d) { if (d && d.admin) { isAdmin = true; colo = d.colo || ''; } }).catch(function () {}); } catch (e) {}
   }
+  /* admins only: a small "⚡ 180 ms" pill in the game bar showing how long the last bet/move took to come back */
+  var pill = null, isAdmin = false, colo = '';
+  function showMs(ms) {
+    if (!isAdmin) return;
+    if (!pill) {
+      var bar = document.querySelector('.top'); if (!bar) return;
+      pill = document.createElement('span');
+      pill.style.cssText = 'font:600 .72rem Poppins,sans-serif;padding:4px 9px;border-radius:99px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#cbd5e1;white-space:nowrap;margin-left:auto';
+      pill.title = 'Server reply time for your last bet or move (only admins see this)';
+      var bal = bar.querySelector('.bal, .balance, #balPill'); bar.insertBefore(pill, bal || bar.children[1] || null);
+    }
+    pill.textContent = '⚡ ' + Math.round(ms) + ' ms' + (colo ? ' · ' + colo : '');
+    pill.style.color = ms < 250 ? '#86efac' : ms < 600 ? '#fde68a' : '#fca5a5';
+  }
+  var of = window.fetch;
+  window.fetch = function (u, o) {
+    var t = performance.now(), p = of.apply(this, arguments);
+    if (typeof u === 'string' && /\/api\/games\/(bet|act)/.test(u)) p.then(function () { showMs(performance.now() - t); }, function () {});
+    return p;
+  };
   setTimeout(warm, 600);
   setInterval(warm, 25000);
   document.addEventListener('visibilitychange', function () { if (!document.hidden) warm(); });
