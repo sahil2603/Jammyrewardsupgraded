@@ -5986,6 +5986,50 @@ body.on-admin #skyParticles{opacity:.18!important}
 }
 @media (prefers-reduced-motion:reduce){.jx-menu{animation:none}.jx-num.bump input{animation:none}}
 </style>
+<style id="gfCss">
+/* ===== Admin → Games: live balance chart ===== */
+#admin .gf-card{position:relative;overflow:hidden;padding:20px 22px 16px!important}
+#admin .gf-card::before{content:"";position:absolute;inset:-40% -10% auto auto;width:60%;height:120%;background:radial-gradient(closest-side,rgba(56,189,248,.10),transparent 70%);pointer-events:none}
+.gf-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;position:relative}
+.gf-title{display:flex;align-items:center;gap:12px}
+.gf-title h4{margin:0!important;font:700 1.08rem 'Poppins',sans-serif;color:#fff}
+.gf-live{display:inline-flex;align-items:center;gap:7px;padding:4px 10px 4px 9px;border-radius:99px;font:700 .68rem 'Poppins',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#86efac;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.28)}
+.gf-live i{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,.6);animation:gfPing 1.8s infinite}
+.gf-live.off{color:#94a3b8;background:rgba(148,163,184,.08);border-color:rgba(148,163,184,.2)}.gf-live.off i{background:#94a3b8;animation:none}
+@keyframes gfPing{0%{box-shadow:0 0 0 0 rgba(74,222,128,.55)}80%,100%{box-shadow:0 0 0 7px rgba(74,222,128,0)}}
+.gf-ctrl{display:flex;gap:8px;flex-wrap:wrap}
+.gf-seg{display:flex;gap:3px;padding:3px;border-radius:12px;background:rgba(2,8,20,.55);border:1px solid rgba(190,220,255,.12)}
+.gf-seg button{border:0;background:transparent;color:#8fa6c6;font:600 .76rem 'Poppins',sans-serif;padding:6px 11px;border-radius:9px;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap}
+.gf-seg button:hover{color:#fff}
+.gf-seg button.on{background:linear-gradient(180deg,rgba(190,225,255,.2),rgba(160,200,255,.1));color:#fff;box-shadow:inset 0 0 0 1px rgba(190,225,255,.22)}
+.gf-seg button:focus-visible{outline:2px solid #7dd3fc;outline-offset:1px}
+.gf-top{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;margin:18px 0 10px;position:relative}
+.gf-big{display:flex;align-items:baseline;gap:10px}
+.gf-big b{font:700 2.6rem/1 'Poppins',sans-serif;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:#e2e8f0;transition:color .4s,text-shadow .4s}
+.gf-big b.up{color:#4ade80;text-shadow:0 0 28px rgba(74,222,128,.35)}
+.gf-big b.dn{color:#f87171;text-shadow:0 0 28px rgba(248,113,113,.35)}
+.gf-big span{color:#8fa6c6;font-size:.86rem}.gf-big em{font-style:normal;color:#6f87a8;margin-left:4px}
+.gf-delta{font:700 .82rem 'Poppins',sans-serif;padding:4px 10px;border-radius:99px;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s;margin-bottom:6px}
+.gf-delta.show{opacity:1;transform:none}
+.gf-delta.up{color:#86efac;background:rgba(74,222,128,.12)}.gf-delta.dn{color:#fca5a5;background:rgba(248,113,113,.12)}
+.gf-stats{display:flex;gap:22px;margin-left:auto;flex-wrap:wrap}
+.gf-stats div{display:flex;flex-direction:column;gap:2px}
+.gf-stats span{color:#6f87a8;font-size:.72rem}
+.gf-stats b{color:#dbe8f7;font:600 .98rem 'Poppins',sans-serif;font-variant-numeric:tabular-nums}
+.gf-chart{position:relative;height:300px;margin:4px -6px 0;border-radius:16px;background:linear-gradient(180deg,rgba(2,8,20,.35),rgba(2,8,20,.1));border:1px solid rgba(190,220,255,.07);overflow:hidden}
+.gf-chart canvas{display:block;width:100%;height:100%;cursor:crosshair;touch-action:pan-y}
+.gf-tip{position:absolute;pointer-events:none;padding:8px 11px;border-radius:12px;background:rgba(7,15,32,.94);border:1px solid rgba(190,220,255,.18);box-shadow:0 12px 30px rgba(0,0,0,.5);font:500 .76rem 'Poppins',sans-serif;color:#9fb4d1;white-space:nowrap;opacity:0;transition:opacity .12s;z-index:2}
+.gf-tip b{display:block;font:700 1rem 'Poppins',sans-serif;font-variant-numeric:tabular-nums}
+.gf-tip b.up{color:#4ade80}.gf-tip b.dn{color:#f87171}
+.gf-empty{position:absolute;inset:0;display:none;place-items:center;color:#6f87a8;font-size:.9rem}
+.gf-feed{display:flex;gap:6px;flex-wrap:wrap;min-height:30px;margin-top:12px}
+.gf-feed span{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:99px;font:600 .74rem 'Poppins',sans-serif;background:rgba(150,195,255,.06);border:1px solid rgba(190,220,255,.1);color:#a3b6d3;animation:gfIn .45s cubic-bezier(.16,1,.3,1)}
+.gf-feed span b{font-variant-numeric:tabular-nums}.gf-feed span b.up{color:#4ade80}.gf-feed span b.dn{color:#f87171}
+@keyframes gfIn{from{opacity:0;transform:translateX(-10px) scale(.96)}}
+.gf-note{margin:10px 0 0!important}
+@media(max-width:700px){.gf-top{gap:12px}.gf-delta{position:absolute;right:0;top:0;margin:0}.gf-big b{font-size:2rem}.gf-stats{margin-left:0;gap:16px;width:100%;justify-content:space-between}.gf-chart{height:230px}.gf-games{overflow-x:auto;max-width:100%;scrollbar-width:none}}
+@media (prefers-reduced-motion:reduce){.gf-live i{animation:none}.gf-feed span{animation:none}}
+</style>
 </head>
 <body>
 <svg id="frDefs" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false"><defs>
@@ -7478,6 +7522,28 @@ body.on-admin #skyParticles{opacity:.18!important}
 
         <!-- GAMES TAB -->
         <div id="adminGamesTab" class="admin-tab-panel" style="display:none">
+          <div class="bt-card gf-card" id="gfCard" style="margin-bottom:14px">
+            <div class="gf-head">
+              <div class="gf-title"><span class="gf-live" id="gfLive"><i></i>Live</span><h4>Jammmy's balance from games</h4></div>
+              <div class="gf-ctrl">
+                <div class="gf-seg" id="gfRange" role="tablist" aria-label="Time range"><button data-r="1h">1H</button><button data-r="24h" class="on">24H</button><button data-r="7d">7D</button><button data-r="30d">30D</button><button data-r="all">All</button></div>
+                <div class="gf-seg gf-games" id="gfGame" aria-label="Game"><button data-g="" class="on">All games</button><button data-g="blackjack">Blackjack</button><button data-g="mines">Mines</button><button data-g="plinko">Plinko</button><button data-g="hilo">HiLo</button></div>
+              </div>
+            </div>
+            <div class="gf-top">
+              <div class="gf-big"><b id="gfNow">0</b><span>coins <em id="gfUsd"></em></span></div>
+              <div class="gf-delta" id="gfDelta"></div>
+              <div class="gf-stats">
+                <div><span>Coins bet</span><b id="gfW">0</b></div>
+                <div><span>Paid back</span><b id="gfP">0</b></div>
+                <div><span>Rounds</span><b id="gfN">0</b></div>
+                <div><span>Kept</span><b id="gfE">0%</b></div>
+              </div>
+            </div>
+            <div class="gf-chart" id="gfChart"><canvas id="gfCv" aria-label="Running total from Jammmy's side over time"></canvas><div class="gf-tip" id="gfTip"></div><div class="gf-empty" id="gfEmpty">No finished rounds in this range yet.</div></div>
+            <div class="gf-feed" id="gfFeed" aria-live="polite"></div>
+            <p class="ag-note gf-note">Coins players bet minus coins paid back to them. Above the line is good for Jammmy, below is in the players' favour. Updates by itself every few seconds while this page is open.</p>
+          </div>
           <div class="bt-card" style="margin-bottom:14px">
             <h4>🚧 Games page</h4>
             <p class="ag-note">Switch the whole Jammmy Games page off while you work on it. Players see your message instead of the games; admins can still play to test.</p>
@@ -10855,7 +10921,7 @@ function switchAdminTab(tabId){
   if(tabId==='adminAuditTab') loadAuditLog(true);
   if(tabId==='adminSecurityTab') loadAdminSecurity();
   if(tabId==='adminBotTab') loadBotAdmin();
-  if(tabId==='adminGamesTab') agLoad();
+  if(tabId==='adminGamesTab'){ agLoad(); if(window.gfOpen) gfOpen(); }
   if(tabId==='adminRanksTab') arkLoad();
   if(tabId==='adminPartnersTab') aptLoad();
   if(tabId==='adminChallengesTab') achLoad();
@@ -16561,6 +16627,191 @@ window.fruitSvg = function(key){
   function later(){ if (!t) t = setTimeout(scan, 40); }
   if (window.MutationObserver) new MutationObserver(later).observe(document.body, { childList: true, subtree: true });
   later();
+})();
+</script>
+<script>
+/* Admin → Games: live running total from Jammmy's side (coins bet minus coins paid back). */
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var NAMES = { blackjack: 'Blackjack', mines: 'Mines', plinko: 'Plinko', hilo: 'HiLo' };
+  var S = { range: '24h', game: '', pts: [], cur: null, tot: { wagered: 0, paid: 0, rounds: 0 }, from: 0, busy: false, gen: 0, loadedAt: 0 };
+  var V = { yMin: -1, yMax: 1, shown: 0, numFrom: 0, numTo: 0, numAt: 0, tail: null, hover: -1 };
+  var cv, ctx, W = 0, H = 0, DPR = 1, raf = 0, pollT = 0;
+  var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function n2(v){ return (Math.round(v * 100) / 100).toLocaleString(undefined, { maximumFractionDigits: 2 }); }
+  function signed(v){ return (v > 0 ? '+' : v < 0 ? '−' : '') + n2(Math.abs(v)); }
+  function compact(v){ var a = Math.abs(v), s = v < 0 ? '−' : v > 0 ? '+' : ''; return s + (a >= 1e6 ? (a / 1e6).toFixed(1) + 'M' : a >= 1e4 ? Math.round(a / 1e3) + 'K' : a >= 1e3 ? (a / 1e3).toFixed(1) + 'K' : Math.round(a)); }
+  function visible(){ var p = $('adminGamesTab'); return !!(p && p.style.display !== 'none' && document.body.classList.contains('on-admin') && !document.hidden); }
+  function last(){ return S.pts.length ? S.pts[S.pts.length - 1][1] : 0; }
+
+  async function load(){
+    var g = ++S.gen; S.busy = true;
+    var d = await botFetch('/api/admin/games-flow?range=' + S.range + (S.game ? '&game=' + S.game : ''));
+    if (g !== S.gen) return;
+    S.busy = false;
+    if (d.error) { $('gfEmpty').textContent = d.error; $('gfEmpty').style.display = 'grid'; return; }
+    S.pts = d.points || []; S.cur = d.cursor; S.tot = d.totals; S.from = d.from; S.loadedAt = Date.now();
+    $('gfFeed').innerHTML = '';
+    V.tail = null; fitY(true); setNumber(last(), true); paintStats();
+    $('gfEmpty').style.display = S.tot.rounds ? 'none' : 'grid';
+    kick();
+  }
+  async function poll(){
+    clearTimeout(pollT);
+    if (!visible() || S.busy || !S.cur) { pollT = setTimeout(poll, 3000); setLive(false); return; }
+    setLive(true);
+    if (Date.now() - S.loadedAt > 180000) { await load(); pollT = setTimeout(poll, 3000); return; }
+    var g = S.gen;
+    var d = await botFetch('/api/admin/games-flow?after_t=' + S.cur.t + '&after_id=' + S.cur.id + (S.game ? '&game=' + S.game : ''));
+    if (g === S.gen && d && d.rounds && d.rounds.length) {
+      var before = last(), cum = before;
+      d.rounds.forEach(function(r){
+        cum = Math.round((cum + r.w - r.p) * 100) / 100;
+        S.pts.push([r.t, cum]); S.tot.wagered += r.w; S.tot.paid += r.p; S.tot.rounds++;
+        S.cur = { t: r.t, id: r.id };
+        feed(r);
+      });
+      if (S.pts.length > 3000) S.pts.splice(1, S.pts.length - 3000);
+      V.tail = { from: before, to: cum, at: performance.now() };
+      fitY(false); setNumber(cum, false); paintStats(); flash(cum - before);
+      $('gfEmpty').style.display = 'none';
+      kick();
+    }
+    pollT = setTimeout(poll, 3000);
+  }
+  function setLive(on){ var l = $('gfLive'); if (l) l.classList.toggle('off', !on); }
+  function feed(r){
+    var f = $('gfFeed'), v = r.w - r.p, s = document.createElement('span');
+    s.innerHTML = (NAMES[r.game] || r.game) + ' · ' + esc(r.user || 'player') + ' <b class="' + (v >= 0 ? 'up' : 'dn') + '">' + signed(v) + '</b>';
+    f.insertBefore(s, f.firstChild);
+    while (f.children.length > 8) f.lastChild.remove();
+  }
+  function esc(t){ return String(t).replace(/[&<>"]/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  var flashT = 0;
+  function flash(v){
+    if (!v) return; var e = $('gfDelta');
+    e.textContent = signed(v) + ' just now'; e.className = 'gf-delta show ' + (v >= 0 ? 'up' : 'dn');
+    clearTimeout(flashT); flashT = setTimeout(function(){ e.classList.remove('show'); }, 2600);
+  }
+  function paintStats(){
+    var t = S.tot; $('gfW').textContent = n2(t.wagered); $('gfP').textContent = n2(t.paid); $('gfN').textContent = (t.rounds || 0).toLocaleString();
+    $('gfE').textContent = t.wagered ? ((t.wagered - t.paid) / t.wagered * 100).toFixed(1) + '%' : '0%';
+  }
+  function setNumber(v, now){ V.numFrom = now ? v : V.shown; V.numTo = v; V.numAt = performance.now(); if (now) V.shown = v; }
+  function tickNumber(t){
+    var k = REDUCED ? 1 : Math.min(1, (t - V.numAt) / 700), e = 1 - Math.pow(1 - k, 3);
+    V.shown = V.numFrom + (V.numTo - V.numFrom) * e;
+    var b = $('gfNow'); b.textContent = signed(V.shown); b.className = V.shown > 0.004 ? 'up' : V.shown < -0.004 ? 'dn' : '';
+    $('gfUsd').textContent = '≈ ' + (V.shown < 0 ? '−' : '') + '$' + (Math.abs(V.shown) / 100).toFixed(2);
+    return k < 1;
+  }
+  var tgt = { yMin: -1, yMax: 1 };
+  function fitY(snap){
+    var mn = 0, mx = 0; S.pts.forEach(function(p){ if (p[1] < mn) mn = p[1]; if (p[1] > mx) mx = p[1]; });
+    var span = Math.max(mx - mn, 10), pad = span * .14;
+    tgt.yMin = mn - pad; tgt.yMax = mx + pad;
+    if (mn === 0) tgt.yMin = -span * .12; if (mx === 0) tgt.yMax = span * .12;
+    if (snap || REDUCED) { V.yMin = tgt.yMin; V.yMax = tgt.yMax; }
+  }
+  function size(){
+    var box = $('gfChart'); if (!box) return;
+    DPR = Math.min(2, window.devicePixelRatio || 1); W = box.clientWidth; H = box.clientHeight;
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR); ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  function kick(){ if (!raf) raf = requestAnimationFrame(frame); }
+  function frame(t){
+    raf = 0; if (!cv || !W) { size(); }
+    var moving = false;
+    V.yMin += (tgt.yMin - V.yMin) * .14; V.yMax += (tgt.yMax - V.yMax) * .14;
+    if (Math.abs(tgt.yMin - V.yMin) > .01 * (V.yMax - V.yMin) || Math.abs(tgt.yMax - V.yMax) > .01 * (V.yMax - V.yMin)) moving = true; else { V.yMin = tgt.yMin; V.yMax = tgt.yMax; }
+    if (tickNumber(t)) moving = true;
+    draw(t);
+    if (visible() && (moving || !REDUCED)) raf = requestAnimationFrame(frame);   /* the end dot pulses while you watch */
+  }
+  function draw(t){
+    if (!ctx || !W) return;
+    var L = 8, R = 58, T = 14, B = 24, cw = W - L - R, ch = H - T - B;
+    ctx.clearRect(0, 0, W, H);
+    var pts = S.pts; if (pts.length < 1) return;
+    var x0 = S.from || pts[0][0], x1 = Math.max(Date.now(), pts[pts.length - 1][0], x0 + 1);
+    var X = function(v){ return L + (v - x0) / (x1 - x0) * cw; }, Y = function(v){ return T + (V.yMax - v) / (V.yMax - V.yMin) * ch; };
+    var zy = Math.max(T, Math.min(T + ch, Y(0)));
+    /* grid + labels */
+    ctx.font = '500 11px Poppins, sans-serif'; ctx.textBaseline = 'middle';
+    var step = niceStep((V.yMax - V.yMin) / 4);
+    for (var gv = Math.ceil(V.yMin / step) * step; gv <= V.yMax; gv += step) {
+      var gy = Y(gv); if (Math.abs(gv) < step / 1e6) continue;
+      ctx.strokeStyle = 'rgba(190,220,255,.06)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(L, gy); ctx.lineTo(L + cw, gy); ctx.stroke();
+      ctx.fillStyle = 'rgba(160,185,215,.55)'; ctx.textAlign = 'left'; ctx.fillText(compact(gv), L + cw + 10, gy);
+    }
+    ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillStyle = 'rgba(160,185,215,.5)';
+    var nx = W < 520 ? 2 : 4; for (var i = 0; i <= nx; i++) { var tx = x0 + (x1 - x0) * i / nx; ctx.fillText(fmtT(tx, x1 - x0), Math.max(L + 24, Math.min(L + cw - 24, X(tx))), H - 7); }
+    /* the line, with the newest point growing into place */
+    var path = [], tail = V.tail, tk = 1;
+    if (tail && !REDUCED) { tk = Math.min(1, (performance.now() - tail.at) / 650); if (tk >= 1) V.tail = null; }
+    for (var j = 0; j < pts.length; j++) {
+      var py = pts[j][1];
+      if (j === pts.length - 1 && tail && tk < 1) py = tail.from + (tail.to - tail.from) * (1 - Math.pow(1 - tk, 3));
+      path.push([X(pts[j][0]), Y(py)]);
+    }
+    path.push([X(x1), path[path.length - 1][1]]);   /* hold the level up to now */
+    var trace = function(){ ctx.beginPath(); path.forEach(function(p, k){ k ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); };
+    var area = function(){ trace(); ctx.lineTo(path[path.length - 1][0], zy); ctx.lineTo(path[0][0], zy); ctx.closePath(); };
+    [['up', T, zy - T], ['dn', zy, T + ch - zy + B]].forEach(function(side){
+      if (side[2] <= 0) return;
+      ctx.save(); ctx.beginPath(); ctx.rect(0, side[1], W, side[2]); ctx.clip();
+      var up = side[0] === 'up', gr = ctx.createLinearGradient(0, up ? T : zy, 0, up ? zy : T + ch);
+      if (up) { gr.addColorStop(0, 'rgba(74,222,128,.32)'); gr.addColorStop(1, 'rgba(74,222,128,.02)'); }
+      else { gr.addColorStop(0, 'rgba(248,113,113,.03)'); gr.addColorStop(1, 'rgba(248,113,113,.30)'); }
+      area(); ctx.fillStyle = gr; ctx.fill();
+      trace(); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+      ctx.shadowColor = up ? 'rgba(74,222,128,.75)' : 'rgba(248,113,113,.75)'; ctx.shadowBlur = 14;
+      ctx.strokeStyle = up ? '#4ade80' : '#f87171'; ctx.lineWidth = 2.4; ctx.stroke();
+      ctx.restore();
+    });
+    /* zero line */
+    ctx.save(); ctx.setLineDash([5, 6]); ctx.strokeStyle = 'rgba(226,232,240,.35)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(L, zy); ctx.lineTo(L + cw, zy); ctx.stroke(); ctx.restore();
+    ctx.fillStyle = 'rgba(226,232,240,.7)'; ctx.font = '600 11px Poppins, sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('0', L + cw + 10, zy);
+    /* live end dot with a soft ring */
+    var e = path[path.length - 2], up = (tail && tk < 1 ? tail.to : last()) >= 0, col = up ? '74,222,128' : '248,113,113';
+    var ph = REDUCED ? 0 : (t / 1400) % 1;
+    ctx.beginPath(); ctx.arc(e[0], e[1], 5 + ph * 12, 0, Math.PI * 2); ctx.fillStyle = 'rgba(' + col + ',' + (0.35 * (1 - ph)) + ')'; ctx.fill();
+    ctx.beginPath(); ctx.arc(e[0], e[1], 4.5, 0, Math.PI * 2); ctx.fillStyle = 'rgb(' + col + ')'; ctx.shadowColor = 'rgba(' + col + ',.9)'; ctx.shadowBlur = 12; ctx.fill(); ctx.shadowBlur = 0;
+    ctx.beginPath(); ctx.arc(e[0], e[1], 2, 0, Math.PI * 2); ctx.fillStyle = '#fff'; ctx.fill();
+    /* hover */
+    if (V.hover >= 0 && V.hover < pts.length) {
+      var hp = path[V.hover], hv = pts[V.hover][1];
+      ctx.strokeStyle = 'rgba(226,232,240,.25)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(hp[0], T); ctx.lineTo(hp[0], T + ch); ctx.stroke();
+      ctx.beginPath(); ctx.arc(hp[0], hp[1], 4, 0, Math.PI * 2); ctx.fillStyle = '#fff'; ctx.fill();
+      var tip = $('gfTip'); tip.innerHTML = '<b class="' + (hv >= 0 ? 'up' : 'dn') + '">' + signed(hv) + '</b>' + new Date(pts[V.hover][0]).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      tip.style.opacity = 1; var tw = tip.offsetWidth;
+      tip.style.left = Math.max(6, Math.min(W - tw - 6, hp[0] + 12)) + 'px'; tip.style.top = Math.max(6, Math.min(H - 60, hp[1] - 52)) + 'px';
+    } else $('gfTip').style.opacity = 0;
+    S._X = X; S._x01 = [x0, x1, L, cw];
+  }
+  function niceStep(r){ var p = Math.pow(10, Math.floor(Math.log10(Math.max(r, 1e-9)))), m = r / p; return (m >= 5 ? 5 : m >= 2 ? 2 : 1) * p; }
+  function fmtT(ms, span){ var d = new Date(ms); return span <= 2 * 86400e3 ? d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : d.toLocaleDateString([], { month: 'short', day: 'numeric' }); }
+  function onMove(ev){
+    if (!S._x01 || !S.pts.length) return;
+    var r = cv.getBoundingClientRect(), x = (ev.touches ? ev.touches[0].clientX : ev.clientX) - r.left;
+    var a = S._x01, tm = a[0] + (x - a[2]) / a[3] * (a[1] - a[0]), lo = 0, hi = S.pts.length - 1;
+    while (lo < hi) { var mid = (lo + hi) >> 1; if (S.pts[mid][0] < tm) lo = mid + 1; else hi = mid; }
+    if (lo > 0 && Math.abs(S.pts[lo - 1][0] - tm) < Math.abs(S.pts[lo][0] - tm)) lo--;
+    V.hover = lo; kick();
+  }
+  function init(){
+    cv = $('gfCv'); if (!cv || cv._gf) return; cv._gf = 1; ctx = cv.getContext('2d');
+    size();
+    if (window.ResizeObserver) new ResizeObserver(function(){ size(); kick(); }).observe($('gfChart'));
+    cv.addEventListener('mousemove', onMove); cv.addEventListener('touchmove', onMove, { passive: true }); cv.addEventListener('touchstart', onMove, { passive: true });
+    cv.addEventListener('mouseleave', function(){ V.hover = -1; kick(); }); cv.addEventListener('touchend', function(){ setTimeout(function(){ V.hover = -1; kick(); }, 1500); });
+    $('gfRange').addEventListener('click', function(e){ var b = e.target.closest('button'); if (!b) return; this.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); }); S.range = b.dataset.r; load(); });
+    $('gfGame').addEventListener('click', function(e){ var b = e.target.closest('button'); if (!b) return; this.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); }); S.game = b.dataset.g; load(); });
+    document.addEventListener('visibilitychange', function(){ if (!document.hidden && visible()) { kick(); poll(); } });
+  }
+  /* opens with the Games tab (see switchAdminTab) */
+  window.gfOpen = function(){ init(); size(); load().then(function(){ clearTimeout(pollT); pollT = setTimeout(poll, 3000); }); };
 })();
 </script>
 </body>
