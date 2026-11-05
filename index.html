@@ -5238,6 +5238,8 @@ html.ice .hx-wm-glow{background:radial-gradient(ellipse 38% 50% at 28% 55%,rgba(
 }
 /* while a game is open the game itself has its controls, so the site's bottom bar steps aside */
 @media(max-width:820px){body.gm-playing .mobbar{display:none!important}body.gm-playing{padding-bottom:0!important}}
+/* phones: a slimmer games row so the table gets the room */
+@media(max-width:700px){#games.playing .gm{padding-top:4px!important}#games.playing .gm-play-bar{margin-bottom:5px}#games.playing .gm-back{padding:5px 9px 5px 7px;font-size:.74rem;border-radius:10px}#games.playing .gm-switch button{padding:5px 10px;font-size:.74rem;border-radius:10px}}
 /* the game frame fills exactly what is left of the screen (sized in JS), so nothing needs scrolling */
 #games.playing .gm{padding-top:10px}
 #games.playing .gm-play-bar{margin-bottom:8px}
@@ -14965,7 +14967,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     document.documentElement.classList.add('bg-paused');
     CUR = k;
     $('gmLobby').hidden = true; $('gmPlay').hidden = false; $('games').classList.add('playing');
-    var f = $('gmFrame'), src = 'games/' + k + '.html?v=20261105';   /* bump when a game file changes so browsers fetch the new one */
+    var f = $('gmFrame'), src = 'games/' + k + '.html?v=20261105c';   /* bump when a game file changes so browsers fetch the new one */
     if(f.getAttribute('src') !== src) f.setAttribute('src', src);
     paintSwitch();
     if(!fromHistory && window.history && history.pushState && location.hash !== '#games/' + k) history.pushState({ page: 'games/' + k }, '', '#games/' + k);
