@@ -1387,7 +1387,7 @@ async function liveResume(d) {
   function warm() {
     var t = tok(); if (!t || document.hidden) return;
     if (Date.now() - last < 15000) return; last = Date.now();
-    try { fetch(API + '/api/games/warm?game=' + encodeURIComponent(game), { headers: { 'Authorization': 'Bearer ' + t }, cache: 'no-store', keepalive: true }).then(function (r) { return r.json(); }).then(function (d) { if (d && d.admin) { isAdmin = true; colo = d.colo || ''; } }).catch(function () {}); } catch (e) {}
+    try { fetch(API + '/api/games/warm?game=' + encodeURIComponent(game), { method: 'POST', headers: { 'Authorization': 'Bearer ' + t }, body: '{}', keepalive: true }).then(function (r) { return r.json(); }).then(function (d) { if (d && d.admin) { isAdmin = true; colo = d.colo || ''; } }).catch(function () {}); } catch (e) {}
   }
   /* admins only: a small "⚡ 180 ms" pill in the game bar showing how long the last bet/move took to come back */
   var pill = null, isAdmin = false, colo = '';
@@ -1400,13 +1400,29 @@ async function liveResume(d) {
       pill.title = 'Server reply time for your last bet or move (only admins see this)';
       var bal = bar.querySelector('.bal, .balance, #balPill'); bar.insertBefore(pill, bal || bar.children[1] || null);
     }
-    pill.textContent = '⚡ ' + Math.round(ms) + ' ms' + (colo ? ' · ' + colo : '');
+    /* split the time: how long the server itself worked vs the trip there and back */
+    var srv = null, fresh = false;
+    try {
+      var es = performance.getEntriesByType('resource').filter(function (x) { return /\/api\/games\/(bet|act)/.test(x.name); });
+      var en = es[es.length - 1];
+      if (en) { var st = (en.serverTiming || []).filter(function (x) { return x.name === 'app'; })[0]; if (st) srv = Math.round(st.duration); fresh = en.connectEnd - en.connectStart > 1; }
+      if (es.length > 40) performance.clearResourceTimings();
+    } catch (e) {}
+    pill.textContent = '⚡ ' + Math.round(ms) + ' ms' + (srv != null ? ' · server ' + srv : '') + (fresh ? ' · new conn' : '') + (colo ? ' · ' + colo : '');
     pill.style.color = ms < 250 ? '#86efac' : ms < 600 ? '#fde68a' : '#fca5a5';
   }
   var of = window.fetch;
   window.fetch = function (u, o) {
-    var t = performance.now(), p = of.apply(this, arguments);
-    if (typeof u === 'string' && /\/api\/games\/(bet|act)/.test(u)) p.then(function () { showMs(performance.now() - t); }, function () {});
+    var isMove = typeof u === 'string' && /\/api\/games\/(bet|act|warm)\b/.test(u);
+    /* send game moves as a "simple" request: the login token rides in a plain-text body instead of a header,
+       so the browser goes straight to the server without first asking permission (that check is a whole extra trip) */
+    if (isMove && o && o.method === 'POST' && o.headers && o.headers.Authorization) {
+      var b = {}; try { b = JSON.parse(o.body || '{}'); } catch (e) {}
+      b._t = String(o.headers.Authorization).replace('Bearer ', '');
+      o = { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(b), keepalive: o.keepalive, cache: 'no-store' };
+    }
+    var t = performance.now(), p = of.call(this, u, o);
+    if (isMove && !/warm/.test(u)) p.then(function () { showMs(performance.now() - t, u); }, function () {});
     return p;
   };
   setTimeout(warm, 600);

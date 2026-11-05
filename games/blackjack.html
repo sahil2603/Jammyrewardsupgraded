@@ -194,6 +194,9 @@ button{font-family:inherit;color:inherit}
 .card .f,.card .b{transition:box-shadow .45s ease}
 .card.air .f,.card.air .b,.card.lift .f,.card.lift .b{box-shadow:0 22px 40px rgba(0,0,0,.42),0 6px 14px rgba(0,0,0,.25),0 1px 0 rgba(255,255,255,.6) inset}
 .card.glow .f{transition:box-shadow .6s ease}
+.card.wait .in{animation:cardHover 1.6s ease-in-out .45s infinite}
+@keyframes cardHover{50%{translate:0 -8px}}
+@media (prefers-reduced-motion:reduce){.card.wait .in{animation:none}}
 .card.up .in{transform:rotateY(0)}
 .card .f,.card .b{position:absolute;inset:0;border-radius:calc(var(--cw)*.09);backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 10px 22px rgba(0,0,0,.45),0 1px 0 rgba(255,255,255,.6) inset}
 .card .f{background:linear-gradient(160deg,#fff 0%,var(--card) 60%,#efe9de 100%);color:var(--suit-black);overflow:hidden}
@@ -1214,8 +1217,13 @@ function layout() {
   updateVals();
 }
 function valEl(k) {
-  var e = felt.querySelector('.val[data-k="' + k + '"]');
-  if (!e) { e = document.createElement('div'); e.className = 'val'; e.dataset.k = k; e.style.opacity = 0; felt.appendChild(e); }
+  /* never reuse last round's badge that is fading out (it gets removed a moment later, which left the new
+     total stuck in the table's top-left corner as a dark spot) */
+  var e = felt.querySelector('.val:not(.old)[data-k="' + k + '"]');
+  if (!e) {
+    e = document.createElement('div'); e.className = 'val'; e.dataset.k = k; e.style.opacity = 0; e.style.transition = 'none'; felt.appendChild(e);
+    requestAnimationFrame(function () { requestAnimationFrame(function () { e.style.transition = ''; }); });
+  }
   return e;
 }
 function totalText(cards) {
@@ -1236,7 +1244,7 @@ function updateVals() {
 /* SMOOTH: a card glides out of the shoe on a long soft ease, lifted (bigger, softer shadow) while in the air,
    and settles onto the felt. Turning over lifts it a touch too, so nothing snaps. */
 var GLIDE = REDUCED ? 0.18 : 0.52;
-function addCard(key, c, faceUp) {
+function addCard(key, c, faceUp, pending) {
   var g = geo(), el = makeCard(c);
   el.style.transition = 'none'; pos(el, g.shoeX, g.shoeY, -16); el.style.zIndex = 30;
   el.classList.add('air'); el.style.opacity = 0;
@@ -1246,13 +1254,17 @@ function addCard(key, c, faceUp) {
   el.style.opacity = 1;
   layout();
   SND.deal();
-  setTimeout(function () { el.classList.remove('air'); }, GLIDE * 620);
+  /* a card still waiting for the server stays gently lifted in the air and turns over as it settles, so
+     the wait never shows as "land face down … pause … flip": it reads as one motion */
+  if (pending) el.classList.add('wait'); else setTimeout(function () { el.classList.remove('air'); }, GLIDE * 620);
   if (faceUp) setTimeout(function () { liftFlip(el); }, GLIDE * 380);
   return el;
 }
 function liftFlip(el) {
   el.classList.add('lift', 'up');
-  setTimeout(function () { el.classList.remove('lift'); }, REDUCED ? 60 : 300);
+  var settle = function () { el.classList.remove('lift', 'air', 'wait'); };
+  if (el.classList.contains('wait')) setTimeout(settle, REDUCED ? 60 : 230);
+  else setTimeout(function () { el.classList.remove('lift'); }, REDUCED ? 60 : 300);
 }
 function placeChip(kind, amount, hi) {
   if (!(amount > 0)) return null;
@@ -1301,9 +1313,9 @@ async function clearTable() {
     [].concat(chips.main, [chips.pp, chips.t21, chips.ins]).forEach(function (c) { if (c) { c.style.opacity = 0; } });
     stacks.forEach(function (st) { st.els.forEach(function (e) { e.style.opacity = 0; }); if (st.tag) st.tag.style.opacity = 0; });
     var gone = [].slice.call(list), oldChips = [].slice.call(felt.querySelectorAll('.chip,.val,.paytag'));
+    oldChips.forEach(function (c) { c.classList.add('old'); });
     setTimeout(function () { gone.forEach(function (el) { el.remove(); }); oldChips.forEach(function (c) { c.remove(); }); }, 520 + list.length * 28);
     await wait(REDUCED ? 60 : 200);   /* the new deal starts while the old cards are still drifting away */
-    felt.querySelectorAll('.chip,.val,.paytag').forEach(function (c) { c.classList.add('old'); });
   }
   felt.querySelectorAll('.chip:not(.old),.val:not(.old),.paytag:not(.old)').forEach(function (c) { if (!list.length) c.remove(); });
   els = {}; chips = { main: [], pp: null, t21: null, ins: null }; stacks = [];
@@ -1326,9 +1338,9 @@ async function animatePrep(o) {
   /* like Stake: the cards fly out face down straight away, while the bet is still on its way to the server.
      They turn over the moment the answer is back, so there is no empty table to stare at. */
   var STEP = 95;
-  for (i = 0; i < seats; i++) { shown.hands[i].push(-1); addCard('h' + i + 'c0', -1, false); await wait(STEP); }
-  shown.dealer.push(-1); addCard('d0', -1, false); await wait(STEP);
-  for (i = 0; i < seats; i++) { shown.hands[i].push(-1); addCard('h' + i + 'c1', -1, false); await wait(STEP); }
+  for (i = 0; i < seats; i++) { shown.hands[i].push(-1); addCard('h' + i + 'c0', -1, false, true); await wait(STEP); }
+  shown.dealer.push(-1); addCard('d0', -1, false, true); await wait(STEP);
+  for (i = 0; i < seats; i++) { shown.hands[i].push(-1); addCard('h' + i + 'c1', -1, false, true); await wait(STEP); }
   shown.dealer.push(-1); addCard('d1', -1, false); await wait(140);
 }
 function dropPending(hi) {
@@ -1393,7 +1405,7 @@ async function animateTo(pub) {
   for (var hi = 0; hi < pub.hands.length; hi++) {
     var want = pub.hands[hi].cards, have = shown.hands[hi];
     /* a card that already flew out face down (Hit / Double) just turns over */
-    for (var pi = 0; pi < have.length; pi++) if (have[pi] === -1 && want[pi] != null) { have[pi] = want[pi]; turnUp('h' + hi + 'c' + pi, want[pi]); await wait(260 * SP); }
+    for (var pi = 0; pi < have.length; pi++) if (have[pi] === -1 && want[pi] != null) { have[pi] = want[pi]; turnUp('h' + hi + 'c' + pi, want[pi]); await wait(150); }
     while (have.length > want.length && have[have.length - 1] === -1) dropPending(hi);
     while (have.length < want.length) {
       var c = want[have.length]; have.push(c);
@@ -1654,7 +1666,7 @@ async function act(a) {
       /* Hit / Double: the card leaves the shoe face down right away and turns over when the answer is back */
       var pendHi = -1;
       if ((a === 'hit' || a === 'double') && shown && shown.hands[ROUND.active]) {
-        pendHi = ROUND.active; var hv = shown.hands[pendHi]; hv.push(-1); addCard('h' + pendHi + 'c' + (hv.length - 1), -1, false);
+        pendHi = ROUND.active; var hv = shown.hands[pendHi]; hv.push(-1); addCard('h' + pendHi + 'c' + (hv.length - 1), -1, false, true);
       }
       var d;
       try { d = await api('/api/games/act', { game: 'blackjack', action: a }); }
@@ -1905,7 +1917,7 @@ async function adminBar() {
   function warm() {
     var t = tok(); if (!t || document.hidden) return;
     if (Date.now() - last < 15000) return; last = Date.now();
-    try { fetch(API + '/api/games/warm?game=' + encodeURIComponent(game), { headers: { 'Authorization': 'Bearer ' + t }, cache: 'no-store', keepalive: true }).then(function (r) { return r.json(); }).then(function (d) { if (d && d.admin) { isAdmin = true; colo = d.colo || ''; } }).catch(function () {}); } catch (e) {}
+    try { fetch(API + '/api/games/warm?game=' + encodeURIComponent(game), { method: 'POST', headers: { 'Authorization': 'Bearer ' + t }, body: '{}', keepalive: true }).then(function (r) { return r.json(); }).then(function (d) { if (d && d.admin) { isAdmin = true; colo = d.colo || ''; } }).catch(function () {}); } catch (e) {}
   }
   /* admins only: a small "⚡ 180 ms" pill in the game bar showing how long the last bet/move took to come back */
   var pill = null, isAdmin = false, colo = '';
@@ -1918,13 +1930,29 @@ async function adminBar() {
       pill.title = 'Server reply time for your last bet or move (only admins see this)';
       var bal = bar.querySelector('.bal, .balance, #balPill'); bar.insertBefore(pill, bal || bar.children[1] || null);
     }
-    pill.textContent = '⚡ ' + Math.round(ms) + ' ms' + (colo ? ' · ' + colo : '');
+    /* split the time: how long the server itself worked vs the trip there and back */
+    var srv = null, fresh = false;
+    try {
+      var es = performance.getEntriesByType('resource').filter(function (x) { return /\/api\/games\/(bet|act)/.test(x.name); });
+      var en = es[es.length - 1];
+      if (en) { var st = (en.serverTiming || []).filter(function (x) { return x.name === 'app'; })[0]; if (st) srv = Math.round(st.duration); fresh = en.connectEnd - en.connectStart > 1; }
+      if (es.length > 40) performance.clearResourceTimings();
+    } catch (e) {}
+    pill.textContent = '⚡ ' + Math.round(ms) + ' ms' + (srv != null ? ' · server ' + srv : '') + (fresh ? ' · new conn' : '') + (colo ? ' · ' + colo : '');
     pill.style.color = ms < 250 ? '#86efac' : ms < 600 ? '#fde68a' : '#fca5a5';
   }
   var of = window.fetch;
   window.fetch = function (u, o) {
-    var t = performance.now(), p = of.apply(this, arguments);
-    if (typeof u === 'string' && /\/api\/games\/(bet|act)/.test(u)) p.then(function () { showMs(performance.now() - t); }, function () {});
+    var isMove = typeof u === 'string' && /\/api\/games\/(bet|act|warm)\b/.test(u);
+    /* send game moves as a "simple" request: the login token rides in a plain-text body instead of a header,
+       so the browser goes straight to the server without first asking permission (that check is a whole extra trip) */
+    if (isMove && o && o.method === 'POST' && o.headers && o.headers.Authorization) {
+      var b = {}; try { b = JSON.parse(o.body || '{}'); } catch (e) {}
+      b._t = String(o.headers.Authorization).replace('Bearer ', '');
+      o = { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(b), keepalive: o.keepalive, cache: 'no-store' };
+    }
+    var t = performance.now(), p = of.call(this, u, o);
+    if (isMove && !/warm/.test(u)) p.then(function () { showMs(performance.now() - t, u); }, function () {});
     return p;
   };
   setTimeout(warm, 600);
