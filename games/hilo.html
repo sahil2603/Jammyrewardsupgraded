@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+<link rel="preconnect" href="https://jammy-lb-proxy.sahil-sah2603.workers.dev" crossorigin>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>HiLo · Jammmy Originals</title>
@@ -255,6 +256,9 @@ tr.chk:hover td{background:rgba(255,255,255,.03)}
 .slot.flip .in{transform:rotateY(180deg)}
 .slot.flip.go .in{transform:none}
 .slot.deal{transform:translate(calc(var(--cw)*-1.1),0) rotate(-8deg);opacity:.2}
+.slot.pend .in{transform:rotateY(180deg)}
+.slot.pend{animation:hlPend .26s cubic-bezier(.2,.8,.2,1)}
+@keyframes hlPend{from{transform:translate(calc(var(--cw)*-1.1),0) rotate(-8deg);opacity:.3}to{transform:none;opacity:1}}
 .slot.deal .in{transform:rotateY(180deg)}
 .slot.deal.go{transform:none;opacity:1;transition:transform .32s var(--ease),opacity .16s}
 .slot.deal.go .in{transform:none}
@@ -369,7 +373,7 @@ window.addEventListener('keydown', function (e) { if (document.body.classList.co
   .game{height:var(--gh,auto);min-height:0}
   .game > .panel{min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.14) transparent;padding:15px;gap:11px}
   .game > .table,.game > .stage{min-height:0!important;height:auto}
-  .deal{height:52px}
+  .panel .deal{height:52px}
   .seg button{height:34px}
   .btn2{height:42px}
   .stat{padding:7px 12px}
@@ -385,7 +389,7 @@ window.addEventListener('keydown', function (e) { if (document.body.classList.co
   .game{display:flex;flex-direction:column;gap:8px}
   .game > .table,.game > .stage{order:-1;height:var(--sh,auto);min-height:0!important;flex:none}
   .game > .panel{padding:10px;gap:8px;border-radius:16px}
-  .deal{height:50px;font-size:1.2rem}
+  .panel .deal{height:50px;font-size:1.2rem}
   .amt{min-height:0}
   .fld label{margin-bottom:4px}
   .panel .foot{margin-top:4px}
@@ -1108,6 +1112,17 @@ function cardHTML(c, big) {
     + '<div class="ix br"><b>' + r + '</b><i>' + s + '</i></div></div>';
 }
 var curEl = $('cur');
+function pendCard() {
+  var el = curEl;
+  el.className = 'slot pend';
+  el.innerHTML = '<div class="in"><div class="f"></div><div class="b"><img src="../jammmy-coin.webp" alt=""></div></div>';
+  sFlip();
+}
+function restoreCard(c) {
+  var el = curEl; if (c == null) return;
+  el.className = 'slot';
+  el.innerHTML = '<div class="in"><div class="f">' + cardHTML(c, true) + '</div><div class="b"><img src="../jammmy-coin.webp" alt=""></div></div>';
+}
 async function showCard(c, from) {
   var el = curEl;
   el.className = 'slot ' + (from || 'flip');
@@ -1173,12 +1188,13 @@ async function startRound() {
   var bet = getBet(), err = checkBet(bet, MIN_BET); if (err) return setMsg(err);
   BUSY = true; paint(); hideBanner();
   if (LIVE) {
+    walletAdd(-bet); SND.chip(); $('stage').classList.remove('won', 'lost');   /* react at once */
     try {
       var d = await api('/api/games/bet', { game: 'hilo', bet: bet });
       ROUND = d.round; S = d.round.state; liveSeeds(d.seeds);
-      walletAdd(-bet); liveBalance(d.balance); SND.chip();
-      $('stage').classList.remove('won', 'lost'); paintHist();
-    } catch (e) { liveErr(e); if (e.data && e.data.resume) await liveResume(); }
+      liveBalance(d.balance);
+      paintHist();
+    } catch (e) { walletAdd(bet); liveErr(e); if (e.data && e.data.resume) await liveResume(); }
     finally { BUSY = false; paint(); }
     return;
   }
@@ -1195,9 +1211,13 @@ async function guess(id) {
   BUSY = true; paint();
   try {
     var nxt;
+    var pend = false;
     if (LIVE) {
+      /* like Stake: the next card slides out face down at once and turns over when the answer is back */
+      var was = curCard(); pendCard(); pend = true;
       try { var d = await api('/api/games/act', { game: 'hilo', action: id }); }
-      catch (e) { liveErr(e); return; }
+      catch (e) { restoreCard(was); liveErr(e); return; }
+      if (!d || !d.round) { restoreCard(was); return; }
       ROUND = d.round; S = d.round.state; S._bal = d.balance; nxt = S.cards[S.cards.length - 1].c;
       if (S.phase === 'done' && !S.cashed) liveBalance(d.balance);
     } else {
@@ -1205,7 +1225,7 @@ async function guess(id) {
       hiloStep(S, id, nxt);
     }
     var last = S.cards[S.cards.length - 1];
-    await showCard(nxt, 'deal');
+    await showCard(nxt, pend ? 'flip' : 'deal');
     paintHist();
     if (id === 'skip') sSkip();
     else if (last.ok) {
@@ -1357,6 +1377,25 @@ async function liveResume(d) {
   var n = document.getElementById('notices');
   if (n && window.MutationObserver) new MutationObserver(function () { clearTimeout(t); t = setTimeout(fit, 30); }).observe(n, { childList: true, subtree: true, characterData: true });
   fit(); setTimeout(fit, 300);
+})();
+</script>
+<script>
+/* Speed: open the connection to the game server straight away and keep it (and the server) warm while the
+   game is on screen, so a bet never waits for a fresh connection or a sleeping server. */
+(function () {
+  var API = 'https://jammy-lb-proxy.sahil-sah2603.workers.dev';
+  var game = (location.pathname.match(/([a-z]+)\.html$/) || [])[1] || '';
+  function tok() { try { return window.token || window.TOKEN || localStorage.getItem('jammy_session_token'); } catch (e) { return null; } }
+  var last = 0;
+  function warm() {
+    var t = tok(); if (!t || document.hidden) return;
+    if (Date.now() - last < 15000) return; last = Date.now();
+    try { fetch(API + '/api/games/warm?game=' + encodeURIComponent(game), { headers: { 'Authorization': 'Bearer ' + t }, cache: 'no-store', keepalive: true }).catch(function () {}); } catch (e) {}
+  }
+  setTimeout(warm, 600);
+  setInterval(warm, 25000);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) warm(); });
+  window.addEventListener('focus', warm);
 })();
 </script>
 </body>

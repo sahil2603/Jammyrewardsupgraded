@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+<link rel="preconnect" href="https://jammy-lb-proxy.sahil-sah2603.workers.dev" crossorigin>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Plinko · Jammmy Originals</title>
@@ -329,7 +330,7 @@ window.addEventListener('keydown', function (e) { if (document.body.classList.co
   .game{height:var(--gh,auto);min-height:0}
   .game > .panel{min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.14) transparent;padding:15px;gap:11px}
   .game > .table,.game > .stage{min-height:0!important;height:auto}
-  .deal{height:52px}
+  .panel .deal{height:52px}
   .seg button{height:34px}
   .btn2{height:42px}
   .stat{padding:7px 12px}
@@ -345,7 +346,7 @@ window.addEventListener('keydown', function (e) { if (document.body.classList.co
   .game{display:flex;flex-direction:column;gap:8px}
   .game > .table,.game > .stage{order:-1;height:var(--sh,auto);min-height:0!important;flex:none}
   .game > .panel{padding:10px;gap:8px;border-radius:16px}
-  .deal{height:50px;font-size:1.2rem}
+  .panel .deal{height:50px;font-size:1.2rem}
   .amt{min-height:0}
   .fld label{margin-bottom:4px}
   .panel .foot{margin-top:4px}
@@ -1350,6 +1351,25 @@ var _ro = new ResizeObserver(function () { geom(); draw(); }); _ro.observe(cv.pa
   var n = document.getElementById('notices');
   if (n && window.MutationObserver) new MutationObserver(function () { clearTimeout(t); t = setTimeout(fit, 30); }).observe(n, { childList: true, subtree: true, characterData: true });
   fit(); setTimeout(fit, 300);
+})();
+</script>
+<script>
+/* Speed: open the connection to the game server straight away and keep it (and the server) warm while the
+   game is on screen, so a bet never waits for a fresh connection or a sleeping server. */
+(function () {
+  var API = 'https://jammy-lb-proxy.sahil-sah2603.workers.dev';
+  var game = (location.pathname.match(/([a-z]+)\.html$/) || [])[1] || '';
+  function tok() { try { return window.token || window.TOKEN || localStorage.getItem('jammy_session_token'); } catch (e) { return null; } }
+  var last = 0;
+  function warm() {
+    var t = tok(); if (!t || document.hidden) return;
+    if (Date.now() - last < 15000) return; last = Date.now();
+    try { fetch(API + '/api/games/warm?game=' + encodeURIComponent(game), { headers: { 'Authorization': 'Bearer ' + t }, cache: 'no-store', keepalive: true }).catch(function () {}); } catch (e) {}
+  }
+  setTimeout(warm, 600);
+  setInterval(warm, 25000);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) warm(); });
+  window.addEventListener('focus', warm);
 })();
 </script>
 </body>

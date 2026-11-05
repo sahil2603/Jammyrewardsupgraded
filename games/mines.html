@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+<link rel="preconnect" href="https://jammy-lb-proxy.sahil-sah2603.workers.dev" crossorigin>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Mines · Jammmy Originals</title>
@@ -313,6 +314,9 @@ body{background:radial-gradient(1100px 600px at 70% -10%,rgba(56,189,248,.18),tr
 .t{background:linear-gradient(180deg,#2c6699 0%,#1b4372 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -3px 0 rgba(0,0,0,.25),0 5px 0 #0c2442,0 8px 16px rgba(0,0,0,.35)}
 .mgrid.live .t:not(.open):hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.25),inset 0 -3px 0 rgba(0,0,0,.25),0 8px 0 #0c2442,0 14px 22px rgba(56,189,248,.35)}
 .t.open{background:#071528}
+.t.pend{animation:tPend .5s ease-in-out infinite alternate;cursor:progress}
+@keyframes tPend{from{transform:translateY(2px) scale(.95);filter:brightness(1.15)}to{transform:translateY(0) scale(1.01);filter:brightness(1.55) saturate(1.2)}}
+@media (prefers-reduced-motion:reduce){.t.pend{animation:none;filter:brightness(1.4)}}
 .amt,.amt-in{border-color:rgba(125,211,252,.18)}
 
 .net-wait{transform:scale(.98);animation:netPulse .7s ease-in-out infinite;transition:transform .08s}
@@ -363,7 +367,7 @@ window.addEventListener('keydown', function (e) { if (document.body.classList.co
   .game{height:var(--gh,auto);min-height:0}
   .game > .panel{min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.14) transparent;padding:15px;gap:11px}
   .game > .table,.game > .stage{min-height:0!important;height:auto}
-  .deal{height:52px}
+  .panel .deal{height:52px}
   .seg button{height:34px}
   .btn2{height:42px}
   .stat{padding:7px 12px}
@@ -379,7 +383,7 @@ window.addEventListener('keydown', function (e) { if (document.body.classList.co
   .game{display:flex;flex-direction:column;gap:8px}
   .game > .table,.game > .stage{order:-1;height:var(--sh,auto);min-height:0!important;flex:none}
   .game > .panel{padding:10px;gap:8px;border-radius:16px}
-  .deal{height:50px;font-size:1.2rem}
+  .panel .deal{height:50px;font-size:1.2rem}
   .amt{min-height:0}
   .fld label{margin-bottom:4px}
   .panel .foot{margin-top:4px}
@@ -1213,12 +1217,14 @@ async function startRound() {
   var bet = getBet(), err = checkBet(bet, MIN_BET); if (err) return setMsg(err);
   BUSY = true; hideBanner(); resetBoard(); paintInfo();
   if (LIVE) {
+    /* react at once: chip sound, coins off the balance and the board deals while the bet goes out */
+    walletAdd(-bet); SND.chip();
+    grid.classList.add('dealing'); setTimeout(function () { grid.classList.remove('dealing'); }, 500);
     try {
       var d = await api('/api/games/bet', { game: 'mines', bet: bet, mines: nMines() });
       ROUND = d.round; S = d.round.state; liveSeeds(d.seeds);
-      walletAdd(-bet); liveBalance(d.balance); SND.chip();
-      grid.classList.add('dealing'); setTimeout(function () { grid.classList.remove('dealing'); }, 500);
-    } catch (e) { liveErr(e); if (e.data && e.data.resume) await liveResume(); }
+      liveBalance(d.balance);
+    } catch (e) { walletAdd(bet); liveErr(e); if (e.data && e.data.resume) await liveResume(); }
     finally { BUSY = false; paintInfo(); }
     return;
   }
@@ -1235,8 +1241,10 @@ async function pick(i) {
   sTap();
   if (LIVE) {
     BUSY = true;
+    tiles[i].classList.add('pend');   /* the tile reacts at once while the answer is on its way */
     try { var d = await api('/api/games/act', { game: 'mines', action: 'pick', tile: i }); ROUND = d.round; S = d.round.state; if (S.phase === 'done' && !S.cashed) liveBalance(d.balance); else S._bal = d.balance; }
-    catch (e) { BUSY = false; liveErr(e); return; }
+    catch (e) { tiles[i].classList.remove('pend'); BUSY = false; liveErr(e); return; }
+    tiles[i].classList.remove('pend');
     BUSY = false;
   } else minesPick(S, i);
   if (S.hit === i) {
@@ -1366,6 +1374,25 @@ async function liveResume(d) {
   var n = document.getElementById('notices');
   if (n && window.MutationObserver) new MutationObserver(function () { clearTimeout(t); t = setTimeout(fit, 30); }).observe(n, { childList: true, subtree: true, characterData: true });
   fit(); setTimeout(fit, 300);
+})();
+</script>
+<script>
+/* Speed: open the connection to the game server straight away and keep it (and the server) warm while the
+   game is on screen, so a bet never waits for a fresh connection or a sleeping server. */
+(function () {
+  var API = 'https://jammy-lb-proxy.sahil-sah2603.workers.dev';
+  var game = (location.pathname.match(/([a-z]+)\.html$/) || [])[1] || '';
+  function tok() { try { return window.token || window.TOKEN || localStorage.getItem('jammy_session_token'); } catch (e) { return null; } }
+  var last = 0;
+  function warm() {
+    var t = tok(); if (!t || document.hidden) return;
+    if (Date.now() - last < 15000) return; last = Date.now();
+    try { fetch(API + '/api/games/warm?game=' + encodeURIComponent(game), { headers: { 'Authorization': 'Bearer ' + t }, cache: 'no-store', keepalive: true }).catch(function () {}); } catch (e) {}
+  }
+  setTimeout(warm, 600);
+  setInterval(warm, 25000);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) warm(); });
+  window.addEventListener('focus', warm);
 })();
 </script>
 </body>
