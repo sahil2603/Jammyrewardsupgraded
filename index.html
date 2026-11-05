@@ -14965,7 +14965,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     document.documentElement.classList.add('bg-paused');
     CUR = k;
     $('gmLobby').hidden = true; $('gmPlay').hidden = false; $('games').classList.add('playing');
-    var f = $('gmFrame'), src = 'games/' + k + '.html';
+    var f = $('gmFrame'), src = 'games/' + k + '.html?v=20261105';   /* bump when a game file changes so browsers fetch the new one */
     if(f.getAttribute('src') !== src) f.setAttribute('src', src);
     paintSwitch();
     if(!fromHistory && window.history && history.pushState && location.hash !== '#games/' + k) history.pushState({ page: 'games/' + k }, '', '#games/' + k);
