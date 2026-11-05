@@ -350,6 +350,59 @@ function jgGate(why, name) {
 /* no playing behind the gate with the keyboard */
 window.addEventListener('keydown', function (e) { if (document.body.classList.contains('jg-gated') && !/INPUT|TEXTAREA|SELECT/.test((e.target.tagName || ''))) e.stopImmediatePropagation(); }, true);
 </script>
+<style id="jgFit">
+/* ===== Fit to screen (2026-11-05) =====
+   The table and the buttons you need mid-round always fit on one screen:
+   laptop  → the game fills the height under the header; the bet panel scrolls inside itself if it must.
+   phone   → table on top, then a dock with the main buttons and bet amount; the other settings sit below. */
+.top{padding-top:8px;padding-bottom:8px}
+.top .ibtn{width:38px;height:38px}
+.panel::-webkit-scrollbar{width:6px}.panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:6px}
+@media (min-width:901px){
+  .wrap{padding-top:12px;padding-bottom:20px}
+  .game{height:var(--gh,auto);min-height:0}
+  .game > .panel{min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.14) transparent;padding:15px;gap:11px}
+  .game > .table,.game > .stage{min-height:0!important;height:auto}
+  .deal{height:52px}
+  .seg button{height:34px}
+  .btn2{height:42px}
+  .stat{padding:7px 12px}
+  .fld label{margin-bottom:5px}
+}
+@media (min-width:901px) and (max-height:820px){
+  .panel .foot{display:none}
+}
+@media (max-width:900px){
+  .wrap{padding:8px 8px 24px}
+  .top{padding-left:10px;padding-right:10px;gap:8px}
+  .top .brand img{width:30px;height:30px}
+  .game{display:flex;flex-direction:column;gap:8px}
+  .game > .table,.game > .stage{order:-1;height:var(--sh,auto);min-height:0!important;flex:none}
+  .game > .panel{padding:10px;gap:8px;border-radius:16px}
+  .deal{height:50px;font-size:1.2rem}
+  .amt{min-height:0}
+  .fld label{margin-bottom:4px}
+  .panel .foot{margin-top:4px}
+  /* messages float just above the dock instead of hiding below it */
+  .game > .panel > .msg{position:absolute;left:10px;right:10px;top:-6px;transform:translateY(-100%);z-index:20;pointer-events:none;margin:0}
+  .game > .panel > .msg:empty{display:none}
+  .game > .panel > .msg:not(:empty){background:rgba(8,14,28,.94);padding:8px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.14);box-shadow:0 10px 24px rgba(0,0,0,.45)}
+}
+</style>
+<style id="jgFitMines">
+.stage{container-type:size}
+.mgrid{width:min(560px,100%,calc(100cqh - 76px))!important;min-width:0!important}
+@media (min-width:901px){.stage{padding:16px 20px;gap:12px}}
+@media (max-width:900px){
+  .game > .panel{position:relative}
+  .panel > .deal{order:1}
+  .panel > .fld.betf{order:2}
+  .panel > *:not(.deal):not(.betf){order:5}
+  .stage{padding:10px;gap:8px}
+  .mgrid{width:min(100%,calc(100cqh - 52px))!important}
+  .cur{font-size:1.5rem}
+}
+</style>
 </head>
 <body>
 <header class="top">
@@ -366,7 +419,7 @@ window.addEventListener('keydown', function (e) { if (document.body.classList.co
   <div class="game">
     <aside class="panel" aria-label="Bet controls">
       <div class="seg" id="modeSeg" role="group" aria-label="Mode"><button type="button" data-m="manual" class="on">Manual</button><button type="button" data-m="auto">Auto</button></div>
-      <div class="fld">
+      <div class="fld betf" data-dock>
         <label for="bet">Bet amount <span>min 1</span></label>
         <div class="amt"><img src="../jammmy-coin.webp" alt=""><input id="bet" type="number" inputmode="decimal" min="1" step="1" aria-label="Bet amount in coins"><button class="q" type="button" data-q="half" data-for="bet">½</button><button class="q" type="button" data-q="double" data-for="bet">2×</button><button class="q qmax" type="button" data-q="max" data-for="bet" title="Bet all your coins, up to the max bet">Max</button></div>
       </div>
@@ -383,7 +436,7 @@ window.addEventListener('keydown', function (e) { if (document.body.classList.co
         </div>
         <div class="fld"><label>Saved patterns <button type="button" class="lnk" id="patSave">Save current</button></label><div class="pats" id="pats"></div></div>
       </div>
-      <button class="deal" id="mainBtn" type="button">Bet</button>
+      <button class="deal" id="mainBtn" type="button" data-dock>Bet</button>
       <button class="btn2" id="rndBtn" type="button" disabled>Pick a random tile <kbd>R</kbd></button>
       <div class="stat"><span>Next gem pays</span><b id="nextX" class="g">1.02×</b></div>
       <div class="stat"><span>Profit if you cash out</span><b id="profit">0</b></div>
@@ -681,7 +734,7 @@ var fmt = function (n) { return Number(n || 0).toLocaleString('en-US', { maximum
 var fmtX = function (m) { return (m >= 100 ? fmt(Math.round(m * 100) / 100) : Number(m).toFixed(2)) + '×'; };
 var wait = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
 var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-var SP = REDUCED ? 0.3 : 0.6;   /* animation speed factor: snappier (was 1) */
+var SP = REDUCED ? 0.3 : 0.5;   /* animation speed factor: snappier (was 1) */
 var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
 function rndHex(n) { var a = new Uint8Array(n); crypto.getRandomValues(a); return Array.from(a, function (b) { return b.toString(16).padStart(2, '0'); }).join(''); }
 var LIMITS = { minBet: 1, maxBet: 5000, maxWin: 100000 };
@@ -1005,8 +1058,8 @@ async function commonInit() {
   if (live.ok) {
     renderBets();
     var L = live.data.limits;
-    if (live.data.is_admin && !live.data.enabled[GAME.key]) notice('<span><b>Admin test:</b> this game is switched off for players. You are playing with real coins.</span>');
-    else if (L.daily_loss_cap) notice('');
+    /* no admin banner in the game: switches live in Admin → Games */
+    notice('');
     await fairInitLive();
     return live.data;
   }
@@ -1272,6 +1325,48 @@ async function liveResume(d) {
   paintInfo();
 })();
 
+</script>
+<script>
+/* Fit to screen: size the game to the frame so the table and the dock (main buttons) are always visible together. */
+(function () {
+  var root = document.documentElement, busy = false, t = 0;
+  function px(v) { return Math.round(v) + 'px'; }
+  function fit() {
+    var game = document.querySelector('.game'), stage = document.querySelector('.game > .table, .game > .stage');
+    if (!game || !stage) return;
+    var mob = window.innerWidth <= 900;
+    var top = game.getBoundingClientRect().top + window.scrollY;
+    var gh = Math.max(mob ? 360 : 380, Math.floor(window.innerHeight - top - (mob ? 8 : 14)));
+    var changed = false;
+    if (!mob) {
+      if (root.style.getPropertyValue('--gh') !== px(gh)) { root.style.setProperty('--gh', px(gh)); changed = true; }
+      if (root.style.getPropertyValue('--sh')) { root.style.removeProperty('--sh'); changed = true; }
+    } else {
+      if (root.style.getPropertyValue('--gh')) { root.style.removeProperty('--gh'); changed = true; }
+      var last = 0;
+      document.querySelectorAll('.panel [data-dock]').forEach(function (e) { if (e.offsetParent) last = Math.max(last, e.getBoundingClientRect().bottom + window.scrollY); });
+      if (!last) return;
+      var pad = parseFloat(getComputedStyle(document.querySelector('.game > .panel')).paddingBottom) || 0;
+      var old = stage.getBoundingClientRect().height, used = last + pad - top;
+      var nh = Math.max(250, Math.round(old + gh - used));
+      if (Math.abs(nh - old) > 1) { root.style.setProperty('--sh', px(nh)); changed = true; }
+    }
+    if (changed) { busy = true; window.dispatchEvent(new Event('resize')); busy = false; }
+  }
+  window.jgFit = fit;
+  /* phones: pressing a main button while scrolled down to the settings brings the table back into view */
+  document.addEventListener('click', function (e) {
+    if (window.innerWidth > 900 || window.scrollY < 4) return;
+    var b = e.target.closest && e.target.closest('[data-dock] button, button[data-dock]');
+    if (b && !/\bq\b/.test(b.className)) setTimeout(function () { window.scrollTo({ top: 0, behavior: 'smooth' }); }, 30);
+  });
+  window.addEventListener('resize', function () { if (busy) return; clearTimeout(t); t = setTimeout(fit, 50); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  window.addEventListener('load', fit);
+  var n = document.getElementById('notices');
+  if (n && window.MutationObserver) new MutationObserver(function () { clearTimeout(t); t = setTimeout(fit, 30); }).observe(n, { childList: true, subtree: true, characterData: true });
+  fit(); setTimeout(fit, 300);
+})();
 </script>
 </body>
 </html>
