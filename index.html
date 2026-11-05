@@ -5218,7 +5218,7 @@ html.ice .hx-wm-glow{background:radial-gradient(ellipse 38% 50% at 28% 55%,rgba(
 .gm-switch button.on{background:rgba(56,189,248,.18);border-color:rgba(125,211,252,.55);color:#fff}
 #games.playing .gm-head{display:none}
 #games.playing .gm{padding-top:16px}
-#gmFrame{display:block;width:100%;height:calc(100vh - 150px);height:calc(100dvh - 150px);min-height:640px;border:0;border-radius:22px;background:#0b0615;box-shadow:0 30px 80px -40px rgba(0,0,0,.9)}
+#gmFrame{display:block;width:100%;height:calc(100vh - 150px);height:calc(100dvh - 150px);min-height:420px;border:0;border-radius:22px;background:#0b0615;box-shadow:0 30px 80px -40px rgba(0,0,0,.9)}
 
 @media(max-width:1100px){.gm-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:700px){
@@ -5234,8 +5234,13 @@ html.ice .hx-wm-glow{background:radial-gradient(ellipse 38% 50% at 28% 55%,rgba(
   .gm-switch{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
   .gm-switch::-webkit-scrollbar{display:none}
   .gm-switch button{flex:none;padding:7px 11px}
-  #gmFrame{height:calc(100vh - 205px);height:calc(100dvh - 205px);min-height:520px;border-radius:16px}
+  #gmFrame{height:calc(100vh - 140px);height:calc(100dvh - 140px);min-height:440px;border-radius:16px}
 }
+/* while a game is open the game itself has its controls, so the site's bottom bar steps aside */
+@media(max-width:820px){body.gm-playing .mobbar{display:none!important}body.gm-playing{padding-bottom:0!important}}
+/* the game frame fills exactly what is left of the screen (sized in JS), so nothing needs scrolling */
+#games.playing .gm{padding-top:10px}
+#games.playing .gm-play-bar{margin-bottom:8px}
 html.ice-lite .gm-live-dot,html.ice-rm .gm-live-dot{animation:none}
 @media (prefers-reduced-motion:reduce){.gm-card,.gm-art svg,.gm-win{transition:none!important;animation:none!important}}
 </style>
@@ -5861,6 +5866,123 @@ body.on-admin #skyParticles{opacity:.18!important}
   #admin .bt-card,#admin .adm-stat,#admin .admin-tab-panel > div[style*="background:var(--panel)"]{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(130,175,255,.075)!important}
   #admin .adm-stat .v{font-size:1.45rem}
 }
+</style>
+<style id="jxFields">
+/* ===== Premium fields for the admin panel and drop dialogs (2026-11-05) =====
+   number boxes get − / + steppers, dropdowns get a glass menu, ticks become switches. */
+.jx-num,.jx-sel{position:relative;display:flex;align-items:stretch;width:100%;box-sizing:border-box;height:48px;border-radius:14px;
+  background:linear-gradient(180deg,rgba(2,8,20,.72),rgba(6,14,32,.6));border:1px solid rgba(190,220,255,.15);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),inset 0 -10px 20px -14px rgba(125,211,252,.18);transition:border-color .15s,box-shadow .15s}
+.jx-num:hover,.jx-sel:hover{border-color:rgba(190,220,255,.26)}
+.jx-num:focus-within,.jx-sel.open,.jx-sel:focus-within{border-color:rgba(125,211,252,.7);box-shadow:0 0 0 3px rgba(125,211,252,.16),inset 0 1px 0 rgba(255,255,255,.05)}
+.jx-seg select{display:none!important}
+#admin .jx-num input[type=number],#jmDlg .jx-num input[type=number],.jx-num input[type=number]{flex:1 1 auto;min-width:0;width:100%!important;height:100%!important;margin:0!important;padding:0 4px!important;border:0!important;background:transparent!important;box-shadow:none!important;outline:0;
+  color:#fff!important;text-align:center;font:700 1.08rem 'Poppins',sans-serif!important;font-variant-numeric:tabular-nums;letter-spacing:.01em;-moz-appearance:textfield;appearance:textfield;border-radius:0!important}
+.jx-num input::-webkit-outer-spin-button,.jx-num input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.jx-num .jx-b{flex:none;width:40px;display:grid;place-items:center;border:0;background:transparent;color:#a9c7e8;cursor:pointer;padding:0;border-radius:12px;margin:4px;transition:background .12s,color .12s,transform .08s;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.jx-num .jx-b:hover{background:rgba(125,211,252,.13);color:#fff}
+.jx-num .jx-b:active{transform:scale(.92);background:rgba(125,211,252,.22)}
+.jx-num .jx-b svg{width:16px;height:16px}
+.jx-num .jx-b:disabled{opacity:.3;cursor:default;background:transparent}
+.jx-num.bump input{animation:jxBump .18s ease}
+@keyframes jxBump{40%{transform:scale(1.07)}}
+.jx-sel select{position:absolute!important;inset:0;width:100%!important;height:100%!important;opacity:0!important;pointer-events:none!important}
+.jx-sel .jx-trig{flex:1;min-width:0;display:flex;align-items:center;justify-content:space-between;gap:10px;border:0;background:transparent;color:#fff;font:600 .95rem 'Poppins',sans-serif;padding:0 14px;cursor:pointer;text-align:left;border-radius:14px}
+.jx-sel .jx-trig span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.jx-sel .jx-trig svg{flex:none;width:16px;height:16px;color:#8fb4da;transition:transform .2s}
+.jx-sel.open .jx-trig svg{transform:rotate(180deg)}
+.jx-sel.dis{opacity:.5}.jx-sel.dis .jx-trig{cursor:default}
+.jx-menu{position:fixed;z-index:200010;min-width:160px;max-height:300px;overflow:auto;padding:6px;box-sizing:border-box;border-radius:16px;
+  background:linear-gradient(180deg,rgba(14,26,52,.96),rgba(7,15,32,.97));border:1px solid rgba(190,220,255,.18);
+  box-shadow:0 24px 60px -12px rgba(0,0,0,.75),inset 0 1px 0 rgba(255,255,255,.07);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+  animation:jxMenu .16s cubic-bezier(.2,.8,.2,1);font-family:'Poppins',sans-serif}
+.jx-menu.up{animation-name:jxMenuUp}
+@keyframes jxMenu{from{opacity:0;transform:translateY(-6px) scale(.98)}}
+@keyframes jxMenuUp{from{opacity:0;transform:translateY(6px) scale(.98)}}
+.jx-menu button{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;border:0;background:transparent;color:#d6e6fa;font:500 .92rem 'Poppins',sans-serif;text-align:left;padding:10px 12px;border-radius:10px;cursor:pointer}
+.jx-menu button:hover,.jx-menu button.hi{background:rgba(125,211,252,.12);color:#fff}
+.jx-menu button.on{color:#fff;font-weight:600}
+.jx-menu button.on::after{content:"";width:16px;height:16px;flex:none;background:#7dd3fc;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/contain no-repeat}
+.jx-menu button:disabled{opacity:.4;cursor:default}
+/* segmented choice for short dropdowns (marked data-seg) */
+.jx-seg{display:flex;gap:4px;padding:4px;height:48px;box-sizing:border-box;border-radius:14px;background:rgba(2,8,20,.6);border:1px solid rgba(190,220,255,.14)}
+.jx-seg button{flex:1 1 auto;min-width:0;border:0;border-radius:10px;background:transparent;color:#a3b6d3;font:600 .8rem 'Poppins',sans-serif;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px;transition:background .15s,color .15s}
+.jx-seg button:hover{color:#fff}
+.jx-seg button.on{background:linear-gradient(180deg,rgba(190,225,255,.22),rgba(160,200,255,.12));color:#fff;box-shadow:inset 0 0 0 1px rgba(190,225,255,.25),0 6px 14px -8px rgba(0,0,0,.6)}
+/* switches */
+#admin .bt-f.sw input[type=checkbox],#jmDlg .jd-to input[type=checkbox]{-webkit-appearance:none;appearance:none;flex:none;width:40px!important;height:24px!important;margin:0;border-radius:99px;position:relative;cursor:pointer;
+  background:rgba(150,190,240,.16);border:1px solid rgba(190,220,255,.2);transition:background .18s,border-color .18s}
+#admin .bt-f.sw input[type=checkbox]::after,#jmDlg .jd-to input[type=checkbox]::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#dbe8f7;box-shadow:0 2px 6px rgba(0,0,0,.4);transition:transform .2s cubic-bezier(.3,1.4,.5,1)}
+#admin .bt-f.sw input[type=checkbox]:checked,#jmDlg .jd-to input[type=checkbox]:checked{background:linear-gradient(135deg,#38bdf8,#818cf8);border-color:transparent}
+#admin .bt-f.sw input[type=checkbox]:checked::after,#jmDlg .jd-to input[type=checkbox]:checked::after{transform:translateX(16px);background:#fff}
+#admin .bt-f.sw input[type=checkbox]:disabled,#jmDlg .jd-to input[type=checkbox]:disabled{opacity:.4;cursor:not-allowed}
+#admin .bt-f.sw input[type=checkbox]:focus-visible,#jmDlg .jd-to input:focus-visible,.jx-b:focus-visible,.jx-trig:focus-visible,.jx-seg button:focus-visible{outline:2px solid #7dd3fc;outline-offset:2px}
+/* plain text boxes next to them match */
+#admin .bt-f > input:not([type=checkbox]):not([type=color]):not([type=number]),#admin .bt-f > textarea{min-height:48px;border-radius:14px!important;padding:0 14px!important;font:500 .95rem 'Poppins',sans-serif!important;background:linear-gradient(180deg,rgba(2,8,20,.72),rgba(6,14,32,.6))!important}
+#admin .bt-f > textarea{padding:12px 14px!important}
+#admin .bt-f{gap:7px;font-size:.8rem;color:#9fb4d1;font-weight:500}
+
+/* ---- New challenge form ---- */
+#admin .ach-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px 14px;margin-top:16px}
+#admin .ach-grid > .bt-f{grid-column:span 3}
+#admin .ach-grid > .c4{grid-column:span 4}
+#admin .ach-grid > .c12{grid-column:1/-1}
+#admin .ach-foot{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid rgba(190,220,255,.1)}
+#admin .ach-foot .ach-cost{display:flex;flex-direction:column;line-height:1.2}
+#admin .ach-foot .ach-cost small{font-size:.72rem;color:#7f97b8}
+#admin .ach-foot .ach-cost b{font-size:1.05rem;color:#fff;font-variant-numeric:tabular-nums}
+#admin .ach-foot .ach-cost i{font-style:normal;color:#9fb4d1;font-size:.82rem;margin-left:4px}
+#admin .ach-foot .bt-btn.p{margin-left:auto;height:46px;padding:0 22px;font-size:.92rem}
+@media(max-width:900px){#admin .ach-grid > .bt-f,#admin .ach-grid > .c4{grid-column:span 6}#admin .ach-grid > .c12{grid-column:1/-1}#admin .ach-foot .bt-btn.p{width:100%;margin-left:0}}
+
+/* ---- Drop dialogs (code drop / Kick drop) ---- */
+#jmDlg{background:rgba(2,6,16,.62)}
+#jmDlg .jmd-box.jdrop{width:min(520px,100%);padding:26px 26px 20px;border-radius:26px;
+  background:radial-gradient(120% 60% at 0% 0%,rgba(56,189,248,.16),transparent 55%),radial-gradient(90% 60% at 100% 0%,rgba(129,140,248,.14),transparent 60%),linear-gradient(180deg,#0d1a33,#08111f 70%);
+  border:1px solid rgba(190,220,255,.16);box-shadow:0 40px 100px -20px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.08);scrollbar-width:thin;scrollbar-color:rgba(190,220,255,.2) transparent}
+#jmDlg .jdrop::-webkit-scrollbar{width:6px}#jmDlg .jdrop::-webkit-scrollbar-thumb{background:rgba(190,220,255,.2);border-radius:6px}
+#jmDlg .jdrop .jmd-ic{width:50px;height:50px;border-radius:16px;font-size:1.45rem;background:linear-gradient(135deg,rgba(125,211,252,.22),rgba(129,140,248,.2));border:1px solid rgba(190,225,255,.28);box-shadow:0 10px 24px -10px rgba(56,189,248,.6)}
+#jmDlg .jdrop .jmd-t{font:700 1.3rem/1.2 'Poppins',sans-serif;letter-spacing:-.015em}
+#jmDlg .jdrop .jmd-m{color:#a3b6d3;font-size:.9rem}
+#jmDlg .jdrop .jd-lbl{color:#9fb4d1;font-size:.8rem;font-weight:500;margin:20px 0 9px}
+#jmDlg .jdrop .jd-lbl span{color:#6f87a8!important}
+#jmDlg .jd-pre{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+#jmDlg .jd-pre button{display:flex;flex-direction:column;align-items:center;gap:1px;padding:9px 4px 8px;border-radius:14px;border:1px solid rgba(190,220,255,.13);background:rgba(150,195,255,.05);color:#e6f0ff;font:700 .9rem 'Poppins',sans-serif;transition:background .15s,border-color .15s,transform .1s}
+#jmDlg .jd-pre button small{font:500 .68rem 'Poppins',sans-serif;color:#7f97b8}
+#jmDlg .jd-pre button:hover{background:rgba(150,195,255,.1);border-color:rgba(190,220,255,.24)}
+#jmDlg .jd-pre button:active{transform:scale(.97)}
+#jmDlg .jd-pre button.on{background:linear-gradient(180deg,rgba(125,211,252,.24),rgba(129,140,248,.16));border-color:rgba(125,211,252,.6);box-shadow:0 8px 20px -10px rgba(56,189,248,.7)}
+#jmDlg .jd-pre button.on small{color:#bae6fd}
+#jmDlg .jd-grid{grid-template-columns:1fr 1fr 1.15fr;gap:12px;margin-top:18px}
+#jmDlg .jd-grid label,#jmDlg .jd-code{color:#9fb4d1;font-weight:500;font-size:.8rem;gap:7px}
+#jmDlg .jdrop input:not([type=checkbox]):not([type=number]){height:48px;border-radius:14px;background:linear-gradient(180deg,rgba(2,8,20,.72),rgba(6,14,32,.6));border:1px solid rgba(190,220,255,.15);font:600 .98rem 'Poppins',sans-serif;letter-spacing:.06em;padding:0 14px}
+#jmDlg .jdrop input:not([type=checkbox]):focus{border-color:rgba(125,211,252,.7);box-shadow:0 0 0 3px rgba(125,211,252,.16)}
+#jmDlg .jdrop input::placeholder{color:#5c7393;letter-spacing:.04em}
+#jmDlg .jd-code{margin-top:14px}
+#jmDlg .jd-code small{color:#6f87a8}
+#jmDlg .jd-to{gap:22px;margin-top:16px;color:#dbe8f7}
+#jmDlg .jd-to label{gap:10px}
+#jmDlg .jd-warn{border-radius:14px;padding:11px 14px;background:rgba(250,204,21,.08);border-color:rgba(250,204,21,.3)}
+#jmDlg .jd-sum{gap:12px;margin-top:20px}
+#jmDlg .jd-sum div{padding:13px 15px;border-radius:16px;background:linear-gradient(160deg,rgba(150,195,255,.09),rgba(120,160,230,.03));border:1px solid rgba(190,220,255,.12)}
+#jmDlg .jd-sum span{color:#8aa3c4;font-size:.74rem}
+#jmDlg .jd-sum b{font-size:1.3rem;font-variant-numeric:tabular-nums;margin-top:2px}
+#jmDlg .jd-sum small{color:#6f87a8}
+#jmDlg .jd-prev{margin-top:12px;padding:12px 14px 12px 14px;border-radius:4px 16px 16px 16px;background:rgba(83,252,24,.05);border:1px solid rgba(83,252,24,.2);color:#e8f5e2;font-size:.86rem}
+#jmDlg .jd-prev span{color:#7fbf6a;font-weight:600;font-size:.72rem;margin-bottom:5px}
+#jmDlg .jdrop .jmd-b{margin-top:18px;gap:10px}
+#jmDlg .jdrop .jmd-b button{height:48px;border-radius:99px;padding:0 22px;font-weight:600}
+#jmDlg .jdrop .jmd-b .jmd-no{background:rgba(4,10,24,.55);border:1px solid rgba(190,220,255,.16)}
+#jmDlg .jdrop .jmd-b .jmd-ok{background:linear-gradient(180deg,#e0f2fe,#bae6fd);color:#06142a;border:1px solid rgba(255,255,255,.5);box-shadow:0 10px 26px -10px rgba(125,211,252,.8)}
+#jmDlg .jdrop .jmd-b .jmd-ok:hover{background:#fff;filter:none}
+#jmDlg .jdrop .jmd-ok[disabled]{opacity:.4;filter:grayscale(.3);box-shadow:none}
+@media(max-width:520px){
+  #jmDlg .jmd-box.jdrop{padding:20px 16px 16px;border-radius:22px}
+  #jmDlg .jd-pre{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #jmDlg .jd-grid{grid-template-columns:1fr 1fr}
+  #jmDlg .jd-grid label:last-child{grid-column:1/-1}
+}
+@media (prefers-reduced-motion:reduce){.jx-menu{animation:none}.jx-num.bump input{animation:none}}
 </style>
 </head>
 <body>
@@ -7405,20 +7527,18 @@ body.on-admin #skyParticles{opacity:.18!important}
           <div class="bt-card" style="margin-bottom:14px">
             <h4>🎯 New challenge</h4>
             <p class="ag-note"><b>Jammmy Games</b> challenges are checked and paid the moment a player hits the target. <b>Slot</b> challenges (at a partner casino) need a screenshot from the player, which you approve below. The bot posts every new challenge and every winner in the Discord announcements channel.</p>
-            <div class="bt-row">
-              <label class="bt-f" style="flex:0 0 170px">Type<select id="achKind" onchange="achKindChange()"><option value="mult">Jammmy Games</option><option value="slot">Slot (screenshot)</option></select></label>
-              <label class="bt-f" style="flex:0 0 160px" id="achGameW">Game<select id="achGame"><option value="any">Any game</option><option value="plinko">Plinko</option><option value="mines">Mines</option><option value="hilo">HiLo</option><option value="blackjack">Blackjack</option></select></label>
-              <label class="bt-f" style="flex:1 1 200px;display:none" id="achSlotW">Slot name<input id="achSlot" placeholder="e.g. Sweet Bonanza"></label>
-              <label class="bt-f" style="flex:0 0 130px">Target multiplier (×)<input id="achX" type="number" min="1.01" step="0.01" value="100"></label>
+            <div class="ach-grid">
+              <label class="bt-f c4">Type<select id="achKind" data-seg onchange="achKindChange()"><option value="mult">Jammmy Games</option><option value="slot">Slot screenshot</option></select></label>
+              <label class="bt-f c4" id="achGameW">Game<select id="achGame"><option value="any">Any game</option><option value="plinko">Plinko</option><option value="mines">Mines</option><option value="hilo">HiLo</option><option value="blackjack">Blackjack</option></select></label>
+              <label class="bt-f c4" style="display:none" id="achSlotW">Slot name<input id="achSlot" placeholder="e.g. Sweet Bonanza"></label>
+              <label class="bt-f c4">Target multiplier (×)<input id="achX" type="number" min="1.01" step="0.01" value="100"></label>
+              <label class="bt-f">Min bet (coins)<input id="achMin" type="number" min="0" value="0"></label>
+              <label class="bt-f">Reward each (coins)<input id="achReward" type="number" min="1" value="500"></label>
+              <label class="bt-f">Winners<input id="achWinners" type="number" min="1" value="1"></label>
+              <label class="bt-f">Runs for (hours)<input id="achHours" type="number" min="1" value="24"></label>
+              <label class="bt-f c12"><span>Title <span style="opacity:.6">(optional)</span></span><input id="achTitle" placeholder="Made from the target if empty"></label>
             </div>
-            <div class="bt-row">
-              <label class="bt-f" style="flex:0 0 130px">Min bet<input id="achMin" type="number" min="0" value="0"></label>
-              <label class="bt-f" style="flex:0 0 140px">Reward (coins)<input id="achReward" type="number" min="1" value="500"></label>
-              <label class="bt-f" style="flex:0 0 120px">Winners<input id="achWinners" type="number" min="1" value="1"></label>
-              <label class="bt-f" style="flex:0 0 120px">Runs for (hours)<input id="achHours" type="number" min="1" value="24"></label>
-              <label class="bt-f" style="flex:1 1 200px">Title <span style="opacity:.6">(optional)</span><input id="achTitle" placeholder="Made from the target if empty"></label>
-            </div>
-            <div class="bt-row"><label class="bt-f sw"><input type="checkbox" id="achAnn" checked> Announce on Discord</label><span id="achCost" class="bt-msg" style="margin:0"></span><button class="bt-btn p" style="margin-left:auto" onclick="achCreate()">🎯 Start challenge</button></div>
+            <div class="ach-foot"><label class="bt-f sw"><input type="checkbox" id="achAnn" checked> Announce on Discord</label><span id="achCost" class="ach-cost"></span><button class="bt-btn p" onclick="achCreate()">🎯 Start challenge</button></div>
           </div>
           <div class="bt-card" style="margin-bottom:14px"><h4>📸 Screenshots to check</h4><div id="achPending">Loading&hellip;</div></div>
           <div class="bt-card"><h4>📋 Challenges</h4><div id="achList">Loading&hellip;</div></div>
@@ -10894,7 +11014,7 @@ function botDropDialog(kind){
     + '<p class="jmd-t" id="dropT">' + (isKick ? 'Start a Kick drop' : 'Post a code drop') + '</p>'
     + '<p class="jmd-m">' + (isKick ? 'The first viewers to type <b>!claim</b> in Kick chat get the coins. Only linked accounts can claim.' : 'A code people enter on the website (Profile → Have a code?). The first ones to enter it get the coins.') + '</p>'
     + (isKick && !live ? '<div class="jd-warn">Jammy isn\'t live on Kick right now, so a Kick drop can\'t start. Use a code drop instead.</div>' : '')
-    + '<div class="jd-lbl">Quick picks <span style="font-weight:500;color:rgba(255,255,255,.4)">winners × coins</span></div><div class="jd-pre">' + presets.map(function(p){ return '<button type="button" data-a="' + p[0] + '" data-w="' + p[1] + '">' + p[1] + ' × ' + p[0] + '</button>'; }).join('') + '</div>'
+    + '<div class="jd-lbl">Quick picks <span style="font-weight:500;color:rgba(255,255,255,.4)">winners × coins</span></div><div class="jd-pre">' + presets.map(function(p){ return '<button type="button" data-a="' + p[0] + '" data-w="' + p[1] + '">' + p[1] + ' × ' + p[0] + '<small>' + (p[0] * p[1]).toLocaleString() + ' coins</small></button>'; }).join('') + '</div>'
     + '<div class="jd-grid"><label>Coins each<input id="jdA" type="number" min="1" step="1" inputmode="numeric" value="' + v.amount + '"></label>'
     + '<label>Winners<input id="jdW" type="number" min="1" step="1" inputmode="numeric" value="' + v.winners + '"></label>'
     + '<label>' + (isKick ? 'Time to claim' : 'Code works for') + '<select id="jdT">' + times.map(function(t){ return '<option value="' + t[0] + '"' + (t[0] == v.time ? ' selected' : '') + '>' + t[1] + '</option>'; }).join('') + '</select></label></div>'
@@ -14849,12 +14969,30 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     if(f.getAttribute('src') !== src) f.setAttribute('src', src);
     paintSwitch();
     if(!fromHistory && window.history && history.pushState && location.hash !== '#games/' + k) history.pushState({ page: 'games/' + k }, '', '#games/' + k);
-    requestAnimationFrame(function(){ window.scrollTo(0, 0); });
+    document.body.classList.add('gm-playing');
+    requestAnimationFrame(function(){ window.scrollTo(0, 0); gmFit(); });
   };
+  /* size the frame to the space left under the header, so the whole game is on screen */
+  function gmFit(){
+    var f = $('gmFrame'); if(!f || $('gmPlay').hidden) return;
+    var top = f.getBoundingClientRect().top + window.scrollY;
+    var mob = window.innerWidth <= 700, gap = mob ? 6 : 14;
+    var h = Math.round((window.visualViewport ? window.visualViewport.height : window.innerHeight) - top - gap);
+    f.style.height = Math.max(mob ? 440 : 460, h) + 'px';
+  }
+  window.gmFit = gmFit;
+  var _gmW = window.innerWidth;
+  window.addEventListener('resize', function(){
+    /* a phone keyboard opening shrinks the screen: keep the game the same size while someone is typing a bet */
+    try{ var fd = $('gmFrame').contentDocument, ae = fd && fd.activeElement; if(window.innerWidth === _gmW && ae && /INPUT|SELECT|TEXTAREA/.test(ae.tagName)) return; }catch(e){}
+    _gmW = window.innerWidth; clearTimeout(gmFit._t); gmFit._t = setTimeout(gmFit, 80);
+  });
+  window.addEventListener('orientationchange', function(){ setTimeout(gmFit, 250); });
   window.gmLobby = function(fromHistory){
     CUR = null;
     var f = $('gmFrame'); if(f.getAttribute('src')) f.setAttribute('src', 'about:blank');
     $('gmPlay').hidden = true; $('gmLobby').hidden = false; $('games').classList.remove('playing');
+    document.body.classList.remove('gm-playing');
     loadState();
     if(!fromHistory && window.history && history.pushState && location.hash !== '#games') history.pushState({ page: 'games' }, '', '#games');
   };
@@ -16233,7 +16371,7 @@ window.fruitSvg = function(key){
   function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   function n0(v){ return Number(v || 0).toLocaleString('en-US', { maximumFractionDigits: 2 }); }
   window.achKindChange = function(){ var s = $('achKind').value === 'slot'; $('achGameW').style.display = s ? 'none' : ''; $('achSlotW').style.display = s ? '' : 'none'; achCostUpd(); };
-  function achCostUpd(){ var c = (Number($('achReward').value) || 0) * (Number($('achWinners').value) || 0); $('achCost').textContent = 'Most it can pay: ' + n0(c) + ' coins ($' + (c / 100).toFixed(2) + ')'; }
+  function achCostUpd(){ var c = (Number($('achReward').value) || 0) * (Number($('achWinners').value) || 0); $('achCost').innerHTML = '<small>Most it can pay</small><b>' + n0(c) + ' coins<i>≈ $' + (c / 100).toFixed(2) + '</i></b>'; }
   ['achReward','achWinners'].forEach(function(id){ document.addEventListener('input', function(e){ if(e.target && e.target.id === id) achCostUpd(); }); });
   window.achLoad = async function(){
     achCostUpd();
@@ -16276,6 +16414,152 @@ window.fruitSvg = function(key){
     showPage(h);
   }
 }catch(e){} })();
+</script>
+<script>
+/* Premium fields: − / + steppers on number boxes, a glass menu for dropdowns, segmented choice for short ones.
+   The real <input>/<select> stay in place, so every existing id, onchange and value read keeps working. */
+(function(){
+  var NUM = '#jmDlg .jdrop input[type=number], #admin .bt-f > input[type=number]';
+  var SEL = '#jmDlg .jdrop select, #admin .bt-f > select';
+  var SVG = function(d){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>'; };
+  var MINUS = SVG('<path d="M6 12h12"/>'), PLUS = SVG('<path d="M12 6v12M6 12h12"/>'), CHEV = SVG('<path d="M6 9l6 6 6-6"/>');
+  function fire(el, type){ el.dispatchEvent(new Event(type, { bubbles: true })); }
+  function dec(n){ var s = String(n); var i = s.indexOf('.'); return i < 0 ? 0 : s.length - i - 1; }
+
+  function num(inp){
+    if (inp.dataset.jx) return; inp.dataset.jx = '1';
+    var w = document.createElement('span'); w.className = 'jx-num';
+    inp.parentNode.insertBefore(w, inp);
+    var m = document.createElement('button'), p = document.createElement('button');
+    m.type = p.type = 'button'; m.className = p.className = 'jx-b'; m.tabIndex = p.tabIndex = -1;
+    m.innerHTML = MINUS; p.innerHTML = PLUS; m.setAttribute('aria-label', 'Less'); p.setAttribute('aria-label', 'More');
+    var had = document.activeElement === inp;
+    w.appendChild(m); w.appendChild(inp); w.appendChild(p);
+    if (had) { inp.focus(); try { inp.select(); } catch (e) {} }
+    var chgT = 0, rep = 0, repT = 0;
+    function step(dir){
+      if (inp.disabled || inp.readOnly) return false;
+      var st = parseFloat(inp.step); if (!(st > 0)) st = 1;
+      var mn = inp.min === '' ? -Infinity : parseFloat(inp.min), mx = inp.max === '' ? Infinity : parseFloat(inp.max);
+      var v = parseFloat(inp.value); if (!isFinite(v)) v = isFinite(mn) ? mn : 0;
+      /* bigger jumps for big numbers so 500 → 1000 doesn't take 500 taps */
+      var big = Math.abs(v) >= 10000 ? 1000 : Math.abs(v) >= 1000 ? 100 : Math.abs(v) >= 100 ? 10 : 1;
+      var s = st >= 1 ? Math.max(st, big) : st;
+      var nv = dir > 0 ? Math.floor((v + 1e-9) / s) * s + s : Math.ceil((v - 1e-9) / s) * s - s;
+      nv = Math.min(mx, Math.max(mn, nv));
+      nv = Number(nv.toFixed(Math.max(dec(st), dec(isFinite(mn) ? mn : 0))));
+      if (nv === v) return false;
+      inp.value = nv; fire(inp, 'input');
+      w.classList.remove('bump'); void w.offsetWidth; w.classList.add('bump');
+      clearTimeout(chgT); chgT = setTimeout(function(){ fire(inp, 'change'); }, 450);   /* one save after you stop tapping */
+      sync(); return true;
+    }
+    function stop(){ clearTimeout(repT); clearInterval(rep); rep = 0; }
+    [[m, -1], [p, 1]].forEach(function(x){
+      var b = x[0], d = x[1];
+      b.addEventListener('pointerdown', function(e){ if (e.button) return; e.preventDefault(); step(d); stop(); repT = setTimeout(function(){ rep = setInterval(function(){ if (!step(d)) stop(); }, 70); }, 380); });
+      ['pointerup', 'pointerleave', 'pointercancel', 'blur'].forEach(function(t){ b.addEventListener(t, stop); });
+      b.addEventListener('click', function(e){ if (e.detail === 0) step(d); });   /* keyboard press */
+    });
+    function sync(){
+      var v = parseFloat(inp.value), mn = inp.min === '' ? -Infinity : parseFloat(inp.min), mx = inp.max === '' ? Infinity : parseFloat(inp.max);
+      m.disabled = inp.disabled || (isFinite(v) && v <= mn); p.disabled = inp.disabled || (isFinite(v) && v >= mx);
+    }
+    inp.addEventListener('input', sync); inp.addEventListener('change', sync); sync();
+  }
+
+  var open = null;
+  function closeMenu(){ if (!open) return; var o = open; open = null; o.menu.remove(); o.w.classList.remove('open'); o.trig.setAttribute('aria-expanded', 'false'); document.removeEventListener('pointerdown', outside, true); window.removeEventListener('resize', closeMenu); document.removeEventListener('scroll', onScroll, true); document.removeEventListener('keydown', menuKey, true); }
+  function outside(e){ if (open && !open.menu.contains(e.target) && !open.w.contains(e.target)) closeMenu(); }
+  function onScroll(e){ if (open && !open.menu.contains(e.target)) closeMenu(); }
+  function menuKey(e){
+    if (!open) return;
+    var bs = [].slice.call(open.menu.querySelectorAll('button:not(:disabled)')), i = bs.indexOf(open.menu.querySelector('button.hi'));
+    if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); var t = open.trig; closeMenu(); t.focus(); }
+    else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); i = Math.max(0, Math.min(bs.length - 1, i + (e.key === 'ArrowDown' ? 1 : -1))); bs.forEach(function(b, k){ b.classList.toggle('hi', k === i); }); bs[i] && bs[i].scrollIntoView({ block: 'nearest' }); }
+    else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (bs[i]) bs[i].click(); }
+    else if (e.key === 'Tab') closeMenu();
+  }
+  function choose(sel, i){
+    if (sel.selectedIndex === i) return;
+    sel.selectedIndex = i; fire(sel, 'input'); fire(sel, 'change');
+  }
+  function sel(s){
+    if (s.dataset.jx || s.multiple) return; s.dataset.jx = '1';
+    var proto = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value'), protoI = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'selectedIndex');
+    var w = document.createElement('span'), seg = s.hasAttribute('data-seg');
+    w.className = seg ? 'jx-seg' : 'jx-sel';
+    s.parentNode.insertBefore(w, s); w.appendChild(s);
+    var trig;
+    function paint(){
+      if (seg) {
+        w.querySelectorAll('button').forEach(function(b){ b.remove(); });
+        [].forEach.call(s.options, function(o, i){
+          var b = document.createElement('button'); b.type = 'button'; b.textContent = o.textContent; b.className = i === s.selectedIndex ? 'on' : ''; b.disabled = s.disabled || o.disabled;
+          b.setAttribute('aria-pressed', i === s.selectedIndex ? 'true' : 'false');
+          b.onclick = function(){ choose(s, i); paint(); };
+          w.insertBefore(b, s);
+        });
+        return;
+      }
+      var o = s.options[s.selectedIndex];
+      trig.querySelector('span').textContent = o ? o.textContent : '';
+      w.classList.toggle('dis', !!s.disabled);
+    }
+    if (!seg) {
+      trig = document.createElement('button'); trig.type = 'button'; trig.className = 'jx-trig';
+      trig.setAttribute('aria-haspopup', 'listbox'); trig.setAttribute('aria-expanded', 'false');
+      trig.innerHTML = '<span></span>' + CHEV; w.insertBefore(trig, s);
+      s.tabIndex = -1; s.setAttribute('aria-hidden', 'true');
+      trig.addEventListener('click', function(){
+        if (s.disabled) return;
+        if (open && open.s === s) return closeMenu();
+        closeMenu();
+        var menu = document.createElement('div'); menu.className = 'jx-menu'; menu.setAttribute('role', 'listbox');
+        [].forEach.call(s.options, function(o, i){
+          var b = document.createElement('button'); b.type = 'button'; b.setAttribute('role', 'option'); b.textContent = o.textContent; b.disabled = o.disabled;
+          if (i === s.selectedIndex) { b.className = 'on hi'; b.setAttribute('aria-selected', 'true'); }
+          b.onclick = function(){ choose(s, i); paint(); closeMenu(); trig.focus(); };
+          menu.appendChild(b);
+        });
+        document.body.appendChild(menu);
+        var r = w.getBoundingClientRect(), mh = menu.offsetHeight, below = innerHeight - r.bottom - 8;
+        menu.style.minWidth = r.width + 'px';
+        menu.style.left = Math.max(8, Math.min(r.left, innerWidth - menu.offsetWidth - 8)) + 'px';
+        if (below < mh && r.top > below) { menu.style.top = Math.max(8, r.top - mh - 6) + 'px'; menu.classList.add('up'); } else menu.style.top = (r.bottom + 6) + 'px';
+        open = { s: s, w: w, trig: trig, menu: menu }; w.classList.add('open'); trig.setAttribute('aria-expanded', 'true');
+        var on = menu.querySelector('.on'); if (on) on.scrollIntoView({ block: 'nearest' });
+        document.addEventListener('pointerdown', outside, true); window.addEventListener('resize', closeMenu); document.addEventListener('scroll', onScroll, true); document.addEventListener('keydown', menuKey, true);
+      });
+      trig.addEventListener('keydown', function(e){
+        if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !open && !s.disabled) {
+          e.preventDefault(); var i = s.selectedIndex + (e.key === 'ArrowDown' ? 1 : -1);
+          while (s.options[i] && s.options[i].disabled) i += e.key === 'ArrowDown' ? 1 : -1;
+          if (s.options[i]) { choose(s, i); paint(); }
+        }
+      });
+    }
+    /* code that sets select.value directly still updates what you see */
+    try {
+      Object.defineProperty(s, 'value', { configurable: true, get: function(){ return proto.get.call(this); }, set: function(v){ proto.set.call(this, v); paint(); } });
+      Object.defineProperty(s, 'selectedIndex', { configurable: true, get: function(){ return protoI.get.call(this); }, set: function(v){ protoI.set.call(this, v); paint(); } });
+    } catch (e) {}
+    s.addEventListener('change', paint);
+    if (window.MutationObserver) new MutationObserver(paint).observe(s, { childList: true, subtree: true, attributes: true, attributeFilter: ['disabled', 'selected'] });
+    paint();
+  }
+  var t = 0;
+  function scan(){
+    t = 0;
+    if (!document.body.classList.contains('on-admin') && !document.getElementById('jmDlg')) return;
+    document.querySelectorAll(NUM).forEach(num);
+    document.querySelectorAll(SEL).forEach(sel);
+  }
+  window.jxScan = scan;
+  function later(){ if (!t) t = setTimeout(scan, 40); }
+  if (window.MutationObserver) new MutationObserver(later).observe(document.body, { childList: true, subtree: true });
+  later();
+})();
 </script>
 </body>
 </html>
