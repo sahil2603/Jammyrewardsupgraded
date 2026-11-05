@@ -188,7 +188,12 @@ button{font-family:inherit;color:inherit}
 
 /* cards */
 .card{position:absolute;left:0;top:0;width:var(--cw);height:calc(var(--cw)*1.4);z-index:5;perspective:900px;transition:transform .5s var(--ease),opacity .35s;will-change:transform}
-.card .in{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .38s var(--ease);transform:rotateY(180deg)}
+.card .in{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .56s cubic-bezier(.45,.05,.2,1),scale .3s cubic-bezier(.16,1,.3,1),translate .3s cubic-bezier(.16,1,.3,1);transform:rotateY(180deg)}
+/* in the air: a little bigger with a deeper, softer shadow; it settles as it lands */
+.card.air .in,.card.lift .in{scale:1.07;translate:0 -5px}
+.card .f,.card .b{transition:box-shadow .45s ease}
+.card.air .f,.card.air .b,.card.lift .f,.card.lift .b{box-shadow:0 22px 40px rgba(0,0,0,.42),0 6px 14px rgba(0,0,0,.25),0 1px 0 rgba(255,255,255,.6) inset}
+.card.glow .f{transition:box-shadow .6s ease}
 .card.up .in{transform:rotateY(0)}
 .card .f,.card .b{position:absolute;inset:0;border-radius:calc(var(--cw)*.09);backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 10px 22px rgba(0,0,0,.45),0 1px 0 rgba(255,255,255,.6) inset}
 .card .f{background:linear-gradient(160deg,#fff 0%,var(--card) 60%,#efe9de 100%);color:var(--suit-black);overflow:hidden}
@@ -212,6 +217,9 @@ button{font-family:inherit;color:inherit}
 .val.push{background:rgba(100,116,139,.92);border-color:transparent}
 .val.lose{background:rgba(71,64,90,.9)}
 .val.sm{font-size:.74rem;padding:3px 8px;min-width:36px}
+.val{transition:left .5s cubic-bezier(.16,1,.3,1),top .5s cubic-bezier(.16,1,.3,1),opacity .35s ease,background .35s,border-color .35s!important}
+.chip{transition:left .55s cubic-bezier(.16,1,.3,1),top .55s cubic-bezier(.16,1,.3,1),opacity .35s ease,transform .35s cubic-bezier(.16,1,.3,1)!important}
+@media (prefers-reduced-motion:reduce){.card .in{transition-duration:.2s}.card.air .in,.card.lift .in{scale:1;translate:0}}
 .val.active{box-shadow:0 0 0 2px #e9d5ff,0 0 18px rgba(233,213,255,.5)}
 .tag{position:absolute;z-index:9;transform:translate(-50%,-50%) scale(.6);opacity:0;padding:6px 12px;border-radius:10px;font:800 .82rem 'Poppins';white-space:nowrap;transition:transform .4s var(--ease),opacity .3s;pointer-events:none}
 .tag.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
@@ -221,6 +229,7 @@ button{font-family:inherit;color:inherit}
 .tag.lose,.tag.bust{background:#3f3653;color:#e4dff2}
 .banner{position:absolute;z-index:20;left:50%;top:46%;padding:8px 22px 10px;border-radius:20px;background:rgba(12,6,24,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.08);transform:translate(-50%,-50%) scale(.7);opacity:0;pointer-events:none;text-align:center;transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .3s}
 .banner.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.banner{transition:transform .6s cubic-bezier(.16,1,.3,1),opacity .45s ease!important}
 .banner .t{font:400 clamp(1.5rem,3.6vw,2.8rem) 'Lilita One',sans-serif;line-height:1;letter-spacing:.02em;white-space:nowrap}
 .banner .s{margin-top:2px;font:800 clamp(.95rem,1.8vw,1.25rem) 'Poppins';font-variant-numeric:tabular-nums}
 .banner.win .t{background:linear-gradient(180deg,#fff,#86efac);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 24px rgba(74,222,128,.45))}
@@ -1224,16 +1233,26 @@ function updateVals() {
   });
   felt.querySelectorAll('.val[data-k^="h"]').forEach(function (v) { if (+v.dataset.k.slice(1) >= shown.hands.length) v.remove(); });
 }
+/* SMOOTH: a card glides out of the shoe on a long soft ease, lifted (bigger, softer shadow) while in the air,
+   and settles onto the felt. Turning over lifts it a touch too, so nothing snaps. */
+var GLIDE = REDUCED ? 0.18 : 0.52;
 function addCard(key, c, faceUp) {
   var g = geo(), el = makeCard(c);
-  el.style.transition = 'none'; pos(el, g.shoeX, g.shoeY, -6); el.style.zIndex = 30;
+  el.style.transition = 'none'; pos(el, g.shoeX, g.shoeY, -16); el.style.zIndex = 30;
+  el.classList.add('air'); el.style.opacity = 0;
   felt.appendChild(el); els[key] = el;
   el.getBoundingClientRect();
-  el.style.transition = 'transform ' + (0.5 * SP) + 's cubic-bezier(.2,.8,.2,1)';
+  el.style.transition = 'transform ' + GLIDE + 's cubic-bezier(.16,1,.3,1), opacity .18s ease-out';
+  el.style.opacity = 1;
   layout();
   SND.deal();
-  if (faceUp) setTimeout(function () { el.classList.add('up'); }, 110 * SP);
+  setTimeout(function () { el.classList.remove('air'); }, GLIDE * 620);
+  if (faceUp) setTimeout(function () { liftFlip(el); }, GLIDE * 380);
   return el;
+}
+function liftFlip(el) {
+  el.classList.add('lift', 'up');
+  setTimeout(function () { el.classList.remove('lift'); }, REDUCED ? 60 : 300);
 }
 function placeChip(kind, amount, hi) {
   if (!(amount > 0)) return null;
@@ -1275,13 +1294,18 @@ async function clearTable() {
   felt.querySelectorAll('.val').forEach(function (v) { v.style.opacity = 0; });
   $('spotPP').classList.remove('won', 'lost'); $('spotT21').classList.remove('won', 'lost');
   if (list.length) {
-    list.forEach(function (el, i) { el.style.transition = 'transform ' + (0.45 * SP) + 's cubic-bezier(.4,0,.2,1), opacity .35s'; el.classList.remove('up', 'glow', 'dim'); pos(el, g.discardX + i * 0.6, g.discardY - i * 0.6, 6); el.style.zIndex = 4; });
+    list.forEach(function (el, i) {
+      el.style.transition = 'transform .5s cubic-bezier(.45,0,.2,1) ' + (i * 28) + 'ms, opacity .42s ease ' + (90 + i * 28) + 'ms';
+      el.classList.remove('glow', 'dim'); pos(el, g.discardX + i * 0.6, g.discardY - i * 0.6, 8); el.style.zIndex = 4; el.style.opacity = 0;
+    });
     [].concat(chips.main, [chips.pp, chips.t21, chips.ins]).forEach(function (c) { if (c) { c.style.opacity = 0; } });
     stacks.forEach(function (st) { st.els.forEach(function (e) { e.style.opacity = 0; }); if (st.tag) st.tag.style.opacity = 0; });
-    await wait(330 * SP);
-    list.forEach(function (el) { el.remove(); });
+    var gone = [].slice.call(list), oldChips = [].slice.call(felt.querySelectorAll('.chip,.val,.paytag'));
+    setTimeout(function () { gone.forEach(function (el) { el.remove(); }); oldChips.forEach(function (c) { c.remove(); }); }, 520 + list.length * 28);
+    await wait(REDUCED ? 60 : 200);   /* the new deal starts while the old cards are still drifting away */
+    felt.querySelectorAll('.chip,.val,.paytag').forEach(function (c) { c.classList.add('old'); });
   }
-  felt.querySelectorAll('.chip,.val,.paytag').forEach(function (c) { c.remove(); });
+  felt.querySelectorAll('.chip:not(.old),.val:not(.old),.paytag:not(.old)').forEach(function (c) { if (!list.length) c.remove(); });
   els = {}; chips = { main: [], pp: null, t21: null, ins: null }; stacks = [];
 }
 window.addEventListener('resize', function () { measureBase(); if (shown) fitCards(shown.hands.length); drawArc(); felt.querySelectorAll('.card,.chip,.val').forEach(function (e) { e.style.transition = 'none'; }); layout(); requestAnimationFrame(function () { felt.querySelectorAll('.card').forEach(function (e) { e.style.transition = ''; }); felt.querySelectorAll('.chip,.val').forEach(function (e) { e.style.transition = ''; }); }); });
@@ -1315,7 +1339,7 @@ function dropPending(hi) {
 }
 function turnUp(key, c) {
   var el = els[key]; if (!el) return;
-  setFace(el, c); el.classList.add('up'); SND.flip();
+  setFace(el, c); liftFlip(el); SND.flip();
 }
 async function animateDeal(pub, prep) {
   if (prep) await prep;
