@@ -440,6 +440,11 @@ window.addEventListener('keydown', function (e) { if (document.body.classList.co
 <style id="jgFitBJ">
 @media (hover:none){kbd{display:none!important}}
 @media (min-width:901px){
+  /* like Stake: Hit / Stand / Double / Split sit right above the Deal button */
+  .panel > .fld,.panel > .sides,.panel > .tot{order:0}
+  #acts{order:1}
+  .dealrow,.dealrow > *{order:2}
+  .panel > .ai,.panel > .msg,.panel > .foot{order:3}
   .dealrow{display:contents}
   .hseg button{height:38px}
   .act{height:48px}
