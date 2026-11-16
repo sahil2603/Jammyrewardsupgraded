@@ -6044,9 +6044,6 @@ body.on-admin #skyParticles{opacity:.18!important}
 .hx-trust-soon:hover{opacity:1}
 .hx-trust-soon img.dbl{height:15px}
 .hx-trust-soon .rbx-lock{font-size:.95rem}
-/* nav */
-.nav-links a[data-page="new"]{position:relative}
-.nav-new{position:absolute;top:-9px;right:-13px;font:700 .5rem/1 'Poppins',system-ui;font-style:normal;letter-spacing:.04em;color:#1a1204;background:#fbbf24;border-radius:99px;padding:3px 5px;pointer-events:none}
 /* home cards */
 .hx-partners.trio{grid-template-columns:1.12fr 1fr 1fr;max-width:1160px;align-items:stretch}
 .hx-partners.trio .hx-p{display:flex;flex-direction:column}
@@ -6062,15 +6059,17 @@ body.on-admin #skyParticles{opacity:.18!important}
 .hx-p-sub b{color:#fff}
 @media(max-width:1040px){.hx-partners.trio{grid-template-columns:1fr 1fr;max-width:760px}.hx-partners.trio>.hx-p:first-child{grid-column:1/-1}}
 @media(max-width:640px){.hx-partners.trio{grid-template-columns:1fr}.hx-partners.trio>.hx-p:first-child{grid-column:auto}}
-/* partners page: everything stacked, chips jump to a partner */
-#ptOther{display:block}
-#ptOther:empty{display:none}
+/* partners page: each partner has its own view; the chips switch between them */
 .pt-chip{gap:9px}
 .pt-chip img.dbl{height:17px}
 .pt-chip .rbx-lock{font-size:1.05rem}
-.pwx-hero,.ptx-soon,.pt-sec{scroll-margin-top:112px}
 #ptSwitch{margin-bottom:30px}
-.pt-sec{position:relative;padding:26px 0 8px;margin-top:26px;border-top:1px solid rgba(255,255,255,.08)}
+.pwx .pt-view,#ptOther.pt-view{display:none}
+.pwx[data-pt]:not([data-pt="powerwin"])>*:not(.pt-switch):not(.pwx-aurora):not(.pt-view){display:none!important}
+.pwx[data-pt="double"] #pt-sec-double,.pwx[data-pt="rbxwin"] #pt-sec-rbxwin{display:grid;animation:ptxIn .5s cubic-bezier(.2,.9,.3,1) both}
+.pwx[data-pt="other"] #ptOther{display:block;animation:ptxIn .5s cubic-bezier(.2,.9,.3,1) both}
+@keyframes ptxIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.pwx[data-pt="double"],.pwx[data-pt="rbxwin"]{min-height:70vh}
 .ptx-soon{--a:226,232,240;position:relative;display:grid;grid-template-columns:minmax(0,320px) 1fr;border-radius:24px;overflow:hidden;border:1px solid rgba(var(--a),.22);background:#0c0918;margin:0 0 22px}
 .ptx-soon-logo{position:relative;display:grid;place-items:center;align-content:center;gap:18px;min-height:250px;padding:28px;background:radial-gradient(ellipse at 50% 118%,rgba(var(--a),.22),transparent 62%),linear-gradient(160deg,#171022,#0a0614);overflow:hidden}
 .ptx-soon-logo::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.08) 50%,transparent 60%);transform:translateX(-100%);animation:ptxSheen 6s ease-in-out infinite;pointer-events:none}
@@ -6097,7 +6096,7 @@ body.on-admin #skyParticles{opacity:.18!important}
 .foot-partner-row.soon{gap:9px;height:auto}
 .foot-partner-row.soon img.dbl{height:15px;opacity:.92}
 .foot-partner-row.soon .rbx-lock{font-size:1rem}
-@media (prefers-reduced-motion:reduce){.ptx-soon-logo::after,.ptx-pill i{animation:none}}
+@media (prefers-reduced-motion:reduce){.ptx-soon-logo::after,.ptx-pill i{animation:none}.pwx[data-pt] .pt-view{animation:none!important}}
 </style>
 <style id="jm-reward">
 /* ===== Reward moment: daily claim + code drop ===== */
@@ -6235,7 +6234,7 @@ body.on-admin #skyParticles{opacity:.18!important}
       <span class="nav-indicator" aria-hidden="true"></span>
       <a data-page="home" class="active">Home</a>
       <a data-page="leaderboards">Leaderboards</a>
-      <a data-page="new">Partners<em class="nav-new" title="2 new partners coming soon">+2</em></a>
+      <a data-page="new">Partners</a>
       <a data-page="ranks">Ranks</a>
       <a data-page="games">Games</a>
       <a data-page="vault">Vault</a>
@@ -7045,12 +7044,11 @@ body.on-admin #skyParticles{opacity:.18!important}
 
       <p class="pwx-fine">Poker and extremely low-risk, low-variance bets excluded.</p>
 
-      <!-- COMING SOON: partners 2 and 3 -->
-      <div class="pwx-sec pwx-rv" style="margin-top:70px"><span>Next up</span><h3>Two more partners on the way</h3></div>
-      <section class="ptx-soon pwx-rv" id="pt-sec-double" style="--a:226,232,240" aria-label="Double, coming soon">
+      <!-- COMING SOON partners: each has its own view (#partners/double, #partners/rbxwin) -->
+      <section class="ptx-soon pt-view" id="pt-sec-double" style="--a:226,232,240" aria-label="Double, coming soon">
         <div class="ptx-soon-logo"><img class="dbl" src="double.svg" alt="Double"><img class="x2" src="double-x2.svg" alt="" aria-hidden="true"></div>
         <div class="ptx-soon-body">
-          <span class="ptx-pill"><i></i>Partner 2 · Coming soon</span>
+          <span class="ptx-pill"><i></i>Coming soon</span>
           <h2>Double <small>(X2)</small></h2>
           <p>Double is our next partner. Its offers will be listed right here the day it goes live.</p>
           <div class="ptx-locked">
@@ -7061,10 +7059,10 @@ body.on-admin #skyParticles{opacity:.18!important}
           <a class="ptx-btn" href="https://discord.gg/jammmy" target="_blank" rel="noopener">Get the launch news on Discord</a>
         </div>
       </section>
-      <section class="ptx-soon pwx-rv" id="pt-sec-rbxwin" style="--a:240,138,60" aria-label="RBXWIN, coming soon">
+      <section class="ptx-soon pt-view" id="pt-sec-rbxwin" style="--a:240,138,60" aria-label="RBXWIN, coming soon">
         <div class="ptx-soon-logo"><img class="banner" src="rbxwin.webp" alt="RBXWIN: cases, battles, originals"></div>
         <div class="ptx-soon-body">
-          <span class="ptx-pill"><i></i>Partner 3 · Coming soon</span>
+          <span class="ptx-pill"><i></i>Coming soon</span>
           <h2>RBXWIN</h2>
           <p>RBXWIN is joining JammmyRewards with cases, battles and originals. Its offers will be listed right here the day it goes live.</p>
           <div class="ptx-locked">
@@ -7075,7 +7073,7 @@ body.on-admin #skyParticles{opacity:.18!important}
           <a class="ptx-btn" href="https://discord.gg/jammmy" target="_blank" rel="noopener">Get the launch news on Discord</a>
         </div>
       </section>
-      <div id="ptOther"></div>
+      <div id="ptOther" class="pt-view"></div>
     </div>
   </section>
 
@@ -8285,10 +8283,12 @@ window.addEventListener('resize',function(){
 /* Address-bar names. The Partners page's id is still "new" and the Guide's is "loyalty" (lots of code
    keys off those), but the URL shows #partners / #guide. Old #new / #loyalty links still open the right page. */
 var PAGE_SLUG = { 'new': 'partners', loyalty: 'guide' }, PAGE_ID = { partners: 'new', guide: 'loyalty' };
-function pageSlug(id){ return PAGE_SLUG[id] || id; }
-function pageId(slug){ return PAGE_ID[slug] || slug; }
+function _pgMap(m, v){ v = String(v == null ? '' : v); var i = v.indexOf('/'), b = i < 0 ? v : v.slice(0, i); return (m[b] || b) + (i < 0 ? '' : v.slice(i)); }   /* maps the part before any "/" */
+function pageSlug(id){ return _pgMap(PAGE_SLUG, id); }
+function pageId(slug){ return _pgMap(PAGE_ID, slug); }
 function showPage(id){
   id = pageId(id);
+  var psub = null; if(id.indexOf('new/') === 0){ psub = id.slice(4); id = 'new'; }   /* #partners/double -> that partner's view */
   var gsub = null; if(id && id.indexOf('games/') === 0){ gsub = id.slice(6); id = 'games'; }
   if(id !== 'games' && window.gmLobby && document.getElementById('gmPlay') && !document.getElementById('gmPlay').hidden) gmLobby(true);
   if(id==='bonuses') id='new';   /* Bonuses page was removed: old links go to the Power.win page */
@@ -8307,6 +8307,7 @@ function showPage(id){
   if(id==='home') loadHomeActivePlayers();
   if(id==='reviews') loadSlotLibrary();
   if(id==='new' && typeof prcTick==='function') prcTick();
+  if(id==='new' && window.ptView) ptView(psub);
   trackPageView(id);
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('active',a.dataset.page===id));
   document.querySelectorAll('.mobbar-item').forEach(a=>a.classList.toggle('active',a.dataset.page===id));
@@ -8343,7 +8344,7 @@ window.addEventListener('popstate',function(e){
   var id=(e.state&&e.state.page)||(location.hash?location.hash.slice(1):'home');
   id=pageId(id);
   /* someone typed or followed an old #new / #loyalty link: show the page and tidy the address */
-  if(location.hash && location.hash.slice(1)!==pageSlug(id) && history.replaceState && id.indexOf('/')<0) history.replaceState({page:id},'','#'+pageSlug(id));
+  if(location.hash && location.hash.slice(1)!==pageSlug(id) && history.replaceState && id.indexOf('games')!==0) history.replaceState({page:id},'','#'+pageSlug(id));
   showPage(id);
 });
 document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>{
@@ -16362,42 +16363,47 @@ window.fruitSvg = function(key){
 })();
 </script>
 <script>
-/* Partners page: Power.win, then Double and RBXWIN (coming soon), then partners added from the admin panel, all stacked */
+/* Partners page: Power.win, Double and RBXWIN (coming soon) and partners added from the admin panel, one view each */
 (function(){
   function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   var P = [];
   var RBX = '<b class="rbx-lock"><img src="rbxwin-gem.webp" alt="">RBX<i>WIN</i></b>';
   function hexA(h, a){ var n = parseInt(String(h).slice(1), 16); return 'rgba(' + (n >> 16 & 255) + ',' + (n >> 8 & 255) + ',' + (n & 255) + ',' + a + ')'; }
-  /* every partner is on the page at once, top to bottom; the chips jump to one */
+  var CUR = 'powerwin';
+  /* each partner has its own view; the chips switch between them and the address follows (#partners/double) */
   function paintSwitch(){
     var sw = document.getElementById('ptSwitch'); if(!sw) return;
+    function on(k){ return CUR === k ? ' on' : ''; }
     sw.innerHTML = '<div class="pt-h">Our partners</div>'
-      + '<button type="button" class="pt-chip on" data-k="powerwin"><img src="powerwin.webp" alt="Power.win"><em class="live-tag">Live</em></button>'
-      + '<button type="button" class="pt-chip" data-k="double"><img class="dbl" src="double.svg" alt="Double"><em class="soon-tag">Soon</em></button>'
-      + '<button type="button" class="pt-chip" data-k="rbxwin">' + RBX + '<em class="soon-tag">Soon</em></button>'
-      + P.map(function(p){ return '<button type="button" class="pt-chip" data-k="' + esc(p.key) + '">' + (p.logo ? '<img src="' + esc(p.logo) + '" alt="' + esc(p.name) + '">' : esc(p.name)) + '</button>'; }).join('');
+      + '<button type="button" class="pt-chip' + on('powerwin') + '" data-k="powerwin"><img src="powerwin.webp" alt="Power.win"><em class="live-tag">Live</em></button>'
+      + '<button type="button" class="pt-chip' + on('double') + '" data-k="double"><img class="dbl" src="double.svg" alt="Double"><em class="soon-tag">Soon</em></button>'
+      + '<button type="button" class="pt-chip' + on('rbxwin') + '" data-k="rbxwin">' + RBX + '<em class="soon-tag">Soon</em></button>'
+      + P.map(function(p){ return '<button type="button" class="pt-chip' + on(p.key) + '" data-k="' + esc(p.key) + '">' + (p.logo ? '<img src="' + esc(p.logo) + '" alt="' + esc(p.name) + '">' : esc(p.name)) + '</button>'; }).join('');
     sw.querySelectorAll('.pt-chip').forEach(function(b){ b.onclick = function(){ ptShow(b.dataset.k); }; });
   }
-  function paintOther(){
-    var box = document.getElementById('ptOther'); if(!box) return;
-    box.innerHTML = P.map(function(p){
-      return '<section class="pt-sec" id="pt-sec-' + esc(p.key) + '" style="--pc:' + esc(p.color) + ';--pc-glow:' + hexA(p.color, .55) + '"><div class="pt-hero">' + (p.logo ? '<img src="' + esc(p.logo) + '" alt="' + esc(p.name) + '">' : '') + '<h2>' + esc(p.name) + '</h2>' + (p.tagline ? '<p>' + esc(p.tagline) + '</p>' : '')
+  /* show one partner's view (no history change) */
+  window.ptView = function(k){
+    var root = document.querySelector('#new .pwx'), box = document.getElementById('ptOther'); if(!root) return;
+    k = k || 'powerwin';
+    var p = P.filter(function(x){ return x.key === k; })[0];
+    if(k !== 'powerwin' && k !== 'double' && k !== 'rbxwin' && !p){ window._ptWant = k; k = 'powerwin'; } else window._ptWant = null;   /* admin partners may still be loading */
+    CUR = k; paintSwitch();
+    if(p){
+      root.setAttribute('data-pt', 'other');
+      box.style.setProperty('--pc', p.color); box.style.setProperty('--pc-glow', hexA(p.color, .55));
+      box.innerHTML = '<div class="pt-hero">' + (p.logo ? '<img src="' + esc(p.logo) + '" alt="' + esc(p.name) + '">' : '') + '<h2>' + esc(p.name) + '</h2>' + (p.tagline ? '<p>' + esc(p.tagline) + '</p>' : '')
         + '<div class="pt-cta">' + (p.code ? '<button type="button" class="pt-code" onclick="copy(this.querySelector(\'b\'),\'' + esc(p.code) + '\')">Code <b>' + esc(p.code) + '</b></button>' : '') + (p.url ? '<a class="pt-go" href="' + esc(p.url) + '" target="_blank" rel="noopener">Sign up on ' + esc(p.name) + ' →</a>' : '') + '</div></div>'
-        + (p.offers.length ? '<div class="pt-offers">' + p.offers.map(function(o){ return '<div class="pt-card">' + (o.tag ? '<span class="tag">' + esc(o.tag) + '</span>' : '') + '<h3>' + esc(o.title) + '</h3><p>' + esc(o.text) + '</p></div>'; }).join('') + '</div>' : '<div class="pt-empty">Offers coming soon.</div>') + '</section>';
-    }).join('');
-  }
-  window.ptShow = function(k){
-    var el = document.getElementById('pt-sec-' + k); if(!el) return;
-    if(el.classList.contains('pwx-rv')) el.classList.add('in');
-    var rm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    el.scrollIntoView({ behavior: rm ? 'auto' : 'smooth', block: 'start' });
+        + (p.offers.length ? '<div class="pt-offers">' + p.offers.map(function(o){ return '<div class="pt-card">' + (o.tag ? '<span class="tag">' + esc(o.tag) + '</span>' : '') + '<h3>' + esc(o.title) + '</h3><p>' + esc(o.text) + '</p></div>'; }).join('') + '</div>' : '<div class="pt-empty">Offers coming soon.</div>');
+    } else {
+      root.setAttribute('data-pt', k);
+      if(k === 'powerwin' && typeof pwxInit === 'function') setTimeout(pwxInit, 30);
+    }
   };
-  /* from anywhere on the site: open the Partners page at one partner */
-  window.ptGo = function(k){
-    if(typeof nav === 'function') nav('new');
-    setTimeout(function(){ ptShow(k); }, 450);
+  /* chips, and links from anywhere on the site: open that partner's own page */
+  window.ptShow = window.ptGo = function(k){
+    if(typeof nav === 'function') nav(k && k !== 'powerwin' ? 'new/' + k : 'new');
   };
-  async function load(){ try{ var r = await fetch(AUTH_API + '/api/partners'); var d = await r.json(); P = d.partners || []; }catch(e){ P = []; } paintSwitch(); paintOther(); }
+  async function load(){ try{ var r = await fetch(AUTH_API + '/api/partners'); var d = await r.json(); P = d.partners || []; }catch(e){ P = []; } paintSwitch(); if(window._ptWant) ptView(window._ptWant); }
   paintSwitch();
   load();
   window.ptReload = load;
