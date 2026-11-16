@@ -13142,7 +13142,7 @@ function vsRender(){
       + '<button type="button" onclick="vsSwap()">⇄ Swap</button><button type="button" onclick="vsReset()">↺ Reset results</button><button type="button" onclick="vsFull()">⛶ Fullscreen</button>'
       + '<button type="button" class="vs-del" onclick="vsDelete(_vsCur)">🗑 Delete</button><button type="button" onclick="vsClose()">✕ Close</button></div></div>'
     + '<div class="vs-arena">' + vsSideHtml('a')
-      + '<div class="vs-mid"><div class="vs-badge">VS</div><button type="button" class="vs-reveal" id="vsRevealBtn" onclick="vsReveal()">👑 Crown winner</button><div class="vs-verdict" id="vsVerdict"></div><button type="button" class="vs-ann" id="vsAnnBtn" onclick="vsAnnounce(this)" style="display:none">📣 Announce in chat</button></div>'
+      + '<div class="vs-mid"><div class="vs-badge">VS</div><button type="button" class="vs-reveal" id="vsRevealBtn" onclick="vsReveal()">👑 Crown winner</button><div class="vs-verdict" id="vsVerdict"></div><button type="button" class="vs-ann" id="vsAnnBtn" onclick="vsAnnounce(this)" style="display:none">📣 Announce in Kick chat</button></div>'
       + vsSideHtml('b') + '</div>'
   + '</div>';
   vsUpdate(false);
@@ -13169,7 +13169,7 @@ function vsUpdate(celebrate){
   var W = w === 'a' ? A : B, L = w === 'a' ? B : A;
   W.classList.add('win'); L.classList.add('lose');
   if(V) V.textContent = '🏆 ' + _vsState[w].user + ' wins!';
-  var ab = document.getElementById('vsAnnBtn'); if(ab){ ab.style.display = ''; ab.disabled = false; ab.textContent = '📣 Announce in chat'; }
+  var ab = document.getElementById('vsAnnBtn'); if(ab){ ab.style.display = ''; ab.disabled = false; ab.textContent = '📣 Announce in Kick chat'; }
   if(celebrate) vsConfetti();
 }
 async function vsAnnounce(btn){
@@ -13178,7 +13178,7 @@ async function vsAnnounce(btn){
   var text = '⚔️ SLOT VERSUS: ' + W.slot + ' (' + vsFmtX(vsMult(W)) + ', picked by ' + W.user + ') beat ' + L.slot + ' (' + vsFmtX(vsMult(L)) + ', picked by ' + L.user + ')! 🏆';
   btn.disabled = true; btn.textContent = 'Sending…';
   try{
-    var res = await fetch(AUTH_API + '/api/admin/bot-action', { method:'POST', headers:{ 'Authorization':'Bearer ' + localStorage.getItem('jammy_session_token'), 'Content-Type':'application/json' }, body: JSON.stringify({ action:'announce', text: text }) });
+    var res = await fetch(AUTH_API + '/api/admin/bot-action', { method:'POST', headers:{ 'Authorization':'Bearer ' + localStorage.getItem('jammy_session_token'), 'Content-Type':'application/json' }, body: JSON.stringify({ action:'announce', text: text, discord: false }) });   /* versus results go to Kick chat only, never Discord */
     var d = await res.json();
     btn.textContent = res.ok ? '✓ ' + (d.message || 'Sent') : (d.error || 'Failed');
   }catch(e){ btn.textContent = 'Network error'; btn.disabled = false; }
@@ -15803,7 +15803,7 @@ window.fruitSvg = function(key){
         + (many ? '<button type="button" onclick="vsStep(-1)" aria-label="Previous">‹</button><span class="vs-pos">' + (idx + 1) + ' / ' + _vsList.length + '</span><button type="button" onclick="vsStep(1)" aria-label="Next">›</button>' : '')
         + '<button type="button" onclick="tReset()">↺ Reset results</button><button type="button" onclick="vsFull()">⛶ Fullscreen</button><button type="button" class="vs-del" onclick="vsDelete(_vsCur)">🗑 Delete</button><button type="button" onclick="vsClose()">✕ Close</button></div></div>'
       + '<div class="tn-bar"><button type="button" class="vs-reveal" id="tnReveal" onclick="tReveal()"' + (done ? '' : ' disabled') + '>' + (t.revealed ? '↺ Hide result' : '👑 Crown winner') + '</button>'
-        + '<span class="tn-verdict" id="tnVerdict"></span><button type="button" class="vs-ann" id="tnAnn" onclick="tAnnounce(this)" style="display:none">📣 Announce in chat</button>'
+        + '<span class="tn-verdict" id="tnVerdict"></span><button type="button" class="vs-ann" id="tnAnn" onclick="tAnnounce(this)" style="display:none">📣 Announce in Kick chat</button>'
         + '<span style="color:rgba(255,255,255,.55);font-size:.85rem" id="tnLeft"></span></div>'
       + '<div class="tn-grid' + (t.revealed ? ' tn-on' : '') + '" id="tnGrid">' + t.sides.map(function(d, i){
         var art = d.image ? '<img src="' + pccEsc(d.image) + '" alt="" onerror="this.outerHTML=\'🎰\'">' : '🎰';
@@ -15836,7 +15836,7 @@ window.fruitSvg = function(key){
     });
     var tie = R.length > 1 && Math.abs(R[0].m - R[1].m) < 1e-9;
     if(V) V.textContent = tie ? '🤝 Tie for first!' : '🏆 ' + R[0].s.user + ' wins with ' + R[0].s.slot + '!';
-    if(A && !tie){ A.style.display = ''; A.disabled = false; A.textContent = '📣 Announce in chat'; }
+    if(A && !tie){ A.style.display = ''; A.disabled = false; A.textContent = '📣 Announce in Kick chat'; }
     if(celebrate && !tie) vsConfetti();
   }
   window.tReveal = function(){ _vsState.revealed = !_vsState.revealed; vsSave(); tUpdate(_vsState.revealed); };
@@ -15846,7 +15846,7 @@ window.fruitSvg = function(key){
     var text = '🏆 SLOT TOURNAMENT (' + _vsState.sides.length + ' slots): ' + R.slice(0, 3).map(function(r, i){ return MEDAL[i] + ' ' + r.s.slot + ' ' + vsFmtX(r.m) + ' (' + r.s.user + ')'; }).join(' · ');
     btn.disabled = true; btn.textContent = 'Sending…';
     try{
-      var res = await fetch(AUTH_API + '/api/admin/bot-action', { method: 'POST', headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jammy_session_token'), 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'announce', text: text }) });
+      var res = await fetch(AUTH_API + '/api/admin/bot-action', { method: 'POST', headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jammy_session_token'), 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'announce', text: text, discord: false }) });   /* tournament results: Kick chat only */
       var d = await res.json(); btn.textContent = res.ok ? '✓ ' + (d.message || 'Sent') : (d.error || 'Failed');
     }catch(e){ btn.textContent = 'Network error'; btn.disabled = false; }
   };
