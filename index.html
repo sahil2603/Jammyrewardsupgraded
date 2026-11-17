@@ -6183,6 +6183,8 @@ body.on-admin #skyParticles{opacity:.18!important}
 #pt-sec-rbxwin .rbx-daily{background:repeating-linear-gradient(125deg,transparent 0 120px,rgba(240,138,60,.07) 120px 124px,transparent 124px 260px),linear-gradient(120deg,#0d0a10 0%,#130b08 55%,#2a1205 100%)!important}
 #pt-sec-rbxwin .rbx-welcome,#pt-sec-rbxwin .rbx-daily,#pt-sec-rbxwin .rbx-lb{animation:rbxEdge 3.2s ease-in-out infinite}
 @keyframes rbxEdge{0%,100%{border-color:rgba(240,138,60,.25)}50%{border-color:rgba(240,138,60,.6)}}
+/* the site's winter frost overlay lands on the content area (not the card edge) inside grid cards: drop it there; these cards have their own hover glow */
+#pt-sec-rbxwin .rbx-welcome>.ice-frost,#pt-sec-rbxwin .rbx-daily>.ice-frost,#pt-sec-rbxwin .rbx-lb>.ice-frost,#pt-sec-rbxwin .rbx-race>.ice-frost{display:none!important}
 /* calmer frame: no square edges on the backdrop, no 3D tilt on the wide cards */
 .rbx-bg{-webkit-mask:radial-gradient(ellipse 60% 55% at 50% 40%,#000 30%,transparent 75%)!important;mask:radial-gradient(ellipse 60% 55% at 50% 40%,#000 30%,transparent 75%)!important;overflow:visible!important;inset:0!important}
 #pt-sec-rbxwin .rbx-card{transform:none!important}
@@ -15711,6 +15713,15 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   };
   var _race = window.lbRace;
   window.lbRace = lbRace = function(r){ var o = _race(r); if(RBX()){ _realPeriodOverride = null; } return o; };
+  /* RBXWIN races don't start at midnight: show RBXWIN's real start/end times (UTC) instead of "(00:00 UTC)" */
+  function fmtUTC(d){ return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric', timeZone:'UTC' }) + ', ' + d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit', timeZone:'UTC' }) + ' UTC'; }
+  var _cd2 = window.lbcd2;
+  setInterval(function(){ if(RBX()) lbcd2(); }, 1000);   /* the page's own 1 s timer calls the original lbcd2, so re-apply right after it */
+  window.lbcd2 = lbcd2 = function(){ var o = _cd2(); if(RBX() && _realPeriodOverride){ var el = document.getElementById('lb2-dates'); if(el){ var t = fmtUTC(_realPeriodOverride.start) + ' → ' + fmtUTC(_realPeriodOverride.end); if(el.textContent !== t) el.textContent = t; } } return o; };
+  var _note = window.lbxSetNotice;
+  window.lbxSetNotice = lbxSetNotice = function(meta){ _note(meta); if(!RBX()) return; var el = document.getElementById('lbxNotice'); if(!el || el.style.display === 'none' || !meta.startDate) return;
+    var f = function(d){ var x = new Date(d); return x.toLocaleDateString('en-GB', { day:'numeric', month:'short', timeZone:'UTC' }) + ' ' + x.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit', timeZone:'UTC' }) + ' UTC'; };
+    el.innerHTML = meta.upcoming ? '🏁 <b>New leaderboard starts ' + f(meta.startDate) + '</b> and runs until ' + f(meta.endDate) : '🏁 This leaderboard: <b>' + f(meta.startDate) + ' → ' + f(meta.endDate) + '</b>'; };
   /* partner page: pool, countdown and top 3 */
   var data = null, got = 0;
   function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
