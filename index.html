@@ -6101,7 +6101,7 @@ body.on-admin #skyParticles{opacity:.18!important}
 #pt-sec-rbxwin .rbx-card,#pt-sec-rbxwin .pwx-m,#pt-sec-rbxwin .rbx-steps li{--rx:0deg;--ry:0deg;--mx:50%;--my:50%;position:relative;transform:perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));transition:transform .25s ease,box-shadow .3s ease,border-color .3s ease;transform-style:preserve-3d}
 #pt-sec-rbxwin .rbx-card::before,#pt-sec-rbxwin .pwx-m::before,#pt-sec-rbxwin .rbx-steps li::after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1.5px;pointer-events:none;background:conic-gradient(from var(--rbxa),transparent 0 55%,rgba(var(--a,240,138,60),.95) 72%,#fff3 78%,rgba(var(--a,240,138,60),.95) 84%,transparent 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:rbxSpin 6s linear infinite;opacity:.55;transition:opacity .3s}
 #pt-sec-rbxwin .rbx-card::after,#pt-sec-rbxwin .pwx-m::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(420px circle at var(--mx) var(--my),rgba(var(--a,240,138,60),.18),transparent 45%);opacity:0;transition:opacity .3s}
-#pt-sec-rbxwin .rbx-card:hover,#pt-sec-rbxwin .pwx-m:hover,#pt-sec-rbxwin .rbx-steps li:hover{box-shadow:0 22px 60px rgba(var(--a,240,138,60),.28),inset 4px 0 0 rgba(var(--a,240,138,60),.9),-8px 0 30px -6px rgba(var(--a,240,138,60),.55)}
+#pt-sec-rbxwin .rbx-card:hover,#pt-sec-rbxwin .pwx-m:hover,#pt-sec-rbxwin .rbx-steps li:hover{border-color:rgba(var(--a,240,138,60),.7)!important;box-shadow:0 22px 60px rgba(var(--a,240,138,60),.25),-10px 0 34px -10px rgba(var(--a,240,138,60),.75),10px 0 34px -10px rgba(var(--a,240,138,60),.35)}
 #pt-sec-rbxwin .rbx-card:hover::before,#pt-sec-rbxwin .pwx-m:hover::before,#pt-sec-rbxwin .rbx-steps li:hover::after{opacity:1;animation-duration:2.2s}
 #pt-sec-rbxwin .rbx-card:hover::after,#pt-sec-rbxwin .pwx-m:hover::after{opacity:1}
 #pt-sec-rbxwin .pwx-m{overflow:hidden}
@@ -6179,6 +6179,10 @@ body.on-admin #skyParticles{opacity:.18!important}
 @keyframes rbxSpark{from{opacity:.3;transform:translateY(6px)}to{opacity:1;transform:translateY(-6px)}}
 @media(max-width:820px){.rbx-daily{grid-template-columns:1fr;padding:24px 18px!important}.rbx-daily-art{order:-1}.rbx-daily-art img{max-width:280px}}
 @media(max-width:480px){.rbx-items{gap:6px}.rbx-items .it b{font-size:.8rem}.rbx-daily-lock{width:100%;justify-content:center;font-size:.92rem}}
+#pt-sec-rbxwin .rbx-welcome::before,#pt-sec-rbxwin .rbx-welcome::after,#pt-sec-rbxwin .rbx-daily::before,#pt-sec-rbxwin .rbx-daily::after,#pt-sec-rbxwin .rbx-lb::before,#pt-sec-rbxwin .rbx-lb::after{content:none!important;display:none!important}
+#pt-sec-rbxwin .rbx-daily{background:repeating-linear-gradient(125deg,transparent 0 120px,rgba(240,138,60,.07) 120px 124px,transparent 124px 260px),linear-gradient(120deg,#0d0a10 0%,#130b08 55%,#2a1205 100%)!important}
+#pt-sec-rbxwin .rbx-welcome,#pt-sec-rbxwin .rbx-daily,#pt-sec-rbxwin .rbx-lb{animation:rbxEdge 3.2s ease-in-out infinite}
+@keyframes rbxEdge{0%,100%{border-color:rgba(240,138,60,.25)}50%{border-color:rgba(240,138,60,.6)}}
 /* calmer frame: no square edges on the backdrop, no 3D tilt on the wide cards */
 .rbx-bg{-webkit-mask:radial-gradient(ellipse 60% 55% at 50% 40%,#000 30%,transparent 75%)!important;mask:radial-gradient(ellipse 60% 55% at 50% 40%,#000 30%,transparent 75%)!important;overflow:visible!important;inset:0!important}
 #pt-sec-rbxwin .rbx-card{transform:none!important}
@@ -6191,6 +6195,18 @@ body.on-admin #skyParticles{opacity:.18!important}
 #pt-sec-rbxwin .prc-banner-title b,#pt-sec-rbxwin .prc-title b{background:linear-gradient(180deg,#ffe2a8,#ffa94d 50%,#f0702a)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important}
 #pt-sec-rbxwin .prc{transition:transform .3s ease,box-shadow .3s ease}
 #pt-sec-rbxwin .prc:hover{transform:translateY(-6px);box-shadow:0 26px 60px rgba(240,138,60,.3),-8px 0 30px -6px rgba(240,138,60,.55)}
+
+/* RBXWIN weekly race: one wide card, hero left + prizes right */
+#pt-sec-rbxwin .rbx-race{flex-direction:row;align-items:stretch;margin-top:6px}
+#pt-sec-rbxwin .rbx-race-hero{flex:1 1 58%;border-radius:22.5px 0 0 22.5px;padding:28px 30px 26px;min-height:0;display:flex;flex-direction:column;justify-content:center;
+  background:radial-gradient(120% 90% at 100% 0%,rgba(240,138,60,.35),transparent 55%),radial-gradient(90% 80% at 0% 100%,rgba(194,65,12,.4),transparent 60%),linear-gradient(135deg,#2a1308,#120906)!important}
+#pt-sec-rbxwin .rbx-race-hero::after{left:auto;top:0;width:1px;height:auto;background:linear-gradient(180deg,transparent,rgba(240,138,60,.7),transparent)}
+#pt-sec-rbxwin .rbx-race-hero .prc-title b{font-size:clamp(3rem,6vw,4.4rem)}
+#pt-sec-rbxwin .rbx-race-hero .prc-kick{align-self:flex-start}
+.rbx-race-p{position:relative;z-index:1;margin:8px 0 16px;max-width:440px;color:rgba(255,255,255,.72);font-size:.92rem;line-height:1.5}
+#pt-sec-rbxwin .rbx-race-side{flex:1 1 42%;display:flex;flex-direction:column;justify-content:center;padding:10px 6px}
+#pt-sec-rbxwin .rbx-race::before{background:linear-gradient(180deg,#160b06,#0c0705 60%)}
+@media(max-width:760px){#pt-sec-rbxwin .rbx-race{flex-direction:column}#pt-sec-rbxwin .rbx-race-hero{border-radius:22.5px 22.5px 0 0;padding:22px 20px}#pt-sec-rbxwin .rbx-race-hero::after{left:0;right:0;top:auto;bottom:0;width:auto;height:1px;background:linear-gradient(90deg,transparent,rgba(240,138,60,.7),transparent)}}
 /* ===== New partners: Double (X2) + RBXWIN, shown as coming soon ===== */
 .rbx-lock{display:inline-flex;align-items:center;font:italic 800 1em/1 'Poppins',system-ui;letter-spacing:.01em;color:#fff;white-space:nowrap}
 .rbx-lock img{height:1.3em;width:auto;flex:none;margin-right:.3em}
@@ -7316,31 +7332,26 @@ body.on-admin #skyParticles{opacity:.18!important}
           </div>
         </article>
 
-        <!-- RBXWIN's own site-wide weekly race (static, like Power.win's races) -->
-        <div class="prc-banner rbx-race-banner">
-          <div class="prc-flag" aria-hidden="true"></div>
-          <div class="prc-flag l" aria-hidden="true"></div>
-          <div class="prc-speed" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-          <span class="prc-kick"><i></i>Live race on RBXWIN</span>
-          <h3 class="prc-banner-title"><b>$675</b><span>Weekly race</span></h3>
-          <p>RBXWIN's own race for every player on the site, on top of Jammy's leaderboard. Places go by amount wagered.</p>
-        </div>
-        <div class="prc-grid rbx-race-grid">
-          <article class="prc prc-weekly rbx-race" data-race="weekly">
-            <div class="prc-glow" aria-hidden="true"></div>
-            <div class="prc-hero">
-              <div class="prc-flag" aria-hidden="true"></div>
-              <div class="prc-speed" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-              <span class="prc-kick"><i></i>Resets every week</span>
-              <h4 class="prc-title"><b>$675</b><span>Weekly race</span></h4>
-              <div class="prc-cd" data-ends="rbxweekly" aria-label="Time left in this race">
-                <div><b data-u="d">--</b><small>Day</small></div><div><b data-u="h">--</b><small>Hour</small></div><div><b data-u="m">--</b><small>Min</small></div><div><b data-u="s">--</b><small>Sec</small></div>
-              </div>
+        <!-- RBXWIN's own site-wide weekly race (static, like Power.win's races): one card -->
+        <div class="pwx-sec"><span>Open to everyone on RBXWIN</span><h3>🏁 RBXWIN weekly race</h3></div>
+        <article class="prc prc-weekly rbx-race" data-race="weekly">
+          <div class="prc-glow" aria-hidden="true"></div>
+          <div class="prc-hero rbx-race-hero">
+            <div class="prc-flag" aria-hidden="true"></div>
+            <div class="prc-flag l" aria-hidden="true"></div>
+            <div class="prc-speed" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+            <span class="prc-kick"><i></i>Live race on RBXWIN · resets every week</span>
+            <h4 class="prc-title"><b>$675</b><span>Weekly race</span></h4>
+            <p class="rbx-race-p">RBXWIN's own race for every player on the site, on top of Jammy's leaderboard. Places go by amount wagered.</p>
+            <div class="prc-cd" data-ends="rbxweekly" aria-label="Time left in this race">
+              <div><b data-u="d">--</b><small>Day</small></div><div><b data-u="h">--</b><small>Hour</small></div><div><b data-u="m">--</b><small>Min</small></div><div><b data-u="s">--</b><small>Sec</small></div>
             </div>
+          </div>
+          <div class="rbx-race-side">
             <ol class="prc-list"><li class="r1"><span class="prc-pl"><i>🥇</i>1st</span><b>$225</b></li><li class="r2"><span class="prc-pl"><i>🥈</i>2nd</span><b>$180</b></li><li class="r3"><span class="prc-pl"><i>🥉</i>3rd</span><b>$135</b></li><li class="r4"><span class="prc-pl"><i></i>4th</span><b>$90</b></li><li class="r5"><span class="prc-pl"><i></i>5th</span><b>$45</b></li></ol>
             <div class="prc-foot"><span>Top 5 paid · $675 total</span><a href="https://rbxwin.gg/leaderboard" target="_blank" rel="noopener">Live standings ↗</a></div>
-          </article>
-        </div>
+          </div>
+        </article>
         <p class="rbx-fine" style="margin-top:12px">Prizes for the weekly race are paid by RBXWIN. Check <a href="https://rbxwin.gg/leaderboard" target="_blank" rel="noopener" style="color:#ffb36b">rbxwin.gg/leaderboard</a> for live standings and time remaining.</p>
 
         <div class="pwx-sec"><span>Takes a minute</span><h3>How to join</h3></div>
