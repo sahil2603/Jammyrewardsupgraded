@@ -6036,7 +6036,7 @@ body.on-admin #skyParticles{opacity:.18!important}
 .rbx-live{--o:240,138,60;max-width:1100px;margin:0 auto}
 .rbx-hero{position:relative}
 .rbx-hero .pwx-pill{border-color:rgba(var(--o),.45);background:rgba(var(--o),.12)}
-.rbx-hero-logo{margin:18px auto 6px;max-width:560px;border-radius:22px;overflow:hidden;box-shadow:0 0 0 1px rgba(var(--o),.35),0 24px 60px rgba(var(--o),.22)}
+.rbx-hero-logo{margin:18px auto 6px;max-width:760px;width:100%;border-radius:22px;overflow:hidden;box-shadow:0 0 0 1px rgba(var(--o),.35),0 24px 60px rgba(var(--o),.22)}
 .rbx-hero-logo img{display:block;width:100%;height:auto}
 .rbx-grad{background:linear-gradient(90deg,#ffd27a,#f08a3c 55%,#ff5d2a);-webkit-background-clip:text;background-clip:text;color:transparent}
 .rbx-go{background:linear-gradient(135deg,#ffae4f,#f08a3c 55%,#e0601e)!important;color:#1d0d00!important;box-shadow:0 10px 30px rgba(var(--o),.45)!important}
@@ -6070,6 +6070,77 @@ body.on-admin #skyParticles{opacity:.18!important}
 .lbt .rbx-lock{font-size:1.05rem}
 @media(max-width:600px){.lbx-tabs .lbt{padding:0 6px!important;font-size:.82rem}.lbx-tabs .lbt img.pw{height:24px!important}.lbx-tabs .lbt .rbx-lock{font-size:.82rem}.lbx-tabs .lbt-jg{font-size:.78rem;white-space:nowrap}.lbx-tabs .lbt-jg img{height:18px!important}}
 #lbJoinRbxwin{background:linear-gradient(135deg,#ffae4f,#f08a3c 55%,#e0601e)!important;color:#1d0d00!important;border-color:transparent!important;box-shadow:0 8px 24px rgba(240,138,60,.35)!important}
+/* ===== RBXWIN page: live polish (animated backdrop, glowing edges, tilt, reveals) ===== */
+@property --rbxa{syntax:'<angle>';inherits:false;initial-value:0deg}
+#pt-sec-rbxwin{position:relative;isolation:isolate}
+.rbx-bg{position:absolute;inset:-40px -10vw 0;z-index:-1;pointer-events:none;overflow:hidden;-webkit-mask:linear-gradient(180deg,transparent,#000 14%,#000 70%,transparent);mask:linear-gradient(180deg,transparent,#000 14%,#000 70%,transparent)}
+.rbx-bg i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;animation:rbxBlob 18s ease-in-out infinite alternate}
+.rbx-bg i:nth-child(1){width:520px;height:520px;left:5%;top:0;background:#f08a3c}
+.rbx-bg i:nth-child(2){width:420px;height:420px;right:2%;top:24%;background:#ff4d2a;animation-delay:-6s;opacity:.32}
+.rbx-bg i:nth-child(3){width:380px;height:380px;left:30%;top:55%;background:#ffb547;animation-delay:-11s;opacity:.22}
+@keyframes rbxBlob{0%{transform:translate(0,0) scale(1)}50%{transform:translate(60px,-40px) scale(1.15)}100%{transform:translate(-50px,50px) scale(.9)}}
+.rbx-bg b{position:absolute;bottom:-40px;width:var(--s);height:var(--s);background:url(rbxwin-gem.webp) center/contain no-repeat;opacity:.55;filter:drop-shadow(0 0 10px rgba(240,138,60,.8));animation:rbxRise var(--d) linear infinite;animation-delay:var(--dl)}
+@keyframes rbxRise{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.6}90%{opacity:.4}100%{transform:translateY(-110vh) rotate(360deg);opacity:0}}
+/* hero */
+.rbx-hero-logo{position:relative;animation:rbxFloat 5s ease-in-out infinite}
+.rbx-hero-logo::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.35) 50%,transparent 65%);background-size:250% 100%;animation:rbxShine 4.5s ease-in-out infinite;mix-blend-mode:overlay}
+.rbx-hero-logo::before{content:"";position:absolute;inset:-2px;border-radius:24px;padding:2px;background:conic-gradient(from var(--rbxa),transparent 0 60%,#ffcf7a 75%,#f08a3c 85%,transparent 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:rbxSpin 4s linear infinite;z-index:2}
+@keyframes rbxFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes rbxShine{0%,55%{background-position:160% 0}85%,100%{background-position:-60% 0}}
+@keyframes rbxSpin{to{--rbxa:360deg}}
+.rbx-grad{background-size:200% 100%;animation:rbxGrad 4s ease-in-out infinite alternate}
+@keyframes rbxGrad{to{background-position:100% 0}}
+.rbx-go{position:relative;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease!important}
+.rbx-go::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.6) 50%,transparent 70%);transform:translateX(-120%);animation:rbxBtn 3s ease-in-out infinite}
+@keyframes rbxBtn{0%,60%{transform:translateX(-120%)}90%,100%{transform:translateX(120%)}}
+.rbx-go:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 16px 40px rgba(240,138,60,.65)!important}
+.rbx-hero .pwx-stats>div{position:relative;transition:transform .25s ease,background .25s ease}
+.rbx-hero .pwx-stats>div:hover{transform:translateY(-4px);background:rgba(240,138,60,.1)}
+.rbx-hero .pwx-stats b{background:linear-gradient(180deg,#fff,#ffc58a);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* glowing animated card edges + tilt + shine */
+#pt-sec-rbxwin .rbx-card,#pt-sec-rbxwin .pwx-m,#pt-sec-rbxwin .rbx-steps li{--rx:0deg;--ry:0deg;--mx:50%;--my:50%;position:relative;transform:perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));transition:transform .25s ease,box-shadow .3s ease,border-color .3s ease;transform-style:preserve-3d}
+#pt-sec-rbxwin .rbx-card::before,#pt-sec-rbxwin .pwx-m::before,#pt-sec-rbxwin .rbx-steps li::after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1.5px;pointer-events:none;background:conic-gradient(from var(--rbxa),transparent 0 55%,rgba(var(--a,240,138,60),.95) 72%,#fff3 78%,rgba(var(--a,240,138,60),.95) 84%,transparent 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:rbxSpin 6s linear infinite;opacity:.55;transition:opacity .3s}
+#pt-sec-rbxwin .rbx-card::after,#pt-sec-rbxwin .pwx-m::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(420px circle at var(--mx) var(--my),rgba(var(--a,240,138,60),.18),transparent 45%);opacity:0;transition:opacity .3s}
+#pt-sec-rbxwin .rbx-card:hover,#pt-sec-rbxwin .pwx-m:hover,#pt-sec-rbxwin .rbx-steps li:hover{box-shadow:0 22px 60px rgba(var(--a,240,138,60),.28),inset 4px 0 0 rgba(var(--a,240,138,60),.9),-8px 0 30px -6px rgba(var(--a,240,138,60),.55)}
+#pt-sec-rbxwin .rbx-card:hover::before,#pt-sec-rbxwin .pwx-m:hover::before,#pt-sec-rbxwin .rbx-steps li:hover::after{opacity:1;animation-duration:2.2s}
+#pt-sec-rbxwin .rbx-card:hover::after,#pt-sec-rbxwin .pwx-m:hover::after{opacity:1}
+#pt-sec-rbxwin .pwx-m{overflow:hidden}
+#pt-sec-rbxwin .pwx-m-ico{transition:transform .35s cubic-bezier(.2,1.6,.4,1)}
+#pt-sec-rbxwin .pwx-m:hover .pwx-m-ico{transform:translateY(-6px) scale(1.18) rotate(-8deg)}
+#pt-sec-rbxwin .pwx-m:nth-child(1){--a:96,165,250}#pt-sec-rbxwin .pwx-m:nth-child(2){--a:74,222,128}#pt-sec-rbxwin .pwx-m:nth-child(3){--a:251,191,36}#pt-sec-rbxwin .pwx-m:nth-child(4){--a:240,138,60}
+/* welcome card: big animated 5% */
+.rbx-welcome{display:grid!important;grid-template-columns:1fr auto;column-gap:28px;align-items:center;overflow:hidden}
+.rbx-welcome>*:not(.rbx-pct):not(.pwx-card-glow){grid-column:1}
+.rbx-welcome .rbx-pct{grid-column:2;grid-row:1 / span 2;align-self:center}
+.rbx-pct{font:400 clamp(4rem,9vw,6.6rem)/.9 'Lilita One',sans-serif;background:linear-gradient(180deg,#fff3c4,#ffb547 45%,#f0702a);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 6px 22px rgba(240,138,60,.55));animation:rbxPulse 2.4s ease-in-out infinite;padding-right:6px}
+.rbx-pct small{display:block;font:800 .8rem 'Poppins',system-ui;letter-spacing:.2em;color:#ffcf9a;-webkit-text-fill-color:#ffcf9a;text-align:center;margin-top:6px}
+@keyframes rbxPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.pwx-ico{animation:rbxZap 2.8s ease-in-out infinite}
+@keyframes rbxZap{0%,86%,100%{transform:scale(1) rotate(0)}90%{transform:scale(1.2) rotate(-10deg)}94%{transform:scale(1.1) rotate(8deg)}}
+/* daily case: glowing case with light rays */
+.rbx-case-art{position:relative;width:150px;height:130px;display:grid;place-items:center;font-size:84px}
+.rbx-case-art::before{content:"";position:absolute;inset:-30px;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(251,191,36,.0) 0 10deg,rgba(251,191,36,.35) 12deg 16deg,rgba(251,191,36,0) 18deg 30deg);-webkit-mask:radial-gradient(circle,#000 15%,transparent 65%);mask:radial-gradient(circle,#000 15%,transparent 65%);animation:rbxRot 14s linear infinite;z-index:-1}
+@keyframes rbxRot{to{transform:rotate(360deg)}}
+.rbx-lvl{margin-top:12px;max-width:420px}
+.rbx-lvl-bar{height:10px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.rbx-lvl-bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#fbbf24,#f08a3c);box-shadow:0 0 14px rgba(251,191,36,.7);transition:width 2s cubic-bezier(.2,.8,.2,1)}
+.rbx-lvl-steps{display:flex;justify-content:space-between;margin-top:6px;font:700 .7rem 'Poppins',system-ui;color:rgba(255,255,255,.5)}
+.rbx-lvl-steps b{color:#fbbf24}
+/* leaderboard card */
+.rbx-lb .pwx-lb-amt{animation:rbxPulse 3s ease-in-out infinite;transform-origin:left center}
+.rbx-prizes>div:not(.rbx-pz-h):not(.rbx-pz-t){transition:background .2s,transform .2s,padding .2s;border-radius:8px}
+.rbx-prizes>div:not(.rbx-pz-h):not(.rbx-pz-t):hover{background:rgba(240,138,60,.12);transform:translateX(4px);padding-left:8px;padding-right:8px}
+.rbx-prizes>div:nth-child(2) b,.rbx-prizes>div:nth-child(3) b,.rbx-prizes>div:nth-child(4) b{font-size:1.05rem;text-shadow:0 0 12px rgba(255,179,107,.6)}
+.rbx-top3 .t{animation:rbxPop .5s cubic-bezier(.2,1.5,.4,1) both}
+.rbx-top3 .t:nth-child(2){animation-delay:.1s}.rbx-top3 .t:nth-child(3){animation-delay:.2s}
+@keyframes rbxPop{from{opacity:0;transform:translateY(10px) scale(.9)}to{opacity:1;transform:none}}
+.rbx-steps li::before{animation:rbxPulse 2.6s ease-in-out infinite}
+.rbx-steps li:nth-child(2)::before{animation-delay:.4s}.rbx-steps li:nth-child(3)::before{animation-delay:.8s}
+/* reveal on scroll */
+#pt-sec-rbxwin .rbx-rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.9,.3,1)}
+#pt-sec-rbxwin .rbx-rv.in{opacity:1;transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))}
+@media(max-width:560px){.rbx-welcome{grid-template-columns:1fr}.rbx-pct{font-size:4rem}}
+@media(prefers-reduced-motion:reduce){#pt-sec-rbxwin *,#pt-sec-rbxwin *::before,#pt-sec-rbxwin *::after{animation:none!important}#pt-sec-rbxwin .rbx-rv{opacity:1;transform:none}}
 /* ===== New partners: Double (X2) + RBXWIN, shown as coming soon ===== */
 .rbx-lock{display:inline-flex;align-items:center;font:italic 800 1em/1 'Poppins',system-ui;letter-spacing:.01em;color:#fff;white-space:nowrap}
 .rbx-lock img{height:1.3em;width:auto;flex:none;margin-right:.3em}
@@ -6608,7 +6679,7 @@ body.on-admin #skyParticles{opacity:.18!important}
               <li><i>⚡</i>5% Instant First Deposit Bonus</li>
               <li><i>🎁</i>Free Daily Case</li>
               <li><i>💵</i>Rakeback, Weekly &amp; Daily Bonus</li>
-              <li><i>🏆</i>$500 Weekly Leaderboard</li>
+              <li><i>🏆</i>$500 Bi-weekly Leaderboard</li>
             </ul>
             <div class="hx-p-btns">
               <button type="button" class="hx-btn hx-btn-p sm" onclick="ptGo('rbxwin')"><span>View all offers</span></button>
@@ -7114,9 +7185,9 @@ body.on-admin #skyParticles{opacity:.18!important}
       <section class="rbx-live pt-view" id="pt-sec-rbxwin" aria-label="RBXWIN, live partner">
         <header class="pwx-hero rbx-hero">
           <span class="pwx-pill"><span class="pwx-live"></span>Official partner · Live now</span>
-          <div class="rbx-hero-logo"><img src="rbxwin.webp" alt="RBXWIN: cases, battles, originals"></div>
+          <div class="rbx-hero-logo"><img src="rbxwin-banner.webp" width="1600" height="536" alt="RBXWIN: cases, battles, originals"></div>
           <h1 class="pwx-h1">Cases, battles &amp; originals<br>with a <span class="rbx-grad">JAMMMY</span> edge</h1>
-          <p class="pwx-lead">Sign up with code <b>JAMMMY</b> for an instant bonus on your first deposit, a daily case, rakeback and a weekly leaderboard.</p>
+          <p class="pwx-lead">Sign up with code <b>JAMMMY</b> for an instant bonus on your first deposit, a daily case, rakeback and a bi-weekly leaderboard.</p>
           <div class="pwx-cta-row">
             <button type="button" class="pwx-code" onclick="pwxCopy(this)" aria-label="Copy code JAMMMY">
               <span class="pwx-code-l">Code</span><b>JAMMMY</b><span class="pwx-code-c">Copy</span>
@@ -7125,7 +7196,7 @@ body.on-admin #skyParticles{opacity:.18!important}
           </div>
           <div class="pwx-stats">
             <div><b>5%</b><span>Instant deposit bonus</span></div>
-            <div><b id="rbxStatPool">$500</b><span>Weekly leaderboard</span></div>
+            <div><b id="rbxStatPool">$500</b><span>Bi-weekly leaderboard</span></div>
             <div><b>Daily</b><span>Free case</span></div>
             <div><b>Always</b><span>Rakeback</span></div>
           </div>
@@ -7162,13 +7233,13 @@ body.on-admin #skyParticles{opacity:.18!important}
           <div class="pwx-m" style="--a:240,138,60"><div class="pwx-m-ico">🎟️</div><b>Promo Codes</b><p>Exclusive promo codes for code JAMMMY players. Watch Jammy's stream and Discord for drops.</p></div>
         </div>
 
-        <div class="pwx-sec"><span>Every week</span><h3>🏆 Weekly leaderboard</h3></div>
+        <div class="pwx-sec"><span>Every 2 weeks</span><h3>🏆 Bi-weekly leaderboard</h3></div>
         <article class="pwx-card rbx-card rbx-lb" style="--a:240,138,60">
           <div class="pwx-card-glow" aria-hidden="true"></div>
           <div class="rbx-lb-main">
-            <span class="pwx-tag gold" id="rbxLbTitle">Weekly leaderboard</span>
+            <span class="pwx-tag gold" id="rbxLbTitle">Bi-weekly leaderboard</span>
             <div class="pwx-lb-amt" id="rbxLbPool">$500</div>
-            <p class="pwx-lb-sub">The top 10 RBXWIN wagerers on code <b>JAMMMY</b> split the pool every week. RBXWIN pays the prizes straight to your balance when the race ends.</p>
+            <p class="pwx-lb-sub">The top 10 RBXWIN wagerers on code <b>JAMMMY</b> split the pool every two weeks. RBXWIN pays the prizes straight to your balance when the race ends.</p>
             <div class="pwx-lb-cd"><span class="pwx-live"></span><span id="rbxLbWord">Ends in</span> <b id="rbxLbCd">--d --h --m</b></div>
             <div class="rbx-top3" id="rbxTop3"></div>
             <div class="rbx-lb-btns">
@@ -7189,7 +7260,7 @@ body.on-admin #skyParticles{opacity:.18!important}
         <ol class="rbx-steps">
           <li><b>Sign up</b><span>Create your account on <a href="https://rbxwin.gg/" target="_blank" rel="noopener">rbxwin.gg</a>.</span></li>
           <li><b>Enter code JAMMMY</b><span>Use code <b>JAMMMY</b> on RBXWIN so your bonus and leaderboard spot count.</span></li>
-          <li><b>Play</b><span>Your wagering shows up on the weekly leaderboard automatically. No linking needed.</span></li>
+          <li><b>Play</b><span>Your wagering shows up on the bi-weekly leaderboard automatically. No linking needed.</span></li>
         </ol>
         <p class="rbx-fine">18+ only. Play responsibly. RBXWIN's own terms apply to all play and offers on RBXWIN.</p>
       </section>
@@ -7280,7 +7351,7 @@ body.on-admin #skyParticles{opacity:.18!important}
               </div><figure class="gd-vid"><div class="gd-phone"><video muted loop playsinline preload="none" poster="guide-link-powerwin.jpg" data-src="guide-link-powerwin.mp4" aria-label="Linking your Power.win account"></video><button type="button" class="gd-vplay" aria-label="Play video"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></button></div><figcaption>Linking your Power.win account</figcaption></figure></div>
             </div>
             <div class="gd-link" data-l="p2" hidden>
-              <p class="gd-p"><b>RBXWIN:</b> sign up on <a href="https://rbxwin.gg/" target="_blank" rel="noopener">rbxwin.gg</a> and use code <b>JAMMMY</b>. That's it: your wagering shows up on the RBXWIN weekly leaderboard automatically, no linking needed.</p><p class="gd-p"><b>Double</b> is on its way. Steps land here the day it goes live.</p>
+              <p class="gd-p"><b>RBXWIN:</b> sign up on <a href="https://rbxwin.gg/" target="_blank" rel="noopener">rbxwin.gg</a> and use code <b>JAMMMY</b>. That's it: your wagering shows up on the RBXWIN bi-weekly leaderboard automatically, no linking needed.</p><p class="gd-p"><b>Double</b> is on its way. Steps land here the day it goes live.</p>
             </div>
             <div class="gd-link" data-l="kick" hidden>
               <div class="gd-wv"><div>
@@ -8610,7 +8681,7 @@ var LB_STATIC_PRIZES = {1:'$200', 2:'$100', 3:'$50'}; /* shown when a casino's A
    Power.win bi-weekly race: $1,000 total, top 10 paid. */
 var LB_CASINO_PRIZES = {
   powerwin: {1:300, 2:200, 3:130, 4:100, 5:75, 6:55, 7:45, 8:35, 9:30, 10:30},
-  /* RBXWIN weekly race: $500 total, top 10 paid (RBXWIN credits the prizes itself). */
+  /* RBXWIN bi-weekly race: $500 total, top 10 paid (RBXWIN credits the prizes itself). */
   rbxwin: {1:175, 2:100, 3:65, 4:45, 5:35, 6:25, 7:20, 8:15, 9:10, 10:10}
 };
 /* Used by the leaderboard preview cards on Home -- was trying to find the matching tab
@@ -15536,7 +15607,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     var cn = document.getElementById('lbxClaimNote');
     if(cn){ if(CLAIM_DEFAULT === null) CLAIM_DEFAULT = cn.innerHTML;
       cn.innerHTML = r ? '<b>Prizes are paid automatically.</b> RBXWIN credits the winners\' balances shortly after the race ends. Wager abuse voids all rewards.' : CLAIM_DEFAULT; }
-    var pn = document.getElementById('lbxPaidN'); if(pn && r) pn.textContent = 'Top 10 paid · weekly';
+    var pn = document.getElementById('lbxPaidN'); if(pn && r) pn.textContent = 'Top 10 paid · every 2 weeks';
     return out;
   };
   var _race = window.lbRace;
@@ -15560,7 +15631,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
       var r = await fetch(LB_PROXY_URL + '?casino=rbxwin'); var d = await r.json(); if(d.error) throw new Error(d.error);
       data = d; var m = d.meta || {};
       if(m.prizePoolUsd){ var pool = '$' + Number(m.prizePoolUsd).toLocaleString('en-US'); ['rbxLbPool','rbxStatPool'].forEach(function(id){ var e = document.getElementById(id); if(e) e.textContent = pool; }); }
-      var tt = document.getElementById('rbxLbTitle'); if(tt && m.title) tt.textContent = m.title;
+      var tt = document.getElementById('rbxLbTitle'); if(tt && m.title) tt.textContent = m.title.replace(/\bweekly\b/i, 'Bi-weekly');
       var t3 = document.getElementById('rbxTop3');
       if(t3) t3.innerHTML = (d.wagers || []).slice(0, 3).map(function(w, i){
         var av = w.avatarUrl ? '<img src="' + esc(w.avatarUrl) + '" alt="" referrerpolicy="no-referrer" onerror="this.remove()">' : ['🥇','🥈','🥉'][i];
@@ -15570,6 +15641,31 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     }catch(e){ var t3b = document.getElementById('rbxTop3'); if(t3b && !data) t3b.innerHTML = ''; }
   }
   setInterval(function(){ var v = document.querySelector('#new .pwx[data-pt="rbxwin"]'); if(!v) return; if(!data || Date.now() - got > 60000) load(); tick(); }, 1000);
+})();
+</script>
+<script>
+/* RBXWIN page: floating gems, count-ups, scroll reveals and card tilt (only while the page is open) */
+(function(){
+  var sec = document.getElementById('pt-sec-rbxwin'); if(!sec) return;
+  var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bg = document.createElement('div'); bg.className = 'rbx-bg'; bg.setAttribute('aria-hidden','true');
+  var h = '<i></i><i></i><i></i>'; for(var k=0;k<14;k++) h += '<b style="left:'+(k*7.3%100)+'%;--s:'+(14+(k*11)%26)+'px;--d:'+(14+(k*5)%12)+'s;--dl:-'+((k*2.7)%20).toFixed(1)+'s"></b>';
+  bg.innerHTML = h; sec.insertBefore(bg, sec.firstChild);
+  var w = sec.querySelector('.rbx-welcome'); if(w && !w.querySelector('.rbx-pct')) w.insertAdjacentHTML('beforeend','<div class="rbx-pct" aria-hidden="true"><span data-cu="5">0</span>%<small>INSTANT</small></div>');
+  var c = sec.querySelector('.rbx-case-txt'); if(c && !c.querySelector('.rbx-lvl')) c.insertAdjacentHTML('beforeend','<div class="rbx-lvl" aria-hidden="true"><div class="rbx-lvl-bar"><i></i></div><div class="rbx-lvl-steps"><span>Lv 1</span><span>Lv 2</span><span>Lv 3</span><span>Lv 4</span><b>Lv 5 · Open 🎁</b></div></div>');
+  var rv = sec.querySelectorAll('.rbx-card, .pwx-m, .rbx-steps li, .pwx-sec');
+  rv.forEach(function(e,i){ e.classList.add('rbx-rv'); e.style.transitionDelay = ((i%4)*80)+'ms'; });
+  function countUp(el){ var to = +el.dataset.cu, t0 = performance.now(); (function f(n){ var p = Math.min(1,(n-t0)/1200); el.textContent = Math.round(to*(1-Math.pow(1-p,3))); if(p<1) requestAnimationFrame(f); })(t0); }
+  var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(!e.isIntersecting) return; var t = e.target; t.classList.add('in'); io.unobserve(t);
+    t.querySelectorAll('[data-cu]').forEach(countUp); var bar = t.querySelector('.rbx-lvl-bar i'); if(bar) setTimeout(function(){ bar.style.width = '100%'; }, 300); }); }, { threshold:.15 });
+  rv.forEach(function(e){ if(calm){ e.classList.add('in'); } else io.observe(e); });
+  if(calm) return;
+  sec.querySelectorAll('.rbx-card, .pwx-m, .rbx-steps li').forEach(function(el){
+    el.addEventListener('pointermove', function(ev){ var r = el.getBoundingClientRect(), x = (ev.clientX - r.left)/r.width, y = (ev.clientY - r.top)/r.height;
+      el.style.setProperty('--mx', (x*100)+'%'); el.style.setProperty('--my', (y*100)+'%');
+      var big = r.width > 500 ? 2.5 : 7; el.style.setProperty('--ry', ((x-.5)*big)+'deg'); el.style.setProperty('--rx', ((.5-y)*big)+'deg'); });
+    el.addEventListener('pointerleave', function(){ el.style.setProperty('--rx','0deg'); el.style.setProperty('--ry','0deg'); });
+  });
 })();
 </script>
 <script>
