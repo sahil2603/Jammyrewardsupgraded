@@ -11556,6 +11556,7 @@ async function loadBotAdmin(){
           + '<b>' + botAgo(d.at) + '</b> · ' + pccEsc(d.type || '') + (d.from ? ' · from <b>' + pccEsc(d.from) + '</b>' : '') + '<br>'
           + 'text: <code>' + pccEsc(d.text || '(empty)') + '</code><br>'
           + 'result: <b>' + pccEsc(d.result || '?') + '</b>' + (d.reply ? ' · reply: <b>' + pccEsc(d.reply) + '</b>' : '') + '<br>'
+          + (d.kick_delay_s != null ? 'Kick delivered it <b style="color:' + (d.kick_delay_s > 15 ? '#f87171' : d.kick_delay_s > 5 ? '#fbbf24' : '#4ade80') + '">' + d.kick_delay_s + 's</b> after it was typed' + (d.bot_ms != null ? ' · bot finished in <b>' + (d.bot_ms/1000).toFixed(1) + 's</b>' : '') + '<br>' : '')
           + '<span style="color:var(--faint)">fields: ' + pccEsc(d.keys || '') + ' · channel ' + pccEsc(d.channel || '?') + (d.expected ? ' (expected ' + pccEsc(d.expected) + ')' : '') + '</span></div>'; }).join('')
       : '<div style="font-size:.78rem;color:var(--muted)">Nothing recorded yet. Type !code in Kick chat, then refresh.</div>')
     + '<button class="bt-btn" style="margin-top:6px" onclick="loadBotAdmin()">Refresh</button></details>'
