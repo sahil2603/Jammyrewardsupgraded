@@ -4176,6 +4176,8 @@ video.vp-mascot-img{animation:none;border-radius:16px;object-fit:cover}
 
 
 .rd-ann{padding:8px 14px;border-radius:10px;border:1px solid rgba(88,101,242,.6);background:rgba(88,101,242,.18);color:#c7cbff;font:700 .82rem 'Poppins',system-ui;cursor:pointer}.rd-ann:hover{background:rgba(88,101,242,.32);color:#fff}.rd-ann.done{border-color:rgba(74,222,128,.45);background:rgba(74,222,128,.1);color:#86efac}.rd-ann:disabled{opacity:.6;cursor:wait}
+
+html body #lbxInfo.lbx-off{display:none!important}
 </style>
 <style>
 }
@@ -9063,7 +9065,7 @@ async function loadLeaderboard(casino){
   if(joinPwEl) joinPwEl.style.display = (casino === 'powerwin') ? '' : 'none';
   if(podiumEl) podiumEl.style.display = '';
   if(actionBtnsEl) actionBtnsEl.style.display = '';
-  if(countdownEl) countdownEl.style.display = '';
+  if(countdownEl){ countdownEl.style.display = ''; countdownEl.classList.remove('lbx-off'); }
   if(tableHeadEl) tableHeadEl.style.display = '';
   if(rowsEl) rowsEl.innerHTML = '<div class="lbx-empty">'+(LB_RACE === 'previous' ? 'Loading the previous leaderboard&hellip;' : 'Connecting to live leaderboard&hellip;')+'</div>';
   try{
@@ -9094,7 +9096,13 @@ async function loadLeaderboard(casino){
     _lastLbWagers = data.wagers || []; /* kept for the Share on X button -- real top-3 names + wagered amounts */
   }catch(e){
     if(myRequest !== lbRequestSeq) return;
-    if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">Couldn\'t load live data right now — try refreshing.<div class="lb-error-detail">'+String(e).slice(0,120)+'</div></div>';
+    /* never leave the previous casino's podium, prize pool, dates or countdown on screen */
+    _realPeriodOverride = null; _lastLbWagers = [];
+    if(podiumEl){ podiumEl.innerHTML = ''; podiumEl.classList.add('lbx-hide'); }
+    if(countdownEl) countdownEl.classList.add('lbx-off');
+    var ntc = document.getElementById('lbxNotice'); if(ntc) ntc.style.display = 'none';
+    var nm = (typeof CASINO_DISPLAY_NAMES !== 'undefined' && CASINO_DISPLAY_NAMES[casino]) || casino;
+    if(rowsEl) rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--faint)">The ' + nm + ' leaderboard isn\'t available right now. Please check back soon.<div class="lb-error-detail">'+String(e).replace(/^Error:\s*/,'').slice(0,120)+'</div></div>';
     console.error('Leaderboard fetch failed:', e);
   }
 }
