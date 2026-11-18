@@ -8092,7 +8092,7 @@ body.on-admin #skyParticles{opacity:.18!important}
           <div class="bt-acts">
             <div class="bt-card">
               <h4>🎮 Live controls <span id="btLive" class="bt-live"><i></i>Offline</span></h4>
-              <div class="bt-row"><button class="bt-btn p" onclick="botDropDialog('kick')">🎁 Start Kick drop</button><button class="bt-btn p" onclick="botDropDialog('code')">🔑 Post code drop</button><button class="bt-btn" onclick="botAct('test')">🧪 Send test messages</button></div>
+              <div class="bt-row"><button class="bt-btn p" onclick="botDropDialog('kick')">🎁 Start Kick drop</button><button class="bt-btn p" onclick="botDropDialog('code')">🔑 Post code drop</button><button class="bt-btn" onclick="botAct('test')">🧪 Send test messages</button><button class="bt-btn" onclick="if(confirm('Post the last 3 paid redemptions that were never announced to the vouch channel (pings @everyone)?')) botAct('announce_paid',{count:3})">💸 Announce last 3 payouts</button></div>
               <div style="margin-top:14px;font-weight:700;font-size:.88rem">🎯 Guess the win <small style="color:var(--faint);font-weight:500">(Kick + Discord)</small> <span id="btHunt" style="color:var(--muted);font-weight:500"></span></div>
               <div class="bt-row"><input id="btHuntPrize" type="number" min="1" value="100" style="width:110px" title="Prize coins"><button class="bt-btn" onclick="botAct('hunt_open',{prize:document.getElementById('btHuntPrize').value})">Open guessing</button><button class="bt-btn" onclick="botAct('hunt_close')">Close guessing</button></div>
               <div class="bt-row"><input id="btHuntResult" type="text" placeholder="Final $ total, e.g. 1450" style="flex:1"><button class="bt-btn p" onclick="botAct('hunt_result',{result:document.getElementById('btHuntResult').value})">Settle &amp; pay winner</button></div>
@@ -8933,6 +8933,7 @@ function powerwinRaces(now){
 }
 function currentPowerwinPeriod(){ return powerwinRaces(Date.now()).current; }
 function lbcd2(){
+  if(window._lbPausedHook && window._lbPausedHook()) return;   /* RBXWIN paused race: frozen countdown */
   var period = _realPeriodOverride
     || (CURRENT_LB_CASINO === 'powerwin' ? currentPowerwinPeriod() : currentLbPeriod());
   var n = new Date();
@@ -9103,6 +9104,7 @@ function renderLeaderboardRows(wagers, rewards){
   if(!rowsEl) return;
   var _wh = document.querySelector('#lbxHeadRow .w'); if(_wh) _wh.textContent = lbxIsPts() ? 'Points' : 'Wagered';
   var fixedPrizes = LB_CASINO_PRIZES[CURRENT_LB_CASINO];
+  if(CURRENT_LB_CASINO === 'rbxwin' && (rewards||[]).length) fixedPrizes = null;   /* RBXWIN pays its own configured prizes: show those */
   if(fixedPrizes) rewards = Object.keys(fixedPrizes).map(function(k){ return {place:Number(k), winnings:fixedPrizes[k]}; });
   var prizeByRank = {};
   (rewards||[]).forEach(function(r){ prizeByRank[r.place] = r.winnings; });
@@ -15717,9 +15719,21 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   function fmtUTC(d){ return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric', timeZone:'UTC' }) + ', ' + d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit', timeZone:'UTC' }) + ' UTC'; }
   var _cd2 = window.lbcd2;
   setInterval(function(){ if(RBX()) lbcd2(); }, 1000);   /* the page's own 1 s timer calls the original lbcd2, so re-apply right after it */
-  window.lbcd2 = lbcd2 = function(){ var o = _cd2(); if(RBX() && _realPeriodOverride){ var el = document.getElementById('lb2-dates'); if(el){ var t = fmtUTC(_realPeriodOverride.start) + ' → ' + fmtUTC(_realPeriodOverride.end); if(el.textContent !== t) el.textContent = t; } } return o; };
-  var _note = window.lbxSetNotice;
-  window.lbxSetNotice = lbxSetNotice = function(meta){ _note(meta); if(!RBX()) return; var el = document.getElementById('lbxNotice'); if(!el || el.style.display === 'none' || !meta.startDate) return;
+  window._lbPausedHook = function(){
+    if(!(RBX() && RBXMETA.paused && LB_RACE !== 'previous')) return false; var s = RBXMETA.secondsLeft || 0, pad = function(v){ return (v < 10 ? '0' : '') + v; };
+      var v = { lbxD:String(Math.floor(s/86400)), lbxH:pad(Math.floor(s/3600)%24), lbxM:pad(Math.floor(s/60)%60), lbxS:pad(s%60) };
+      Object.keys(v).forEach(function(k){ var e = document.getElementById(k); if(e && e.textContent !== v[k]) e.textContent = v[k]; });
+      var cw = document.getElementById('lbxCdWord'); if(cw && cw.textContent !== 'PAUSED · TIME LEFT') cw.textContent = 'PAUSED · TIME LEFT';
+      var lt = document.getElementById('lbxLiveTxt'); if(lt && lt.textContent !== 'PAUSED') lt.textContent = 'PAUSED';
+      var st = document.querySelector('#lbxState span'); if(st) st.textContent = 'Paused';
+      var c2 = document.getElementById('lb-cd2'); if(c2) c2.textContent = 'PAUSED';
+      var pr = document.getElementById('lbxProg'); if(pr && _realPeriodOverride){ var tot = _realPeriodOverride.end - _realPeriodOverride.start; pr.style.width = Math.max(0, Math.min(100, (1 - s*1000/tot) * 100)).toFixed(2) + '%'; }
+      return true; };
+  window.lbcd2 = lbcd2 = function(){ var o = _cd2();
+    if(RBX() && _realPeriodOverride && !RBXMETA.paused){ var el = document.getElementById('lb2-dates'); if(el){ var t = fmtUTC(_realPeriodOverride.start) + ' → ' + fmtUTC(_realPeriodOverride.end); if(el.textContent !== t) el.textContent = t; } } return o; };
+  var _note = window.lbxSetNotice, RBXMETA = {};
+  window.lbxSetNotice = lbxSetNotice = function(meta){ _note(meta); if(!RBX()) return; RBXMETA = meta || {};
+    var nel = document.getElementById('lbxNotice'); if(nel && RBXMETA.paused && LB_RACE !== 'previous'){ nel.innerHTML = '⏸ <b>Paused by RBXWIN</b> · bets don\'t count until it starts again'; nel.classList.add('soon'); nel.style.display = ''; return; } var el = document.getElementById('lbxNotice'); if(!el || el.style.display === 'none' || !meta.startDate) return;
     var f = function(d){ var x = new Date(d); return x.toLocaleDateString('en-GB', { day:'numeric', month:'short', timeZone:'UTC' }) + ' ' + x.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit', timeZone:'UTC' }) + ' UTC'; };
     el.innerHTML = meta.upcoming ? '🏁 <b>New leaderboard starts ' + f(meta.startDate) + '</b> and runs until ' + f(meta.endDate) : '🏁 This leaderboard: <b>' + f(meta.startDate) + ' → ' + f(meta.endDate) + '</b>'; };
   /* partner page: pool, countdown and top 3 */
@@ -15729,6 +15743,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   function tick(){
     var cd = document.getElementById('rbxLbCd'), wd = document.getElementById('rbxLbWord'); if(!cd || !data) return;
     var m = data.meta || {}, up = !!m.upcoming, t = Date.parse(up ? m.startDate : m.endDate);
+    if(m.paused){ var ps = m.secondsLeft || 0; if(wd) wd.textContent = 'Paused · time left'; cd.textContent = Math.floor(ps/86400) + 'd ' + Math.floor(ps/3600)%24 + 'h ' + Math.floor(ps/60)%60 + 'm'; return; }
     if(!t){ cd.textContent = '--'; return; }
     var s = Math.max(0, Math.floor((t - Date.now()) / 1000));
     if(wd) wd.textContent = m.ended_waiting ? 'New race' : up ? 'Starts in' : 'Ends in';
@@ -15741,6 +15756,10 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
       var r = await fetch(LB_PROXY_URL + '?casino=rbxwin'); var d = await r.json(); if(d.error) throw new Error(d.error);
       data = d; var m = d.meta || {};
       if(m.prizePoolUsd){ var pool = '$' + Number(m.prizePoolUsd).toLocaleString('en-US'); ['rbxLbPool','rbxStatPool'].forEach(function(id){ var e = document.getElementById(id); if(e) e.textContent = pool; }); }
+      var rw = (m.leaderboard && m.leaderboard.leaderboardRewards) || [], pz = document.querySelector('#pt-sec-rbxwin .rbx-prizes');
+      if(pz && rw.length){ var ord = ['🥇 1st','🥈 2nd','🥉 3rd'], tot = 0, h = '<div class="rbx-pz-h"><span>Place</span><span>Prize</span></div>';
+        rw.forEach(function(r){ tot += r.winnings; h += '<div><span>' + (ord[r.place-1] || (r.place + 'th')) + '</span><b>$' + Number(r.winnings).toLocaleString('en-US') + '</b></div>'; });
+        pz.innerHTML = h + '<div class="rbx-pz-t"><span>Total</span><b>$' + Math.round(tot).toLocaleString('en-US') + '</b></div>'; }
       var tt = document.getElementById('rbxLbTitle'); if(tt && m.title) tt.textContent = m.title.replace(/\bweekly\b/i, 'Bi-weekly');
       var t3 = document.getElementById('rbxTop3');
       if(t3) t3.innerHTML = (d.wagers || []).slice(0, 3).map(function(w, i){
