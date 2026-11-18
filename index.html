@@ -11549,6 +11549,16 @@ async function loadBotAdmin(){
     + '<div class="bt-line"><span>Jammy\'s channel</span>' + (K.channel ? '<b class="bt-ok">✓ ' + pccEsc(K.channel.username || 'connected') + '</b>' : '<button class="bt-btn g" onclick="botKickConnect(\'channel\')">Connect channel</button>') + '</div>'
     + '<div class="bt-line"><span>Last event from Kick</span><b class="' + (ev && Date.now() - ev.at < 3*86400000 ? 'bt-ok' : 'bt-warn') + '">' + (ev ? botAgo(ev.at) : 'none yet') + '</b></div>'
     + '<div class="bt-line"><span>Linked viewers</span><b>' + Number(K.linked_players || 0).toLocaleString() + '</b></div>'
+    + '<details class="bt-diag"' + (K.chat_log && K.chat_log.length ? ' open' : '') + ' style="margin:8px 0 6px"><summary style="cursor:pointer;font-weight:700">Kick chat check · last ' + ((K.chat_log || []).length) + ' events</summary>'
+    + '<div style="font-size:.74rem;color:var(--faint);margin:6px 0">Type <b>!code</b> in Jammy\'s Kick chat, wait a few seconds, then press Refresh. Each row shows what Kick sent and what the bot did. Bot id: ' + pccEsc(String((K.bot && K.bot.user_id) || '?')) + ' · channel id: ' + pccEsc(String((K.channel && K.channel.user_id) || '?')) + '</div>'
+    + ((K.chat_log || []).length ? (K.chat_log || []).map(function(d){ var bad = /refused|not sent|ignored|off/i.test((d.result || '') + ' ' + (d.reply || ''));
+        return '<div style="border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:7px 9px;margin:5px 0;font-size:.76rem;line-height:1.45;background:' + (bad ? 'rgba(248,113,113,.08)' : 'rgba(74,222,128,.06)') + '">'
+          + '<b>' + botAgo(d.at) + '</b> · ' + pccEsc(d.type || '') + (d.from ? ' · from <b>' + pccEsc(d.from) + '</b>' : '') + '<br>'
+          + 'text: <code>' + pccEsc(d.text || '(empty)') + '</code><br>'
+          + 'result: <b>' + pccEsc(d.result || '?') + '</b>' + (d.reply ? ' · reply: <b>' + pccEsc(d.reply) + '</b>' : '') + '<br>'
+          + '<span style="color:var(--faint)">fields: ' + pccEsc(d.keys || '') + ' · channel ' + pccEsc(d.channel || '?') + (d.expected ? ' (expected ' + pccEsc(d.expected) + ')' : '') + '</span></div>'; }).join('')
+      : '<div style="font-size:.78rem;color:var(--muted)">Nothing recorded yet. Type !code in Kick chat, then refresh.</div>')
+    + '<button class="bt-btn" style="margin-top:6px" onclick="loadBotAdmin()">Refresh</button></details>'
     + '<div class="bt-row">' + (K.channel ? '<button class="bt-btn" onclick="botAct(\'kick_subscribe\')">Re-subscribe events</button>' : '') + (K.bot ? '<button class="bt-btn" onclick="botAct(\'kick_disconnect\',{role:\'bot\'},true)">Disconnect bot</button>' : '') + (K.channel ? '<button class="bt-btn" onclick="botAct(\'kick_disconnect\',{role:\'channel\'},true)">Disconnect channel</button>' : '') + '</div>'
     + (K.app_keys ? '' : '<div class="bt-msg bt-no">KICK_CLIENT_ID / KICK_CLIENT_SECRET missing on the worker.</div>')
     + '<details style="margin-top:8px"><summary style="cursor:pointer;font-size:.8rem;color:var(--muted)">Kick app setup URLs</summary>'
