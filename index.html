@@ -4174,6 +4174,8 @@ video.vp-mascot-img{animation:none;border-radius:16px;object-fit:cover}
     transform:scale(.95)!important;transition:transform .1s ease!important}
 }
 
+
+.rd-ann{padding:8px 14px;border-radius:10px;border:1px solid rgba(88,101,242,.6);background:rgba(88,101,242,.18);color:#c7cbff;font:700 .82rem 'Poppins',system-ui;cursor:pointer}.rd-ann:hover{background:rgba(88,101,242,.32);color:#fff}.rd-ann.done{border-color:rgba(74,222,128,.45);background:rgba(74,222,128,.1);color:#86efac}.rd-ann:disabled{opacity:.6;cursor:wait}
 </style>
 <style>
 }
@@ -8092,7 +8094,7 @@ body.on-admin #skyParticles{opacity:.18!important}
           <div class="bt-acts">
             <div class="bt-card">
               <h4>🎮 Live controls <span id="btLive" class="bt-live"><i></i>Offline</span></h4>
-              <div class="bt-row"><button class="bt-btn p" onclick="botDropDialog('kick')">🎁 Start Kick drop</button><button class="bt-btn p" onclick="botDropDialog('code')">🔑 Post code drop</button><button class="bt-btn" onclick="botAct('test')">🧪 Send test messages</button><button class="bt-btn" onclick="if(confirm('Post the last 3 paid redemptions that were never announced to the vouch channel (pings @everyone)?')) botAct('announce_paid',{count:3})">💸 Announce last 3 payouts</button></div>
+              <div class="bt-row"><button class="bt-btn p" onclick="botDropDialog('kick')">🎁 Start Kick drop</button><button class="bt-btn p" onclick="botDropDialog('code')">🔑 Post code drop</button><button class="bt-btn" onclick="botAct('test')">🧪 Send test messages</button></div>
               <div style="margin-top:14px;font-weight:700;font-size:.88rem">🎯 Guess the win <small style="color:var(--faint);font-weight:500">(Kick + Discord)</small> <span id="btHunt" style="color:var(--muted);font-weight:500"></span></div>
               <div class="bt-row"><input id="btHuntPrize" type="number" min="1" value="100" style="width:110px" title="Prize coins"><button class="bt-btn" onclick="botAct('hunt_open',{prize:document.getElementById('btHuntPrize').value})">Open guessing</button><button class="bt-btn" onclick="botAct('hunt_close')">Close guessing</button></div>
               <div class="bt-row"><input id="btHuntResult" type="text" placeholder="Final $ total, e.g. 1450" style="flex:1"><button class="bt-btn p" onclick="botAct('hunt_result',{result:document.getElementById('btHuntResult').value})">Settle &amp; pay winner</button></div>
@@ -8955,7 +8957,10 @@ function lbcd2(){
   var datesEl = document.getElementById('lb2-dates');
   if(datesEl){
     var opts = {month:'short', day:'numeric', year:'numeric', timeZone:'UTC'};
-    datesEl.textContent = period.start.toLocaleDateString('en-US',opts)+' \u2192 '+period.end.toLocaleDateString('en-US',opts)+' (00:00 UTC)';
+    /* RBXWIN races don't start at midnight: show their real times. Only write when the text changes (no flicker). */
+    var fu = function(d){ return d.toLocaleDateString('en-US',opts) + ', ' + d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'UTC'}) + ' UTC'; };
+    var dt = CURRENT_LB_CASINO === 'rbxwin' ? fu(period.start)+' \u2192 '+fu(period.end) : period.start.toLocaleDateString('en-US',opts)+' \u2192 '+period.end.toLocaleDateString('en-US',opts)+' (00:00 UTC)';
+    if(datesEl.textContent !== dt) datesEl.textContent = dt;
   }
   var updEl = document.getElementById('lbUpdatedTime');
   if(updEl) updEl.textContent = LB_RACE === 'previous' ? (_lbWaiting ? 'waiting for the leaderboard to end' : 'final standings') : n.toLocaleString('en-US');
@@ -12415,6 +12420,18 @@ async function adminToggleMod(discordId, username, makeMod){
 }
 
 var _currentRedemptionFilter = 'pending';
+/* paid tab: post this payout to the Discord vouch channel (@everyone + the player) */
+async function adminAnnouncePaid(btn, id){
+  if(!await jmConfirm(btn.classList.contains('done') ? 'This payout was already announced. Post it again?' : 'Announce this payout in the Discord vouch channel? It pings @everyone and the player.')) return;
+  var old = btn.textContent; btn.disabled = true; btn.textContent = 'Posting…';
+  try{
+    var res = await fetch(AUTH_API + '/api/admin/announce-paid', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + localStorage.getItem('jammy_session_token') }, body: JSON.stringify({ transaction_id:id }) });
+    var d = await res.json().catch(function(){ return {}; });
+    if(res.ok){ btn.classList.add('done'); btn.textContent = '✓ Announced · post again'; }
+    else { btn.textContent = old; alert(d.error || 'Could not announce it.'); }
+  }catch(e){ btn.textContent = old; alert('Network error — try again.'); }
+  btn.disabled = false;
+}
 async function loadAdminRedemptions(status){
   status = status !== undefined ? status : _currentRedemptionFilter;
   _currentRedemptionFilter = status;
@@ -12473,7 +12490,7 @@ async function loadAdminRedemptions(status){
           + (isPending ? '<button class="pay" onclick="adminMarkPaid(\''+r.id+'\')">✓ Mark Paid</button>'
               + (isReq ? '<button class="rd-req-btn on" onclick="adminSetRequested(this,\''+r.id+'\',false)">↩ Undo requested</button>'
                        : '<button class="rd-req-btn" onclick="adminSetRequested(this,\''+r.id+'\',true)">📤 Mark payout requested</button>')
-              + '<button class="rej" onclick="adminRejectRedemption(\''+r.id+'\')">Reject &amp; refund</button>' : '<span class="lbl">'+(isRejected ? 'REJECTED — COINS WERE REFUNDED' : 'PAID')+'</span>'+(isRejected && r.reject_reason ? '<span class="rd-rej-why">Reason: '+pccEsc(r.reject_reason)+'</span>' : ''))
+              + '<button class="rej" onclick="adminRejectRedemption(\''+r.id+'\')">Reject &amp; refund</button>' : '<span class="lbl">'+(isRejected ? 'REJECTED — COINS WERE REFUNDED' : 'PAID')+'</span>'+(r.status === 'paid' ? '<button class="rd-ann'+(r.vouch_posted ? ' done' : '')+'" onclick="adminAnnouncePaid(this,\''+r.id+'\')">'+(r.vouch_posted ? '✓ Announced · post again' : '📣 Announce on Discord')+'</button>' : '')+(isRejected && r.reject_reason ? '<span class="rd-rej-why">Reason: '+pccEsc(r.reject_reason)+'</span>' : ''))
           + (r.risk && !r.risk.blocked ? '<button class="del" onclick="openBlk(\''+r.user_id+'\',\''+pccEsc(r.username||'').replace(/'/g,'&#39;')+'\')">⛔ Block user</button>' : '')
           + '<button class="del" onclick="adminDeleteRedemption(\''+r.id+'\')">🗑 Delete</button>'
         + '</div>'
@@ -15730,7 +15747,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
       var pr = document.getElementById('lbxProg'); if(pr && _realPeriodOverride){ var tot = _realPeriodOverride.end - _realPeriodOverride.start; pr.style.width = Math.max(0, Math.min(100, (1 - s*1000/tot) * 100)).toFixed(2) + '%'; }
       return true; };
   window.lbcd2 = lbcd2 = function(){ var o = _cd2();
-    if(RBX() && _realPeriodOverride && !RBXMETA.paused){ var el = document.getElementById('lb2-dates'); if(el){ var t = fmtUTC(_realPeriodOverride.start) + ' → ' + fmtUTC(_realPeriodOverride.end); if(el.textContent !== t) el.textContent = t; } } return o; };
+    return o; };
   var _note = window.lbxSetNotice, RBXMETA = {};
   window.lbxSetNotice = lbxSetNotice = function(meta){ _note(meta); if(!RBX()) return; RBXMETA = meta || {};
     var nel = document.getElementById('lbxNotice'); if(nel && RBXMETA.paused && LB_RACE !== 'previous'){ nel.innerHTML = '⏸ <b>Paused by RBXWIN</b> · bets don\'t count until it starts again'; nel.classList.add('soon'); nel.style.display = ''; return; } var el = document.getElementById('lbxNotice'); if(!el || el.style.display === 'none' || !meta.startDate) return;
