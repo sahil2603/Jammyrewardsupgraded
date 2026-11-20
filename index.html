@@ -6130,8 +6130,11 @@ body.on-admin #skyParticles{opacity:.18!important}
 .rwd-bump{animation:rwdBump .5s cubic-bezier(.2,1.6,.4,1)}
 @keyframes rwdBump{35%{transform:scale(1.22);filter:brightness(1.5)}}
 /* claim buttons + code box feedback */
-.claim-daily-btn.busy,#pfDropBtn.busy{position:relative;color:transparent!important;pointer-events:none}
+.claim-daily-btn.busy{position:relative;color:transparent!important;pointer-events:none}
+#pfDropBtn.busy{position:relative;pointer-events:none;opacity:1!important;color:#fff!important;cursor:progress;padding-left:40px!important;animation:dropBusy 1s ease-in-out infinite}
+@keyframes dropBusy{0%,100%{filter:brightness(1)}50%{filter:brightness(1.25)}}
 .claim-daily-btn.busy::after,#pfDropBtn.busy::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;animation:rwdSpin .7s linear infinite}
+#pfDropBtn.busy::after{left:14px;margin-left:0}
 .claim-daily-btn:not(:disabled):not(.busy){animation:rwdReady 2.6s ease-in-out infinite}
 @keyframes rwdReady{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,0)}50%{box-shadow:0 0 0 7px rgba(251,191,36,.16)}}
 #pfDropCode.bad{animation:rwdShake .42s ease;border-color:#f87171!important}
@@ -11453,19 +11456,36 @@ function renderKickLink(d){
 }
 async function newKickCode(){ renderKickLink(await botFetch('/api/kick-link', {})); }
 async function unlinkKick(){ if(!(await jmConfirm('Unlink your Kick account? You\'ll stop earning coins from Kick chat until you link again.'))) return; renderKickLink(await botFetch('/api/kick-link', { action: 'unlink' })); }
+/* Code drops: the button answers the moment it's pressed ("Claiming…"), codes this account already
+   claimed on this device answer instantly without asking the server, and a slow network gives up
+   after 12 s with a clear message instead of a dead button. */
+function dropClaimedKey(){ var u = null; try{ u = JSON.parse(localStorage.getItem('jammy_user') || 'null'); }catch(e){} return 'jr_codes_' + (u && u.discord_id || 'x'); }
+function dropClaimedList(){ try{ return JSON.parse(localStorage.getItem(dropClaimedKey()) || '[]'); }catch(e){ return []; } }
+function dropRemember(code){ try{ var l = dropClaimedList(); if(l.indexOf(code) < 0){ l.push(code); localStorage.setItem(dropClaimedKey(), JSON.stringify(l.slice(-40))); } }catch(e){} }
+function dropFail(inp, m, text){
+  m.textContent = text; m.style.color = '#f87171';
+  inp.classList.remove('bad'); void inp.offsetWidth; inp.classList.add('bad'); setTimeout(function(){ inp.classList.remove('bad'); }, 1600);
+}
 async function redeemDropCode(e){
   e.preventDefault();
   var inp = document.getElementById('pfDropCode'), btn = document.getElementById('pfDropBtn'), m = document.getElementById('pfDropMsg');
-  var code = inp.value.trim(); if(!code) return;
+  var code = inp.value.trim().toUpperCase().replace(/\s+/g, ''); if(!code) return;
   if(btn.classList.contains('busy')) return;
-  btn.disabled = true; btn.classList.add('busy'); inp.classList.remove('bad', 'good'); m.textContent = ''; m.style.color = 'var(--muted)';
-  var d; try{ d = await botFetch('/api/redeem-code', { code: code }); }catch(err){ d = { error: 'Network error, try again.' }; }
-  btn.disabled = false; btn.classList.remove('busy');
-  if(!d || d.error){
-    m.textContent = (d && d.error) || 'Something went wrong, try again.'; m.style.color = '#f87171';
-    void inp.offsetWidth; inp.classList.add('bad'); setTimeout(function(){ inp.classList.remove('bad'); }, 1600);
-    return;
-  }
+  inp.value = code; inp.classList.remove('bad', 'good');
+  if(dropClaimedList().indexOf(code) >= 0){ dropFail(inp, m, 'You already claimed this code.'); return; }
+  btn.dataset.label = btn.dataset.label || btn.textContent;
+  btn.disabled = true; btn.classList.add('busy'); btn.textContent = 'Claiming…';
+  m.textContent = 'Checking your code…'; m.style.color = 'var(--muted)';
+  var ctl = ('AbortController' in window) ? new AbortController() : null, tm = setTimeout(function(){ if(ctl) ctl.abort(); }, 12000), d;
+  try{
+    var res = await fetch(AUTH_API + '/api/redeem-code', { method:'POST', headers:{ 'Authorization':'Bearer ' + botTok(), 'Content-Type':'application/json' }, body: JSON.stringify({ code: code }), signal: ctl ? ctl.signal : undefined });
+    d = {}; try{ d = await res.json(); }catch(x){}
+    if(!res.ok && !d.error) d.error = 'Something went wrong (' + res.status + '), try again.';
+  }catch(err){ d = { error: (err && err.name === 'AbortError') ? 'The server is slow right now. Try again in a moment.' : 'Network error, try again.' }; }
+  clearTimeout(tm);
+  btn.disabled = false; btn.classList.remove('busy'); btn.textContent = btn.dataset.label;
+  if(!d || d.error){ if(d && d.already) dropRemember(code); dropFail(inp, m, (d && d.error) || 'Something went wrong, try again.'); return; }
+  dropRemember(code);
   m.textContent = '+' + fmtCoins(d.amount) + ' Jammmy Coins added'; m.style.color = '#4ade80';
   inp.value = ''; inp.classList.add('good'); setTimeout(function(){ inp.classList.remove('good'); }, 2600); inp.blur();
   var before = null, u = null; try{ u = JSON.parse(localStorage.getItem('jammy_user') || 'null'); before = u ? Number(u.coin_balance) : null; }catch(e){}
