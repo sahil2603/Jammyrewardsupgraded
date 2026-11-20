@@ -6177,6 +6177,41 @@ body.on-admin #skyParticles{opacity:.18!important}
   .lbx-tabs .lbt .lbt-jg img{display:none}
 }
 </style>
+<style id="pw-banner-css">
+/* Power.win animated banner: plays only while on screen; a still poster with reduced motion */
+.pw-banner{display:block;position:relative;width:100%;max-width:1100px;margin:6px auto 30px;aspect-ratio:1760/540;border-radius:clamp(10px,1.7vw,22px);overflow:hidden;background:#0a0214 url(powerwin-banner.jpg) center/cover;
+  box-shadow:0 0 0 1px rgba(214,140,255,.35),0 18px 50px rgba(0,0,0,.5),0 0 40px rgba(168,85,247,.25);transition:transform .25s ease,box-shadow .25s ease}
+.pw-banner video{display:block;width:100%;height:100%;object-fit:cover}
+.pw-banner:hover{transform:translateY(-3px);box-shadow:0 0 0 1px rgba(236,72,153,.6),0 24px 60px rgba(0,0,0,.55),0 0 56px rgba(236,72,153,.35)}
+.pw-banner:focus-visible{outline:3px solid #f0abfc;outline-offset:4px}
+.pw-banner-pt{margin:28px auto 34px}
+.hx-wrap .pw-banner{max-width:900px}
+@media(max-width:600px){.pw-banner{margin:4px auto 22px}.pw-banner-pt{margin:18px auto 24px}}
+@media(prefers-reduced-motion:reduce){.pw-banner{transition:none}.pw-banner:hover{transform:none}}
+</style>
+<style id="lb-hold-css">
+/* Power.win leaderboard on hold (deal review): the current race is replaced by a notice */
+.lb-hold{position:relative;max-width:760px;margin:26px auto 10px;padding:34px 34px 30px;border-radius:24px;text-align:center;overflow:hidden;
+  background:radial-gradient(120% 90% at 50% 0%,rgba(168,85,247,.22),transparent 60%),linear-gradient(180deg,rgba(32,14,58,.92),rgba(16,8,30,.94));
+  box-shadow:0 0 0 1px rgba(196,140,255,.35),0 24px 60px rgba(0,0,0,.45)}
+.lb-hold::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(236,72,153,.7),rgba(168,85,247,.2) 40%,rgba(34,211,238,.5));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.lb-hold-ic{width:74px;height:74px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#f0abfc,#a855f7 55%,#6d28d9);box-shadow:0 0 0 6px rgba(168,85,247,.14),0 0 40px rgba(217,70,239,.45)}
+.lb-hold-ic i{display:block;width:9px;height:28px;border-radius:3px;background:#fff;margin:0 4px;box-shadow:0 2px 0 rgba(0,0,0,.2)}
+.lb-hold-ic span{display:flex}
+.lb-hold h3{margin:0 0 8px;font:800 clamp(1.5rem,3.4vw,2.1rem)/1.15 'Poppins',system-ui,sans-serif;color:#fff;letter-spacing:-.01em}
+.lb-hold-date{display:inline-flex;align-items:center;gap:8px;margin:2px 0 18px;padding:7px 14px;border-radius:999px;background:rgba(250,204,21,.1);box-shadow:inset 0 0 0 1px rgba(250,204,21,.4);color:#fde68a;font:700 .86rem 'Poppins',system-ui,sans-serif}
+.lb-hold-date b{color:#fff}
+.lb-hold p{max-width:56ch;margin:0 auto 12px;color:#d6cbe8;font:500 .98rem/1.6 'Poppins',system-ui,sans-serif}
+.lb-hold p strong{color:#fff;font-weight:700}
+.lb-hold-btn{margin-top:10px;display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border:0;border-radius:999px;cursor:pointer;color:#fff;font:700 .92rem 'Poppins',system-ui,sans-serif;background:linear-gradient(135deg,#a855f7,#ec4899);box-shadow:0 8px 24px rgba(168,85,247,.35);transition:transform .15s ease}
+.lb-hold-btn:hover{transform:translateY(-2px)}
+.lb-hold-btn:focus-visible{outline:3px solid #f0abfc;outline-offset:3px}
+@media(max-width:600px){.lb-hold{margin:18px 4px 6px;padding:26px 18px 24px;border-radius:20px}.lb-hold p{font-size:.93rem}}
+#leaderboards.lbx-on-hold #lbxInfo,#leaderboards.lbx-on-hold #lbxPodium,#leaderboards.lbx-on-hold #lb-full-list,#leaderboards.lbx-on-hold #lbxHow,#leaderboards.lbx-on-hold #lbxNotice,#leaderboards.lbx-on-hold .lbx-dates{display:none!important}
+#leaderboards:not(.lbx-on-hold) #lbHold{display:none}
+#lbxLivePill.hold{background:rgba(250,204,21,.12)!important;box-shadow:inset 0 0 0 1px rgba(250,204,21,.45)!important;color:#fde68a!important}
+#lbxLivePill.hold .lbx-live-dot,#lbxLivePill.hold i{background:#facc15!important;box-shadow:0 0 8px #facc15!important}
+</style>
 </head>
 <body>
 <svg id="frDefs" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false"><defs>
@@ -6564,6 +6599,7 @@ body.on-admin #skyParticles{opacity:.18!important}
         <h2 class="hx-h2">Hand-picked <span class="hx-grad">casino partners</span></h2>
       </div>
       <p class="hx-p-sub hx-rv"><b>Power.win</b> is live now. <b>Double</b> is joining soon.</p>
+      <a class="pw-banner hx-rv" href="https://power.win/?aff=jammmy" target="_blank" rel="noopener" aria-label="Sign up on Power.win with code JAMMMY: 100% first deposit cash match and a $1,000 leaderboard every 2 weeks"><video muted loop playsinline preload="none" poster="powerwin-banner.jpg" data-src="powerwin-banner.mp4"></video></a>
       <div class="hx-partners duo">
         <article class="hx-p hx-rv hx-tilt" style="--c:192,132,252">
           <div class="hx-p-beam" aria-hidden="true"></div>
@@ -6804,6 +6840,14 @@ body.on-admin #skyParticles{opacity:.18!important}
           <button type="button" class="on" data-r="current" onclick="lbRace('current')"><i class="dot"></i>Current<span class="lbx-tw"> leaderboard</span></button>
           <button type="button" data-r="previous" onclick="lbRace('previous')">🏁 Previous<span class="lbx-tw"> leaderboard</span></button>
         </div>
+        <div class="lb-hold" id="lbHold" role="status">
+          <div class="lb-hold-ic" aria-hidden="true"><span><i></i><i></i></span></div>
+          <h3>Leaderboard on hold</h3>
+          <div class="lb-hold-date">Deal review: <b>25 November</b></div>
+          <p>The Power.win leaderboard is on hold until 25 November while we review our deal with Power.win.</p>
+          <p>In the meantime, we're keeping an eye on player activity, especially those who keep supporting the community and wager actively. <strong>Active players will still be noticed and may receive direct tips and rewards from the team.</strong></p>
+          <button type="button" class="lb-hold-btn" onclick="lbRace('previous')">See the last race's results</button>
+        </div>
         <div class="lbx-notice" id="lbxNotice"></div>
         <details class="lbx-how" id="lbxHow">
           <summary><span class="lbx-how-ic" aria-hidden="true">?</span><span id="lbxHowT">How points work</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
@@ -6923,6 +6967,7 @@ body.on-admin #skyParticles{opacity:.18!important}
           <div><b>$1,000</b><span>Referral bounty</span></div>
         </div>
       </header>
+      <a class="pw-banner pw-banner-pt" href="https://power.win/?aff=jammmy" target="_blank" rel="noopener" aria-label="Sign up on Power.win with code JAMMMY: 100% first deposit cash match and a $1,000 leaderboard every 2 weeks"><video muted loop playsinline preload="none" poster="powerwin-banner.jpg" data-src="powerwin-banner.mp4"></video></a>
 
       <!-- OFFER 1: cash match with unlock track -->
       <article class="pwx-card pwx-feature pwx-rv" style="--a:192,132,252">
@@ -17155,6 +17200,49 @@ window.fruitSvg = function(key){
   }
   /* opens with the Games tab (see switchAdminTab) */
   window.gfOpen = function(){ init(); size(); load().then(function(){ clearTimeout(pollT); pollT = setTimeout(poll, 3000); }); };
+})();
+</script>
+<script>
+/* Power.win banner videos: load + play only when visible (saves data on phones), pause when off screen */
+(function(){
+  var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(calm || !('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function(es){ es.forEach(function(e){ var v = e.target;
+    if(e.isIntersecting){ if(!v.src) v.src = v.dataset.src; var p = v.play(); if(p && p.catch) p.catch(function(){}); } else if(!v.paused) v.pause(); }); }, { threshold: .25 });
+  document.querySelectorAll('.pw-banner video').forEach(function(v){ io.observe(v); });
+})();
+</script>
+<script>
+/* ===== Leaderboard on hold =====
+   While a casino is listed here, its CURRENT race shows the on-hold notice instead of standings
+   (the previous race's results stay viewable). Data keeps being collected in the background.
+   To switch the Power.win leaderboard back on: delete the powerwin line below. */
+var LB_HOLD = { powerwin: { until: '25 November' } };
+function lbHoldActive(){ return !!(LB_HOLD[CURRENT_LB_CASINO] && LB_RACE !== 'previous'); }
+function lbHoldSync(){
+  var on = lbHoldActive(), sec = document.getElementById('leaderboards'); if(!sec) return on;
+  sec.classList.toggle('lbx-on-hold', on);
+  var pill = document.getElementById('lbxLivePill'), lt = document.getElementById('lbxLiveTxt');
+  if(pill) pill.classList.toggle('hold', on);
+  if(on && lt && lt.textContent !== 'ON HOLD') lt.textContent = 'ON HOLD';
+  var sub = document.getElementById('lbxSub');
+  var wasHold = sec.dataset.holdSub === '1';
+  if(on && sub){ var msg = 'The Power.win leaderboard is on hold until <b>' + LB_HOLD[CURRENT_LB_CASINO].until + '</b> while we review our deal.'; if(sub.innerHTML !== msg) sub.innerHTML = msg; sec.dataset.holdSub = '1'; }
+  else if(!on && wasHold && sub){ sec.dataset.holdSub = ''; if(sub.textContent.indexOf('is on hold until') >= 0) sub.innerHTML = LB_RACE === 'previous' ? 'Final standings of the last leaderboard. Wager under code <b>JAMMMY</b> to get on the current one.' : 'Wager under code <b>JAMMMY</b>, climb the ranks and win a share of the prize pool. Updated live.'; }
+  return on;
+}
+(function(){
+  var _load = window.loadLeaderboard;
+  window.loadLeaderboard = function(c){ var r = _load.apply(this, arguments); lbHoldSync(); return r; };
+  var _race = window.lbRace;
+  window.lbRace = function(r){ var x = _race.apply(this, arguments); lbHoldSync(); if(r === 'previous'){ var t = document.getElementById('lbxRaceTog'); if(t && t.scrollIntoView) t.scrollIntoView({behavior:'smooth', block:'start'}); } return x; };
+  /* home page: the leaderboard card says it's on hold */
+  if(LB_HOLD.powerwin){ var c = document.querySelector('.hx-b-race'); if(c){ var h = c.querySelector('h3'), p = c.querySelector('p');
+    if(h) h.textContent = 'Leaderboard on hold'; if(p) p.textContent = 'The Power.win leaderboard is on hold until ' + LB_HOLD.powerwin.until + ' while we review our deal.'; } }
+  /* other code rewrites the badge / subtitle after loading: keep them saying "on hold" */
+  var busy = false, mo = new MutationObserver(function(){ if(busy || !lbHoldActive()) return; busy = true; lbHoldSync(); busy = false; });
+  ['lbxLiveTxt','lbxSub'].forEach(function(id){ var el = document.getElementById(id); if(el) mo.observe(el, {childList:true, characterData:true, subtree:true}); });
+  lbHoldSync();
 })();
 </script>
 </body>
