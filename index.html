@@ -6211,6 +6211,15 @@ body.on-admin #skyParticles{opacity:.18!important}
 #leaderboards:not(.lbx-on-hold) #lbHold{display:none}
 #lbxLivePill.hold{background:rgba(250,204,21,.12)!important;box-shadow:inset 0 0 0 1px rgba(250,204,21,.45)!important;color:#fde68a!important}
 #lbxLivePill.hold .lbx-live-dot,#lbxLivePill.hold i{background:#facc15!important;box-shadow:0 0 8px #facc15!important}
+.pwx-lb-holdnote{display:none;align-items:center;gap:16px;max-width:760px;margin:46px auto 8px;padding:18px 22px;border-radius:18px;background:rgba(250,204,21,.07);box-shadow:inset 0 0 0 1px rgba(250,204,21,.35)}
+.pwx-lb-holdnote b{color:#fde68a;font:800 1.02rem 'Poppins',system-ui,sans-serif}
+.pwx-lb-holdnote p{margin:4px 0 0;color:#d6cbe8;font-size:.92rem;line-height:1.5}
+.pwx-lb-holdnote a{color:#f0abfc;font-weight:700;white-space:nowrap}
+.pwx-lb-holdic{flex:none;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;gap:4px;background:radial-gradient(circle at 35% 30%,#fde68a,#f59e0b)}
+.pwx-lb-holdic i{width:5px;height:16px;border-radius:2px;background:#3b2100}
+html.pw-lb-hold .pwx-lb-holdnote{display:flex}
+html.pw-lb-hold .pwx-lb{display:none}
+@media(max-width:600px){.pwx-lb-holdnote{margin:34px 4px 6px;padding:16px;align-items:flex-start}.prc-banner-title span{font-size:1.18rem;letter-spacing:1px;white-space:nowrap}}
 </style>
 </head>
 <body>
@@ -6960,14 +6969,7 @@ body.on-admin #skyParticles{opacity:.18!important}
           </button>
           <a class="pwx-go" href="https://power.win/?aff=jammmy" target="_blank" rel="noopener">Sign up on Power.win <span>→</span></a>
         </div>
-        <div class="pwx-stats">
-          <div><b>100%</b><span>Cash match</span></div>
-          <div><b>25%</b><span>High-roller lossback</span></div>
-          <div><b>Weekly</b><span>Live races</span></div>
-          <div><b>$1,000</b><span>Referral bounty</span></div>
-        </div>
       </header>
-      <a class="pw-banner pw-banner-pt" href="https://power.win/?aff=jammmy" target="_blank" rel="noopener" aria-label="Sign up on Power.win with code JAMMMY: 100% first deposit cash match and a $1,000 leaderboard every 2 weeks"><video muted loop playsinline preload="none" poster="powerwin-banner.jpg" data-src="powerwin-banner.mp4"></video></a>
 
       <!-- OFFER 1: cash match with unlock track -->
       <article class="pwx-card pwx-feature pwx-rv" style="--a:192,132,252">
@@ -7009,14 +7011,14 @@ body.on-admin #skyParticles{opacity:.18!important}
       <div class="pwx-sec pwx-rv"><span>Always on</span><h3>More ways to win</h3></div>
       <div class="pwx-mini">
         <div class="pwx-m pwx-rv" style="--a:96,165,250"><div class="pwx-m-ico">💵</div><b>Rakeback</b><p>Activated automatically. Earn back a share of every wager, all the time.</p></div>
-        <div class="pwx-m pwx-rv" style="--a:248,113,113"><div class="pwx-m-ico">📉</div><b>Lossback</b><p>Get a share of net losses back, session after session.</p></div>
+        <div class="pwx-m pwx-rv" style="--a:248,113,113"><div class="pwx-m-ico">📉</div><b>Everyday Lossback</b><p>For every player, not just high rollers: a share of net losses back, session after session.</p></div>
         <div class="pwx-m pwx-rv" style="--a:251,191,36"><div class="pwx-m-ico">⚡</div><b>Cashboost</b><p>A boost drops after every 5th deposit.</p></div>
         <div class="pwx-m pwx-rv" style="--a:74,222,128"><div class="pwx-m-ico">📅</div><b>Weekly Bonus</b><p>A fresh bonus lands every week just for playing.</p></div>
         <div class="pwx-m pwx-rv" style="--a:192,132,252"><div class="pwx-m-ico">👑</div><b>VIP Bonus</b><p>The more you play, the bigger the perks that unlock.</p></div>
       </div>
 
-      <!-- BI-WEEKLY LEADERBOARD -->
-      <div class="pwx-sec pwx-rv"><span>Every 2 weeks</span><h3>🏆 Bi-weekly leaderboard</h3></div>
+      <!-- BI-WEEKLY LEADERBOARD (while the leaderboard is on hold, a short note shows instead) -->
+      <div class="pwx-lb-holdnote pwx-rv" role="status"><span class="pwx-lb-holdic" aria-hidden="true"><i></i><i></i></span><div><b>Bi-weekly leaderboard on hold</b><p>The Power.win leaderboard is on hold until 25 November while we review our deal. <a href="#leaderboards" onclick="event.preventDefault();goToLeaderboard('powerwin')">Last race's results →</a></p></div></div>
       <article class="pwx-card pwx-lb pwx-rv" style="--a:251,191,36" onclick="goToLeaderboard('powerwin')">
         <div class="pwx-card-glow" aria-hidden="true"></div>
         <div class="pwx-lb-main">
@@ -7041,8 +7043,8 @@ body.on-admin #skyParticles{opacity:.18!important}
         <div class="prc-flag l" aria-hidden="true"></div>
         <div class="prc-speed" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
         <span class="prc-kick"><i></i>Live races on Power.win</span>
-        <h3 class="prc-banner-title"><b>$10,000</b><span>Monthly race</span></h3>
-        <p>Plus daily and weekly races. Current prize pools are below.</p>
+        <h3 class="prc-banner-title"><b>Races</b><span>Daily · Weekly · Monthly</span></h3>
+        <p>Power.win's own site-wide races, paid in USDT. Current prize pools below.</p>
       </div>
       <div class="prc-grid">
         <article class="prc prc-daily pwx-rv" data-race="daily">
@@ -7088,7 +7090,6 @@ body.on-admin #skyParticles{opacity:.18!important}
           <div class="prc-foot"><span>+ more places paid</span><a href="https://power.win/races" target="_blank" rel="noopener">Live standings ↗</a></div>
         </article>
       </div>
-      <p class="pwx-fine">Prizes are paid by Power.win in USDT. Check <a href="https://power.win/races" target="_blank" rel="noopener">power.win/races</a> for live standings and time remaining.</p>
 
       <!-- BOUNTY -->
       <article class="pwx-card pwx-bounty pwx-rv" style="--a:74,222,128">
@@ -17218,6 +17219,7 @@ window.fruitSvg = function(key){
    (the previous race's results stay viewable). Data keeps being collected in the background.
    To switch the Power.win leaderboard back on: delete the powerwin line below. */
 var LB_HOLD = { powerwin: { until: '25 November' } };
+document.documentElement.classList.toggle('pw-lb-hold', !!LB_HOLD.powerwin);
 function lbHoldActive(){ return !!(LB_HOLD[CURRENT_LB_CASINO] && LB_RACE !== 'previous'); }
 function lbHoldSync(){
   var on = lbHoldActive(), sec = document.getElementById('leaderboards'); if(!sec) return on;
