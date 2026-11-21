@@ -6296,6 +6296,20 @@ html.pw-lb-hold .pwx-lb{display:none}
 .rk3-cel-box button:focus-visible{outline:3px solid #fde68a;outline-offset:3px}
 .rk3-cel.calm *{animation:none!important}
 </style>
+<style id="jm-mascot-css">
+/* Animated Jammmy mascot (home vault ring) */
+.jm-live{position:absolute;left:50%;top:50%;width:76%;aspect-ratio:1;transform:translate(-50%,-52%);pointer-events:none;filter:drop-shadow(0 14px 20px rgba(0,0,0,.35))}
+.jm-stage{position:relative;width:100%;height:100%;pointer-events:none}
+.jm-glow{position:absolute;left:50%;top:52%;width:86%;height:86%;margin:-43% 0 0 -43%;border-radius:50%;background:radial-gradient(circle,rgba(192,132,252,.7),rgba(236,72,153,.28) 42%,transparent 68%)}
+.jm-shadow{position:absolute;left:50%;top:88%;width:46%;height:6%;margin-left:-23%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.45),transparent)}
+.jm-body{position:absolute;left:50%;top:53%;width:66%;height:66%;margin:-33% 0 0 -33%;transform-origin:50% 92%}
+.jm-body img,.jm-shine{position:absolute;inset:0;width:100%;height:100%}
+.jm-face{opacity:0}
+.jm-shine{-webkit-mask:url(mascot-base.webp) center/contain no-repeat;mask:url(mascot-base.webp) center/contain no-repeat;overflow:hidden}
+.jm-shine i{position:absolute;top:-20%;bottom:-20%;width:22%;left:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:translateX(-200%) skewX(-16deg)}
+.jm-spk{position:absolute;width:7%;height:7%;margin:-3.5% 0 0 -3.5%;background:radial-gradient(circle,#fff 0 18%,transparent 20%),conic-gradient(from 0deg,transparent 0 40deg,#fff 45deg,transparent 50deg 130deg,#fff 135deg,transparent 140deg 220deg,#fff 225deg,transparent 230deg 310deg,#fff 315deg,transparent 320deg);-webkit-mask:radial-gradient(circle,#000 0 30%,transparent 62%);mask:radial-gradient(circle,#000 0 30%,transparent 62%);filter:drop-shadow(0 0 6px var(--c,#f0abfc))}
+.jm-dot{position:absolute;width:2%;height:2%;margin:-1% 0 0 -1%;border-radius:50%;background:var(--c,#fde047);box-shadow:0 0 10px var(--c,#fde047)}
+</style>
 </head>
 <body>
 <svg id="frDefs" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false"><defs>
@@ -6378,7 +6392,7 @@ html.pw-lb-hold .pwx-lb{display:none}
 <nav>
   <div class="wrap nav-in">
     <div class="brand" onclick="nav('home')" style="cursor:pointer" title="Back to home">
-      <img src="logo.png" alt="JammmyRewards" style="width:42px;height:42px;object-fit:contain;filter:drop-shadow(0 3px 12px rgba(168,85,247,.6))">
+      <img src="jammmy-logo.webp" alt="JammmyRewards" style="width:42px;height:42px;object-fit:contain;filter:drop-shadow(0 3px 12px rgba(168,85,247,.6))">
       <span>JammmyRewards</span>
     </div>
     <button class="mob-back" onclick="nav('home')" aria-label="Back to home"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -6651,7 +6665,7 @@ html.pw-lb-hold .pwx-lb{display:none}
             <circle cx="110" cy="110" r="96" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="10"/>
             <circle id="hxRingArc" cx="110" cy="110" r="96" fill="none" stroke="url(#hxVg)" stroke-width="10" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 110 110)"/>
           </svg>
-          <img src="logo.png" alt="Jammmy mascot" class="hx-vault-mascot">
+          <div class="jm-live" role="img" aria-label="Jammmy mascot"></div>
           <div class="hx-ring-pct"><b id="hxRingPct">0</b>%</div>
         </div>
         <div class="hx-vault-copy">
@@ -8343,7 +8357,7 @@ html.pw-lb-hold .pwx-lb{display:none}
 
     <!-- Col 1: Brand -->
     <div class="foot-brand">
-      <div class="brand"><img src="logo.png" alt="JammmyRewards" style="width:32px;height:32px;object-fit:contain"> JammmyRewards</div>
+      <div class="brand"><img src="jammmy-logo.webp" alt="JammmyRewards" style="width:32px;height:32px;object-fit:contain"> JammmyRewards</div>
       <p>The premier destination for casino enthusiasts and slot players.</p>
       <div class="foot-socials">
         <a title="Discord" href="https://discord.gg/jammmy" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 5a18 18 0 0 0-4.5-1.4l-.2.5A16 16 0 0 1 18 5a16 16 0 0 0-12 0 16 16 0 0 1 2.7-.9l-.2-.5A18 18 0 0 0 4 5C1.6 8.6 1 12.2 1.2 15.7A18 18 0 0 0 6.7 18l.4-.6a12 12 0 0 1-1.9-.9l.5-.4a13 13 0 0 0 11 0l.5.4a12 12 0 0 1-1.9.9l.4.6a18 18 0 0 0 5.5-2.3C23.2 11.6 22.4 8 20 5M8.7 14c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8m6.6 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8"/></svg></a>
@@ -17371,6 +17385,59 @@ function lbHoldSync(){
   }
   /* for testing from the browser console: rkCelebrateTest('pineapple') */
   window.rkCelebrateTest = function(key){ fetch(AUTH_API + '/api/ranks').then(function(r){ return r.json(); }).then(function(c){ var t = c.tiers.filter(function(x){ return x.key === (key || 'orange'); })[0]; if(t) show(t, t.reward); }); };
+})();
+</script>
+<script>
+/* ===== Animated Jammmy mascot: runs only while visible; a still frame with reduced motion ===== */
+function JammmyMascot(root, base){
+  base = base || '';
+  root.innerHTML = '<div class="jm-stage"><div class="jm-glow"></div><div class="jm-shadow"></div><div class="jm-sparks"></div><div class="jm-burst"></div>'
+    + '<div class="jm-body"><img src="'+base+'mascot-base.webp" alt=""><img class="jm-face jm-blink" src="'+base+'mascot-blink.webp" alt=""><img class="jm-face jm-exc" src="'+base+'mascot-excited.webp" alt=""><div class="jm-shine"><i></i></div></div>'
+    + '</div>';
+  var q = function(s){ return root.querySelector(s); };
+  var body = q('.jm-body'), blink = q('.jm-blink'), exc = q('.jm-exc'), shine = q('.jm-shine i'), glow = q('.jm-glow'), shadow = q('.jm-shadow');
+  q('.jm-shine').style.webkitMaskImage = q('.jm-shine').style.maskImage = 'url(' + base + 'mascot-base.webp)';
+  var SPK = [[14,22,'#f0abfc',0],[86,18,'#7dd3fc',1.1],[90,62,'#fde047',2.3],[10,70,'#86efac',3.4],[50,6,'#fda4af',4.4],[74,88,'#c4b5fd',5.2]].map(function(p){
+    var e = document.createElement('i'); e.className = 'jm-spk'; e.style.left = p[0]+'%'; e.style.top = p[1]+'%'; e.style.setProperty('--c', p[2]); q('.jm-sparks').appendChild(e); return { e:e, ph:p[3] }; });
+  var BURST = []; for(var k=0;k<10;k++){ var d = document.createElement('i'); d.className = 'jm-dot'; d.style.setProperty('--c', ['#fde047','#f0abfc','#7dd3fc','#86efac','#fda4af'][k%5]); q('.jm-burst').appendChild(d); BURST.push({ e:d, a: (k/10)*Math.PI*2 + .3 }); }
+  var L = 6, cl = function(v){ return Math.max(0, Math.min(1, v)); }, seg = function(t,a,b){ return cl((t-a)/(b-a)); };
+  var eo = function(k){ return 1-Math.pow(1-k,3); }, eio = function(k){ return k<.5 ? 4*k*k*k : 1-Math.pow(-2*k+2,3)/2; };
+  function render(T){
+    var t = ((T % L) + L) % L;
+    /* idle float (period 3 s) */
+    var y = -7*Math.sin(2*Math.PI*t/3), rot = 2.2*Math.sin(2*Math.PI*t/6 + .6), sx = 1, sy = 1;
+    /* hop: crouch 2.55-2.75, flight 2.75-3.35, land + wobble 3.35-3.9 */
+    if(t>=2.5 && t<2.75){ var c = Math.sin(Math.PI*seg(t,2.5,2.75)); sx += .08*c; sy -= .1*c; }
+    if(t>=2.75 && t<3.35){ var f = seg(t,2.75,3.35); y += -72*4*f*(1-f); sx -= .05*Math.sin(Math.PI*f); sy += .07*Math.sin(Math.PI*f); rot += 8*Math.sin(2*Math.PI*f); }
+    if(t>=3.35 && t<3.9){ var g = seg(t,3.35,3.9), w = Math.exp(-5*g)*Math.cos(3*Math.PI*g); sx += .11*w; sy -= .13*w; }
+    body.style.transform = 'translateY('+y.toFixed(2)+'px) rotate('+rot.toFixed(2)+'deg) scale('+sx.toFixed(3)+','+sy.toFixed(3)+')';
+    shadow.style.transform = 'scale('+(1+y/260).toFixed(3)+','+(1+y/400).toFixed(3)+')'; shadow.style.opacity = (0.95+y/200).toFixed(3);
+    glow.style.opacity = (.75+.25*Math.sin(2*Math.PI*t/3)).toFixed(3); glow.style.transform = 'scale('+(1+.04*Math.sin(2*Math.PI*t/3)).toFixed(3)+')';
+    /* face: blink 1.2 s, excited 2.55-4.3 s, double blink 5.0 / 5.28 s */
+    var bl = (t>=1.2&&t<1.33) || (t>=5.0&&t<5.12) || (t>=5.28&&t<5.4);
+    var ex = t>=2.55 && t<4.3;
+    exc.style.opacity = ex ? 1 : 0; blink.style.opacity = (!ex && bl) ? 1 : 0;
+    /* glass shine sweeps at 0.4 s and 4.5 s */
+    var s1 = seg(t,.4,1.25), s2 = seg(t,4.5,5.35), sp = (s1>0&&s1<1) ? s1 : (s2>0&&s2<1) ? s2 : -1;
+    shine.style.transform = 'translateX('+(sp<0 ? -200 : (-120 + 600*eio(sp)))+'%) skewX(-16deg)';
+    /* twinkling sparkles */
+    SPK.forEach(function(p){ var k = ((t - p.ph) % L + L) % L, a = k < .9 ? Math.sin(Math.PI*k/.9) : 0; p.e.style.opacity = a.toFixed(3); p.e.style.transform = 'scale('+(0.4+0.8*a).toFixed(3)+') rotate('+(k*90).toFixed(1)+'deg)'; });
+    /* little burst when it lands */
+    var bk = seg(t,3.35,4.0);
+    BURST.forEach(function(b){ var r = 30 + 260*eo(bk); b.e.style.left = (50 + Math.cos(b.a)*r/6) + '%'; b.e.style.top = (82 + Math.sin(b.a)*r/16 - 14*eo(bk)) + '%'; b.e.style.opacity = (bk>0 && bk<1) ? (1-bk).toFixed(3) : 0; b.e.style.transform = 'scale('+(1-0.6*bk).toFixed(3)+')'; });
+  }
+  render(0);
+  return { render: render, loop: L };
+}
+(function(){
+  var el = document.querySelector('.jm-live'); if(!el) return;
+  var M = JammmyMascot(el), calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(calm) return;
+  var on = false, raf = 0, t0 = performance.now();
+  var tick = function(now){ M.render((now - t0) / 1000); raf = on ? requestAnimationFrame(tick) : 0; };
+  var set = function(v){ if(v === on) return; on = v; if(on && !raf) raf = requestAnimationFrame(tick); };
+  if('IntersectionObserver' in window) new IntersectionObserver(function(es){ set(es[0].isIntersecting && !document.hidden); }).observe(el); else set(true);
+  document.addEventListener('visibilitychange', function(){ if(document.hidden) set(false); else { var r = el.getBoundingClientRect(); set(r.bottom > 0 && r.top < innerHeight); } });
 })();
 </script>
 </body>
