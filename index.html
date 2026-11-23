@@ -6345,6 +6345,15 @@ img.dbl{flex:none;width:auto}
 @media(max-width:640px){.ice-glacier.mtn2{height:200px;margin-bottom:-46px}.mtn2 .mtn-glint{width:4px;height:4px}}
 @media(prefers-reduced-motion:reduce){.mtn2 .mtn-fog,.mtn2 .mtn-glint,.mtn2 .mtn-halo{animation:none}.mtn2 .mtn-glint{opacity:.8}}
 </style>
+<style id="nav-brand-fix">
+/* the brand was allowed to shrink, so "JammmyRewards" spilled under the live tag */
+.nav-in>.brand{flex-shrink:0}
+.nav-in>.brand>span{white-space:nowrap}
+.nav-in>#navLiveTag{flex-shrink:0;white-space:nowrap}
+/* the nav row is full on laptop widths: tighten it instead of letting items overlap */
+@media(min-width:1101px) and (max-width:1799px){ .nav-in{gap:14px} .nav-links a{padding:8px 8px} .socials{gap:10px} }
+@media(min-width:1101px) and (max-width:1799px){ .nav-in>.brand>span{display:none} }
+</style>
 </head>
 <body>
 <svg id="frDefs" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false"><defs>
