@@ -6534,7 +6534,7 @@ img.dbl{flex:none;width:auto}
               <div class="hxl-s on" data-s="race">
                 <div class="hx-fc-top"><img src="powerwin.webp" alt="" class="hx-fc-pw"><span>Race ends in</span></div>
                 <div class="hx-fc-cd" id="hxRaceCd"><b>--</b>d <b>--</b>h <b>--</b>m</div>
-                <div class="hx-fc-sub"><b>$1,000</b> prize pool</div>
+                <div class="hx-fc-sub"><b>$750</b> prize pool</div>
               </div>
               <div class="hxl-s" data-s="top3" aria-hidden="true">
                 <div class="hx-fc-top"><span class="hxl-live">LIVE</span><span>Top 3 now</span></div>
@@ -6732,7 +6732,7 @@ img.dbl{flex:none;width:auto}
         <h2 class="hx-h2">Hand-picked <span class="hx-grad">casino partners</span></h2>
       </div>
       <p class="hx-p-sub hx-rv"><b>Power.win</b> is live now. <b>Double</b> is joining soon.</p>
-      <a class="pw-banner hx-rv" href="https://power.win/?aff=jammmy" target="_blank" rel="noopener" aria-label="Sign up on Power.win with code JAMMMY: 100% first deposit cash match and a $1,000 leaderboard every 2 weeks"><video muted loop playsinline preload="none" poster="powerwin-banner.jpg" data-src="powerwin-banner.mp4"></video></a>
+      <a class="pw-banner hx-rv" href="https://power.win/?aff=jammmy" target="_blank" rel="noopener" aria-label="Sign up on Power.win with code JAMMMY: 100% first deposit cash match and a $750 leaderboard every 2 weeks"><video muted loop playsinline preload="none" poster="powerwin-banner.jpg" data-src="powerwin-banner.mp4"></video></a>
       <div class="hx-partners duo">
         <article class="hx-p hx-rv hx-tilt" style="--c:192,132,252">
           <div class="hx-p-beam" aria-hidden="true"></div>
@@ -7007,7 +7007,7 @@ img.dbl{flex:none;width:auto}
       <div class="lbx-info" id="lbxInfo">
         <div class="lbx-tile lbx-pool">
           <span class="lbx-lbl">PRIZE POOL</span>
-          <b id="lbxPool">$1,000</b>
+          <b id="lbxPool">$750</b>
           <small id="lbxPaidN">Top 10 paid</small>
         </div>
         <div class="lbx-tile lbx-cd">
@@ -7152,17 +7152,17 @@ img.dbl{flex:none;width:auto}
         <div class="pwx-card-glow" aria-hidden="true"></div>
         <div class="pwx-lb-main">
           <span class="pwx-tag gold">Bi-weekly leaderboard</span>
-          <div class="pwx-lb-amt">$1,000</div>
-          <p class="pwx-lb-sub">Top 10 Power.win wagerers split <b>$1,000</b> every two weeks. Wager under code <b>JAMMMY</b> to get on the board.</p>
+          <div class="pwx-lb-amt">$750</div>
+          <p class="pwx-lb-sub">Top 10 Power.win wagerers split <b>$750</b> every two weeks. Wager under code <b>JAMMMY</b> to get on the board.</p>
           <div class="pwx-lb-cd"><span class="pwx-live"></span>Ends in <b id="pwxLbCd">--d --h --m</b></div>
           <button type="button" class="pwx-lb-btn" onclick="event.stopPropagation();goToLeaderboard('powerwin')">View leaderboard <span>→</span></button>
         </div>
         <ol class="pwx-prize pwx-lb-list">
-          <li class="g1"><span>🥇 1st</span><b>$300</b></li><li><span>6th</span><b>$55</b></li>
-          <li class="g2"><span>🥈 2nd</span><b>$200</b></li><li><span>7th</span><b>$45</b></li>
-          <li class="g3"><span>🥉 3rd</span><b>$130</b></li><li><span>8th</span><b>$35</b></li>
-          <li><span>4th</span><b>$100</b></li><li><span>9th</span><b>$30</b></li>
-          <li><span>5th</span><b>$75</b></li><li><span>10th</span><b>$30</b></li>
+          <li class="g1"><span>🥇 1st</span><b>$225</b></li><li><span>6th</span><b>$45</b></li>
+          <li class="g2"><span>🥈 2nd</span><b>$150</b></li><li><span>7th</span><b>$35</b></li>
+          <li class="g3"><span>🥉 3rd</span><b>$100</b></li><li><span>8th</span><b>$25</b></li>
+          <li><span>4th</span><b>$75</b></li><li><span>9th</span><b>$20</b></li>
+          <li><span>5th</span><b>$55</b></li><li><span>10th</span><b>$20</b></li>
         </ol>
       </article>
 
@@ -8687,9 +8687,9 @@ var _lastLbWagers = []; /* raw wager data for the currently-displayed leaderboar
    blanking it to "—". */
 var LB_STATIC_PRIZES = {1:'$200', 2:'$100', 3:'$50'}; /* shown when a casino's API has no reward data */
 /* Fixed prize tables set by Jammy -- these win over whatever the casino's API reports.
-   Power.win bi-weekly race: $1,000 total, top 10 paid. */
+   Power.win bi-weekly race: $750 total, top 10 paid (from the 23 Nov 2026 race; was $1,000). */
 var LB_CASINO_PRIZES = {
-  powerwin: {1:300, 2:200, 3:130, 4:100, 5:75, 6:55, 7:45, 8:35, 9:30, 10:30}
+  powerwin: {1:225, 2:150, 3:100, 4:75, 5:55, 6:45, 7:35, 8:25, 9:20, 10:20}
 };
 /* Used by the leaderboard preview cards on Home -- was trying to find the matching tab
    button via a CSS attribute selector embedded directly inside the onclick HTML attribute
@@ -8831,10 +8831,17 @@ var POWERWIN_CYCLE_ANCHOR = Date.UTC(2026, 8, 10, 0, 0, 0);   /* Thu 10 Sep 2026
    run 9 -> 23 Oct, 23 Oct -> 6 Nov, ... Between 8 and 9 Oct the current race is the upcoming one.
    (Same schedule as powerWinRaces() in the worker.) */
 var POWERWIN_NEW_ANCHOR = Date.UTC(2026, 9, 9, 0, 0, 0), POWERWIN_LAST_OLD_END = Date.UTC(2026, 9, 8);
+/* 2026-11-23: after the deal-review hold the race restarts Mon 23 Nov 00:00 UTC (23 Nov -> 7 Dec -> 21 Dec ...).
+   The last race before the hold (6 -> 20 Nov) stays the 'previous' board for the first new race. Same as the worker. */
+var POWERWIN_RESTART = Date.UTC(2026, 10, 23, 0, 0, 0), POWERWIN_HOLD_LAST = { start: Date.UTC(2026, 10, 6), end: Date.UTC(2026, 10, 20) };
 function powerwinRaces(now){
   var len = 14*24*60*60*1000, P = function(a, b, up){ return { start: new Date(a), end: new Date(b), upcoming: !!up }; };
   if(now < POWERWIN_LAST_OLD_END){ var k0 = Math.floor((now - POWERWIN_CYCLE_ANCHOR) / len), s0 = POWERWIN_CYCLE_ANCHOR + k0*len; return { current: P(s0, s0+len), previous: P(s0-len, s0) }; }
   if(now < POWERWIN_NEW_ANCHOR) return { current: P(POWERWIN_NEW_ANCHOR, POWERWIN_NEW_ANCHOR+len, true), previous: P(POWERWIN_LAST_OLD_END-len, POWERWIN_LAST_OLD_END) };
+  if(now >= POWERWIN_RESTART){   /* 23 Nov 2026: leaderboard back after the hold, $750, Mondays every 14 days */
+    var k2 = Math.floor((now - POWERWIN_RESTART) / len), s2 = POWERWIN_RESTART + k2*len;
+    return { current: P(s2, s2+len), previous: k2 === 0 ? P(POWERWIN_HOLD_LAST.start, POWERWIN_HOLD_LAST.end) : P(s2-len, s2) };
+  }
   var k = Math.floor((now - POWERWIN_NEW_ANCHOR) / len), st = POWERWIN_NEW_ANCHOR + k*len;
   return { current: P(st, st+len), previous: k === 0 ? P(POWERWIN_LAST_OLD_END-len, POWERWIN_LAST_OLD_END) : P(st-len, st) };
 }
@@ -17373,7 +17380,7 @@ window.fruitSvg = function(key){
    While a casino is listed here, its CURRENT race shows the on-hold notice instead of standings
    (the previous race's results stay viewable). Data keeps being collected in the background.
    To switch the Power.win leaderboard back on: delete the powerwin line below. */
-var LB_HOLD = { powerwin: { until: '25 November' } };
+var LB_HOLD = {};   /* 23 Nov 2026: hold over, leaderboard is back ($750). To pause again: { powerwin: { until: '…' } } */
 document.documentElement.classList.toggle('pw-lb-hold', !!LB_HOLD.powerwin);
 function lbHoldActive(){ return !!(LB_HOLD[CURRENT_LB_CASINO] && LB_RACE !== 'previous'); }
 function lbHoldSync(){
