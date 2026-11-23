@@ -8700,6 +8700,16 @@ var LB_STATIC_PRIZES = {1:'$200', 2:'$100', 3:'$50'}; /* shown when a casino's A
 var LB_CASINO_PRIZES = {
   powerwin: {1:225, 2:150, 3:100, 4:75, 5:55, 6:45, 7:35, 8:25, 9:20, 10:20}
 };
+/* Races that started before the $750 change (23 Nov 2026) paid the old $1,000 table. */
+var LB_CASINO_PRIZES_OLD = { powerwin: { before: Date.UTC(2026, 10, 23), prizes: {1:300, 2:200, 3:130, 4:100, 5:75, 6:55, 7:45, 8:35, 9:30, 10:30} } };
+function lbPrizeTable(casino){
+  var old = LB_CASINO_PRIZES_OLD[casino];
+  if(old && LB_RACE === 'previous'){
+    var st = (typeof _realPeriodOverride !== 'undefined' && _realPeriodOverride && _realPeriodOverride.start) || (casino === 'powerwin' ? powerwinRaces(Date.now()).previous.start : null);
+    if(st && +new Date(st) < old.before) return old.prizes;
+  }
+  return LB_CASINO_PRIZES[casino];
+}
 /* Used by the leaderboard preview cards on Home -- was trying to find the matching tab
    button via a CSS attribute selector embedded directly inside the onclick HTML attribute
    string, which needed nested quotes that the HTML entity-escaping approach actually
@@ -9032,7 +9042,7 @@ function renderLeaderboardRows(wagers, rewards){
   var rowsEl = document.getElementById('lbFullRows');
   if(!rowsEl) return;
   var _wh = document.querySelector('#lbxHeadRow .w'); if(_wh) _wh.textContent = lbxIsPts() ? 'Points' : 'Wagered';
-  var fixedPrizes = LB_CASINO_PRIZES[CURRENT_LB_CASINO];
+  var fixedPrizes = lbPrizeTable(CURRENT_LB_CASINO);
   if(fixedPrizes) rewards = Object.keys(fixedPrizes).map(function(k){ return {place:Number(k), winnings:fixedPrizes[k]}; });
   var prizeByRank = {};
   (rewards||[]).forEach(function(r){ prizeByRank[r.place] = r.winnings; });
@@ -16793,7 +16803,7 @@ window.fruitSvg = function(key){
   }
   function data(){
     var casino = CURRENT_LB_CASINO, coins = casino === 'jammmygames', name = (CASINO_DISPLAY_NAMES[casino] || casino);
-    var top = (_lastLbWagers || []).slice(0, 3), prizes = LB_CASINO_PRIZES[casino] || {};
+    var top = (_lastLbWagers || []).slice(0, 3), prizes = lbPrizeTable(casino) || {};
     var pool = 0; Object.keys(prizes).forEach(function(k){ pool += Number(prizes[k]) || 0; });
     var cd = document.getElementById('lb-cd2') ? document.getElementById('lb-cd2').textContent : '';
     var final = LB_RACE === 'previous';
