@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /verify.html
+Disallow: /overlay-hp.html
+
+Sitemap: https://jammmyrewards.com/sitemap.xml
