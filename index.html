@@ -38,7 +38,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Pirata+One&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <style>
 :root{
   --bg:#05101e;
@@ -6345,6 +6345,173 @@ img.dbl{flex:none;width:auto}
 @media(max-width:640px){.ice-glacier.mtn2{height:200px;margin-bottom:-46px}.mtn2 .mtn-glint{width:4px;height:4px}}
 @media(prefers-reduced-motion:reduce){.mtn2 .mtn-fog,.mtn2 .mtn-glint,.mtn2 .mtn-halo{animation:none}.mtn2 .mtn-glint{opacity:.8}}
 </style>
+<style id="tgx-css">
+/* ===== TreasureGG partner (live) — pirate-gold look, close to treasure.gg ===== */
+.pwx[data-pt="treasuregg"] #pt-sec-treasuregg{display:block;animation:ptxIn .5s cubic-bezier(.2,.9,.3,1) both}
+.pwx[data-pt="treasuregg"]{min-height:70vh}
+.tgx{--g1:#ffd54a;--g2:#f5a70f;--g3:#c9750a;--nv:#161a28;--nv2:#1d2236;--nv3:#262c45;--ln:rgba(255,196,60,.22);position:relative;isolation:isolate;font-family:'Poppins',system-ui,sans-serif;color:#e9ebf5}
+.tgx .pir{font-family:'Pirata One','Lilita One',serif;font-weight:400;letter-spacing:.02em}
+.tgx-gold{background:linear-gradient(180deg,#fff3b0 0%,var(--g1) 35%,var(--g2) 70%,var(--g3) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* floating coins behind everything */
+.tgx-bg{position:absolute;inset:-40px -20px;z-index:-1;pointer-events:none;overflow:hidden}
+.tgx-bg b{position:absolute;bottom:-60px;width:var(--s);height:var(--s);background:url(tgg-coin.webp) center/contain no-repeat;opacity:.5;filter:drop-shadow(0 0 12px rgba(255,190,40,.55));animation:tgxRise var(--t) linear var(--d) infinite}
+@keyframes tgxRise{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.55}90%{opacity:.4}100%{transform:translateY(-1500px) rotate(540deg);opacity:0}}
+/* hero */
+.tgx-hero{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:center;padding:34px;border-radius:28px;position:relative;overflow:hidden;
+  background:radial-gradient(800px 420px at 85% 40%,rgba(255,176,32,.20),transparent 60%),radial-gradient(600px 300px at 0% 100%,rgba(120,90,255,.10),transparent 60%),linear-gradient(160deg,#1b2033,#12151f 70%);
+  border:1px solid var(--ln);box-shadow:0 30px 80px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06)}
+.tgx-hero::before{content:"";position:absolute;inset:-50%;background:repeating-conic-gradient(from 0deg at 72% 50%,rgba(255,190,60,.07) 0 7deg,transparent 7deg 18deg);animation:tgxSpin 60s linear infinite;z-index:-1}
+@keyframes tgxSpin{to{transform:rotate(360deg)}}
+.tgx-pill{display:inline-flex;align-items:center;gap:9px;padding:7px 14px;border-radius:999px;background:rgba(74,222,128,.10);border:1px solid rgba(74,222,128,.35);color:#86efac;font:700 .74rem 'Poppins';letter-spacing:.12em;text-transform:uppercase}
+.tgx-pill i{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,.7);animation:tgxPing 1.6s infinite}
+@keyframes tgxPing{70%{box-shadow:0 0 0 10px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
+.tgx-logo{display:block;width:min(420px,90%);margin:20px 0 10px;filter:drop-shadow(0 8px 24px rgba(0,0,0,.5))}
+.tgx-logo-wrap{position:relative;display:inline-block}
+.tgx-logo-wrap::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.55) 50%,transparent 60%);background-size:250% 100%;-webkit-mask:url(tgg-logo.webp) center/contain no-repeat;mask:url(tgg-logo.webp) center/contain no-repeat;animation:tgxSheen 4.5s ease-in-out infinite}
+@keyframes tgxSheen{0%,55%{background-position:130% 0}100%{background-position:-130% 0}}
+.tgx-h1{font-size:clamp(2.3rem,4.6vw,3.6rem);line-height:1.02;margin:6px 0 14px;color:#fff;text-shadow:0 4px 0 rgba(0,0,0,.35)}
+.tgx-lead{color:#b9bfd6;font-size:1.02rem;line-height:1.65;max-width:520px;margin:0 0 24px}
+.tgx-lead b{color:#ffd54a}
+.tgx-cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.tgx-go{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:14px;font:800 1rem 'Poppins';color:#2a1600;text-decoration:none;
+  background:linear-gradient(180deg,#ffe07a,#ffc21a 45%,#f59e0b);box-shadow:0 6px 0 #b86f06,0 14px 30px rgba(245,158,11,.35);transition:transform .15s,box-shadow .15s}
+.tgx-go::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.7) 50%,transparent 70%);transform:translateX(-120%);animation:tgxBtn 3.2s ease-in-out infinite}
+@keyframes tgxBtn{0%,60%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+.tgx-go:hover{transform:translateY(-2px);box-shadow:0 8px 0 #b86f06,0 20px 40px rgba(245,158,11,.5)}
+.tgx-go:active{transform:translateY(4px);box-shadow:0 2px 0 #b86f06,0 8px 18px rgba(245,158,11,.3)}
+.tgx-go span{transition:transform .2s}.tgx-go:hover span{transform:translateX(4px)}
+.tgx .pwx-code{border-color:rgba(255,196,60,.6)!important;background:rgba(14,16,26,.85)!important}
+.tgx .pwx-code b{color:#ffd54a!important}
+.tgx-hero-r{position:relative;display:grid;place-items:center}
+.tgx-art{position:relative;width:min(460px,100%);border-radius:24px;overflow:hidden;border:2px solid rgba(255,196,60,.45);box-shadow:0 0 0 6px rgba(255,196,60,.08),0 30px 70px rgba(0,0,0,.55),0 0 60px rgba(255,176,32,.25);animation:tgxFloat 6s ease-in-out infinite;transform-style:preserve-3d}
+.tgx-art img{display:block;width:100%;height:auto}
+.tgx-art::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.28) 48%,transparent 60%);background-size:260% 100%;animation:tgxSheen 5.5s ease-in-out 1s infinite;pointer-events:none}
+@keyframes tgxFloat{50%{transform:translateY(-12px) rotate(-1.2deg)}}
+.tgx-orbit{position:absolute;width:64px;height:64px;background:url(tgg-coin.webp) center/contain no-repeat;filter:drop-shadow(0 8px 16px rgba(0,0,0,.5));animation:tgxBob 4s ease-in-out infinite}
+.tgx-orbit.o1{left:-8px;top:10%;--r:-14deg}.tgx-orbit.o2{right:-14px;top:52%;width:80px;height:80px;animation-delay:-1.3s;--r:16deg}.tgx-orbit.o3{left:8%;bottom:-18px;width:48px;height:48px;animation-delay:-2.4s;--r:8deg}
+@keyframes tgxBob{0%,100%{transform:translateY(0) rotate(var(--r))}50%{transform:translateY(-16px) rotate(calc(var(--r)*-1))}}
+/* stats */
+.tgx-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0 0}
+.tgx-stat{position:relative;overflow:hidden;padding:18px 16px;border-radius:18px;background:linear-gradient(180deg,var(--nv2),var(--nv));border:1px solid var(--ln);text-align:center;transition:transform .25s,border-color .25s,box-shadow .25s}
+.tgx-stat:hover{transform:translateY(-5px);border-color:rgba(255,196,60,.6);box-shadow:0 18px 40px rgba(245,158,11,.18)}
+.tgx-stat b{display:block;font:400 clamp(1.7rem,3vw,2.3rem)/1 'Lilita One',sans-serif}
+.tgx-stat span{display:block;margin-top:6px;color:#9aa1bd;font-size:.8rem;font-weight:600;letter-spacing:.04em}
+/* section heads */
+.tgx-sec{text-align:center;margin:60px 0 22px}
+.tgx-sec span{display:inline-block;color:#ffc94a;font:700 .74rem 'Poppins';letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+.tgx-sec h2{margin:0;font-size:clamp(2.1rem,4.4vw,3.2rem);line-height:1.05;color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.35)}
+/* offers */
+.tgx-offers{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.tgx-o{--a:255,196,60;--rx:0deg;--ry:0deg;--mx:50%;--my:50%;position:relative;overflow:hidden;padding:24px 22px;border-radius:20px;background:linear-gradient(170deg,var(--nv3),var(--nv) 70%);border:1px solid rgba(var(--a),.25);
+  transform:perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));transition:transform .2s,border-color .3s,box-shadow .3s}
+.tgx-o::before{content:"";position:absolute;inset:0;background:radial-gradient(380px circle at var(--mx) var(--my),rgba(var(--a),.18),transparent 45%);opacity:0;transition:opacity .3s;pointer-events:none}
+.tgx-o:hover{border-color:rgba(var(--a),.7);box-shadow:0 22px 50px rgba(var(--a),.2)}
+.tgx-o:hover::before{opacity:1}
+.tgx-o-ic{width:58px;height:58px;border-radius:16px;display:grid;place-items:center;font-size:1.8rem;background:radial-gradient(circle at 35% 30%,rgba(var(--a),.45),rgba(var(--a),.08));border:1px solid rgba(var(--a),.45);box-shadow:0 8px 20px rgba(var(--a),.2);margin-bottom:16px;transition:transform .45s cubic-bezier(.2,1.6,.4,1)}
+.tgx-o:hover .tgx-o-ic{transform:translateY(-4px) rotate(-10deg) scale(1.12)}
+.tgx-o h3{margin:0 0 6px;font-size:1.65rem;color:#fff;line-height:1.05}
+.tgx-o p{margin:0;color:#a7aec8;font-size:.92rem;line-height:1.55}
+.tgx-o .tag{position:absolute;top:18px;right:18px;font:800 .66rem 'Poppins';letter-spacing:.12em;text-transform:uppercase;color:rgb(var(--a));background:rgba(var(--a),.12);border:1px solid rgba(var(--a),.35);padding:4px 9px;border-radius:999px}
+.tgx-o.big{grid-column:span 1}
+.tgx-o .big-n{display:block;font:400 3.4rem/1 'Lilita One';margin:2px 0 6px}
+/* jammy leaderboard card */
+.tgx-lb{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:24px;overflow:hidden;border:1px solid rgba(255,196,60,.4);background:linear-gradient(160deg,#2a2210,#171a26 55%);box-shadow:0 30px 70px rgba(0,0,0,.4),0 0 50px rgba(245,158,11,.12);position:relative}
+.tgx-lb::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1.5px;background:conic-gradient(from var(--ang,0deg),transparent 0 70%,#ffd54a 80%,transparent 90%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:tgxEdge 4s linear infinite;pointer-events:none}
+@property --ang{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes tgxEdge{to{--ang:360deg}}
+.tgx-lb-main{padding:30px 30px 28px;display:flex;flex-direction:column;justify-content:center}
+.tgx-lb-tag{align-self:flex-start;font:800 .7rem 'Poppins';letter-spacing:.14em;text-transform:uppercase;color:#2a1600;background:linear-gradient(180deg,#ffe07a,#f5a70f);padding:6px 12px;border-radius:8px}
+.tgx-lb-pool{display:flex;align-items:center;gap:14px;margin:14px 0 6px}
+.tgx-lb-pool img{width:72px;height:72px;animation:tgxCoinSpin 3.6s ease-in-out infinite}
+@keyframes tgxCoinSpin{0%,100%{transform:rotateY(0) translateY(0)}50%{transform:rotateY(180deg) translateY(-6px)}}
+.tgx-lb-pool b{font:400 clamp(3.4rem,7vw,5rem)/1 'Lilita One',sans-serif}
+.tgx-lb-sub{color:#b9bfd6;font-size:.95rem;line-height:1.6;margin:0 0 18px}
+.tgx-cd{display:flex;gap:8px;margin:0 0 6px}
+.tgx-cd div{min-width:62px;text-align:center;padding:10px 6px;border-radius:12px;background:rgba(0,0,0,.35);border:1px solid rgba(255,196,60,.25)}
+.tgx-cd b{display:block;font:400 1.7rem/1 'Lilita One';color:#fff;font-variant-numeric:tabular-nums}
+.tgx-cd small{display:block;margin-top:4px;color:#9aa1bd;font:700 .62rem 'Poppins';letter-spacing:.14em;text-transform:uppercase}
+.tgx-cd-w{color:#ffc94a;font:700 .74rem 'Poppins';letter-spacing:.16em;text-transform:uppercase;margin:6px 0 8px}
+.tgx-dates{color:#8b92ad;font-size:.8rem;margin:2px 0 18px}
+.tgx-lb-btns{display:flex;flex-wrap:wrap;gap:10px}
+.tgx-btn2{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:12px;font:700 .9rem 'Poppins';color:#fff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);cursor:pointer;text-decoration:none;transition:background .2s,border-color .2s,transform .2s}
+.tgx-btn2:hover{background:rgba(255,196,60,.12);border-color:rgba(255,196,60,.6);transform:translateY(-2px)}
+.tgx-pz{padding:26px 26px 22px;background:rgba(0,0,0,.25);border-left:1px solid rgba(255,196,60,.18);display:flex;flex-direction:column;justify-content:center}
+.tgx-pz div{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:10px;font-weight:600;color:#d5d9ea;transition:background .2s,transform .2s}
+.tgx-pz div:hover{background:rgba(255,196,60,.08);transform:translateX(4px)}
+.tgx-pz div b{font:400 1.15rem 'Lilita One';color:#ffd54a}
+.tgx-pz .h{color:#8b92ad;font:700 .7rem 'Poppins';letter-spacing:.14em;text-transform:uppercase;padding-top:0}
+.tgx-pz .h:hover{background:none;transform:none}
+.tgx-pz .t{margin-top:6px;border-top:1px dashed rgba(255,196,60,.3);border-radius:0}
+.tgx-pz .t b{font-size:1.35rem}
+/* TreasureGG's own races: podium cards like treasure.gg */
+.tgx-races{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.tgx-race{position:relative;overflow:hidden;border-radius:24px;padding:24px 22px 22px;background:radial-gradient(500px 240px at 50% 0%,rgba(255,176,32,.16),transparent 70%),linear-gradient(180deg,#1c2133,#131623);border:1px solid var(--ln);box-shadow:0 26px 60px rgba(0,0,0,.4)}
+.tgx-race-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.tgx-race-name{font-size:2rem;color:#fff;line-height:1}
+.tgx-race-amt{display:flex;align-items:center;gap:8px}
+.tgx-race-amt img{width:44px;height:44px;animation:tgxCoinSpin 4s ease-in-out infinite}
+.tgx-race-amt b{font:400 2.8rem/1 'Lilita One'}
+.tgx-race-meta{color:#8b92ad;font-size:.82rem;margin:4px 0 14px}
+.tgx-race-meta b{color:#ffc94a}
+.tgx-pod{display:grid;grid-template-columns:1fr 1.12fr 1fr;gap:10px;align-items:end;margin:6px 0 16px}
+.tgx-pc{position:relative;border-radius:16px;padding:22px 8px 0;text-align:center;overflow:hidden;transition:transform .25s}
+.tgx-pc:hover{transform:translateY(-6px)}
+.tgx-pc .crest{width:42px;height:42px;margin:0 auto 6px;border-radius:50%;display:grid;place-items:center;font:400 1.3rem 'Lilita One';color:#1a1206;border:3px solid rgba(0,0,0,.25);box-shadow:0 6px 14px rgba(0,0,0,.4)}
+.tgx-pc .pl{font-size:1.3rem;color:#fff;line-height:1;margin-bottom:12px}
+.tgx-pc .pz-tab{display:inline-block;padding:5px 14px 4px;border-radius:9px 9px 0 0;font:800 .72rem 'Poppins';letter-spacing:.1em;color:#20160a}
+.tgx-pc .pz{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 4px 12px;background:#121522;border-top:2px solid}
+.tgx-pc .pz img{width:24px;height:24px}
+.tgx-pc .pz b{font:400 1.35rem 'Lilita One';color:#fff}
+.tgx-pc.s{background:linear-gradient(180deg,#5b6174,#2b2f3d);border:1px solid #9aa3b8;min-height:170px}
+.tgx-pc.s .crest,.tgx-pc.s .pz-tab{background:linear-gradient(180deg,#eef1f7,#a9b1c4)}.tgx-pc.s .pz{border-color:#b9c1d3}
+.tgx-pc.g{background:linear-gradient(180deg,#7a5a16,#3b2c0f);border:1px solid #f5c542;min-height:196px;box-shadow:0 0 30px rgba(245,197,66,.25)}
+.tgx-pc.g .crest,.tgx-pc.g .pz-tab{background:linear-gradient(180deg,#ffe58a,#f5a70f)}.tgx-pc.g .pz{border-color:#f5c542}
+.tgx-pc.g::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,240,180,.35) 48%,transparent 60%);background-size:260% 100%;animation:tgxSheen 3.8s ease-in-out infinite;pointer-events:none}
+.tgx-pc.b{background:linear-gradient(180deg,#7a3d25,#3a1e14);border:1px solid #e07a45;min-height:150px}
+.tgx-pc.b .crest,.tgx-pc.b .pz-tab{background:linear-gradient(180deg,#ffb48a,#d9652f)}.tgx-pc.b .pz{border-color:#e07a45}
+.tgx-race-cd{display:flex;align-items:center;justify-content:center;gap:6px;font:400 1.9rem 'Lilita One';color:#fff;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.tgx-race-cd i{font-style:normal;color:#ffc94a;opacity:.7}
+.tgx-race-cdw{text-align:center;color:#9aa1bd;font:700 .7rem 'Poppins';letter-spacing:.18em;text-transform:uppercase;margin-bottom:4px}
+.tgx-race-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08);font-size:.82rem;color:#9aa1bd}
+.tgx-race-foot b{color:#ffc94a}
+.tgx-race-foot a{color:#ffd54a;font-weight:700;text-decoration:none}
+.tgx-race-foot a:hover{text-decoration:underline}
+.tgx-note{margin:14px auto 0;max-width:760px;text-align:center;color:#8b92ad;font-size:.85rem;line-height:1.6}
+.tgx-note b{color:#d5d9ea}
+/* join */
+.tgx-join{display:grid;grid-template-columns:1.2fr .8fr;gap:26px;align-items:center}
+.tgx-steps{list-style:none;margin:0;padding:0;display:grid;gap:14px;counter-reset:s}
+.tgx-steps li{position:relative;padding:20px 20px 20px 78px;border-radius:18px;background:linear-gradient(180deg,var(--nv2),var(--nv));border:1px solid var(--ln);counter-increment:s;transition:transform .25s,border-color .25s}
+.tgx-steps li:hover{transform:translateX(6px);border-color:rgba(255,196,60,.6)}
+.tgx-steps li::before{content:counter(s);position:absolute;left:20px;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font:400 1.4rem 'Lilita One';color:#2a1600;background:linear-gradient(180deg,#ffe07a,#f5a70f);box-shadow:0 4px 0 #b86f06}
+.tgx-steps b{display:block;color:#fff;font-size:1.05rem;margin-bottom:3px}
+.tgx-steps span{color:#a7aec8;font-size:.9rem}
+.tgx-steps a{color:#ffd54a}
+.tgx-panel{position:relative;justify-self:center;width:min(300px,100%);border-radius:20px;overflow:hidden;border:2px solid rgba(255,196,60,.4);box-shadow:0 30px 60px rgba(0,0,0,.5),0 0 40px rgba(245,158,11,.18);transform:rotate(2deg);transition:transform .4s}
+.tgx-panel:hover{transform:rotate(0) scale(1.03)}
+.tgx-panel img{display:block;width:100%;height:auto}
+.tgx-fine{margin:22px 0 0;text-align:center;color:#6f7693;font-size:.78rem}
+/* reveal */
+.tgx-rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.9,.3,1)}
+.tgx-rv.in{opacity:1;transform:none}
+.tgx-offers .tgx-rv.in{transform:perspective(900px) rotateX(var(--rx)) rotateY(var(--ry))}
+@media(max-width:980px){.tgx-hero{grid-template-columns:1fr;padding:26px 20px}.tgx-hero-r{order:-1}.tgx-art{width:min(360px,100%)}.tgx-offers{grid-template-columns:1fr 1fr}.tgx-lb{grid-template-columns:1fr}.tgx-pz{border-left:0;border-top:1px solid rgba(255,196,60,.18)}.tgx-races{grid-template-columns:1fr}.tgx-join{grid-template-columns:1fr}.tgx-stats{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.tgx-offers{grid-template-columns:1fr}.tgx-lb-main{padding:22px 18px}.tgx-cd div{min-width:54px}.tgx-race{padding:20px 14px}.tgx-pc .pl{font-size:1.05rem}.tgx-pc .pz b{font-size:1.1rem}.tgx-race-cd{font-size:1.6rem}.tgx-sec{margin:44px 0 18px}}
+@media(prefers-reduced-motion:reduce){.tgx *,.tgx *::before,.tgx *::after{animation:none!important}.tgx-rv{opacity:1;transform:none}}
+/* home + nav + footer + leaderboard bits */
+.tgg-banner{box-shadow:0 0 0 1px rgba(255,196,60,.45),0 24px 60px rgba(0,0,0,.5),0 0 46px rgba(245,158,11,.22)!important}.tgg-banner:hover{box-shadow:0 0 0 1px rgba(255,196,60,.8),0 24px 60px rgba(0,0,0,.55),0 0 56px rgba(245,158,11,.4)!important}
+.hx-trust-tgg{height:20px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
+.hx-trust-live{display:inline-flex;align-items:center;cursor:pointer;transition:transform .2s}.hx-trust-live:hover{transform:translateY(-2px)}
+.hx-p-logo img.tgg{height:44px;width:auto;max-width:88%}
+.pt-chip img.tgg{height:20px;width:auto}
+.foot-partner-row img.tgg{height:22px;width:auto}
+.lbt img.tgg{height:20px;width:auto;display:block}
+#lbJoinTreasure{background:linear-gradient(180deg,#ffe07a,#ffc21a 45%,#f59e0b)!important;color:#2a1600!important;border-color:transparent!important;box-shadow:0 8px 24px rgba(245,158,11,.35)!important}
+#lbJoinTreasure img{height:20px;width:20px}
+.lbx-tgg-wait{padding:34px 20px;text-align:center;color:#b9bfd6;line-height:1.7}
+.lbx-tgg-wait img{width:58px;height:58px;margin:0 auto 10px;display:block;animation:tgxCoinSpin 3.6s ease-in-out infinite}
+.lbx-tgg-wait b{color:#ffd54a}
+</style>
 <style id="nav-brand-fix">
 /* the brand was allowed to shrink, so "JammmyRewards" spilled under the live tag */
 .nav-in>.brand{flex-shrink:0}
@@ -6590,6 +6757,7 @@ img.dbl{flex:none;width:auto}
           <div class="hx-trust">
             <span>Official partners</span>
             <img src="powerwin.webp" alt="Power.win" class="hx-trust-pw">
+            <a class="hx-trust-live" onclick="ptGo('treasuregg')" title="TreasureGG: live now"><img src="tgg-logo.webp" alt="TreasureGG" class="hx-trust-tgg"></a>
             <a class="hx-trust-soon" onclick="ptGo('double')" title="Double: coming soon"><img class="dbl" src="double.svg" alt="Double"><em class="soon-tag">Soon</em></a>
           </div>
         </div>
@@ -6631,8 +6799,8 @@ img.dbl{flex:none;width:auto}
         </div>
         <div class="hx-stat hx-spotlight">
           <div class="hx-stat-ico" style="--c:74,222,128"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3.2 19 6v5.4c0 4.5-2.9 7.7-7 8.4-4.1-.7-7-3.9-7-8.4V6z" stroke-linejoin="round"/><path d="m8.6 12.1 2.3 2.3 4.5-4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="hx-stat-num display" data-count="2" data-suffix=" partners">0</div>
-          <div class="hx-stat-lbl">1 live, 1 coming soon</div>
+          <div class="hx-stat-num display" data-count="3" data-suffix=" partners">0</div>
+          <div class="hx-stat-lbl">2 live, 1 coming soon</div>
         </div>
       </div>
 
@@ -6740,9 +6908,10 @@ img.dbl{flex:none;width:auto}
         <span class="hx-kicker">Verified partners</span>
         <h2 class="hx-h2">Hand-picked <span class="hx-grad">casino partners</span></h2>
       </div>
-      <p class="hx-p-sub hx-rv"><b>Power.win</b> is live now. <b>Double</b> is joining soon.</p>
+      <p class="hx-p-sub hx-rv"><b>Power.win</b> and <b>TreasureGG</b> are live now. <b>Double</b> is joining soon.</p>
       <a class="pw-banner hx-rv" href="https://power.win/?aff=jammmy" target="_blank" rel="noopener" aria-label="Sign up on Power.win with code JAMMMY: 100% first deposit cash match and a $750 leaderboard every 2 weeks"><video muted loop playsinline preload="none" poster="powerwin-banner.jpg" data-src="powerwin-banner.mp4"></video></a>
-      <div class="hx-partners duo">
+      <a class="pw-banner tgg-banner hx-rv tgg-link" href="https://treasure.gg/" target="_blank" rel="noopener" aria-label="Sign up on TreasureGG with code JAMMMY: 10% lossback, VIP transfer and a $500 leaderboard every 2 weeks"><video muted loop playsinline preload="none" poster="treasuregg-banner.jpg" data-src="treasuregg-banner.mp4"></video></a>
+      <div class="hx-partners trio">
         <article class="hx-p hx-rv hx-tilt" style="--c:192,132,252">
           <div class="hx-p-beam" aria-hidden="true"></div>
           <div class="hx-p-logo"><img src="powerwin.webp" alt="Power.win"></div>
@@ -6757,6 +6926,24 @@ img.dbl{flex:none;width:auto}
             <div class="hx-p-btns">
               <button type="button" class="hx-btn hx-btn-p sm" onclick="nav('new')"><span>View all offers</span></button>
               <button type="button" class="hx-btn hx-btn-g sm" onclick="goToLeaderboard('powerwin')"><span>Leaderboard</span></button>
+            </div>
+          </div>
+        </article>
+        <article class="hx-p hx-rv hx-tilt" style="--c:250,190,40">
+          <div class="hx-p-beam" aria-hidden="true"></div>
+          <div class="hx-p-logo"><img class="tgg" src="tgg-logo.webp" alt="TreasureGG"></div>
+          <div class="hx-p-body">
+            <div class="hx-p-name">TreasureGG <span class="hx-p-badge live">Live now</span></div>
+            <ul class="hx-p-feats">
+              <li><i>🛟</i>10% Lossback</li>
+              <li><i>👑</i>VIP Transfer</li>
+              <li><i>🏆</i>$500 Leaderboard Bi-Weekly</li>
+              <li><i>🎖️</i>Rank Up &amp; Level Up Rewards</li>
+              <li><i>🔄</i>Reloads</li>
+            </ul>
+            <div class="hx-p-btns">
+              <button type="button" class="hx-btn hx-btn-p sm" onclick="ptGo('treasuregg')"><span>View all offers</span></button>
+              <button type="button" class="hx-btn hx-btn-g sm" onclick="goToLeaderboard('treasuregg')"><span>Leaderboard</span></button>
             </div>
           </div>
         </article>
@@ -6981,6 +7168,7 @@ img.dbl{flex:none;width:auto}
         <div class="lbx-tabs" id="lbxTabs">
           <span class="lbx-tab-ind" id="lbxTabInd"></span>
           <button class="lbt active" onclick="lbTab(this,'powerwin')"><img src="powerwin.webp" alt="Power.win" class="pw"></button>
+          <button class="lbt" onclick="lbTab(this,'treasuregg')"><img src="tgg-logo.webp" alt="TreasureGG" class="tgg"></button>
           <button class="lbt" onclick="lbTab(this,'jammmygames')"><span class="lbt-jg"><img src="jar-clean.webp" alt="">Jammmy Games</span></button>
         </div>
         <div class="lbx-race-tog" id="lbxRaceTog" role="tablist" aria-label="Which race">
@@ -7003,6 +7191,11 @@ img.dbl{flex:none;width:auto}
             <p class="lbx-formula">Points = Bet × (100% − RTP) ÷ 4%<small>never more than 1 point per $1 bet</small></p>
             <div class="lbx-how-t"><div><span>Blackjack <em>99.6% RTP</em></span><b>$100 bet = 10 pts</b></div><div><span>Roulette <em>97.3% RTP</em></span><b>$100 bet = 67.5 pts</b></div><div><span>Power.win Originals <em>99% RTP</em></span><b>$100 bet = 25 pts</b></div><div><span>Slots <em>96% RTP or lower</em></span><b>$100 bet = 100 pts</b></div></div>
             <p class="lbx-how-s">For the Community Vault, 1 point counts as $1 wagered.</p>
+          </div>
+          <div class="lbx-how-b" data-for="treasuregg" hidden>
+            <p>TreasureGG ranks this leaderboard by <b>amount wagered</b> by players on code <b>JAMMMY</b>. Each race runs two weeks, from 00:00 UTC to 00:00 UTC.</p>
+            <p>The top 10 split <b>$500</b>. Winners claim their prize by opening a ticket in our Discord.</p>
+            <p class="lbx-how-s">TreasureGG's own Daily Case Race and Weekly Race (reset at 17:55 UTC) are separate. See them on the TreasureGG partner page.</p>
           </div>
           <div class="lbx-how-b" data-for="jammmygames" hidden>
             <p>Every coin you wager in Jammmy Games counts, weighted by <b>the multiplier you play for</b>. Safe, low-multiplier play counts less, so nobody can farm the board.</p>
@@ -7036,6 +7229,7 @@ img.dbl{flex:none;width:auto}
           <button class="lbx-code" onclick="copy(this.querySelector('b'),'JAMMMY')"><b>JAMMMY</b><span>Copy</span></button>
           <button type="button" class="lbx-jgplay" onclick="nav('games')">Play Jammmy Games</button>
           <a id="lbJoinPowerwin" class="lbx-join" href="https://power.win/?aff=jammmy" target="_blank" rel="noopener"><img src="powerwin.webp" alt="" aria-hidden="true">Join Power.win <span aria-hidden="true">↗</span></a>
+          <a id="lbJoinTreasure" class="lbx-join tgg-link" href="https://treasure.gg/" target="_blank" rel="noopener" style="display:none"><img src="tgg-coin.webp" alt="" aria-hidden="true">Join TreasureGG <span aria-hidden="true">→</span></a>
         </div>
       </div>
 
@@ -7250,6 +7444,107 @@ img.dbl{flex:none;width:auto}
 
       <p class="pwx-fine">Poker and extremely low-risk, low-variance bets excluded.</p>
 
+      <!-- LIVE partner: TreasureGG (#partners/treasuregg) -->
+      <section class="tgx pt-view" id="pt-sec-treasuregg" aria-label="TreasureGG, live partner">
+        <div class="tgx-bg" aria-hidden="true">
+          <b style="left:4%;--s:34px;--t:17s;--d:-2s"></b><b style="left:14%;--s:22px;--t:13s;--d:-9s"></b><b style="left:26%;--s:40px;--t:21s;--d:-5s"></b><b style="left:39%;--s:18px;--t:12s;--d:-1s"></b><b style="left:52%;--s:30px;--t:19s;--d:-12s"></b><b style="left:63%;--s:24px;--t:14s;--d:-7s"></b><b style="left:74%;--s:44px;--t:23s;--d:-3s"></b><b style="left:85%;--s:20px;--t:15s;--d:-10s"></b><b style="left:94%;--s:32px;--t:18s;--d:-6s"></b>
+        </div>
+
+        <a class="pw-banner pw-banner-pt tgg-banner tgg-link" href="https://treasure.gg/" target="_blank" rel="noopener" aria-label="Sign up on TreasureGG with code JAMMMY: 10% lossback, VIP transfer and a $500 leaderboard every 2 weeks"><video muted loop playsinline preload="none" poster="treasuregg-banner.jpg" data-src="treasuregg-banner.mp4"></video></a>
+        <header class="tgx-hero tgx-rv">
+          <div class="tgx-hero-l">
+            <span class="tgx-pill"><i></i>Official partner · Live now</span>
+            <div class="tgx-logo-wrap"><img class="tgx-logo" src="tgg-logo.webp" width="720" height="161" alt="TreasureGG"></div>
+            <h1 class="tgx-h1 pir">Cases, battles &amp; originals with a <span class="tgx-gold">JAMMMY</span> edge</h1>
+            <p class="tgx-lead">Sign up with code <b>JAMMMY</b> for <b>10% lossback</b>, a VIP transfer, reloads, rank-up and level-up rewards, and Jammy's own <b>$500 bi-weekly leaderboard</b>.</p>
+            <div class="tgx-cta">
+              <button type="button" class="pwx-code" onclick="pwxCopy(this)" aria-label="Copy code JAMMMY">
+                <span class="pwx-code-l">Code</span><b>JAMMMY</b><span class="pwx-code-c">Copy</span>
+              </button>
+              <a class="tgx-go tgg-link" href="https://treasure.gg/" target="_blank" rel="noopener">Sign up on TreasureGG <span>→</span></a>
+            </div>
+          </div>
+          <div class="tgx-hero-r">
+            <div class="tgx-art"><img src="tgg-square.webp" width="860" height="860" alt="TreasureGG penguin on a pile of treasure: use code JAMMMY"></div>
+            <span class="tgx-orbit o1" aria-hidden="true"></span><span class="tgx-orbit o2" aria-hidden="true"></span><span class="tgx-orbit o3" aria-hidden="true"></span>
+          </div>
+        </header>
+
+        <div class="tgx-stats">
+          <div class="tgx-stat tgx-rv"><b class="tgx-gold" data-tgx-count="10" data-suf="%">10%</b><span>Lossback</span></div>
+          <div class="tgx-stat tgx-rv"><b class="tgx-gold">VIP</b><span>Status transfer</span></div>
+          <div class="tgx-stat tgx-rv"><b class="tgx-gold" data-tgx-count="500" data-pre="$">$500</b><span>Leaderboard every 2 weeks</span></div>
+          <div class="tgx-stat tgx-rv"><b class="tgx-gold">Daily</b><span>Case &amp; weekly races</span></div>
+        </div>
+
+        <div class="tgx-sec tgx-rv"><span>Code JAMMMY perks</span><h2 class="pir">Your treasure chest</h2></div>
+        <div class="tgx-offers">
+          <article class="tgx-o tgx-rv" style="--a:255,196,60"><span class="tag">Code JAMMMY</span><div class="tgx-o-ic">🛟</div><h3 class="pir">10% Lossback</h3><p>Rough session? Get 10% of your losses back, so a bad run never hits as hard.</p></article>
+          <article class="tgx-o tgx-rv" style="--a:167,139,250"><span class="tag">Switching?</span><div class="tgx-o-ic">👑</div><h3 class="pir">VIP Transfer</h3><p>Already VIP on another site? Bring your status over to TreasureGG instead of starting again from zero.</p></article>
+          <article class="tgx-o tgx-rv" style="--a:250,204,21"><span class="tag">Every 2 weeks</span><div class="tgx-o-ic">🏆</div><h3 class="pir">$500 Leaderboard</h3><p>The top 10 wagerers on code JAMMMY split $500 every two weeks.</p></article>
+          <article class="tgx-o tgx-rv" style="--a:74,222,128"><div class="tgx-o-ic">🎖️</div><h3 class="pir">Rank Up Rewards</h3><p>Climb TreasureGG's ranks and collect a reward every time you reach a new one.</p></article>
+          <article class="tgx-o tgx-rv" style="--a:96,165,250"><div class="tgx-o-ic">⭐</div><h3 class="pir">Level Up Rewards</h3><p>Your level goes up as you play, and every level you hit pays out.</p></article>
+          <article class="tgx-o tgx-rv" style="--a:244,114,182"><div class="tgx-o-ic">🔄</div><h3 class="pir">Reloads</h3><p>Regular reload bonuses that top your balance back up.</p></article>
+        </div>
+
+        <div class="tgx-sec tgx-rv"><span>Code JAMMMY only · every 2 weeks</span><h2 class="pir">Jammy's $500 leaderboard</h2></div>
+        <article class="tgx-lb tgx-rv">
+          <div class="tgx-lb-main">
+            <span class="tgx-lb-tag">Bi-weekly leaderboard</span>
+            <div class="tgx-lb-pool"><img src="tgg-coin.webp" alt="" aria-hidden="true"><b class="tgx-gold">$500</b></div>
+            <p class="tgx-lb-sub">Exclusive to Jammy's players: the top 10 TreasureGG wagerers on code <b style="color:#ffd54a">JAMMMY</b> split the pool every two weeks. Races start and end at <b style="color:#fff">00:00 UTC</b>.</p>
+            <div class="tgx-cd-w" id="tgxLbWord">Starts in</div>
+            <div class="tgx-cd" id="tgxLbCd"><div><b data-u="d">--</b><small>Days</small></div><div><b data-u="h">--</b><small>Hrs</small></div><div><b data-u="m">--</b><small>Min</small></div><div><b data-u="s">--</b><small>Sec</small></div></div>
+            <div class="tgx-dates" id="tgxLbDates"></div>
+            <div class="tgx-lb-btns">
+              <button type="button" class="tgx-go" onclick="goToLeaderboard('treasuregg')" style="padding:12px 20px;font-size:.92rem">View leaderboard <span>→</span></button>
+              <a class="tgx-btn2 tgg-link" href="https://treasure.gg/" target="_blank" rel="noopener">Play on TreasureGG ↗</a>
+            </div>
+          </div>
+          <div class="tgx-pz" aria-label="Prize per place" id="tgxPz"></div>
+        </article>
+
+        <div class="tgx-sec tgx-rv"><span>Open to everyone on TreasureGG · reset at 17:55 UTC</span><h2 class="pir">TreasureGG's own races</h2></div>
+        <div class="tgx-races">
+          <article class="tgx-race tgx-rv">
+            <div class="tgx-race-top"><h3 class="tgx-race-name pir">Daily Case Race</h3><div class="tgx-race-amt"><img src="tgg-coin.webp" alt="" aria-hidden="true"><b class="tgx-gold">60</b></div></div>
+            <p class="tgx-race-meta">Counts: <b>cases and battles</b> · resets every day at 17:55 UTC</p>
+            <div class="tgx-pod">
+              <div class="tgx-pc s"><div class="crest">2</div><div class="pl pir">2nd</div><span class="pz-tab">PRIZE</span><div class="pz"><img src="tgg-coin.webp" alt=""><b>10</b></div></div>
+              <div class="tgx-pc g"><div class="crest">1</div><div class="pl pir">1st</div><span class="pz-tab">PRIZE</span><div class="pz"><img src="tgg-coin.webp" alt=""><b>20</b></div></div>
+              <div class="tgx-pc b"><div class="crest">3</div><div class="pl pir">3rd</div><span class="pz-tab">PRIZE</span><div class="pz"><img src="tgg-coin.webp" alt=""><b>8</b></div></div>
+            </div>
+            <div class="tgx-race-cdw">Race ending in</div>
+            <div class="tgx-race-cd" data-tgx-race="daily"><span data-u="h">--</span><i>:</i><span data-u="m">--</span><i>:</i><span data-u="s">--</span></div>
+            <div class="tgx-race-foot"><span><b>60</b> coins every day</span><a class="tgg-link" href="https://treasure.gg/" target="_blank" rel="noopener">Live standings on TreasureGG ↗</a></div>
+          </article>
+          <article class="tgx-race tgx-rv">
+            <div class="tgx-race-top"><h3 class="tgx-race-name pir">Weekly Race</h3><div class="tgx-race-amt"><img src="tgg-coin.webp" alt="" aria-hidden="true"><b class="tgx-gold">250</b></div></div>
+            <p class="tgx-race-meta">Wager on TreasureGG · ends every <b>Saturday at 17:55 UTC</b></p>
+            <div class="tgx-pod">
+              <div class="tgx-pc s"><div class="crest">2</div><div class="pl pir">2nd</div><span class="pz-tab">PRIZE</span><div class="pz"><img src="tgg-coin.webp" alt=""><b>50</b></div></div>
+              <div class="tgx-pc g"><div class="crest">1</div><div class="pl pir">1st</div><span class="pz-tab">PRIZE</span><div class="pz"><img src="tgg-coin.webp" alt=""><b>75</b></div></div>
+              <div class="tgx-pc b"><div class="crest">3</div><div class="pl pir">3rd</div><span class="pz-tab">PRIZE</span><div class="pz"><img src="tgg-coin.webp" alt=""><b>35</b></div></div>
+            </div>
+            <div class="tgx-race-cdw">Race ending in</div>
+            <div class="tgx-race-cd" data-tgx-race="weekly"><span data-u="d">--</span><i>d</i><span data-u="h">--</span><i>:</i><span data-u="m">--</span><i>:</i><span data-u="s">--</span></div>
+            <div class="tgx-race-foot"><span><b>250</b> coins every week</span><a class="tgg-link" href="https://treasure.gg/" target="_blank" rel="noopener">Live standings on TreasureGG ↗</a></div>
+          </article>
+        </div>
+        <p class="tgx-note">These races are run by <b>TreasureGG for every player on their site</b>, separate from Jammy's $500 leaderboard. You can win both at the same time. Prizes are paid in TreasureGG coins.</p>
+
+        <div class="tgx-sec tgx-rv"><span>Takes a minute</span><h2 class="pir">How to join</h2></div>
+        <div class="tgx-join">
+          <ol class="tgx-steps">
+            <li class="tgx-rv"><b>Sign up</b><span>Create your account on <a class="tgg-link" href="https://treasure.gg/" target="_blank" rel="noopener">treasure.gg</a>.</span></li>
+            <li class="tgx-rv"><b>Enter code JAMMMY</b><span>Use code <b style="display:inline;color:#ffd54a">JAMMMY</b> so your lossback, rewards and leaderboard spot count.</span></li>
+            <li class="tgx-rv"><b>Moving from another site?</b><span>Ask about the VIP transfer to bring your status with you.</span></li>
+            <li class="tgx-rv"><b>Play</b><span>Your wagering shows up on Jammy's $500 leaderboard automatically.</span></li>
+          </ol>
+          <div class="tgx-panel tgx-rv"><img src="tgg-panel.webp" width="548" height="960" alt="TreasureGG: VIP transfer and 10% lossback with code JAMMMY" loading="lazy"></div>
+        </div>
+        <p class="tgx-fine">18+ only. Play responsibly. TreasureGG's own terms apply to all play and offers on TreasureGG.</p>
+      </section>
       <!-- COMING SOON partner: its own view (#partners/double) -->
       <section class="ptx-soon pt-view" id="pt-sec-double" style="--a:226,232,240" aria-label="Double, coming soon">
         <div class="ptx-soon-logo"><img class="dbl" src="double.svg" alt="Double"><img class="x2" src="double-x2.svg" alt="" aria-hidden="true"></div>
@@ -7340,7 +7635,7 @@ img.dbl{flex:none;width:auto}
 
           <section class="gd-sec" id="gdLink">
             <h2>Link your accounts</h2>
-            <div class="gd-tabs" role="tablist"><button class="on" data-l="pw">Power.win</button><button data-l="p2">Double</button><button data-l="kick">Kick</button><button data-l="dc">Discord</button></div>
+            <div class="gd-tabs" role="tablist"><button class="on" data-l="pw">Power.win</button><button data-l="p2">TreasureGG &amp; Double</button><button data-l="kick">Kick</button><button data-l="dc">Discord</button></div>
             <div class="gd-link" data-l="pw">
               <div class="gd-wv"><div>
               <ol class="gd-steps sm">
@@ -7352,6 +7647,7 @@ img.dbl{flex:none;width:auto}
               </div><figure class="gd-vid"><div class="gd-phone"><video muted loop playsinline preload="none" poster="guide-link-powerwin.jpg" data-src="guide-link-powerwin.mp4" aria-label="Linking your Power.win account"></video><button type="button" class="gd-vplay" aria-label="Play video"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></button></div><figcaption>Linking your Power.win account</figcaption></figure></div>
             </div>
             <div class="gd-link" data-l="p2" hidden>
+              <p class="gd-p"><b>TreasureGG:</b> sign up on <a class="tgg-link" href="https://treasure.gg/" target="_blank" rel="noopener">treasure.gg</a> with code <b>JAMMMY</b>. Your wagering shows up on our $500 TreasureGG leaderboard. Account linking for the vault and ranks opens once TreasureGG's data is connected.</p>
               <p class="gd-p"><b>Double</b> is on its way. Steps land here the day it goes live.</p>
             </div>
             <div class="gd-link" data-l="kick" hidden>
@@ -8438,6 +8734,7 @@ img.dbl{flex:none;width:auto}
       <h4>Partners</h4>
       <div class="foot-partners">
         <a class="foot-partner-row" onclick="nav('new')"><img loading="lazy" class="foot-partner-logo" src="powerwin.webp" alt="Power.win" style="height:38px;margin-top:-6px"></a>
+        <a class="foot-partner-row" onclick="ptGo('treasuregg')"><img loading="lazy" class="tgg" src="tgg-logo.webp" alt="TreasureGG"></a>
         <a class="foot-partner-row soon" onclick="ptGo('double')"><img loading="lazy" class="dbl" src="double.svg" alt="Double"><em class="soon-tag">Coming soon</em></a>
 
 
@@ -9340,7 +9637,7 @@ function fmtCoins(n){
 }
 
 /* includes former partners (RustMafia, DegenCity...) so OLD records (past claims/redemptions) still show a proper name */
-var CASINO_DISPLAY_NAMES = {upgrader:'Upgrader', rustmagic:'RustMagic', rustmafia:'RustMafia', degencity:'DegenCity', powerwin:'Power.win', rbxwin:'RBXWIN'};
+var CASINO_DISPLAY_NAMES = {upgrader:'Upgrader', rustmagic:'RustMagic', rustmafia:'RustMafia', degencity:'DegenCity', powerwin:'Power.win', rbxwin:'RBXWIN', treasuregg:'TreasureGG'};
 var KNOWN_CASINOS_DISPLAY_LIST = ['powerwin'];
 var _vaultPlayersData = [];
 var _vaultPlayerCasinoFilter = '';
@@ -17517,6 +17814,154 @@ function JammmyMascot(root, base){
   var set = function(v){ if(v === on) return; on = v; if(on && !raf) raf = requestAnimationFrame(tick); };
   if('IntersectionObserver' in window) new IntersectionObserver(function(es){ set(es[0].isIntersecting && !document.hidden); }).observe(el); else set(true);
   document.addEventListener('visibilitychange', function(){ if(document.hidden) set(false); else { var r = el.getBoundingClientRect(); set(r.bottom > 0 && r.top < innerHeight); } });
+})();
+</script>
+<script id="tgx-js">
+/* ===== TreasureGG (live partner) =====
+   TGG.url      : sign-up link used by every TreasureGG button on the site (swap in the referral link here).
+   TGG.first    : start of Jammy's first $500 race. Races run 14 days, 00:00 UTC to 00:00 UTC.
+   TGG.apiReady : set to true once the worker has the TreasureGG API (route ?casino=treasuregg).
+   TreasureGG's own Daily Case Race resets every day at 17:55 UTC; its Weekly Race ends Saturdays at 17:55 UTC. */
+var TGG = { url: 'https://treasure.gg/', first: Date.UTC(2026, 10, 30, 0, 0, 0), len: 14 * 86400000, apiReady: false,
+  prizes: {1:175, 2:100, 3:65, 4:45, 5:35, 6:25, 7:20, 8:15, 9:10, 10:10} };
+function tggPeriods(now){
+  now = now || Date.now();
+  if(now < TGG.first) return { current: { start: new Date(TGG.first), end: new Date(TGG.first + TGG.len), upcoming: true }, previous: null };
+  var k = Math.floor((now - TGG.first) / TGG.len), st = TGG.first + k * TGG.len;
+  return { current: { start: new Date(st), end: new Date(st + TGG.len) }, previous: k ? { start: new Date(st - TGG.len), end: new Date(st) } : null };
+}
+function tggRaceEnd(kind, now){
+  var d = new Date(now), t = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), 17, 55, 0);
+  if(kind === 'daily') return t > now ? t : t + 86400000;
+  var add = (6 - d.getUTCDay() + 7) % 7; t += add * 86400000;   /* Saturday 17:55 UTC */
+  return t > now ? t : t + 7 * 86400000;
+}
+(function(){
+  if(typeof LB_CASINO_PRIZES !== 'undefined') LB_CASINO_PRIZES.treasuregg = TGG.prizes;
+  if(typeof CASINO_DISPLAY_NAMES !== 'undefined') CASINO_DISPLAY_NAMES.treasuregg = 'TreasureGG';
+  document.querySelectorAll('a.tgg-link').forEach(function(a){ a.href = TGG.url; });
+  var pad = function(v){ return (v < 10 ? '0' : '') + v; };
+
+  /* prize table on the partner page */
+  var pz = document.getElementById('tgxPz');
+  if(pz){ var nm = {1:'🥇 1st', 2:'🥈 2nd', 3:'🥉 3rd'}, tot = 0, h = '<div class="h"><span>Place</span><span>Prize</span></div>';
+    Object.keys(TGG.prizes).forEach(function(k){ tot += TGG.prizes[k]; h += '<div><span>' + (nm[k] || k + 'th') + '</span><b>$' + TGG.prizes[k] + '</b></div>'; });
+    pz.innerHTML = h + '<div class="t"><span>Total</span><b>$' + tot + '</b></div>'; }
+
+  /* countdowns on the partner page (only while it's open) */
+  function tick(){
+    var sec = document.getElementById('pt-sec-treasuregg'); if(!sec || !sec.offsetParent) return;
+    var now = Date.now(), P = tggPeriods(now).current, up = now < P.start;
+    var s = Math.max(0, Math.floor(((up ? P.start : P.end) - now) / 1000));
+    var w = document.getElementById('tgxLbWord'); if(w) w.textContent = up ? 'First race starts in' : 'Race ends in';
+    var v = { d: String(Math.floor(s / 86400)), h: pad(Math.floor(s / 3600) % 24), m: pad(Math.floor(s / 60) % 60), s: pad(s % 60) };
+    document.querySelectorAll('#tgxLbCd b[data-u]').forEach(function(b){ if(b.textContent !== v[b.dataset.u]) b.textContent = v[b.dataset.u]; });
+    var dt = document.getElementById('tgxLbDates'), o = { month: 'short', day: 'numeric', timeZone: 'UTC' };
+    if(dt){ var t = P.start.toLocaleDateString('en-US', o) + ' → ' + P.end.toLocaleDateString('en-US', o) + ' · 00:00 UTC'; if(dt.textContent !== t) dt.textContent = t; }
+    document.querySelectorAll('[data-tgx-race]').forEach(function(cd){
+      var r = Math.max(0, Math.floor((tggRaceEnd(cd.dataset.tgxRace, now) - now) / 1000));
+      var x = { d: String(Math.floor(r / 86400)), h: pad(cd.dataset.tgxRace === 'daily' ? Math.floor(r / 3600) : Math.floor(r / 3600) % 24), m: pad(Math.floor(r / 60) % 60), s: pad(r % 60) };
+      cd.querySelectorAll('[data-u]').forEach(function(b){ if(b.textContent !== x[b.dataset.u]) b.textContent = x[b.dataset.u]; });
+    });
+  }
+  setInterval(tick, 1000);
+
+  /* reveals, count-ups and card tilt */
+  var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var io = 'IntersectionObserver' in window ? new IntersectionObserver(function(es){ es.forEach(function(e){ if(!e.isIntersecting) return; e.target.classList.add('in'); io.unobserve(e.target);
+    e.target.querySelectorAll('[data-tgx-count]').forEach(function(n){ var to = +n.dataset.tgxCount, pre = n.dataset.pre || '', suf = n.dataset.suf || '', t0 = performance.now();
+      (function f(t){ var p = Math.min(1, (t - t0) / 1200), q = 1 - Math.pow(1 - p, 3); n.textContent = pre + Math.round(to * q) + suf; if(p < 1) requestAnimationFrame(f); })(t0); }); }); }, { threshold: .15 }) : null;
+  function arm(){ document.querySelectorAll('#pt-sec-treasuregg .tgx-rv').forEach(function(el){ if(RM || !io) el.classList.add('in'); else if(!el.classList.contains('in')) io.observe(el); }); }
+  if(!RM && window.matchMedia && matchMedia('(hover:hover)').matches){
+    document.querySelectorAll('#pt-sec-treasuregg .tgx-o').forEach(function(el){
+      el.addEventListener('pointermove', function(e){ var r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        el.style.setProperty('--rx', ((.5 - y) * 10).toFixed(2) + 'deg'); el.style.setProperty('--ry', ((x - .5) * 12).toFixed(2) + 'deg'); el.style.setProperty('--mx', x * 100 + '%'); el.style.setProperty('--my', y * 100 + '%'); });
+      el.addEventListener('pointerleave', function(){ el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg'); });
+    });
+    var art = document.querySelector('#pt-sec-treasuregg .tgx-art'), hero = document.querySelector('#pt-sec-treasuregg .tgx-hero');
+    if(art && hero){ hero.addEventListener('pointermove', function(e){ var r = hero.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      art.style.transform = 'perspective(900px) rotateY(' + (x * 10).toFixed(2) + 'deg) rotateX(' + (-y * 8).toFixed(2) + 'deg)'; art.style.animationPlayState = 'paused'; });
+      hero.addEventListener('pointerleave', function(){ art.style.transform = ''; art.style.animationPlayState = ''; }); }
+  }
+
+  /* Partners page: TreasureGG chip + its own view */
+  var _pv = window.ptView;
+  if(_pv){
+    window.ptView = function(k){
+      if(k === 'treasuregg'){
+        var root = document.querySelector('#new .pwx'); if(!root) return;
+        _pv('powerwin');   /* repaints the chips */
+        root.setAttribute('data-pt', 'treasuregg');
+        document.querySelectorAll('#ptSwitch .pt-chip').forEach(function(c){ c.classList.toggle('on', c.dataset.k === 'treasuregg'); });
+        tick(); setTimeout(arm, 30); return;
+      }
+      return _pv(k);
+    };
+  }
+  function addChip(){
+    var sw = document.getElementById('ptSwitch'); if(!sw || sw.querySelector('[data-k="treasuregg"]')) return;
+    var pw = sw.querySelector('[data-k="powerwin"]'); if(!pw) return;
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'pt-chip'; b.dataset.k = 'treasuregg';
+    b.innerHTML = '<img class="tgg" src="tgg-logo.webp" alt="TreasureGG"><em class="live-tag">Live</em>';
+    b.onclick = function(){ ptShow('treasuregg'); };
+    pw.insertAdjacentElement('afterend', b);
+    var root = document.querySelector('#new .pwx'); if(root && root.getAttribute('data-pt') === 'treasuregg') b.classList.add('on');
+  }
+  var sw = document.getElementById('ptSwitch');
+  if(sw && 'MutationObserver' in window) new MutationObserver(addChip).observe(sw, { childList: true });
+  addChip();
+  /* links straight to #partners/treasuregg on first load */
+  if(/treasuregg/.test(location.hash) && window.ptView) setTimeout(function(){ ptView('treasuregg'); }, 60);
+
+  /* Leaderboards page: TreasureGG tab */
+  var JOIN_PW = document.getElementById('lbJoinPowerwin');
+  var _tab = window.lbTab;
+  window.lbTab = lbTab = function(btn, casino){
+    var r = _tab(btn, casino), t = casino === 'treasuregg';
+    document.querySelectorAll('#lbxHow .lbx-how-b').forEach(function(b){ if(t) b.hidden = b.dataset.for !== 'treasuregg'; else if(b.dataset.for === 'treasuregg') b.hidden = true; });
+    var ht = document.getElementById('lbxHowT'); if(ht && t) ht.textContent = 'How the TreasureGG leaderboard works';
+    var jt = document.getElementById('lbJoinTreasure'); if(jt) jt.style.display = t ? '' : 'none';
+    if(JOIN_PW && t) JOIN_PW.style.display = 'none';
+    var lb = document.getElementById('leaderboards'); if(lb) lb.classList.toggle('lb-tgg', t);
+    return r;
+  };
+  var _period = window.currentLbPeriod;
+  window.currentLbPeriod = currentLbPeriod = function(){
+    if(typeof CURRENT_LB_CASINO !== 'undefined' && CURRENT_LB_CASINO === 'treasuregg'){ var p = tggPeriods().current; return { start: p.start, end: p.end }; }
+    return _period();
+  };
+  var _load = window.loadLeaderboard;
+  window.loadLeaderboard = loadLeaderboard = async function(casino){
+    if(casino !== 'treasuregg' || TGG.apiReady) return _load(casino);
+    /* API not connected yet: countdown, dates and prizes from the fixed schedule, no standings */
+    lbRequestSeq++;
+    if(JOIN_PW) JOIN_PW.style.display = 'none';
+    var P = tggPeriods(), prev = LB_RACE === 'previous';
+    var podium = document.getElementById('lbxPodium'), rows = document.getElementById('lbFullRows'), info = document.getElementById('lbxInfo'), ntc = document.getElementById('lbxNotice');
+    _lastLbWagers = [];
+    if(prev && !P.previous){
+      _realPeriodOverride = null;
+      if(podium){ podium.innerHTML = ''; podium.classList.add('lbx-hide'); }
+      if(info) info.classList.add('lbx-off');
+      if(ntc) ntc.style.display = 'none';
+      if(rows) rows.innerHTML = '<div class="lbx-tgg-wait"><img src="tgg-coin.webp" alt="">No previous TreasureGG race yet.<br>The first one runs <b>' + fmt(P.current.start) + ' → ' + fmt(P.current.end) + '</b> (00:00 UTC).</div>';
+      return;
+    }
+    var per = prev ? P.previous : P.current;
+    _realPeriodOverride = { start: per.start, end: per.end };
+    if(info){ info.style.display = ''; info.classList.remove('lbx-off'); }
+    if(podium) podium.classList.remove('lbx-hide');
+    lbcd2();
+    if(typeof lbxSetNotice === 'function') lbxSetNotice({ startDate: per.start.toISOString(), endDate: per.end.toISOString() });
+    if(typeof lbxSetState === 'function') lbxSetState();
+    renderLeaderboardRows([], null);
+    if(rows) rows.innerHTML = '<div class="lbx-tgg-wait"><img src="tgg-coin.webp" alt="">' + (per.start > new Date()
+      ? 'The first <b>$500 TreasureGG leaderboard</b> starts <b>' + fmt(per.start) + ' at 00:00 UTC</b>.<br>Sign up with code <b>JAMMMY</b> now so you\'re ready.'
+      : 'Live standings for the <b>$500 TreasureGG leaderboard</b> show up here very soon.<br>Your wagers on code <b>JAMMMY</b> already count.') + '</div>';
+  };
+  function fmt(d){ return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }); }
+  /* a direct #leaderboards visit on the TreasureGG tab keeps the right state */
+  if(typeof CURRENT_LB_CASINO !== 'undefined' && CURRENT_LB_CASINO === 'treasuregg') loadLeaderboard('treasuregg');
 })();
 </script>
 </body>
