@@ -6498,6 +6498,22 @@ img.dbl{flex:none;width:auto}
 @media(max-width:980px){.tgx-hero{grid-template-columns:1fr;padding:26px 20px}.tgx-hero-r{order:-1}.tgx-art{width:min(360px,100%)}.tgx-offers{grid-template-columns:1fr 1fr}.tgx-lb{grid-template-columns:1fr}.tgx-pz{border-left:0;border-top:1px solid rgba(255,196,60,.18)}.tgx-races{grid-template-columns:1fr}.tgx-join{grid-template-columns:1fr}.tgx-stats{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.tgx-offers{grid-template-columns:1fr}.tgx-lb-main{padding:22px 18px}.tgx-cd div{min-width:54px}.tgx-race{padding:20px 14px}.tgx-pc .pl{font-size:1.05rem}.tgx-pc .pz b{font-size:1.1rem}.tgx-race-cd{font-size:1.6rem}.tgx-sec{margin:44px 0 18px}}
 @media(prefers-reduced-motion:reduce){.tgx *,.tgx *::before,.tgx *::after{animation:none!important}.tgx-rv{opacity:1;transform:none}}
+
+/* v2 art: ChatGPT icons, penguins, vault background */
+.tgx-o-ic.img{width:84px;height:84px;background:none;border:0;box-shadow:none;margin:-6px 0 12px -6px}
+.tgx-o-ic.img img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.45))}
+.tgx-o:hover .tgx-o-ic.img{transform:translateY(-6px) rotate(-8deg) scale(1.14)}
+.tgx-sec.has-peng{position:relative;max-width:760px;margin-left:auto;margin-right:auto}
+.tgx-peng{position:absolute;top:50%;width:150px;height:auto;filter:drop-shadow(0 12px 18px rgba(0,0,0,.5));pointer-events:none}
+.tgx-peng.r{right:-10px;transform:translateY(-55%) rotate(6deg);animation:tgxPeng 3.4s ease-in-out infinite}
+.tgx-peng.l{left:-10px;transform:translateY(-55%);animation:tgxRun 2.6s ease-in-out infinite}
+.tgx-peng.spy{width:140px}
+@keyframes tgxPeng{0%,100%{transform:translateY(-55%) rotate(6deg)}50%{transform:translateY(-65%) rotate(-3deg)}}
+@keyframes tgxRun{0%,100%{transform:translate(0,-55%) rotate(-2deg)}25%{transform:translate(10px,-62%) rotate(2deg)}50%{transform:translate(20px,-55%) rotate(-2deg)}75%{transform:translate(10px,-62%) rotate(2deg)}}
+.tgx-lb{background:linear-gradient(90deg,rgba(14,16,28,.94) 0%,rgba(14,16,28,.80) 42%,rgba(14,16,28,.25) 70%,rgba(14,16,28,.15)),url(tgg-vault.webp) 70% center/cover!important}
+.tgx-pz{background:rgba(10,12,22,.82)!important;backdrop-filter:blur(6px)}
+@media(max-width:980px){.tgx-peng{width:110px}.tgx-peng.spy{width:100px}.tgx-peng.r{right:-4px}.tgx-peng.l{left:-4px}.tgx-lb{background:linear-gradient(180deg,rgba(14,16,28,.80),rgba(14,16,28,.96) 38%),url(tgg-vault.webp) 75% top/auto 340px no-repeat,#151826!important}}
+@media(max-width:560px){.tgx-sec.has-peng{padding:0 70px}.tgx-peng{width:78px}.tgx-peng.spy{width:72px}}
 /* home + nav + footer + leaderboard bits */
 .tgg-banner{box-shadow:0 0 0 1px rgba(255,196,60,.45),0 24px 60px rgba(0,0,0,.5),0 0 46px rgba(245,158,11,.22)!important}.tgg-banner:hover{box-shadow:0 0 0 1px rgba(255,196,60,.8),0 24px 60px rgba(0,0,0,.55),0 0 56px rgba(245,158,11,.4)!important}
 .hx-trust-tgg{height:20px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
@@ -7479,15 +7495,15 @@ img.dbl{flex:none;width:auto}
 
         <div class="tgx-sec tgx-rv"><span>Code JAMMMY perks</span><h2 class="pir">Your treasure chest</h2></div>
         <div class="tgx-offers">
-          <article class="tgx-o tgx-rv" style="--a:255,196,60"><span class="tag">Code JAMMMY</span><div class="tgx-o-ic">🛟</div><h3 class="pir">10% Lossback</h3><p>Rough session? Get 10% of your losses back, so a bad run never hits as hard.</p></article>
-          <article class="tgx-o tgx-rv" style="--a:167,139,250"><span class="tag">Switching?</span><div class="tgx-o-ic">👑</div><h3 class="pir">VIP Transfer</h3><p>Already VIP on another site? Bring your status over to TreasureGG instead of starting again from zero.</p></article>
-          <article class="tgx-o tgx-rv" style="--a:250,204,21"><span class="tag">Every 2 weeks</span><div class="tgx-o-ic">🏆</div><h3 class="pir">$500 Leaderboard</h3><p>The top 10 wagerers on code JAMMMY split $500 every two weeks.</p></article>
+          <article class="tgx-o tgx-rv" style="--a:255,196,60"><span class="tag">Code JAMMMY</span><div class="tgx-o-ic img"><img src="tgg-ic-lossback.webp" alt="" width="220" height="212"></div><h3 class="pir">10% Lossback</h3><p>Rough session? Get 10% of your losses back, so a bad run never hits as hard.</p></article>
+          <article class="tgx-o tgx-rv" style="--a:167,139,250"><span class="tag">Switching?</span><div class="tgx-o-ic img"><img src="tgg-ic-vip.webp" alt="" width="220" height="214"></div><h3 class="pir">VIP Transfer</h3><p>Already VIP on another site? Bring your status over to TreasureGG instead of starting again from zero.</p></article>
+          <article class="tgx-o tgx-rv" style="--a:250,204,21"><span class="tag">Every 2 weeks</span><div class="tgx-o-ic img"><img src="tgg-ic-trophy.webp" alt="" width="220" height="232"></div><h3 class="pir">$500 Leaderboard</h3><p>The top 10 wagerers on code JAMMMY split $500 every two weeks.</p></article>
           <article class="tgx-o tgx-rv" style="--a:74,222,128"><div class="tgx-o-ic">🎖️</div><h3 class="pir">Rank Up Rewards</h3><p>Climb TreasureGG's ranks and collect a reward every time you reach a new one.</p></article>
           <article class="tgx-o tgx-rv" style="--a:96,165,250"><div class="tgx-o-ic">⭐</div><h3 class="pir">Level Up Rewards</h3><p>Your level goes up as you play, and every level you hit pays out.</p></article>
           <article class="tgx-o tgx-rv" style="--a:244,114,182"><div class="tgx-o-ic">🔄</div><h3 class="pir">Reloads</h3><p>Regular reload bonuses that top your balance back up.</p></article>
         </div>
 
-        <div class="tgx-sec tgx-rv"><span>Code JAMMMY only · every 2 weeks</span><h2 class="pir">Jammy's $500 leaderboard</h2></div>
+        <div class="tgx-sec tgx-rv has-peng"><img class="tgx-peng r" src="tgg-peng-trophy.webp" alt="" aria-hidden="true"><span>Code JAMMMY only · every 2 weeks</span><h2 class="pir">Jammy's $500 leaderboard</h2></div>
         <article class="tgx-lb tgx-rv">
           <div class="tgx-lb-main">
             <span class="tgx-lb-tag">Bi-weekly leaderboard</span>
@@ -7504,7 +7520,7 @@ img.dbl{flex:none;width:auto}
           <div class="tgx-pz" aria-label="Prize per place" id="tgxPz"></div>
         </article>
 
-        <div class="tgx-sec tgx-rv"><span>Open to everyone on TreasureGG · reset at 17:55 UTC</span><h2 class="pir">TreasureGG's own races</h2></div>
+        <div class="tgx-sec tgx-rv has-peng"><img class="tgx-peng l run" src="tgg-peng-run.webp" alt="" aria-hidden="true"><span>Open to everyone on TreasureGG · reset at 17:55 UTC</span><h2 class="pir">TreasureGG's own races</h2></div>
         <div class="tgx-races">
           <article class="tgx-race tgx-rv">
             <div class="tgx-race-top"><h3 class="tgx-race-name pir">Daily Case Race</h3><div class="tgx-race-amt"><img src="tgg-coin.webp" alt="" aria-hidden="true"><b class="tgx-gold">60</b></div></div>
@@ -7533,7 +7549,7 @@ img.dbl{flex:none;width:auto}
         </div>
         <p class="tgx-note">These races are run by <b>TreasureGG for every player on their site</b>, separate from Jammy's $500 leaderboard. You can win both at the same time. Prizes are paid in TreasureGG coins.</p>
 
-        <div class="tgx-sec tgx-rv"><span>Takes a minute</span><h2 class="pir">How to join</h2></div>
+        <div class="tgx-sec tgx-rv has-peng"><img class="tgx-peng r spy" src="tgg-peng-spy.webp" alt="" aria-hidden="true"><span>Takes a minute</span><h2 class="pir">How to join</h2></div>
         <div class="tgx-join">
           <ol class="tgx-steps">
             <li class="tgx-rv"><b>Sign up</b><span>Create your account on <a class="tgg-link" href="https://treasure.gg/" target="_blank" rel="noopener">treasure.gg</a>.</span></li>
