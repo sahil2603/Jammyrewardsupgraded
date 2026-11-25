@@ -7219,7 +7219,7 @@ img.dbl{flex:none;width:auto}
             <p class="lbx-how-s">For the Community Vault, 1 point counts as $1 wagered.</p>
           </div>
           <div class="lbx-how-b" data-for="treasuregg" hidden>
-            <p>TreasureGG ranks this leaderboard by <b>amount wagered</b> by players on code <b>JAMMMY</b>. Each race runs two weeks, from 00:00 UTC to 00:00 UTC.</p>
+            <p>TreasureGG ranks this leaderboard by <b>points</b> earned on the games the race counts (cases, house games and more), for players on code <b>JAMMMY</b>. The dates and prize split come straight from TreasureGG.</p>
             <p>The top 10 split <b>$500</b>. Winners claim their prize by opening a ticket in our Discord.</p>
             <p class="lbx-how-s">TreasureGG's own Daily Case Race and Weekly Race (reset at 17:55 UTC) are separate. See them on the TreasureGG partner page.</p>
           </div>
@@ -7518,7 +7518,7 @@ img.dbl{flex:none;width:auto}
           <div class="tgx-lb-main">
             <span class="tgx-lb-tag">Bi-weekly leaderboard</span>
             <div class="tgx-lb-pool"><img src="tgg-coin.webp" alt="" aria-hidden="true"><b class="tgx-gold">$500</b></div>
-            <p class="tgx-lb-sub">Exclusive to Jammy's players: the top 10 TreasureGG wagerers on code <b style="color:#ffd54a">JAMMMY</b> split the pool every two weeks. Races start and end at <b style="color:#fff">00:00 UTC</b>.</p>
+            <p class="tgx-lb-sub">Exclusive to Jammy's players: the top 10 TreasureGG wagerers on code <b style="color:#ffd54a">JAMMMY</b> split the pool every two weeks. Dates and prizes are set by TreasureGG and update here live.</p>
             <div class="tgx-cd-w" id="tgxLbWord">Starts in</div>
             <div class="tgx-cd" id="tgxLbCd"><div><b data-u="d">--</b><small>Days</small></div><div><b data-u="h">--</b><small>Hrs</small></div><div><b data-u="m">--</b><small>Min</small></div><div><b data-u="s">--</b><small>Sec</small></div></div>
             <div class="tgx-dates" id="tgxLbDates"></div>
@@ -9211,7 +9211,7 @@ function lbcd2(){
   if(datesEl){
     var opts = {month:'short', day:'numeric', year:'numeric', timeZone:'UTC'};
     /* Only write when the text changes (no flicker). */
-    var dt = period.start.toLocaleDateString('en-US',opts)+' \u2192 '+period.end.toLocaleDateString('en-US',opts)+' (00:00 UTC)';
+    var dt = period.start.toLocaleDateString('en-US',opts)+' \u2192 '+period.end.toLocaleDateString('en-US',opts)+' ('+(CURRENT_LB_CASINO==='treasuregg'&&TGG.board?period.end.toISOString().slice(11,16):'00:00')+' UTC)';
     if(datesEl.textContent !== dt) datesEl.textContent = dt;
   }
   var updEl = document.getElementById('lbUpdatedTime');
@@ -17848,10 +17848,13 @@ function JammmyMascot(root, base){
    TGG.first    : start of Jammy's first $500 race. Races run 14 days, 00:00 UTC to 00:00 UTC.
    TGG.apiReady : set to true once the worker has the TreasureGG API (route ?casino=treasuregg).
    TreasureGG's own Daily Case Race resets every day at 17:55 UTC; its Weekly Race ends Saturdays at 17:55 UTC. */
-var TGG = { url: 'https://treasure.gg/', first: Date.UTC(2026, 10, 30, 0, 0, 0), len: 14 * 86400000, apiReady: false,
-  prizes: {1:175, 2:100, 3:65, 4:45, 5:35, 6:25, 7:20, 8:15, 9:10, 10:10} };
+var TGG = { streamer: 'CODEJAMMMY', api: 'https://api.treasure.gg/leaderboard/streamers/', board: null, prevBoard: null, url: 'https://treasure.gg/', first: Date.UTC(2026, 10, 30, 0, 0, 0), len: 14 * 86400000, apiReady: false,
+  prizes: {1:140, 2:100, 3:70, 4:50, 5:40, 6:30, 7:25, 8:20, 9:15, 10:10} };
 function tggPeriods(now){
   now = now || Date.now();
+  /* once Jammy's board exists on TreasureGG, its own dates win */
+  if(TGG.board){ var b = TGG.board, pb = TGG.prevBoard;
+    return { current: { start: new Date(b.startAt), end: new Date(b.endAt), upcoming: new Date(b.startAt) > now }, previous: pb ? { start: new Date(pb.startAt), end: new Date(pb.endedAt || pb.endAt) } : null }; }
   if(now < TGG.first) return { current: { start: new Date(TGG.first), end: new Date(TGG.first + TGG.len), upcoming: true }, previous: null };
   var k = Math.floor((now - TGG.first) / TGG.len), st = TGG.first + k * TGG.len;
   return { current: { start: new Date(st), end: new Date(st + TGG.len) }, previous: k ? { start: new Date(st - TGG.len), end: new Date(st) } : null };
@@ -17869,21 +17872,22 @@ function tggRaceEnd(kind, now){
   var pad = function(v){ return (v < 10 ? '0' : '') + v; };
 
   /* prize table on the partner page */
-  var pz = document.getElementById('tgxPz');
+  window.tggPaintPrizes = function(){ var pz = document.getElementById('tgxPz');
   if(pz){ var nm = {1:'🥇 1st', 2:'🥈 2nd', 3:'🥉 3rd'}, tot = 0, h = '<div class="h"><span>Place</span><span>Prize</span></div>';
     Object.keys(TGG.prizes).forEach(function(k){ tot += TGG.prizes[k]; h += '<div><span>' + (nm[k] || k + 'th') + '</span><b>$' + TGG.prizes[k] + '</b></div>'; });
-    pz.innerHTML = h + '<div class="t"><span>Total</span><b>$' + tot + '</b></div>'; }
+    pz.innerHTML = h + '<div class="t"><span>Total</span><b>$' + tot + '</b></div>'; } };
+  tggPaintPrizes();
 
   /* countdowns on the partner page (only while it's open) */
   function tick(){
     var sec = document.getElementById('pt-sec-treasuregg'); if(!sec || !sec.offsetParent) return;
     var now = Date.now(), P = tggPeriods(now).current, up = now < P.start;
     var s = Math.max(0, Math.floor(((up ? P.start : P.end) - now) / 1000));
-    var w = document.getElementById('tgxLbWord'); if(w) w.textContent = up ? 'First race starts in' : 'Race ends in';
+    var w = document.getElementById('tgxLbWord'); if(w) w.textContent = up ? (TGG.board ? 'Race starts in' : 'First race starts in') : 'Race ends in';
     var v = { d: String(Math.floor(s / 86400)), h: pad(Math.floor(s / 3600) % 24), m: pad(Math.floor(s / 60) % 60), s: pad(s % 60) };
     document.querySelectorAll('#tgxLbCd b[data-u]').forEach(function(b){ if(b.textContent !== v[b.dataset.u]) b.textContent = v[b.dataset.u]; });
     var dt = document.getElementById('tgxLbDates'), o = { month: 'short', day: 'numeric', timeZone: 'UTC' };
-    if(dt){ var t = P.start.toLocaleDateString('en-US', o) + ' → ' + P.end.toLocaleDateString('en-US', o) + ' · 00:00 UTC'; if(dt.textContent !== t) dt.textContent = t; }
+    if(dt){ var t = P.start.toLocaleDateString('en-US', o) + ' → ' + P.end.toLocaleDateString('en-US', o) + (TGG.board ? ' · ' + P.end.toISOString().slice(11,16) + ' UTC' : ' · 00:00 UTC'); if(dt.textContent !== t) dt.textContent = t; }
     document.querySelectorAll('[data-tgx-race]').forEach(function(cd){
       var r = Math.max(0, Math.floor((tggRaceEnd(cd.dataset.tgxRace, now) - now) / 1000));
       var x = { d: String(Math.floor(r / 86400)), h: pad(cd.dataset.tgxRace === 'daily' ? Math.floor(r / 3600) : Math.floor(r / 3600) % 24), m: pad(Math.floor(r / 60) % 60), s: pad(r % 60) };
@@ -17957,8 +17961,51 @@ function tggRaceEnd(kind, now){
     return _period();
   };
   var _load = window.loadLeaderboard;
+  /* ---- TreasureGG API (public, no key): GET /leaderboard/streamers/<username> ---- */
+  TGG.fetch = function(){
+    if(!TGG.streamer) return Promise.resolve(null);
+    if(TGG._p && Date.now() - TGG._t < 60000) return TGG._p;
+    TGG._t = Date.now();
+    TGG._p = fetch(TGG.api + encodeURIComponent(TGG.streamer), { cache: 'no-store' }).then(function(r){ return r.ok ? r.json() : null; }).then(function(d){
+      if(!d) return null;
+      var hist = (d.history && d.history.data) || [];
+      TGG.board = d.current || null;
+      TGG.prevBoard = hist.filter(function(b){ return b.status === 'ended'; })[0] || null;
+      if(!TGG.board && TGG.prevBoard) TGG.board = null;
+      var pz = (TGG.board || TGG.prevBoard || {}).prizes;
+      if(pz && pz.length){ var t = {}; pz.forEach(function(p){ t[p.position] = p.amount; }); TGG.prizes = t; LB_CASINO_PRIZES.treasuregg = t; if(typeof tggPaintPrizes === 'function') tggPaintPrizes(); }
+      return d;
+    }).catch(function(){ return null; });
+    return TGG._p;
+  };
+  function tggRows(b){ return ((b && b.players) || []).map(function(p){ return { rank: p.position, name: p.anon ? 'Anonymous' : p.username, wager: Number(p.wagered) || 0, points: p.points, prize: p.prize }; }); }
+  function tggPrizeMap(b){ var t = {}; ((b && b.prizes) || []).forEach(function(p){ t[p.position] = p.amount; }); return t; }
+  var _lbPT = window.lbPrizeTable;
+  if(_lbPT) window.lbPrizeTable = lbPrizeTable = function(c){
+    if(c === 'treasuregg' && TGG.streamer){ var b = LB_RACE === 'previous' ? TGG.prevBoard : TGG.board; if(b && b.prizes && b.prizes.length) return tggPrizeMap(b); }
+    return _lbPT(c);
+  };
+  TGG.fetch();
+
   window.loadLeaderboard = loadLeaderboard = async function(casino){
-    if(casino !== 'treasuregg' || TGG.apiReady) return _load(casino);
+    if(casino !== 'treasuregg') return _load(casino);
+    if(TGG.streamer){
+      var seq = ++lbRequestSeq; await TGG.fetch(); if(seq !== lbRequestSeq) return;
+      var prevB = LB_RACE === 'previous', b = prevB ? TGG.prevBoard : TGG.board;
+      if(b){
+        if(JOIN_PW) JOIN_PW.style.display = 'none';
+        var info = document.getElementById('lbxInfo'), podium = document.getElementById('lbxPodium');
+        if(info){ info.style.display = ''; info.classList.remove('lbx-off'); }
+        if(podium) podium.classList.remove('lbx-hide');
+        _realPeriodOverride = { start: new Date(b.startAt), end: new Date(b.endedAt || b.endAt) };
+        lbcd2();
+        if(typeof lbxSetNotice === 'function') lbxSetNotice({ startDate: b.startAt, endDate: b.endedAt || b.endAt });
+        if(typeof lbxSetState === 'function') lbxSetState();
+        var rows = tggRows(b); _lastLbWagers = rows;
+        renderLeaderboardRows(rows, null);
+        return;
+      }
+    }
     /* API not connected yet: countdown, dates and prizes from the fixed schedule, no standings */
     lbRequestSeq++;
     if(JOIN_PW) JOIN_PW.style.display = 'none';
