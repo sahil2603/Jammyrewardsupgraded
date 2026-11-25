@@ -1562,6 +1562,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
 .rd-casino img{height:38px;width:auto;max-width:100%;object-fit:contain;display:block;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4))}
 .rd-casino.powerwin{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.45)}
 .rd-casino.powerwin img{height:46px;mix-blend-mode:screen;filter:none;margin:-4px 0}
+.rd-casino.treasuregg{background:rgba(245,180,40,.1);border-color:rgba(245,180,40,.42)}
+.rd-casino.treasuregg img{height:30px;filter:none;margin:2px 0}
 .rd-casino.degencity{background:rgba(244,114,182,.10);border-color:rgba(244,114,182,.42)}
 .rd-amt{text-align:right}
 .rd-amt b{display:block;font:800 1.6rem/1 'Poppins';color:#4ade80;letter-spacing:-.01em}
@@ -3088,7 +3090,7 @@ html.lenis{scroll-behavior:auto!important}
 .rdx-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:16px}
 .rdx-bal{font-size:.88rem;color:var(--muted);text-align:right}
 .rdx-bal b{color:#fff;font-weight:700}
-.rdx-seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);margin-bottom:16px}
+.rdx-seg{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));grid-auto-flow:column;gap:4px;padding:4px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);margin-bottom:16px}
 .rdx-seg .pf-redeem-method{margin:0;border:0;border-radius:9px;padding:9px 10px;background:transparent;font-weight:600}
 .rdx-seg .pf-redeem-method.active{background:rgba(255,255,255,.1);color:#fff;box-shadow:none}
 .rdx-two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -7932,6 +7934,7 @@ img.dbl{flex:none;width:auto}
             <div id="pfRedeemForm" style="display:none">
               <div class="rdx-seg">
                 <button type="button" class="pf-redeem-method active" data-method="powerwin" onclick="setRedeemMethod('powerwin')">Power.win</button>
+                <button type="button" class="pf-redeem-method" data-method="treasuregg" onclick="setRedeemMethod('treasuregg')">TreasureGG</button>
                 <button type="button" class="pf-redeem-method" data-method="crypto" onclick="setRedeemMethod('crypto')">Crypto</button>
               </div>
 
@@ -7958,14 +7961,14 @@ img.dbl{flex:none;width:auto}
                 <input type="file" id="pfDepositFile" accept="image/*" onchange="pickDepositProof(this)">
                 <img id="pfDepositPreview" class="rdx-thumb" alt="" style="display:none">
                 <span class="rdx-up-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg></span>
-                <span class="rdx-up-t"><b id="pfDepositName">Upload deposit screenshot</b><small>Power.win deposits, last 7 days &middot; must be over <span id="pfRedeemUsdNeed">$0.00</span></small></span>
+                <span class="rdx-up-t"><b id="pfDepositName">Upload deposit screenshot</b><small><span id="pfDepositCasino">Power.win</span> deposits, last 7 days &middot; must be over <span id="pfRedeemUsdNeed">$0.00</span></small></span>
               </label>
               <label class="rdx-chk"><input type="checkbox" id="pfDepositConfirm" onchange="updateRedeemEligibilityNote()"><span>My deposits in the last 7 days are more than this redemption</span></label>
 
               <div id="pfRedeemEligibilityNote" class="rdx-note"></div>
               <button class="admin-btn-primary rdx-go" onclick="submitRedeem()" id="pfRedeemBtn">Redeem</button>
               <div class="rdx-fine"><span id="pfRedeemMinTxt">Min $20</span> &middot; paid in 1&ndash;7 days &middot; <button type="button" class="rdx-terms-btn" onclick="this.closest('.rdx').classList.toggle('terms-open')">Terms</button></div>
-              <p class="rdx-terms">Redemptions are reviewed before payout. Your Power.win deposits in the last 7 days must be more than the amount you redeem, shown in the screenshot you attach. Jammmy can decline, delay or reverse any redemption if wager manipulation, multi-accounting or other abuse is found.</p>
+              <p class="rdx-terms">Redemptions are reviewed before payout. Your casino deposits (on the casino you redeem to, or for crypto the casino you play on) in the last 7 days must be more than the amount you redeem, shown in the screenshot you attach. Jammmy can decline, delay or reverse any redemption if wager manipulation, multi-accounting or other abuse is found.</p>
             </div>
             <div id="pfRedeemResult" style="display:none"></div>
           </div>
@@ -11182,6 +11185,11 @@ function renderProfile(data){
     var old = b.querySelector('.lk'); if(old) old.remove();
     if(!_pfVerified[m]){ var k = document.createElement('span'); k.className = 'lk'; k.textContent = '🔒'; k.title = 'Verify your account first'; b.appendChild(k); }
   });
+  /* Open on a casino the player is actually verified on (e.g. TreasureGG-only players). */
+  if(_pfRedeemMethod !== 'crypto' && !_pfVerified[_pfRedeemMethod]){
+    var firstOk = Object.keys(PLATFORM_LABELS).filter(function(m){ return _pfVerified[m]; })[0];
+    if(firstOk) _pfRedeemMethod = firstOk;
+  }
   if(_pfRedeemMethod !== 'crypto') setRedeemMethod(_pfRedeemMethod);
 
   var linksByName = {};
@@ -11586,7 +11594,7 @@ function updateNetworkOptions(){
 
 var _pfRedeemMethod = 'powerwin';
 var _pfVerified = {};
-var PLATFORM_LABELS = {powerwin:'Power.win'};
+var PLATFORM_LABELS = {powerwin:'Power.win', treasuregg:'TreasureGG'};
 var _redeemMinCrypto = 10000, _redeemMinPlatform = 2000, _redeemBalance = 0;
 var _depositProof = null;
 /* Deposit proof: resized and re-encoded as JPEG in the browser (same as claim proofs), so the
@@ -11653,6 +11661,7 @@ function setRedeemMethod(method){
   _pfRedeemMethod = method;
   document.querySelectorAll('.pf-redeem-method').forEach(function(b){ b.classList.toggle('active', b.dataset.method === method); });
   var isCrypto = method === 'crypto';
+  var depCas = document.getElementById('pfDepositCasino'); if(depCas) depCas.textContent = isCrypto ? 'Casino' : PLATFORM_LABELS[method];
   document.getElementById('pfRedeemCryptoFields').style.display = isCrypto ? 'block' : 'none';
   document.getElementById('pfRedeemPlatformFields').style.display = isCrypto ? 'none' : 'block';
   if(!isCrypto){
@@ -11678,8 +11687,9 @@ async function submitRedeem(){
   var payload = { redeem_method: _pfRedeemMethod };
   var timingNote;
   var depChk = document.getElementById('pfDepositConfirm');
-  if(!_depositProof){ alert('Please attach a screenshot of your Power.win deposits from the last 7 days.'); return; }
-  if(!depChk || !depChk.checked){ alert('Please confirm your Power.win deposits in the last 7 days are more than this redemption.'); return; }
+  var depName = _pfRedeemMethod === 'crypto' ? 'casino' : PLATFORM_LABELS[_pfRedeemMethod];
+  if(!_depositProof){ alert('Please attach a screenshot of your '+depName+' deposits from the last 7 days.'); return; }
+  if(!depChk || !depChk.checked){ alert('Please confirm your '+depName+' deposits in the last 7 days are more than this redemption.'); return; }
   payload.deposit_proof = _depositProof;
   payload.deposit_confirm = true;
   if(_pfRedeemMethod === 'crypto'){
@@ -12934,7 +12944,7 @@ async function secUnblock(id){
   try{ await secSetBlocked(id, false); secRefreshViews(); }catch(e){ alert(e.message); }
 }
 
-var RD_LOGOS = { powerwin:'powerwin.webp', degencity:'degencity.png' };
+var RD_LOGOS = { powerwin:'powerwin.webp', treasuregg:'tgg-logo.webp', degencity:'degencity.png' };
 var _rdProofCache = {};
 /* Staff-only "payout requested" flag (e.g. Power.win transfer already requested, waiting for approval). */
 async function adminSetRequested(btn, id, on){
@@ -12982,7 +12992,7 @@ async function adminMarkPaid(txId){
 /* Reject a redemption with a written reason (same dialog as claims, redemption presets).
    The player sees the reason in their redemption history; coins are refunded. */
 var REJ_RED_PRESETS = [
-  'Your Power.win deposits in the last 7 days are less than this redemption',
+  'Your casino deposits in the last 7 days are less than this redemption',
   "Deposit screenshot doesn't show deposits from the last 7 days",
   'Deposit screenshot is missing, blurry or cropped',
   'Deposit screenshot is from a different account',
