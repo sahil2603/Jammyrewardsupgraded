@@ -6538,6 +6538,12 @@ img.dbl{flex:none;width:auto}
 .lbx-tgg-wait img{width:58px;height:58px;margin:0 auto 10px;display:block;animation:tgxCoinSpin 3.6s ease-in-out infinite}
 .lbx-tgg-wait b{color:#ffd54a}
 </style>
+<style>
+.pcc-hint{margin:0 0 12px;padding:9px 12px;border-radius:9px;background:rgba(245,180,40,.08);border:1px solid rgba(245,180,40,.25);color:#e9d9b0;font-size:.8rem;line-height:1.45}
+.pcc-hint b{color:#fbbf24}
+.vpp-cas{display:inline-block;font-size:.68rem;font-weight:600;padding:2px 7px;border-radius:999px;background:rgba(192,132,252,.12);color:#d8b4fe;border:1px solid rgba(192,132,252,.28);margin-left:6px}
+.vpp-cas-treasuregg{background:rgba(245,180,40,.12);color:#fcd34d;border-color:rgba(245,180,40,.32)}
+</style>
 <style id="nav-brand-fix">
 /* the brand was allowed to shrink, so "JammmyRewards" spilled under the live tag */
 .nav-in>.brand{flex-shrink:0}
@@ -7818,6 +7824,8 @@ img.dbl{flex:none;width:auto}
           <button class="vpp-tab active" data-casino="">All</button>
           <button class="vpp-tab" data-casino="verified">✓ Verified</button>
           <button class="vpp-tab" data-casino="unclaimed">Not claimed yet</button>
+          <button class="vpp-tab" data-casino="powerwin">Power.win</button>
+          <button class="vpp-tab" data-casino="treasuregg">TreasureGG</button>
         </div>
         <div class="vpp-col-head">
           <div>Rank</div>
@@ -9664,7 +9672,7 @@ function fmtCoins(n){
 
 /* includes former partners (RustMafia, DegenCity...) so OLD records (past claims/redemptions) still show a proper name */
 var CASINO_DISPLAY_NAMES = {upgrader:'Upgrader', rustmagic:'RustMagic', rustmafia:'RustMafia', degencity:'DegenCity', powerwin:'Power.win', rbxwin:'RBXWIN', treasuregg:'TreasureGG'};
-var KNOWN_CASINOS_DISPLAY_LIST = ['powerwin'];
+var KNOWN_CASINOS_DISPLAY_LIST = ['powerwin', 'treasuregg'];
 var _vaultPlayersData = [];
 var _vaultPlayerCasinoFilter = '';
 
@@ -9767,6 +9775,7 @@ function renderUnclaimedCard(data){
 
   var CASINO_LOGOS = {
     powerwin: '<img src="powerwin.webp" alt="Power.win" style="max-height:22px;max-width:100%;width:auto;object-fit:contain">',
+    treasuregg: '<img src="tgg-logo.webp" alt="TreasureGG" style="max-height:22px;max-width:100%;width:auto;object-fit:contain">',
   };
 
   listEl.innerHTML = KNOWN_CASINOS_DISPLAY_LIST.map(function(casino){
@@ -9820,6 +9829,7 @@ function renderVaultPlayers(){
               : w.status === 'pending' ? '<span class="vpp-st wait">⏳ Being verified</span>'
               : '<span class="vpp-st no">Not claimed · <a onclick="nav(\'profile\')">is this you?</a></span>')
           + ((w.is_mine || (myUser && w.claimed_by && w.claimed_by === myUser.username)) ? '<span class="vpp-st me">You</span>' : '')
+          + (w.casino ? '<span class="vpp-cas vpp-cas-'+pccEsc(w.casino)+'">'+pccEsc(CASINO_DISPLAY_NAMES[w.casino]||w.casino)+'</span>' : '')
         + '</div>'
       + '</div>'
       + '<div class="vpp-wager"'+(isTop3 ? ' style="color:rgb('+topGlow+');font-size:1.15rem"' : '')+'>$'+Number(w.wager).toLocaleString(undefined,{maximumFractionDigits:0})+'<small>'+Math.floor(w.wager*0.1).toLocaleString()+' coins</small></div>'
@@ -11098,7 +11108,7 @@ trackPageView(location.hash ? pageId(location.hash.slice(1)) : 'home'); /* showP
 /* ══════════════════════════════════════════════════════════════════════════
    PROFILE PAGE
    ══════════════════════════════════════════════════════════════════════════ */
-var KNOWN_CASINOS_DISPLAY = {powerwin:'Power.win'};
+var KNOWN_CASINOS_DISPLAY = {powerwin:'Power.win', treasuregg:'TreasureGG'};
 
 async function loadProfile(){
   var token = localStorage.getItem('jammy_session_token');
@@ -11190,7 +11200,7 @@ function renderProfile(data){
     approved: '<span class="admin-pill admin-pill-profit">✓ Approved</span>',
     pending: '<span class="admin-pill" style="background:rgba(251,191,36,.14);color:#fbbf24;border:1px solid rgba(251,191,36,.35)">⏳ Pending review</span>',
   };
-  var CASINO_GLOW = {degencity:'244,114,182', powerwin:'192,132,252'};
+  var CASINO_GLOW = {degencity:'244,114,182', powerwin:'192,132,252', treasuregg:'245,180,40'};
   var html = '';
   Object.keys(KNOWN_CASINOS_DISPLAY).forEach(function(key){
     var status = linksByStatus[key];
@@ -11206,6 +11216,7 @@ function renderProfile(data){
         + (!status && linksRejected[key] ? '<div class="pcc-rej"><b>Your claim'+(linksRejected[key].name ? ' for <em>'+pccEsc(linksRejected[key].name)+'</em>' : '')+' was rejected.</b>'
             + (linksRejected[key].reason ? '<div class="pcc-rej-why"><small>Reason from Jammmy</small>'+pccEsc(linksRejected[key].reason)+'</div>' : '')
             + '<span>Fix it and submit again below.</span></div>' : '')
+        + (key === 'treasuregg' && !isLocked ? '<p class="pcc-hint">Use code <b>JAMMMY</b> on TreasureGG and wager on cases or house games, then pick your name below. Turn off anonymous mode, or your name can\'t be found.</p>' : '')
         + '<label style="display:block;font-size:.78rem;color:var(--faint);margin-bottom:5px">Your username <span style="color:#f87171">*</span></label>'
         + '<div class="pcc-pick">'
           + '<input type="text" id="casinoInput_'+key+'" autocomplete="off" value="'+pccEsc(linksByName[key]||'')+'" placeholder="'+(isLocked?'':'Search your username')+'" '+(isLocked?'disabled':'onfocus="openClaimPicker(\''+key+'\')" oninput="onClaimPickerInput(\''+key+'\')" onblur="closeClaimPickerSoon(\''+key+'\')" onkeydown="onClaimPickerKey(event,\''+key+'\')"')+' style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,'+(isLocked?'.02':'.04')+');border:1px solid var(--line);color:'+(isLocked?'var(--faint)':'#fff')+';font-family:\'Poppins\';box-sizing:border-box'+(isLocked?';cursor:not-allowed':'')+'">'
@@ -12397,7 +12408,7 @@ async function loadAdminUsers(){
     _admTotalUsers = data.total_users;
     if(!data.users.length){ listEl.innerHTML = adminEmptyState('👥', 'No users found', 'Try a different search, or check back once people sign up.'); return; }
     listEl.innerHTML = data.users.map(function(u, i){
-      var VERIFIED_OK = { powerwin:1 };
+      var VERIFIED_OK = { powerwin:1, treasuregg:1 };
       var vLinks = (u.casino_links || []).filter(function(l){ return VERIFIED_OK[l.casino]; });
       var linksHtml = vLinks.length
         ? vLinks.map(function(l){ return '<span class="admin-tag vlink '+pccEsc(l.casino)+'"><i>✓</i>'+pccEsc(CASINO_DISPLAY_NAMES[l.casino]||l.casino)+': <b>'+pccEsc(l.username)+'</b></span>'; }).join(' ')
