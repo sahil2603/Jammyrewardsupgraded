@@ -407,6 +407,7 @@ window.addEventListener('keydown', function (e) { if (document.body.classList.co
   .cur{font-size:1.5rem}
 }
 </style>
+<link rel="stylesheet" href="candy.css?v=20261126b">
 
 <style id="keno">
 /* ═════════════ KENO ═════════════ */
@@ -434,7 +435,7 @@ window.addEventListener('keydown', function (e) { if (document.body.classList.co
 .kt.hit{background:radial-gradient(circle at 50% 45%,rgba(255,120,200,.45),#3a1160 75%);box-shadow:inset 0 0 0 2px rgba(255,170,225,.85),0 0 22px rgba(255,79,184,.5),0 4px 0 #6d1d57;animation:kFlip .45s var(--jelly,ease) both}
 .kt.hit::after{display:none}
 .kt.hit::before{content:'';position:absolute;inset:16% 14% 20%;background:url(art/gem.webp) center/contain no-repeat;filter:drop-shadow(0 5px 8px rgba(0,0,0,.45));animation:kGem .5s var(--jelly,ease) both;z-index:1}
-.kt.hit span{position:absolute;right:9%;bottom:6%;font-size:.62em;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.kt.hit span{opacity:0}   /* a hit shows only the gem */
 /* yours, not drawn (after the round) */
 .kt.on.miss{filter:saturate(.45) brightness(.7)}
 @keyframes kFlip{0%{transform:perspective(400px) rotateY(90deg) scale(.9)}60%{transform:perspective(400px) rotateY(-12deg) scale(1.06)}100%{transform:none}}
@@ -480,7 +481,7 @@ window.addEventListener('keydown', function (e) { if (document.body.classList.co
 @media (prefers-reduced-motion:reduce){.kt,.kt::before{animation:none!important}}
 
 </style>
-<link rel="stylesheet" href="candy.css?v=20261126b">
+<link rel="stylesheet" href="candy.css?v=20261126">
 </head>
 <body class="candy">
 <header class="top">
@@ -521,7 +522,7 @@ window.addEventListener('keydown', function (e) { if (document.body.classList.co
       <div class="stat"><span>Top payout</span><b id="topX" class="g">—</b></div>
       <label class="qd"><span>Quick draw</span><span class="tg"><input type="checkbox" id="quick"><span></span></span></label>
       <div class="msg" id="msg" role="status" aria-live="polite"></div>
-      <div class="foot"><span>RTP 98% · max win 100K</span><button type="button" onclick="openModal('rules')">How to play</button></div>
+      <div class="foot"><span>RTP 99% · max win 100K</span><button type="button" onclick="openModal('rules')">How to play</button></div>
     </aside>
     <section class="stage" id="stage" aria-label="Keno">
       <div class="khead"><span class="cur" id="curX">Pick up to 10</span><span class="hits" id="hitsPill"></span></div>
@@ -546,10 +547,10 @@ window.addEventListener('keydown', function (e) { if (document.body.classList.co
     <h2 id="rulesH">How to play Keno</h2>
     <ul>
       <li>Pick 1 to 10 numbers from 1 to 40 (or press <b>Auto pick</b>).</li>
-      <li>Choose a risk level and your bet, then press <b>Bet</b>. 10 gumballs drop.</li>
+      <li>Choose a risk level and your bet, then press <b>Bet</b>. 10 numbers are drawn.</li>
       <li>Every gumball that lands on one of your numbers is a <b>hit</b>. The strip under the board shows what each number of hits pays.</li>
-      <li><b>Low</b> pays small amounts often. <b>High</b> pays nothing for a few hits but up to 10,000× for a full house.</li>
-      <li>Return to player is 98% for every risk and every number of picks. Biggest win per round: 100,000 coins.</li>
+      <li><b>Low</b> pays small amounts often. <b>High</b> pays nothing for a few hits but up to 1,000× for a full house.</li>
+      <li>Return to player is about 99% for every risk and every number of picks. Biggest win per round: 100,000 coins.</li>
     </ul>
     <h3>Keyboard</h3><p>Space bets. R auto picks. C clears your numbers.</p>
   </div>
@@ -1187,7 +1188,7 @@ jgGate = function (why, name) {
   if (why !== 'soon') return;
   var c = document.querySelector('.jg-gate-card'); if (!c) return;
   c.querySelector('h3').textContent = 'Keno launches 1 December';
-  c.querySelector('p').innerHTML = 'Pick up to 10 numbers, watch 10 gumballs drop and win up to <b>10,000×</b>. Opening for everyone on 1 December.';
+  c.querySelector('p').innerHTML = 'Pick up to 10 numbers, watch the draw and win up to <b>1,000×</b>. Opening for everyone on 1 December.';
   c.insertAdjacentHTML('beforeend', '<span class="soon">🍬 Launching 1 Dec</span>');
 };
 
@@ -1299,7 +1300,7 @@ async function play() {
   res.picks.forEach(function (p) { if (res.drawn.indexOf(p) < 0) tile(p).classList.add('miss'); });
   $('hitsPill').textContent = hits + ' / ' + res.picks.length + ' hit';
   paintPay(res.hits);
-  $('curX').textContent = res.mult > 0 ? fmtX(res.mult) : 'No win';
+  $('curX').textContent = res.mult > 0 ? fmtX(res.mult) : res.picks.length + ' picked';
   var cb = $('curX'); cb.classList.remove('bump'); void cb.offsetWidth; cb.classList.add('bump');
   if (res.payout > 0) {
     if (LIVE) liveBalance(res._bal); else walletAdd(res.payout);
@@ -1308,7 +1309,7 @@ async function play() {
     big ? SND.bigwin() : SND.win(); SND.coins();
   } else {
     if (LIVE) liveBalance(res._bal);
-    if (!AUTO.on) showBanner('lose', res.hits + ' hit' + (res.hits === 1 ? '' : 's'), 'No win this time', 1500);
+    /* no pop-up when nothing is won: the board already shows it */
     SND.lose();
   }
   if (LIVE) liveFinished(ROUND, res.bet, res.payout);
