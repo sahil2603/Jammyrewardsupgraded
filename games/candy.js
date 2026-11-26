@@ -212,3 +212,22 @@
   /* Mines deals its board with a stagger */
   var g = document.getElementById('mgrid'); if (g) Array.prototype.forEach.call(g.children, function (t, i) { t.style.setProperty('--i', i); });
 })();
+
+/* The game server answers bets straight away and saves them to the database a moment later. If the database
+   then refuses one (the coins were spent somewhere else in the meantime), the next answer says so: tell the
+   player and the balance shown is corrected by that same answer. */
+(function () {
+  var of = window.fetch; if (!of) return;
+  window.fetch = function (u, o) {
+    var p = of.apply(this, arguments);
+    if (typeof u === 'string' && /\/api\/games\/(bet|act)\b/.test(u)) {
+      p.then(function (r) { return r.clone().json(); }).then(function (j) {
+        if (j && j.voided) {
+          var msg = (j.voided === 1 ? 'A recent bet' : j.voided + ' recent bets') + " didn't go through: your coins changed somewhere else. Your balance is up to date now.";
+          if (typeof window.toast === 'function') window.toast(msg); else alert(msg);
+        }
+      }).catch(function () {});
+    }
+    return p;
+  };
+})();
