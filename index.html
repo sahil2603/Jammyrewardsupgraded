@@ -5797,6 +5797,173 @@ body.games-off #gmLobby,body.games-off #gmPlay{display:none!important}
 .bb-it.big .bb-amt em{color:#fde68a}
 .bb-it.big .bb-amt i{background:#facc15;color:#1a1200}
 .bb-it[data-g=ch] .bb-amt em{color:#f9a8d4}
+/* ═════════════ GAMES PAGE v3 (2026-11-26): bold candy lobby ═════════════
+   One loud thing: the hero banner (giant candy title, Jammy and the game icons floating).
+   Below it everything is calm and organised: live wins, big clear game cards, challenges, latest rounds. */
+#games .gm{padding:22px 0 50px}
+/* hero */
+#games .gx-hero{position:relative;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);align-items:center;gap:10px;min-height:340px;margin:0 0 18px;padding:34px 40px;border-radius:32px;overflow:hidden;isolation:isolate;
+  border:1px solid rgba(255,214,250,.16);box-shadow:0 40px 90px -50px rgba(255,79,184,.6),inset 0 1px 0 rgba(255,255,255,.08)}
+#games .gx-scene{position:absolute;inset:0;z-index:-2;background:linear-gradient(90deg,rgba(22,7,38,.96) 0%,rgba(22,7,38,.78) 42%,rgba(22,7,38,.25) 75%,rgba(22,7,38,.1)),url(games/art/bg.webp?v=20261126) center 70%/cover;transform:scale(1.04);animation:gxPan 22s ease-in-out infinite alternate}
+#games .gx-hero::after{content:'';position:absolute;inset:auto 0 0 0;height:45%;z-index:-1;background:linear-gradient(0deg,rgba(255,79,184,.18),transparent);pointer-events:none}
+@keyframes gxPan{to{transform:scale(1.1) translateX(-1.5%)}}
+#games .gx-copy{position:relative;z-index:2;min-width:0}
+#games .gx-kicker{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font:700 .78rem 'Poppins',sans-serif;color:#ffe0f4;background:rgba(255,79,184,.16);border:1px solid rgba(255,79,184,.4);animation:gxUp .6s .05s both}
+#games .gx-title{margin:12px 0 0;display:flex;flex-direction:column;line-height:.86;font:400 clamp(3.2rem,8vw,6.4rem) 'Lilita One',sans-serif;letter-spacing:.01em;background:none;-webkit-text-fill-color:initial;filter:none}
+#games .gx-w{display:flex}
+#games .gx-w span{display:inline-block;color:#fff;-webkit-text-stroke:0;
+  background:linear-gradient(180deg,#fff 0%,#ffd1ef 45%,#ff6cc6 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 5px 0 #7d1a5c) drop-shadow(0 14px 22px rgba(255,79,184,.45));
+  animation:gxLetter .7s calc(.15s + var(--i) * 55ms) cubic-bezier(.34,1.56,.64,1) both,gxBounce 5s calc(1.5s + var(--i) * 120ms) ease-in-out infinite}
+#games .gx-w2 span{background:linear-gradient(180deg,#fffbe0 0%,#ffe27a 45%,#ffad3d 100%);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 5px 0 #8a4a07) drop-shadow(0 14px 22px rgba(255,179,92,.45))}
+@keyframes gxLetter{0%{opacity:0;transform:translateY(40px) scale(.6) rotate(-8deg)}100%{opacity:1;transform:none}}
+@keyframes gxBounce{0%,86%,100%{transform:none}90%{transform:translateY(-10px) scale(1.06,.94)}95%{transform:translateY(0) scale(.97,1.03)}}
+#games .gx-sub{max-width:440px;margin:16px 0 0;font-size:1.02rem;line-height:1.55;color:#ecdcf7;animation:gxUp .6s .7s both}
+#games .gx-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:22px;animation:gxUp .6s .85s both}
+@keyframes gxUp{from{opacity:0;transform:translateY(14px)}}
+#games .gx-cta{position:relative;overflow:hidden;height:56px;white-space:nowrap;padding:0 30px;border:0;border-radius:18px;cursor:pointer;color:#fff;font:400 1.3rem 'Lilita One',sans-serif;letter-spacing:.02em;text-shadow:0 2px 0 rgba(120,10,70,.35);
+  background:linear-gradient(180deg,#ff6cc6,#f2408f);box-shadow:0 6px 0 #a81f63,0 18px 34px -12px rgba(255,79,184,.8),inset 0 2px 0 rgba(255,255,255,.35);transition:transform .12s,box-shadow .12s,filter .2s}
+#games .gx-cta::after{content:'';position:absolute;top:0;left:-40%;width:30%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg);animation:gxShine 3.6s 2s ease-in-out infinite}
+@keyframes gxShine{0%,70%{left:-40%}100%{left:130%}}
+#games .gx-cta:hover{filter:brightness(1.07)}
+#games .gx-cta:active{transform:translateY(4px);box-shadow:0 2px 0 #a81f63,inset 0 2px 0 rgba(255,255,255,.3)}
+#games .gx-wallet{height:56px;padding:0 18px 0 10px;border-radius:18px;background:rgba(20,8,34,.7);border:1px solid rgba(255,211,77,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+#games .gx-wallet img{width:36px;height:36px}
+#games .gx-wallet .gm-wl{color:#e8d6f5}
+#games .gx-wallet b{color:#ffd34d;font-size:1.4rem}
+#games .gx-wallet.out b{color:#fff;font:700 .9rem 'Poppins',sans-serif}
+/* right side: Jammy with the games floating around him (moves a little with the mouse) */
+#games .gx-stage{position:relative;height:300px;--mx:0;--my:0}
+#games .gx-glow{position:absolute;left:50%;top:52%;width:300px;height:300px;margin:-150px 0 0 -150px;border-radius:50%;background:radial-gradient(circle,rgba(255,79,184,.45),rgba(155,107,255,.18) 45%,transparent 70%);animation:gxPulse 4s ease-in-out infinite}
+@keyframes gxPulse{50%{transform:scale(1.12);opacity:.8}}
+#games .gx-jar{position:absolute;left:50%;top:50%;width:168px;margin:-84px 0 0 -84px;filter:drop-shadow(0 24px 30px rgba(0,0,0,.55));transform:translate(calc(var(--mx) * 10px),calc(var(--my) * 8px));animation:gxJar 3.4s ease-in-out infinite}
+@keyframes gxJar{0%,100%{translate:0 0;rotate:-4deg}50%{translate:0 -14px;rotate:4deg}}
+#games .gx-fl{position:absolute;width:var(--w,92px);filter:drop-shadow(0 12px 16px rgba(0,0,0,.5));transform:translate(calc(var(--mx) * var(--d,20px)),calc(var(--my) * var(--d,20px)));animation:gxFloat var(--t,6s) var(--dl,0s) ease-in-out infinite;transition:transform .25s ease-out}
+@keyframes gxFloat{0%,100%{translate:0 0;rotate:var(--r,-6deg)}50%{translate:0 -16px;rotate:calc(var(--r,-6deg) * -1)}}
+#games .gx-fl.f1{left:6%;top:6%;--w:104px;--d:-26px;--r:-8deg;--t:6.4s}
+#games .gx-fl.f2{right:4%;top:2%;--w:96px;--d:30px;--r:7deg;--t:5.6s;--dl:-1.2s}
+#games .gx-fl.f3{left:0;bottom:6%;--w:92px;--d:22px;--r:5deg;--t:7s;--dl:-2s}
+#games .gx-fl.f4{right:2%;bottom:2%;--w:98px;--d:-24px;--r:-6deg;--t:6s;--dl:-3s}
+#games .gx-fl.f5{left:27%;top:-2%;--w:54px;--d:36px;--r:12deg;--t:4.6s;--dl:-.6s}
+#games .gx-fl.f6{right:27%;bottom:-4%;--w:70px;--d:-32px;--r:-10deg;--t:5.2s;--dl:-1.8s}
+#games .gx-spark{position:absolute;inset:0;z-index:-1;pointer-events:none}
+#games .gx-spark i{position:absolute;width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 10px 2px rgba(255,214,250,.9);opacity:0;animation:gxTw 3.2s ease-in-out infinite}
+#games .gx-spark i:nth-child(1){left:8%;top:18%}#games .gx-spark i:nth-child(2){left:36%;top:12%;animation-delay:-1s}#games .gx-spark i:nth-child(3){left:52%;top:30%;animation-delay:-2s}#games .gx-spark i:nth-child(4){left:62%;top:78%;animation-delay:-.5s}
+#games .gx-spark i:nth-child(5){left:84%;top:46%;animation-delay:-1.6s}#games .gx-spark i:nth-child(6){left:22%;top:84%;animation-delay:-2.4s}#games .gx-spark i:nth-child(7){left:94%;top:14%;animation-delay:-.9s}#games .gx-spark i:nth-child(8){left:46%;top:92%;animation-delay:-2.8s}
+@keyframes gxTw{50%{opacity:.9;transform:scale(1.4)}}
+
+/* live wins strip */
+#games .bb{margin:0 0 30px;border-radius:22px;background:linear-gradient(135deg,rgba(43,20,70,.9),rgba(26,10,44,.92));box-shadow:inset 0 0 0 1px rgba(255,214,250,.1)}
+#games .bb-it{background:rgba(255,214,250,.05);box-shadow:inset 0 0 0 1px rgba(255,214,250,.08)}
+
+/* section titles */
+#games .gx-sec{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 14px}
+#games .gx-sec h2{margin:0;font:400 clamp(1.6rem,3vw,2.1rem) 'Lilita One',sans-serif;letter-spacing:.01em;color:#fff}
+#games .gx-sec span{font-size:.86rem;color:var(--faint)}
+
+/* game cards: big, clear, one tap. Icon on the right, name + what it is + two facts on the left, Play button. */
+#games .gm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+#games .gm-card{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 42%;grid-template-rows:1fr auto;align-items:center;gap:6px 8px;min-height:216px;aspect-ratio:auto;padding:22px 18px 20px 22px;
+  text-align:left;border-radius:26px;overflow:hidden;isolation:isolate;cursor:pointer;filter:none;
+  border:1px solid rgba(255,214,250,.12);
+  background:radial-gradient(90% 120% at 100% 30%,var(--gc,rgba(255,79,184,.3)),transparent 62%),linear-gradient(160deg,#2a1244 0%,#1a0a2c 100%);
+  box-shadow:0 24px 50px -34px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,255,255,.07);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),border-color .3s,box-shadow .3s}
+#games .gm-card::before{content:'';position:absolute;inset:0;z-index:-1;opacity:0;background:radial-gradient(80% 90% at 80% 40%,var(--gc),transparent 70%);transition:opacity .35s}
+#games .gm-card::after{content:'';position:absolute;top:0;left:-60%;width:36%;height:100%;z-index:3;pointer-events:none;opacity:1;background:linear-gradient(100deg,transparent,rgba(255,255,255,.13),transparent);transform:skewX(-18deg)}
+#games .gm-art{position:relative;inset:auto;grid-column:2;grid-row:1 / span 2;align-self:center;width:100%;height:auto;aspect-ratio:1;margin:0;display:grid;place-items:center;background:none!important;box-shadow:none;overflow:visible}
+#games .gm-art img.gm-cover{width:112%;height:112%;max-width:none;object-fit:contain;filter:drop-shadow(0 18px 20px rgba(0,0,0,.55));transform:rotate(4deg);transition:transform .5s cubic-bezier(.34,1.56,.64,1),filter .35s}
+#games .gx-txt{grid-column:1;grid-row:1;display:flex;flex-direction:column;gap:6px;align-self:start;min-width:0}
+#games .gm-name{position:static;font:400 clamp(1.6rem,2.4vw,2rem)/1 'Lilita One',sans-serif;letter-spacing:.01em;color:#fff;text-align:left;transform:none}
+#games .gm-meta{display:block;min-height:0;font-size:.86rem;line-height:1.45;color:#d9c6ea}
+#games .gx-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+#games .gx-chips i{font-style:normal;font:700 .7rem 'Poppins',sans-serif;padding:4px 9px;border-radius:999px;color:#ffe0f4;background:rgba(255,255,255,.07);border:1px solid rgba(255,214,250,.14)}
+#games .gm-tag{position:relative;inset:auto;grid-column:1;grid-row:2;justify-self:start;display:inline-flex!important;align-items:center;gap:8px;margin:8px 0 0;padding:10px 20px;border-radius:14px;font:400 1.02rem 'Lilita One',sans-serif;letter-spacing:.02em;color:#fff;
+  background:linear-gradient(180deg,#ff6cc6,#f2408f);box-shadow:0 4px 0 #a81f63,0 12px 22px -10px rgba(255,79,184,.8)}
+#games .gm-tag::after{content:'';width:0;height:0;border-left:7px solid #fff;border-top:5px solid transparent;border-bottom:5px solid transparent}
+#games .gm-tag.off{color:#ffe0f4;background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px rgba(255,214,250,.25)}
+#games .gm-tag.launch,#games .gm-tag.soon{color:#3a1600;background:linear-gradient(180deg,#ffe27a,#ffb35c);box-shadow:0 4px 0 #b5741a,0 12px 22px -10px rgba(255,179,92,.7)}
+#games .gm-tag.launch::after,#games .gm-tag.soon::after{display:none}
+#games .gm-soon{cursor:default;opacity:1}
+@media (hover:hover){
+  #games .gm-grid:hover .gm-card:not(:hover){filter:none}
+  #games .gm-card:hover:not(.gm-soon),#games .gm-card:focus-visible{transform:translateY(-6px);border-color:rgba(255,170,225,.6);box-shadow:0 30px 60px -30px var(--gs,rgba(255,79,184,.8)),inset 0 1px 0 rgba(255,255,255,.1)}
+  #games .gm-card:hover::before,#games .gm-card:focus-visible::before{opacity:.9}
+  #games .gm-card:hover::after{animation:gmShine .9s ease}
+  #games .gm-card:hover .gm-art img.gm-cover,#games .gm-card:focus-visible .gm-art img.gm-cover{transform:translateY(-8px) scale(1.1) rotate(-5deg);filter:drop-shadow(0 26px 26px rgba(0,0,0,.6));animation:none}
+  #games .gm-card:hover .gm-name{color:#ffd34d;transform:none}
+  #games .gm-card:hover .gm-tag:not(.launch):not(.soon){filter:brightness(1.08)}
+}
+#games .gm-card:active:not(.gm-soon){transform:translateY(-1px) scale(.985)}
+#games .gm-bj{--gc:rgba(255,79,184,.34);--gs:rgba(255,79,184,.7)}
+#games .gm-mines{--gc:rgba(170,90,255,.38);--gs:rgba(170,90,255,.7)}
+#games .gm-plinko{--gc:rgba(255,110,190,.34);--gs:rgba(255,110,190,.7)}
+#games .gm-hilo{--gc:rgba(90,220,120,.28);--gs:rgba(76,230,138,.6)}
+#games .gm-keno{--gc:rgba(255,180,60,.32);--gs:rgba(255,179,92,.7)}
+#games .gm-slot{--gc:rgba(255,211,77,.32);--gs:rgba(255,211,77,.6)}
+
+/* challenges + latest rounds sit in matching panels */
+#games .gm-ch,#games .gm-feed{margin-top:30px;padding:22px 22px 18px;border-radius:26px;background:linear-gradient(180deg,rgba(43,20,70,.75),rgba(26,10,44,.85));border:1px solid rgba(255,214,250,.1)}
+#games .gm-ch-h b,#games .gm-feed-h b{font:400 clamp(1.4rem,2.4vw,1.8rem) 'Lilita One',sans-serif;color:#fff}
+#games .gm-row .gm-wi{background:rgba(255,214,250,.06)}
+#games .gm-row:not(.gm-rhead):nth-child(even){background:rgba(255,214,250,.035)}
+
+@media(max-width:1100px){
+  #games .gm-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #games .gx-hero{grid-template-columns:minmax(0,1fr) 300px;padding:28px}
+}
+@media(max-width:700px){
+  #games .gm{padding-top:10px}
+  #games .gx-hero{grid-template-columns:1fr;min-height:0;padding:22px 18px 20px;border-radius:24px;gap:0}
+  #games .gx-scene{background:linear-gradient(180deg,rgba(22,7,38,.35) 0%,rgba(22,7,38,.85) 55%,rgba(22,7,38,.95)),url(games/art/bg.webp?v=20261126) center 80%/cover}
+  #games .gx-stage{order:-1;height:150px;margin:-6px -6px 0}
+  #games .gx-jar{width:110px;margin:-55px 0 0 -55px}
+  #games .gx-glow{width:200px;height:200px;margin:-100px 0 0 -100px}
+  #games .gx-fl{--w:64px!important}
+  #games .gx-fl.f5,#games .gx-fl.f6{display:none}
+  #games .gx-title{font-size:clamp(2.6rem,13vw,3.4rem);margin-top:10px}
+  #games .gx-sub{font-size:.92rem}
+  #games .gx-actions{gap:10px}
+  #games .gx-cta{flex:none;height:52px;font-size:1.15rem;padding:0 20px;white-space:nowrap}
+  #games .gx-wallet{flex:1;min-width:0}
+  #games .gx-wallet b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #games .gx-wallet{height:52px}
+  #games .gm-grid{grid-template-columns:1fr;gap:12px}
+  #games .gm-card{min-height:150px;padding:16px 12px 16px 18px;grid-template-columns:minmax(0,1fr) 38%;border-radius:22px}
+  #games .gm-name{font-size:1.6rem}
+  #games .gm-meta{font-size:.8rem}
+  #games .gm-tag{padding:8px 16px;font-size:.95rem}
+  #games .gm-ch,#games .gm-feed{padding:16px 14px;border-radius:20px}
+}
+
+/* hero art (ChatGPT) */
+#games .gx-scene{background:linear-gradient(90deg,rgba(22,7,38,.55) 0%,rgba(22,7,38,.25) 45%,rgba(22,7,38,0) 70%),url(games/art/hero-bg.webp?v=20261126) right center/cover}
+#games .gx-title{margin:6px 0 0;line-height:0}
+#games .gx-logo{display:block;width:min(560px,100%);height:auto;filter:drop-shadow(0 16px 26px rgba(0,0,0,.5));transform-origin:50% 80%;animation:gxLogoIn .9s .1s cubic-bezier(.34,1.56,.64,1) both,gxWobble 6s 2s ease-in-out infinite}
+@keyframes gxLogoIn{0%{opacity:0;transform:translateY(30px) scale(.6) rotate(-6deg)}100%{opacity:1;transform:none}}
+@keyframes gxWobble{0%,84%,100%{transform:none}88%{transform:scale(1.05,.95) rotate(-1deg)}92%{transform:scale(.97,1.03) rotate(1deg)}96%{transform:scale(1.01,.99)}}
+#games .gx-jar{width:250px;margin:-125px 0 0 -125px}
+#games .gx-glow{width:360px;height:360px;margin:-180px 0 0 -180px}
+#games .gx-stage{height:330px}
+#games .gx-fl.f1{left:2%;top:4%;--w:96px}
+#games .gx-fl.f2{right:0;top:0;--w:92px}
+#games .gx-fl.f3{left:-2%;bottom:4%;--w:86px}
+#games .gx-fl.f4{right:-2%;bottom:6%;--w:92px}
+#games .gx-fl.f5{left:26%;top:-4%;--w:64px;--d:36px}
+#games .gx-fl.f6{right:24%;bottom:-6%;--w:78px;--d:-30px;--r:-18deg}
+#games .gx-fl.f7{left:30%;bottom:2%;--w:48px;--d:40px;--r:14deg;--t:4.4s;--dl:-2.2s}
+#games .gx-ic{width:34px;height:34px;object-fit:contain;flex:none;filter:drop-shadow(0 4px 8px rgba(0,0,0,.4))}
+#games .bb-l .gx-ic{width:30px;height:30px;animation:gmPulse 2s infinite;border-radius:50%}
+#games .gm-ch-h,#games .gm-feed-h{display:flex;align-items:center;gap:10px}
+@media(max-width:700px){
+  #games .gx-scene{background:linear-gradient(180deg,rgba(22,7,38,.1) 0%,rgba(22,7,38,.7) 50%,rgba(22,7,38,.92)),url(games/art/hero-bg.webp?v=20261126) 85% center/cover}
+  #games .gx-stage{height:200px}
+  #games .gx-jar{width:160px;margin:-80px 0 0 -80px}
+  #games .gx-logo{width:min(330px,100%)}
+  #games .gx-fl.f7{display:none}
+}
+@media (prefers-reduced-motion:reduce){#games .gx-hero *,#games .gx-scene{animation:none!important}}
+
 html.ice-rm .bb-tr{animation-duration:calc(var(--bbd,40s) * 3)}
 @media(max-width:640px){.bb{border-radius:16px;padding:5px;margin-bottom:16px}.bb-l{padding:0 10px}.bb-lt small{display:none}.bb-lt b{font-size:.9rem}.bb-g{width:32px;height:32px;font-size:1rem}.bb-it{padding:6px 10px 6px 6px;gap:9px}}
 </style>
@@ -7097,14 +7264,31 @@ img.dbl{flex:none;width:auto}
   <!-- JAMMMY GAMES -->
   <section class="page" id="games">
     <div class="gm">
-      <header class="gm-head">
-        <div class="gm-title">
-          <h1 class="gm-h1">Jammmy Games</h1>
-          <p class="gm-sub">Our own games, played with your Jammmy Coins. Every result is provably fair.</p>
+      <header class="gm-head gx-hero" id="gxHero">
+        <div class="gx-scene" aria-hidden="true"></div>
+        <div class="gx-spark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="gx-copy">
+          <span class="gx-kicker">🍬 Jammmy Originals</span>
+          <h1 class="gm-h1 gx-title"><img class="gx-logo" src="games/art/hero-logo.webp?v=20261126" alt="Jammmy Games" width="1100" height="529"></h1>
+          <p class="gm-sub gx-sub">Our own games, played with your Jammmy Coins. Every result is provably fair.</p>
+          <div class="gx-actions">
+            <button type="button" class="gx-cta" onclick="gmOpen('mines')">Play Mines</button>
+            <div class="gm-wallet gx-wallet" id="gmWallet">
+              <img src="jammmy-coin.webp" alt="">
+              <div><span class="gm-wl">Your coins</span><b id="gmBal">—</b></div>
+            </div>
+          </div>
         </div>
-        <div class="gm-wallet" id="gmWallet">
-          <img src="jammmy-coin.webp" alt="">
-          <div><span class="gm-wl">Your coins</span><b id="gmBal">—</b></div>
+        <div class="gx-stage" aria-hidden="true">
+          <div class="gx-glow"></div>
+          <img class="gx-jar" src="games/art/hero-jar.webp?v=20261126" alt="">
+          <img class="gx-fl f1" src="games/art/icon-mines.webp?v=20261126" alt="">
+          <img class="gx-fl f2" src="games/art/icon-blackjack.webp?v=20261126" alt="">
+          <img class="gx-fl f3" src="games/art/icon-plinko.webp?v=20261126" alt="">
+          <img class="gx-fl f4" src="games/art/icon-hilo.webp?v=20261126" alt="">
+          <img class="gx-fl f5" src="games/art/float-coin.webp?v=20261126" alt="">
+          <img class="gx-fl f6" src="games/art/float-candy.webp?v=20261126" alt="">
+          <img class="gx-fl f7" src="games/art/gem.webp?v=20261126" alt="">
         </div>
       </header>
 
@@ -7117,69 +7301,64 @@ img.dbl{flex:none;width:auto}
       <div class="gm-offbar" id="gmOffBar" hidden>🚧 The Games page is off for players. Only admins can play right now.</div>
       <div class="gm-lobby" id="gmLobby">
         <div class="bb" id="homeBB" hidden aria-label="Live wins">
-          <div class="bb-l"><span class="bb-dot"></span><span class="bb-lt"><b>Live wins</b><small>Last 24 hours</small></span></div>
+          <div class="bb-l"><img class="gx-ic" src="games/art/icon-live.webp?v=20261126" alt=""><span class="bb-lt"><b>Live wins</b><small>Last 24 hours</small></span></div>
           <div class="bb-vp"><div class="bb-tr" id="homeBBTr"></div></div>
         </div>
+        <div class="gx-sec"><h2>Pick a game</h2><span>Tap a card to play. New games land here first.</span></div>
         <div class="gm-grid">
           <button type="button" class="gm-card gm-bj" data-game="blackjack">
             <span class="gm-art" aria-hidden="true">
               <img class="gm-cover" src="games/art/icon-blackjack.webp?v=20261126" alt="" loading="lazy" decoding="async">
             </span>
-            <span class="gm-name">Blackjack</span>
-            <span class="gm-meta">Pays 3:2 · side bets · up to 3 hands</span>
+            <span class="gx-txt"><span class="gm-name">Blackjack</span><span class="gm-meta">Beat the dealer to 21. Side bets and up to 3 hands at once.</span><span class="gx-chips"><i>Pays 3:2</i><i>Up to 3 hands</i></span></span>
             <span class="gm-tag" data-tag="blackjack">Play</span>
           </button>
           <button type="button" class="gm-card gm-mines" data-game="mines">
             <span class="gm-art" aria-hidden="true">
               <img class="gm-cover" src="games/art/icon-mines.webp?v=20261126" alt="" loading="lazy" decoding="async">
             </span>
-            <span class="gm-name">Mines</span>
-            <span class="gm-meta">Find gems, dodge mines · up to 100K</span>
+            <span class="gx-txt"><span class="gm-name">Mines</span><span class="gm-meta">Find the gems, dodge the bombs. Cash out whenever you like.</span><span class="gx-chips"><i>98% RTP</i><i>Up to 100K</i></span></span>
             <span class="gm-tag" data-tag="mines">Play</span>
           </button>
           <button type="button" class="gm-card gm-plinko" data-game="plinko">
             <span class="gm-art" aria-hidden="true">
               <img class="gm-cover" src="games/art/icon-plinko.webp?v=20261126" alt="" loading="lazy" decoding="async">
             </span>
-            <span class="gm-name">Plinko</span>
-            <span class="gm-meta">8–16 rows · three risk levels · auto drop</span>
+            <span class="gx-txt"><span class="gm-name">Plinko</span><span class="gm-meta">Drop the ball and watch it bounce into a multiplier.</span><span class="gx-chips"><i>Up to 1,000×</i><i>3 risk levels</i></span></span>
             <span class="gm-tag" data-tag="plinko">Play</span>
           </button>
           <button type="button" class="gm-card gm-hilo" data-game="hilo">
             <span class="gm-art" aria-hidden="true">
               <img class="gm-cover" src="games/art/icon-hilo.webp?v=20261126" alt="" loading="lazy" decoding="async">
             </span>
-            <span class="gm-name">HiLo</span>
-            <span class="gm-meta">Higher or lower · build a streak · cash out</span>
+            <span class="gx-txt"><span class="gm-name">HiLo</span><span class="gm-meta">Higher or lower? Build a streak and cash out any time.</span><span class="gx-chips"><i>98% RTP</i><i>Streaks pay big</i></span></span>
             <span class="gm-tag" data-tag="hilo">Play</span>
           </button>
           <button type="button" class="gm-card gm-keno" data-game="keno">
             <span class="gm-art" aria-hidden="true">
               <img class="gm-cover" src="games/art/icon-keno.webp?v=20261126" alt="" loading="lazy" decoding="async">
             </span>
-            <span class="gm-name">Keno</span>
-            <span class="gm-meta">Pick up to 10 numbers · up to 1,000×</span>
+            <span class="gx-txt"><span class="gm-name">Keno</span><span class="gm-meta">Pick up to 10 numbers and watch the draw.</span><span class="gx-chips"><i>99% RTP</i><i>Up to 1,000×</i></span></span>
             <span class="gm-tag" data-tag="keno">Play</span>
           </button>
           <div class="gm-card gm-slot gm-soon" aria-disabled="true">
             <span class="gm-art" aria-hidden="true">
               <img class="gm-cover" src="games/art/icon-slots.webp?v=20261126" alt="" loading="lazy" decoding="async">
             </span>
-            <span class="gm-name">Jammin Slots</span>
-            <span class="gm-meta">Jammy's own slot</span>
+            <span class="gx-txt"><span class="gm-name">Jammin Slots</span><span class="gm-meta">Jammy's own slot, with jars, bonus buys and free spins.</span><span class="gx-chips"><i>Bonus buys</i><i>Free spins</i></span></span>
             <span class="gm-tag soon launch">Launching 1 Dec</span>
           </div>
         </div>
 
 
         <section class="gm-ch" aria-label="Challenges">
-          <div class="gm-ch-h"><b>🎯 Challenges</b><span>Hit the target, win the coins. Each player can win each challenge once.</span></div>
+          <div class="gm-ch-h"><img class="gx-ic" src="games/art/icon-trophy.webp?v=20261126" alt=""><b>Challenges</b><span>Hit the target, win the coins. Each player can win each challenge once.</span></div>
           <div class="gm-ch-list" id="gmChList"><div class="gm-ch-empty">No challenges running right now. Watch Discord for the next one.</div></div>
           <div class="gm-chw" id="gmChWins"></div>
           <input type="file" id="gmChFile" accept="image/png,image/jpeg,image/webp" hidden>
         </section>
         <section class="gm-feed" aria-label="Latest rounds">
-          <div class="gm-feed-h"><span class="gm-live-dot"></span><b>Latest rounds</b><span class="gm-feed-s">Live from every Jammmy Game</span></div>
+          <div class="gm-feed-h"><img class="gx-ic" src="games/art/icon-rounds.webp?v=20261126" alt=""><b>Latest rounds</b><span class="gm-feed-s">Live from every Jammmy Game</span></div>
           <div class="gm-feed-list" id="gmFeed"><div class="gm-feed-empty">No rounds yet. Be the first to play.</div></div>
         </section>
       </div>
@@ -15931,7 +16110,7 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
   }
   function loggedOut(){
     var b = $('gmBal'), w = $('gmWallet'); if(!b) return;
-    w.classList.add('out'); b.textContent = 'Log in to play for coins';
+    w.classList.add('out'); b.textContent = 'Log in to play';
     w.onclick = function(){ if(typeof startDiscordLogin === 'function') startDiscordLogin(); };
   }
   function paintCards(){
@@ -18131,6 +18310,18 @@ function tggRaceEnd(kind, now){
   function fmt(d){ return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }); }
   /* a direct #leaderboards visit on the TreasureGG tab keeps the right state */
   if(typeof CURRENT_LB_CASINO !== 'undefined' && CURRENT_LB_CASINO === 'treasuregg') loadLeaderboard('treasuregg');
+})();
+</script>
+<script>
+/* games hero: Jammy and the floating games lean towards the mouse */
+(function(){
+  var h = document.getElementById('gxHero'); if(!h || !window.matchMedia || !matchMedia('(hover:hover)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var st = h.querySelector('.gx-stage'), raf = 0, x = 0, y = 0;
+  h.addEventListener('pointermove', function(e){
+    var r = h.getBoundingClientRect(); x = ((e.clientX - r.left) / r.width - .5) * 2; y = ((e.clientY - r.top) / r.height - .5) * 2;
+    if(!raf) raf = requestAnimationFrame(function(){ raf = 0; st.style.setProperty('--mx', x.toFixed(3)); st.style.setProperty('--my', y.toFixed(3)); });
+  });
+  h.addEventListener('pointerleave', function(){ st.style.setProperty('--mx', 0); st.style.setProperty('--my', 0); });
 })();
 </script>
 </body>
