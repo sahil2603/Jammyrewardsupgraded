@@ -1,0 +1,230 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   JAMMMY CANDY WORLD — shared skin for every Jammmy Game (Mines, Plinko, HiLo,
+   Blackjack, Keno). Loaded last in each game, so it wins over the older skins.
+
+   Idea: the games live inside the rainbow jar's world. Night-time berry sky,
+   gummy buttons you can almost squish, jelly gems, jam bombs, sugar sparkles.
+   The one loud thing is the reveal (squish + sugar burst, see candy.js);
+   everything around it stays calm and readable.
+
+   Colours come from the jar's stripes:
+     magenta #ff4fb8 · violet #9b6bff · lime #4ce68a · sky #4cc3ff · peach #ffb35c · coral #ff5d73
+   Art (optional): drop ChatGPT images into games/art/ and they're picked up
+   (bg.webp for the scene behind the games).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+body.candy{
+  --bg:#13071f; --bg2:#1b0a2c; --panel:#1d0d31; --panel2:#271241;
+  --line:rgba(255,214,250,.09); --line2:rgba(255,214,250,.17);
+  --text:#fff5fd; --muted:#dcc8ea; --faint:#a18bb8;
+  --purple:#b46bff; --purple-d:#8a46f0; --pink:#ff4fb8; --gold:#ffd34d; --gold2:#ffb35c; --green:#4ce68a; --red:#ff5d73;
+  --c-mag:#ff4fb8; --c-vio:#9b6bff; --c-lime:#4ce68a; --c-sky:#4cc3ff; --c-peach:#ffb35c; --c-coral:#ff5d73;
+  --felt1:#4a1a6e; --felt2:#2c0f47; --felt3:#170726;
+  --well:#12061e;
+  --jelly:cubic-bezier(.34,1.56,.64,1);
+  --ease:cubic-bezier(.2,.8,.2,1);
+  background:
+    radial-gradient(1000px 560px at 78% -8%,rgba(255,79,184,.20),transparent 62%),
+    radial-gradient(900px 520px at -6% 108%,rgba(155,107,255,.22),transparent 60%),
+    radial-gradient(700px 420px at 50% 120%,rgba(76,195,255,.10),transparent 70%),
+    var(--bg);
+  background-attachment:fixed;
+}
+/* optional painted scene (games/art/bg.webp), set by candy.js once it has loaded */
+body.candy.has-bg{background:linear-gradient(180deg,rgba(19,7,31,.55),rgba(19,7,31,.8)),var(--candy-bg) center bottom/cover fixed,var(--bg)}
+@media (max-width:900px){body.candy.has-bg{background-attachment:scroll}}
+body.candy :focus-visible{outline:2px solid #ffc2ec;outline-offset:2px}
+body.candy ::selection{background:rgba(255,79,184,.4)}
+
+/* sparkles that twinkle behind everything (made by candy.js, transform/opacity only) */
+.cd-sky{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.cd-sky i{position:absolute;width:var(--s,3px);height:var(--s,3px);border-radius:50%;background:#fff;opacity:.15;box-shadow:0 0 6px 1px rgba(255,214,250,.7);animation:cdTw var(--d,4s) ease-in-out var(--dl,0s) infinite}
+.cd-sky i.st{width:10px;height:10px;background:none;box-shadow:none}
+.cd-sky i.st::before,.cd-sky i.st::after{content:'';position:absolute;left:50%;top:50%;width:10px;height:2px;margin:-1px 0 0 -5px;border-radius:2px;background:#ffe3f6}
+.cd-sky i.st::after{transform:rotate(90deg)}
+@keyframes cdTw{0%,100%{opacity:.08;transform:scale(.7)}50%{opacity:.75;transform:scale(1)}}
+body.candy .wrap,body.candy .top,body.candy #notices{position:relative;z-index:1}
+body.candy .top{z-index:30}
+
+/* ── top bar ── */
+body.candy .top{background:rgba(19,7,31,.78);border-bottom:1px solid rgba(255,214,250,.08);box-shadow:0 10px 30px -20px rgba(0,0,0,.8)}
+body.candy .brand img{filter:drop-shadow(0 4px 12px rgba(255,79,184,.45));transition:transform .35s var(--jelly)}
+body.candy .brand:hover img{transform:rotate(-8deg) scale(1.08)}
+body.candy .brand b{background:linear-gradient(90deg,#fff 10%,#ffc2ec 55%,#ffd9a8)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent}
+body.candy .bal{background:linear-gradient(180deg,rgba(255,211,77,.18),rgba(255,179,92,.06));border:1px solid rgba(255,211,77,.42);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+body.candy .bal small{color:#ffd34d}
+body.candy .bal.flash{animation:cdBal .9s var(--jelly)}
+@keyframes cdBal{30%{transform:scale(1.08);box-shadow:0 0 0 5px rgba(255,211,77,.22),0 0 32px rgba(255,211,77,.5)}}
+body.candy .ibtn{background:rgba(255,214,250,.06);border:1px solid rgba(255,214,250,.12);border-radius:14px;transition:background .2s,transform .2s var(--jelly)}
+body.candy .ibtn:hover{background:rgba(255,214,250,.13);transform:translateY(-1px)}
+body.candy .back{color:var(--muted)}
+
+/* ── notices / gate ── */
+body.candy .notice{background:rgba(255,79,184,.08);border-color:rgba(255,79,184,.3)}
+body.candy .notice b{color:#ffe0f4}body.candy .notice a{color:#ff9bd6}
+body.candy .jg-gate{background:rgba(19,7,31,.6)}
+body.candy .jg-gate-card{background:linear-gradient(180deg,#2a1342,#1a0a2b);border:1px solid rgba(255,214,250,.18);border-radius:26px;box-shadow:0 30px 70px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08);animation:cdPop .5s var(--jelly) both}
+body.candy .jg-gate-card img{width:78px;height:78px;animation:cdBob 3.2s ease-in-out infinite}
+body.candy .jg-gate-card h3{font:400 1.6rem 'Lilita One',sans-serif;letter-spacing:.01em}
+body.candy .jg-gate-card p{color:var(--muted)}
+body.candy .jg-gate-card .soon{display:inline-block;margin-top:2px;padding:8px 16px;border-radius:999px;background:linear-gradient(135deg,#ff4fb8,#ffb35c);color:#2a0a1d;font:800 .9rem 'Poppins'}
+@keyframes cdPop{from{opacity:0;transform:translateY(14px) scale(.94)}}
+@keyframes cdBob{50%{transform:translateY(-7px) rotate(-3deg)}}
+
+/* ── side panel ── */
+body.candy .panel{background:linear-gradient(180deg,rgba(43,20,70,.92),rgba(29,13,49,.94));border:1px solid rgba(255,214,250,.1);border-radius:26px;box-shadow:0 24px 60px -30px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.06)}
+body.candy .fld label{color:var(--muted)}
+body.candy .amt,body.candy .sel select,body.candy .ro,body.candy .seg{background:var(--well);border:1px solid rgba(255,214,250,.12);box-shadow:inset 0 2px 8px rgba(0,0,0,.45)}
+body.candy .amt{border-radius:16px}
+body.candy .amt:focus-within,body.candy .sel select:focus{border-color:rgba(255,79,184,.7);box-shadow:0 0 0 3px rgba(255,79,184,.18),inset 0 2px 8px rgba(0,0,0,.45)}
+body.candy .amt .q{background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.05));border-radius:11px;box-shadow:0 2px 0 rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.12);transition:transform .15s var(--jelly),background .15s}
+body.candy .amt .q:hover{background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.08))}
+body.candy .amt .q:active{transform:translateY(2px);box-shadow:none}
+body.candy .amt .q.qmax{color:#ffd34d}
+body.candy .seg{border-radius:16px}
+body.candy .seg button{border-radius:12px;transition:color .15s,background .2s,transform .25s var(--jelly)}
+body.candy .seg button.on{background:linear-gradient(180deg,#a874ff,#7c47ea);color:#fff;box-shadow:0 3px 0 #4f22a8,inset 0 1px 0 rgba(255,255,255,.3);transform:translateY(-1px)}
+body.candy .stat{background:rgba(255,214,250,.04);border:1px solid rgba(255,214,250,.08);border-radius:14px}
+body.candy .stat b.g{color:#ffd34d}
+body.candy .msg{color:#ff8fa0}
+
+/* the main button: a gummy you press into the panel */
+body.candy .deal{position:relative;overflow:hidden;border-radius:18px;color:#fff;text-shadow:0 2px 0 rgba(120,10,70,.35);
+  background:linear-gradient(180deg,#ff6cc6 0%,#ff4fa8 55%,#f2408f 100%);
+  box-shadow:0 6px 0 #a81f63,0 14px 30px -10px rgba(255,79,184,.7),inset 0 2px 0 rgba(255,255,255,.35);
+  transition:transform .12s ease,box-shadow .12s ease,filter .2s,opacity .2s}
+body.candy .deal::before{content:'';position:absolute;left:8%;right:8%;top:6px;height:38%;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,0));pointer-events:none}
+body.candy .deal:hover{filter:brightness(1.06) saturate(1.05)}
+body.candy .deal:active:not([disabled]){transform:translateY(4px);box-shadow:0 2px 0 #a81f63,0 6px 16px -8px rgba(255,79,184,.6),inset 0 2px 0 rgba(255,255,255,.3)}
+body.candy .deal.cash{background:linear-gradient(180deg,#6ff3a2 0%,#3fdc84 55%,#26c46d 100%);text-shadow:0 2px 0 rgba(10,90,45,.35);box-shadow:0 6px 0 #158247,0 14px 30px -10px rgba(76,230,138,.7),inset 0 2px 0 rgba(255,255,255,.4)}
+body.candy .deal.cash:active:not([disabled]){box-shadow:0 2px 0 #158247,inset 0 2px 0 rgba(255,255,255,.3)}
+body.candy .deal.stop{background:linear-gradient(180deg,#ff7d8e,#ff5d73 55%,#e8435a);box-shadow:0 6px 0 #9e2236,0 14px 30px -10px rgba(255,93,115,.6),inset 0 2px 0 rgba(255,255,255,.35)}
+body.candy .deal[disabled]{filter:grayscale(.35) brightness(.85);opacity:.55}
+body.candy .btn2{border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));border:1px solid rgba(255,214,250,.14);box-shadow:0 3px 0 rgba(0,0,0,.35);transition:transform .15s var(--jelly),background .2s}
+body.candy .btn2:hover:not([disabled]){background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.05))}
+body.candy .btn2:active:not([disabled]){transform:translateY(3px);box-shadow:none}
+body.candy .tg input:checked+span,body.candy .jx-sw input:checked+span{background:#ff4fb8}
+body.candy .ai{background:rgba(255,79,184,.07);border-color:rgba(255,79,184,.22)}
+body.candy .lnk{color:#ffb8e2}
+
+/* pressing anything gives a tiny squish (class added by candy.js) */
+.cd-squish{animation:cdSquish .38s var(--jelly)}
+@keyframes cdSquish{0%{transform:scale(1)}30%{transform:scale(.93,.88)}65%{transform:scale(1.05,1.03)}100%{transform:scale(1)}}
+
+/* ── the stage every game sits on ── */
+body.candy .stage,body.candy .table{border-radius:30px;border:1px solid rgba(255,214,250,.1);
+  background:
+    radial-gradient(120% 80% at 50% 0%,rgba(155,107,255,.28),transparent 60%),
+    radial-gradient(80% 60% at 50% 110%,rgba(255,79,184,.18),transparent 70%),
+    linear-gradient(180deg,rgba(42,17,70,.9) 0%,rgba(28,10,49,.9) 60%,rgba(20,7,31,.92) 100%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.03),inset 0 -80px 120px -60px rgba(255,79,184,.18),0 30px 70px -40px rgba(0,0,0,.9)}
+/* soft jelly hills along the bottom of the stage */
+body.candy .stage::after,body.candy .table::after{content:'';position:absolute;left:0;right:0;bottom:0;height:22%;pointer-events:none;z-index:-1;opacity:.55;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 120' preserveAspectRatio='none'%3E%3Cpath d='M0 70 C80 30 160 30 240 62 S400 100 480 60 S640 20 800 58 V120 H0Z' fill='%233a1660'/%3E%3Cpath d='M0 92 C120 60 220 70 320 88 S520 116 620 86 S760 70 800 84 V120 H0Z' fill='%23280d45'/%3E%3C/svg%3E") bottom/100% 100% no-repeat}
+body.candy .stage.lost::after{background:radial-gradient(circle,rgba(255,93,115,.3),transparent 70%);height:auto;inset:0;opacity:1}
+body.candy .stage,body.candy .table{isolation:isolate}
+
+/* big multiplier at the top of the stage */
+body.candy .cur,body.candy .totx{background:linear-gradient(180deg,#fff 30%,#ffc2ec);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 0 rgba(90,20,80,.55))}
+body.candy .nextp,body.candy .hintp{color:#ffd9f0;background:rgba(255,79,184,.12);border:1px solid rgba(255,79,184,.32)}
+
+/* result banner */
+body.candy .banner{background:rgba(30,10,46,.78);border:1px solid rgba(255,214,250,.14);border-radius:24px;box-shadow:0 20px 50px rgba(0,0,0,.5);transition:transform .45s var(--jelly),opacity .25s}
+body.candy .banner .t{background:none;box-shadow:none;border-radius:0;-webkit-text-fill-color:currentColor}
+body.candy .banner.win .t,body.candy .banner.bj .t{-webkit-text-fill-color:transparent}
+body.candy .banner.win .t{background:linear-gradient(180deg,#fff,#7cf2ad);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 20px rgba(76,230,138,.5))}
+body.candy .banner.bj .t{background:linear-gradient(180deg,#fff7c2,#ffd34d 55%,#ff9b4f);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 6px 26px rgba(255,211,77,.6))}
+body.candy .banner.lose .t{color:#ffb3c0}
+body.candy .toast{background:rgba(30,10,46,.94);border-color:rgba(255,211,77,.45)}
+
+/* ── bets list ── */
+body.candy .bets{background:linear-gradient(180deg,rgba(43,20,70,.85),rgba(29,13,49,.9));border:1px solid rgba(255,214,250,.09);border-radius:26px}
+body.candy .tab.on{background:rgba(255,79,184,.14);color:#fff}
+body.candy .grid .m.hi{color:#ffd34d}
+body.candy .grid tr.new td{animation:cdRow .7s var(--jelly)}
+@keyframes cdRow{from{background:rgba(255,79,184,.2);transform:translateY(-6px);opacity:0}}
+
+/* ── modals ── */
+body.candy .modal{background:rgba(10,3,18,.72)}
+body.candy .modal .box{background:linear-gradient(180deg,#2a1342,#1a0a2b);border:1px solid rgba(255,214,250,.16);border-radius:26px;animation:cdPop .4s var(--jelly)}
+body.candy .sbtn.p{background:linear-gradient(135deg,#ff4fb8,#9b6bff)}
+body.candy .pt td:last-child{color:#ffd34d}
+body.candy .jx-pop{background:linear-gradient(180deg,#2a1342,#1a0a2b)}
+body.candy .jx-pop input[type=range]{accent-color:#ff4fb8}
+
+/* ═════════════ MINES ═════════════ */
+body.candy .mgrid{background:rgba(10,3,18,.45);border-radius:26px;box-shadow:inset 0 2px 14px rgba(0,0,0,.5),0 0 0 1px rgba(255,214,250,.06)}
+body.candy .mgrid .t{border-radius:clamp(11px,18%,18px);
+  background:linear-gradient(180deg,#8c5cf0 0%,#6a3bd6 60%,#5a2fc4 100%);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.28),inset 0 -4px 0 rgba(40,10,100,.35),0 5px 0 #34167a,0 10px 18px -6px rgba(0,0,0,.6);
+  transition:transform .2s var(--jelly),filter .2s,box-shadow .2s}
+body.candy .mgrid .t::after{inset:10% 16% 56% 16%;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0))}
+body.candy .mgrid.live .t:not(.open):hover{transform:translateY(-3px) scale(1.03);filter:brightness(1.12);box-shadow:inset 0 2px 0 rgba(255,255,255,.3),inset 0 -4px 0 rgba(40,10,100,.35),0 8px 0 #34167a,0 16px 24px -6px rgba(255,79,184,.45)}
+body.candy .mgrid .t.press{transform:translateY(4px) scale(.97)!important;box-shadow:inset 0 2px 0 rgba(255,255,255,.2),0 1px 0 #34167a!important}
+/* waiting for the answer: the tile wobbles like jelly (only for a moment now) */
+body.candy .mgrid .t.pend{animation:cdWobble .5s ease-in-out infinite;filter:brightness(1.18)}
+body.candy .mgrid .t.pend::before{content:'';position:absolute;inset:30%;border-radius:50%;border:3px solid rgba(255,255,255,.75);border-top-color:transparent;animation:cdSpin .6s linear infinite}
+@keyframes cdWobble{0%,100%{transform:scale(1,1)}25%{transform:scale(1.05,.95)}50%{transform:scale(.96,1.04)}75%{transform:scale(1.02,.98)}}
+@keyframes cdSpin{to{transform:rotate(360deg)}}
+body.candy .mgrid .t.open{background:radial-gradient(circle at 50% 40%,#2c1248,#170828);box-shadow:inset 0 3px 12px rgba(0,0,0,.65),0 0 0 1px rgba(255,214,250,.05)}
+body.candy .mgrid .t.gem:not(.ghost){background:radial-gradient(circle at 50% 42%,rgba(255,120,200,.35),#2a0f45 70%);box-shadow:inset 0 0 0 2px rgba(255,140,210,.65),inset 0 0 26px rgba(255,79,184,.3),0 0 22px rgba(255,79,184,.35)}
+body.candy .mgrid .t.flip:not(.ghost){animation:cdReveal .5s var(--jelly)}
+@keyframes cdReveal{0%{transform:scale(.82,1.12)}45%{transform:scale(1.12,.9)}75%{transform:scale(.97,1.03)}100%{transform:none}}
+body.candy .mgrid .t.flip .ic svg,body.candy .mgrid .t.flip .ic img{animation:cdIconIn .5s var(--jelly)}
+@keyframes cdIconIn{0%{transform:scale(.1) rotate(-30deg);opacity:0}70%{transform:scale(1.15) rotate(6deg);opacity:1}100%{transform:none}}
+body.candy .mgrid .t .ic img{width:74%;height:74%;object-fit:contain;filter:drop-shadow(0 6px 10px rgba(0,0,0,.45))}
+body.candy .mgrid .t.ghost .ic svg,body.candy .mgrid .t.ghost .ic img{opacity:.4;transform:scale(.72)}
+body.candy .mgrid .t.hit{background:radial-gradient(circle,#ff5d73 0%,#a3133a 55%,#3d0518 100%);box-shadow:0 0 0 2px #ff9bb0,0 0 46px rgba(255,93,115,.75)}
+body.candy .mgrid .t.hit::before{border-color:rgba(255,211,77,.9)}
+body.candy .mgrid .t.sel:not(.open){background:linear-gradient(180deg,#ff7cc9,#e8449a);box-shadow:inset 0 0 0 2px #ffd0ec,inset 0 -4px 0 rgba(120,10,70,.3),0 5px 0 #8f1a55,0 10px 18px rgba(255,79,184,.3)}
+body.candy .mgrid.dealing .t{animation:cdDeal .5s var(--jelly) both;animation-delay:calc(var(--i,0) * 14ms)}
+@keyframes cdDeal{from{transform:scale(.5) translateY(10px);opacity:0}}
+body.candy .stage.shake{animation:cdShake .55s}
+@keyframes cdShake{15%{transform:translate(-8px,4px) rotate(-.6deg)}30%{transform:translate(7px,-4px) rotate(.6deg)}45%{transform:translate(-5px,3px)}60%{transform:translate(4px,-2px)}80%{transform:translate(-2px,1px)}}
+body.candy .selinfo{background:rgba(255,79,184,.07);border-color:rgba(255,79,184,.25)}
+body.candy .pg i.on{background:#ff4fb8;box-shadow:0 0 6px rgba(255,79,184,.6)}
+
+/* ═════════════ PLINKO ═════════════ */
+body.candy .pboard{filter:drop-shadow(0 20px 30px rgba(0,0,0,.35))}
+body.candy .hist > *{border-radius:12px!important}
+
+/* ═════════════ HILO ═════════════ */
+body.candy .deck span{border-radius:12px}
+body.candy .guess{border-radius:16px;transition:transform .2s var(--jelly),filter .2s}
+body.candy .guess:active:not([disabled]){transform:translateY(3px) scale(.98)}
+body.candy .guess.up{background:linear-gradient(180deg,rgba(76,230,138,.2),rgba(76,230,138,.06));border-color:rgba(76,230,138,.4)}
+body.candy .guess.down{background:linear-gradient(180deg,rgba(255,93,115,.2),rgba(255,93,115,.06));border-color:rgba(255,93,115,.4)}
+body.candy .streak.on{background:rgba(255,179,92,.16);border-color:rgba(255,179,92,.45);color:#ffd9a8}
+body.candy .table2 ~ .hist{background:rgba(10,3,18,.35);border-color:rgba(255,214,250,.08)}
+
+/* ═════════════ BLACKJACK ═════════════ */
+body.candy .table{background:
+    radial-gradient(120% 90% at 50% 18%,#5a1f80 0%,#36114f 50%,#1a0729 100%)}
+body.candy .table::before{opacity:.5}
+body.candy .table::after{display:none}
+body.candy .card .b{background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.2),transparent 55%),repeating-linear-gradient(45deg,rgba(255,255,255,.08) 0 6px,transparent 6px 12px),linear-gradient(160deg,#ff5fbf,#9b6bff)!important}
+body.candy .spot{border-color:rgba(255,214,250,.28)}
+body.candy .act{border-radius:16px;transition:transform .2s var(--jelly)}
+body.candy .act:active:not([disabled]){transform:translateY(3px)}
+
+/* ═════════════ effects layer (candy.js) ═════════════ */
+.cd-fx{position:fixed;inset:0;z-index:70;pointer-events:none}
+.cd-splat{position:fixed;z-index:69;pointer-events:none;width:200px;height:200px;margin:-100px 0 0 -100px;animation:cdSplat 1.1s var(--ease,ease) forwards}
+.cd-splat svg{width:100%;height:100%}
+@keyframes cdSplat{0%{transform:scale(.2) rotate(-20deg);opacity:1}35%{transform:scale(1.1) rotate(4deg);opacity:1}70%{opacity:.9}100%{transform:scale(1.15);opacity:0}}
+.cd-pop{position:fixed;z-index:71;pointer-events:none;font:400 1.4rem 'Lilita One',sans-serif;color:#fff;text-shadow:0 3px 0 rgba(120,20,90,.6),0 0 18px rgba(255,79,184,.7);transform:translate(-50%,-50%);animation:cdFloat .9s var(--ease,ease) forwards;white-space:nowrap}
+@keyframes cdFloat{0%{opacity:0;transform:translate(-50%,-30%) scale(.6)}20%{opacity:1;transform:translate(-50%,-60%) scale(1.1)}100%{opacity:0;transform:translate(-50%,-160%) scale(1)}}
+
+/* ═════════════ phones ═════════════ */
+@media (max-width:900px){
+  body.candy .stage,body.candy .table{border-radius:22px}
+  body.candy .panel{border-radius:20px}
+  body.candy .deal{border-radius:16px}
+  body.candy .mgrid .t{box-shadow:inset 0 2px 0 rgba(255,255,255,.28),inset 0 -3px 0 rgba(40,10,100,.35),0 4px 0 #34167a}
+  .cd-sky i:nth-child(n+12){display:none}
+}
+@media (hover:none){body.candy .mgrid.live .t:not(.open):hover{transform:none;filter:none}}
+@media (prefers-reduced-motion:reduce){
+  .cd-sky{display:none}
+  body.candy *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}

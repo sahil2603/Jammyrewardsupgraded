@@ -367,8 +367,9 @@ window.addEventListener('keydown', function (e) { if (document.body.classList.co
   .pboard{flex:1;aspect-ratio:auto;min-height:0}
 }
 </style>
+<link rel="stylesheet" href="candy.css?v=20261126">
 </head>
-<body>
+<body class="candy">
 <header class="top">
   <a class="brand" href="./" title="All Jammmy Originals"><img src="../jar-clean.webp" alt=""><b>Plinko</b></a>
   <div class="top-sp"></div>
@@ -1066,7 +1067,7 @@ function geom() {
   G.lastY = G.y0 + (n - 1) * G.dy; G.bucketY = G.lastY + 0.55 * s; G.bucketH = Math.min(s * 0.9, 46);
 }
 function pegX(r, i) { return G.cx + (i - (r + 2) / 2) * G.s; }
-var STOPS = [[0, [124, 58, 237]], [0.45, [192, 38, 211]], [0.72, [244, 63, 94]], [0.88, [249, 115, 22]], [1, [250, 204, 21]]];
+var STOPS = [[0, [155, 107, 255]], [0.4, [255, 79, 184]], [0.7, [255, 93, 115]], [0.88, [255, 179, 92]], [1, [255, 211, 77]]];   /* candy: violet → magenta → coral → peach → gold */
 function slotColor(j, n) {
   var t = Math.abs(j - n / 2) / (n / 2);
   for (var k = 1; k < STOPS.length; k++) if (t <= STOPS[k][0]) {
@@ -1087,7 +1088,8 @@ function draw(now) {
     if (gl > 0) { cx2.beginPath(); cx2.arc(x, y, G.pegR * (2.2 + gl * 1.6), 0, 7); cx2.fillStyle = 'rgba(244,114,182,' + (0.32 * gl) + ')'; cx2.fill(); }
     else if (glow[gk]) delete glow[gk];
     cx2.beginPath(); cx2.arc(x, y, G.pegR * (1 + gl * 0.35), 0, 7);
-    cx2.fillStyle = gl > 0 ? 'rgb(255,' + Math.round(240 - 60 * gl) + ',' + Math.round(250 - 40 * gl) + ')' : 'rgba(233,213,255,.82)'; cx2.fill();
+    cx2.fillStyle = gl > 0 ? 'rgb(255,' + Math.round(240 - 80 * gl) + ',' + Math.round(250 - 30 * gl) + ')' : 'rgba(255,226,246,.86)'; cx2.fill();
+    if (!gl && G.pegR > 2.6) { cx2.beginPath(); cx2.arc(x - G.pegR * 0.3, y - G.pegR * 0.3, G.pegR * 0.35, 0, 7); cx2.fillStyle = 'rgba(255,255,255,.9)'; cx2.fill(); }
   }
   /* slots */
   var tbl = PLINKO[RISK][n], bw = s * 0.9, fs = Math.max(8.5, Math.min(14, s * 0.27));
@@ -1408,5 +1410,6 @@ var _ro = new ResizeObserver(function () { geom(); draw(); }); _ro.observe(cv.pa
   window.addEventListener('focus', warm);
 })();
 </script>
+<script src="candy.js?v=20261126"></script>
 </body>
 </html>
