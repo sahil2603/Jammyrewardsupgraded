@@ -407,7 +407,7 @@ window.addEventListener('keydown', function (e) { if (document.body.classList.co
   .cur{font-size:1.5rem}
 }
 </style>
-<link rel="stylesheet" href="candy.css?v=20261126">
+<link rel="stylesheet" href="candy.css?v=20261126b">
 </head>
 <body class="candy">
 <header class="top">
@@ -1156,17 +1156,41 @@ async function runAuto() {
   while (AUTO.on) {
     if (AUTO.n && AUTO.done >= AUTO.n) { why = 'Finished ' + AUTO.done + ' bets'; break; }
     var bet = getBet(), err = checkBet(bet, MIN_BET); if (err) { why = err; break; }
+    if (LIVE) {   /* the whole round in one request: every picked tile opens at once */
+      var ok = await autoRoundLive(bet); if (!ok) { why = $('msg').textContent || 'Stopped'; break; }
+    } else {
     await startRound(); if (!S || S.phase !== 'play') { why = 'Could not start a round'; break; }
     for (var k = 0; k < SEL.length && S.phase === 'play'; k++) { await pick(SEL[k]); await wait(170 * SP); }
     if (S.phase === 'play') await cashOut();
+    }
     AUTO.done++; AUTO.profit = joRound2(AUTO.profit + S.payout - S.bet); paintInfo();
     if (AUTO.sp && AUTO.profit >= AUTO.sp) { why = 'Stopped: profit reached +' + fmt(AUTO.profit); break; }
     if (AUTO.sl && -AUTO.profit >= AUTO.sl) { why = 'Stopped: loss reached ' + fmt(AUTO.profit); break; }
-    await wait(950 * SP);
+    await wait(LIVE ? 380 : 950 * SP);
   }
   var stoppedByUser = !AUTO.on;
   AUTO.on = false; paintInfo();
   toast(stoppedByUser && !why ? 'Auto stopped · ' + AUTO.done + ' bets, ' + (AUTO.profit >= 0 ? '+' : '') + fmt(AUTO.profit) : why + ' · ' + (AUTO.profit >= 0 ? '+' : '') + fmt(AUTO.profit));
+}
+/* one auto round, live: bet + all picked tiles in one request, then show it all at once */
+async function autoRoundLive(bet) {
+  BUSY = true; hideBanner(); resetBoard(); paintInfo();
+  walletAdd(-bet);
+  var d;
+  try { d = await api('/api/games/bet', { game: 'mines', bet: bet, mines: nMines(), auto_picks: SEL.slice() }); }
+  catch (e) { walletAdd(bet); liveErr(e); BUSY = false; paintInfo(); return false; }
+  ROUND = d.round; S = d.round.state; liveSeeds(d.seeds);
+  S.picks.forEach(function (i) { showTile(i, 'gem'); });
+  if (S.hit >= 0) {
+    showTile(S.hit, 'bomb', 'hit'); sBoom();
+    $('stage').classList.add('shake'); setTimeout(function () { $('stage').classList.remove('shake'); }, 500);
+  } else { sGem(S.picks.length); SND.coins(); }
+  for (var j = 0; j < 25; j++) if (!tiles[j].classList.contains('open')) showTile(j, S.mineSet.indexOf(j) >= 0 ? 'bomb' : 'gem', 'ghost');
+  liveBalance(d.balance);
+  liveFinished(ROUND, S.bet, S.payout);
+  BUSY = false; paintInfo();
+  $('curX').textContent = fmtX(S.payout > 0 ? S.mult : 0);
+  return true;
 }
 function showTile(i, kind, cls) {
   var t = tiles[i]; t.classList.add('open', kind, 'flip'); if (cls) t.classList.add(cls);
@@ -1446,6 +1470,6 @@ async function liveResume(d) {
   window.addEventListener('focus', warm);
 })();
 </script>
-<script src="candy.js?v=20261126"></script>
+<script src="candy.js?v=20261126b"></script>
 </body>
 </html>

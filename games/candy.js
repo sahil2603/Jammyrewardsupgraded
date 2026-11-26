@@ -30,7 +30,7 @@
 
   /* ── optional art (games/art/*.webp from ChatGPT) ── */
   /* list a file here once it's uploaded to games/art/ (so the games never ask for art that isn't there) */
-  var ART_FILES = { bg: true, gem: true, bomb: true, splat: true };
+  var ART_FILES = { bg: true, gem: true, bomb: true, splat: false };
   var ART = {};
   function tryArt(name, done) { if (!ART_FILES[name]) return; var im = new Image(); im.onload = function () { ART[name] = im.src; if (done) done(im.src); }; im.src = 'art/' + name + '.webp?v=20261126'; }
   tryArt('bg', function (src) { document.body.style.setProperty('--candy-bg', 'url("' + src + '")'); document.body.classList.add('has-bg'); });
@@ -125,10 +125,9 @@
         /* Mines tile opened */
         if (el.classList.contains('t') && !has(before, 'open') && el.classList.contains('open') && !el.classList.contains('ghost')) {
           var c = center(el);
-          if (el.classList.contains('hit')) { splat(c.x, c.y); buzz([40, 30, 70]); }
+          if (el.classList.contains('hit')) { buzz([40, 30, 70]); }
           else if (el.classList.contains('gem')) { burst(c.x, c.y, { n: MOBILE ? 12 : 18, speed: 5.5, size: 5 }); buzz(8); }
         }
-        if (el.classList.contains('t') && !has(before, 'hit') && el.classList.contains('hit') && has(before, 'open')) { var c2 = center(el); splat(c2.x, c2.y); }
         /* Keno number matched */
         if (el.classList.contains('kt') && !has(before, 'hit') && el.classList.contains('hit')) { var k = center(el); burst(k.x, k.y, { n: MOBILE ? 10 : 14, speed: 5, size: 4.5 }); buzz(6); }
         /* result banner */
@@ -154,6 +153,61 @@
     b.classList.remove('cd-squish'); void b.offsetWidth; b.classList.add('cd-squish');
     setTimeout(function () { b.classList.remove('cd-squish'); }, 420);
   }, true);
+
+  /* ── candy dropdowns: replace the plain browser list (Mines count, Plinko rows) with a grid of chips ── */
+  function enhanceSelect(sel) {
+    if (sel._cd) return; sel._cd = 1;
+    var wrap = sel.parentNode; wrap.classList.add('cd-sel');
+    var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'cd-sel-btn';
+    btn.setAttribute('aria-haspopup', 'listbox'); btn.setAttribute('aria-label', sel.getAttribute('aria-label') || 'Choose');
+    wrap.appendChild(btn);
+    sel.tabIndex = -1; sel.setAttribute('aria-hidden', 'true');
+    var pop = document.createElement('div'); pop.className = 'cd-sel-pop'; pop.setAttribute('role', 'listbox');
+    document.body.appendChild(pop);
+    var last = '';
+    function paint() {
+      var o = sel.options[sel.selectedIndex], key = sel.value + '|' + sel.disabled;
+      if (key === last) return; last = key;
+      btn.innerHTML = '<span>' + (o ? o.textContent : '') + '</span><i aria-hidden="true"></i>';
+      btn.disabled = sel.disabled;
+    }
+    function open() {
+      var n = sel.options.length, cols = n > 12 ? 6 : n > 6 ? 5 : n;
+      pop.style.setProperty('--cols', cols);
+      pop.innerHTML = Array.prototype.map.call(sel.options, function (o) {
+        return '<button type="button" role="option" data-v="' + o.value + '" aria-selected="' + (o.value === sel.value) + '" class="' + (o.value === sel.value ? 'on' : '') + '">' + o.textContent + '</button>';
+      }).join('');
+      var r = btn.getBoundingClientRect(), w = Math.max(r.width, Math.min(cols * 50 + 20, innerWidth - 16));
+      pop.style.width = w + 'px';
+      pop.style.left = Math.max(8, Math.min(r.left, innerWidth - w - 8)) + 'px';
+      pop.classList.add('show');
+      var below = innerHeight - r.bottom, h = pop.offsetHeight;
+      pop.style.top = (below > h + 12 || below > r.top ? r.bottom + 6 : r.top - h - 6) + 'px';
+      btn.setAttribute('aria-expanded', 'true');
+      var on = pop.querySelector('.on') || pop.firstChild; if (on) on.focus({ preventScroll: true });
+    }
+    function close(focusBtn) { if (!pop.classList.contains('show')) return; pop.classList.remove('show'); btn.setAttribute('aria-expanded', 'false'); if (focusBtn) btn.focus(); }
+    btn.onclick = function (e) { e.stopPropagation(); pop.classList.contains('show') ? close() : open(); };
+    pop.onclick = function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      if (sel.value !== b.dataset.v) { sel.value = b.dataset.v; sel.dispatchEvent(new Event('change', { bubbles: true })); }
+      paint(); close(true);
+    };
+    pop.onkeydown = function (e) {
+      var list = Array.prototype.slice.call(pop.children), i = list.indexOf(document.activeElement), cols = +pop.style.getPropertyValue('--cols') || 1;
+      var mv = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: cols, ArrowUp: -cols }[e.key];
+      if (mv) { e.preventDefault(); var t = list[Math.max(0, Math.min(list.length - 1, i + mv))]; if (t) t.focus(); }
+      else if (e.key === 'Escape') { e.preventDefault(); close(true); }
+      else if (e.key === 'Tab') close();
+    };
+    document.addEventListener('click', function (e) { if (!pop.contains(e.target) && e.target !== btn) close(); });
+    window.addEventListener('resize', function () { close(); });
+    window.addEventListener('scroll', function () { close(); }, true);
+    sel.addEventListener('change', paint);
+    setInterval(paint, 300);   /* the games also change the value and lock it in code */
+    paint();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.sel select'), enhanceSelect);
 
   /* Mines deals its board with a stagger */
   var g = document.getElementById('mgrid'); if (g) Array.prototype.forEach.call(g.children, function (t, i) { t.style.setProperty('--i', i); });

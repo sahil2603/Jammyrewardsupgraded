@@ -162,15 +162,17 @@ body.candy .mgrid .t::after{inset:10% 16% 56% 16%;border-radius:999px;background
 body.candy .mgrid.live .t:not(.open):hover{transform:translateY(-3px) scale(1.03);filter:brightness(1.12);box-shadow:inset 0 2px 0 rgba(255,255,255,.3),inset 0 -4px 0 rgba(40,10,100,.35),0 8px 0 #34167a,0 16px 24px -6px rgba(255,79,184,.45)}
 body.candy .mgrid .t.press{transform:translateY(4px) scale(.97)!important;box-shadow:inset 0 2px 0 rgba(255,255,255,.2),0 1px 0 #34167a!important}
 /* waiting for the answer: the tile wobbles like jelly (only for a moment now) */
-body.candy .mgrid .t.pend{animation:cdWobble .5s ease-in-out infinite;filter:brightness(1.18)}
-body.candy .mgrid .t.pend::before{content:'';position:absolute;inset:30%;border-radius:50%;border:3px solid rgba(255,255,255,.75);border-top-color:transparent;animation:cdSpin .6s linear infinite}
+/* waiting for the answer (a few ms now): the tile just stays pressed in, no spinner */
+body.candy .mgrid .t.pend{transform:translateY(3px) scale(.97);filter:brightness(1.15);box-shadow:inset 0 2px 0 rgba(255,255,255,.22),0 2px 0 #34167a!important}
+body.candy .mgrid .t.pend::before{content:none!important}
+body.candy .net-wait{animation:none!important}
 @keyframes cdWobble{0%,100%{transform:scale(1,1)}25%{transform:scale(1.05,.95)}50%{transform:scale(.96,1.04)}75%{transform:scale(1.02,.98)}}
 @keyframes cdSpin{to{transform:rotate(360deg)}}
 body.candy .mgrid .t.open{background:radial-gradient(circle at 50% 40%,#2c1248,#170828);box-shadow:inset 0 3px 12px rgba(0,0,0,.65),0 0 0 1px rgba(255,214,250,.05)}
 body.candy .mgrid .t.gem:not(.ghost){background:radial-gradient(circle at 50% 42%,rgba(255,120,200,.35),#2a0f45 70%);box-shadow:inset 0 0 0 2px rgba(255,140,210,.65),inset 0 0 26px rgba(255,79,184,.3),0 0 22px rgba(255,79,184,.35)}
 body.candy .mgrid .t.flip:not(.ghost){animation:cdReveal .5s var(--jelly)}
 @keyframes cdReveal{0%{transform:scale(.82,1.12)}45%{transform:scale(1.12,.9)}75%{transform:scale(.97,1.03)}100%{transform:none}}
-body.candy .mgrid .t.flip .ic svg,body.candy .mgrid .t.flip .ic img{animation:cdIconIn .5s var(--jelly)}
+body.candy .mgrid .t.flip:not(.ghost) .ic svg,body.candy .mgrid .t.flip:not(.ghost) .ic img{animation:cdIconIn .5s var(--jelly)}
 @keyframes cdIconIn{0%{transform:scale(.1) rotate(-30deg);opacity:0}70%{transform:scale(1.15) rotate(6deg);opacity:1}100%{transform:none}}
 body.candy .mgrid .t .ic img{width:74%;height:74%;object-fit:contain;filter:drop-shadow(0 6px 10px rgba(0,0,0,.45))}
 body.candy .mgrid .t.ghost .ic svg,body.candy .mgrid .t.ghost .ic img{opacity:.4;transform:scale(.72)}
@@ -206,6 +208,22 @@ body.candy .card .b{background:radial-gradient(circle at 50% 50%,rgba(255,255,25
 body.candy .spot{border-color:rgba(255,214,250,.28)}
 body.candy .act{border-radius:16px;transition:transform .2s var(--jelly)}
 body.candy .act:active:not([disabled]){transform:translateY(3px)}
+
+/* ═════════════ candy dropdown (candy.js replaces the browser's list) ═════════════ */
+.cd-sel select{position:absolute!important;inset:0;opacity:0;pointer-events:none}
+.cd-sel::after{display:none!important}
+.cd-sel-btn{width:100%;height:48px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 14px 0 16px;border-radius:16px;border:1px solid rgba(255,214,250,.12);background:var(--well,#12061e);box-shadow:inset 0 2px 8px rgba(0,0,0,.45);color:#fff;font:700 1rem 'Poppins',sans-serif;cursor:pointer;transition:border-color .2s,box-shadow .2s}
+.cd-sel-btn:hover:not([disabled]){border-color:rgba(255,79,184,.5)}
+.cd-sel-btn[aria-expanded=true]{border-color:rgba(255,79,184,.8);box-shadow:0 0 0 3px rgba(255,79,184,.18),inset 0 2px 8px rgba(0,0,0,.45)}
+.cd-sel-btn[disabled]{opacity:.5;cursor:not-allowed}
+.cd-sel-btn i{width:22px;height:22px;border-radius:8px;background:rgba(255,214,250,.08);position:relative;flex:none}
+.cd-sel-btn i::after{content:'';position:absolute;left:50%;top:45%;width:6px;height:6px;border-right:2px solid #ffc2ec;border-bottom:2px solid #ffc2ec;transform:translate(-50%,-50%) rotate(45deg);transition:transform .2s}
+.cd-sel-btn[aria-expanded=true] i::after{transform:translate(-50%,-20%) rotate(-135deg)}
+.cd-sel-pop{position:fixed;z-index:80;display:none;grid-template-columns:repeat(var(--cols,6),minmax(0,1fr));gap:6px;padding:10px;border-radius:20px;background:linear-gradient(180deg,#2c1446,#1c0b2f);border:1px solid rgba(255,214,250,.16);box-shadow:0 24px 60px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.06)}
+.cd-sel-pop.show{display:grid;animation:cdPop .22s var(--jelly,ease)}
+.cd-sel-pop button{height:40px;border:0;border-radius:12px;background:rgba(255,214,250,.06);color:#efe4ff;font:700 .92rem 'Poppins',sans-serif;font-variant-numeric:tabular-nums;cursor:pointer;transition:background .15s,transform .15s var(--jelly,ease)}
+.cd-sel-pop button:hover,.cd-sel-pop button:focus-visible{background:rgba(255,79,184,.2);color:#fff;outline:0;transform:translateY(-1px)}
+.cd-sel-pop button.on{background:linear-gradient(180deg,#ff6cc6,#f2408f);color:#fff;box-shadow:0 3px 0 #a81f63}
 
 /* ═════════════ effects layer (candy.js) ═════════════ */
 .cd-fx{position:fixed;inset:0;z-index:70;pointer-events:none}

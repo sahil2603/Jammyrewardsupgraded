@@ -5192,6 +5192,48 @@ html.ice .hx-wm-glow{background:radial-gradient(ellipse 38% 50% at 28% 55%,rgba(
 .gm-slot{--gc:rgba(76,230,138,.2);--gs:rgba(76,230,138,.45)}
 .gm-soon{opacity:.9}
 @media(max-width:640px){.gm-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
+/* ── game cards v2 (2026-11-26): minimal like a casino lobby. One glossy icon, the name, nothing else.
+   Hover: the card lifts and lights up, the icon floats and wobbles, the other cards dim. ── */
+.gm-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.gm-card{align-items:center;justify-content:flex-end;gap:0;padding:14px 10px 18px;aspect-ratio:4/5;overflow:hidden;isolation:isolate;
+  border-radius:22px;border:1px solid rgba(255,214,250,.1);
+  background:radial-gradient(120% 70% at 50% 30%,rgba(120,60,180,.32),rgba(20,8,34,0) 70%),linear-gradient(180deg,#22103a,#150823);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 18px 40px -26px rgba(0,0,0,.9);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),border-color .3s,box-shadow .3s,filter .3s}
+.gm-card::before{content:'';position:absolute;inset:0;z-index:-1;opacity:0;transition:opacity .35s;
+  background:radial-gradient(90% 60% at 50% 38%,var(--gc,rgba(255,79,184,.35)),transparent 70%)}
+.gm-card::after{content:'';position:absolute;left:-60%;top:0;width:40%;height:100%;z-index:2;pointer-events:none;opacity:0;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.16),transparent);transform:skewX(-18deg)}
+.gm-art{position:absolute;inset:6% 6% 26%;width:auto;aspect-ratio:auto;margin:0;background:none!important;box-shadow:none;border-radius:0;display:grid;place-items:center;overflow:visible}
+.gm-art img.gm-cover{width:88%;height:88%;object-fit:contain;filter:drop-shadow(0 14px 18px rgba(0,0,0,.55)) saturate(.92);transition:transform .45s cubic-bezier(.34,1.56,.64,1),filter .35s}
+.gm-name{position:relative;z-index:3;font:400 clamp(1.05rem,1.5vw,1.4rem) 'Lilita One',sans-serif;letter-spacing:.02em;text-align:center;color:#efe4ff;transition:color .3s,transform .35s cubic-bezier(.34,1.56,.64,1)}
+.gm-meta{display:none}
+/* the status pill only shows when there's something to say (Launching 1 Dec, Admin test); "Play" is the whole card */
+.gm-tag{position:absolute;top:10px;right:10px;z-index:3;margin:0;padding:4px 10px;font-size:.66rem}
+.gm-tag:not(.off):not(.launch):not(.soon){display:none}
+@media (hover:hover){
+  .gm-grid:hover .gm-card:not(:hover){filter:saturate(.5) brightness(.72)}
+  .gm-card:hover:not(.gm-soon),.gm-card:focus-visible{transform:translateY(-8px);border-color:rgba(255,160,220,.55);box-shadow:0 26px 50px -24px var(--gs,rgba(255,79,184,.7)),inset 0 1px 0 rgba(255,255,255,.08)}
+  .gm-card:hover::before,.gm-card:focus-visible::before{opacity:1}
+  .gm-card:hover::after{animation:gmShine .9s ease}
+  .gm-card:hover .gm-art img.gm-cover,.gm-card:focus-visible .gm-art img.gm-cover{transform:translateY(-10px) scale(1.1) rotate(-4deg);filter:drop-shadow(0 22px 24px rgba(0,0,0,.6)) saturate(1.1);animation:gmFloat 2.4s .45s ease-in-out infinite}
+  .gm-card:hover .gm-name,.gm-card:focus-visible .gm-name{color:#ffd34d;transform:translateY(-2px)}
+  .gm-soon:hover .gm-art img.gm-cover{transform:translateY(-4px) scale(1.04)}
+}
+@keyframes gmFloat{0%,100%{transform:translateY(-10px) scale(1.1) rotate(-4deg)}50%{transform:translateY(-16px) scale(1.1) rotate(3deg)}}
+@keyframes gmShine{from{left:-60%;opacity:1}to{left:130%;opacity:1}}
+.gm-card:active:not(.gm-soon){transform:translateY(-2px) scale(.98)}
+.gm-soon{opacity:1;cursor:default}
+.gm-bj{--gc:rgba(255,79,184,.38);--gs:rgba(255,79,184,.6)}
+.gm-mines{--gc:rgba(190,90,255,.38);--gs:rgba(190,90,255,.6)}
+.gm-plinko{--gc:rgba(255,120,200,.36);--gs:rgba(255,120,200,.6)}
+.gm-hilo{--gc:rgba(120,230,120,.3);--gs:rgba(76,230,138,.5)}
+.gm-keno{--gc:rgba(255,190,60,.34);--gs:rgba(255,179,92,.6)}
+.gm-slot{--gc:rgba(255,211,77,.34);--gs:rgba(255,211,77,.55)}
+@media(max-width:1100px){.gm-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:640px){.gm-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.gm-card{border-radius:16px;padding:8px 6px 10px}.gm-tag{top:6px;right:6px;padding:3px 7px;font-size:.58rem}}
+@media(max-width:380px){.gm-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (prefers-reduced-motion:reduce){.gm-card,.gm-card *{animation:none!important;transition:none!important}}
 
 .gm-feed{margin-top:26px;border-radius:20px;padding:14px 16px;background:rgba(10,24,44,.7);border:1px solid rgba(125,211,252,.16)}
 .gm-feed-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
@@ -7081,7 +7123,7 @@ img.dbl{flex:none;width:auto}
         <div class="gm-grid">
           <button type="button" class="gm-card gm-bj" data-game="blackjack">
             <span class="gm-art" aria-hidden="true">
-              <img class="gm-cover" src="games/art/cover-blackjack.webp?v=20261126" alt="" loading="lazy" decoding="async">
+              <img class="gm-cover" src="games/art/icon-blackjack.webp?v=20261126" alt="" loading="lazy" decoding="async">
             </span>
             <span class="gm-name">Blackjack</span>
             <span class="gm-meta">Pays 3:2 · side bets · up to 3 hands</span>
@@ -7089,7 +7131,7 @@ img.dbl{flex:none;width:auto}
           </button>
           <button type="button" class="gm-card gm-mines" data-game="mines">
             <span class="gm-art" aria-hidden="true">
-              <img class="gm-cover" src="games/art/cover-mines.webp?v=20261126" alt="" loading="lazy" decoding="async">
+              <img class="gm-cover" src="games/art/icon-mines.webp?v=20261126" alt="" loading="lazy" decoding="async">
             </span>
             <span class="gm-name">Mines</span>
             <span class="gm-meta">Find gems, dodge mines · up to 100K</span>
@@ -7097,7 +7139,7 @@ img.dbl{flex:none;width:auto}
           </button>
           <button type="button" class="gm-card gm-plinko" data-game="plinko">
             <span class="gm-art" aria-hidden="true">
-              <img class="gm-cover" src="games/art/cover-plinko.webp?v=20261126" alt="" loading="lazy" decoding="async">
+              <img class="gm-cover" src="games/art/icon-plinko.webp?v=20261126" alt="" loading="lazy" decoding="async">
             </span>
             <span class="gm-name">Plinko</span>
             <span class="gm-meta">8–16 rows · three risk levels · auto drop</span>
@@ -7105,7 +7147,7 @@ img.dbl{flex:none;width:auto}
           </button>
           <button type="button" class="gm-card gm-hilo" data-game="hilo">
             <span class="gm-art" aria-hidden="true">
-              <img class="gm-cover" src="games/art/cover-hilo.webp?v=20261126" alt="" loading="lazy" decoding="async">
+              <img class="gm-cover" src="games/art/icon-hilo.webp?v=20261126" alt="" loading="lazy" decoding="async">
             </span>
             <span class="gm-name">HiLo</span>
             <span class="gm-meta">Higher or lower · build a streak · cash out</span>
@@ -7113,7 +7155,7 @@ img.dbl{flex:none;width:auto}
           </button>
           <button type="button" class="gm-card gm-keno" data-game="keno">
             <span class="gm-art" aria-hidden="true">
-              <img class="gm-cover" src="games/art/cover-keno.webp?v=20261126" alt="" loading="lazy" decoding="async">
+              <img class="gm-cover" src="games/art/icon-keno.webp?v=20261126" alt="" loading="lazy" decoding="async">
             </span>
             <span class="gm-name">Keno</span>
             <span class="gm-meta">Pick up to 10 numbers · up to 10,000×</span>
@@ -7121,7 +7163,7 @@ img.dbl{flex:none;width:auto}
           </button>
           <div class="gm-card gm-slot gm-soon" aria-disabled="true">
             <span class="gm-art" aria-hidden="true">
-              <img class="gm-cover" src="games/art/cover-slots.webp?v=20261126" alt="" loading="lazy" decoding="async">
+              <img class="gm-cover" src="games/art/icon-slots.webp?v=20261126" alt="" loading="lazy" decoding="async">
             </span>
             <span class="gm-name">Jammin Slots</span>
             <span class="gm-meta">Jammy's own slot</span>
