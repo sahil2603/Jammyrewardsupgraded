@@ -7042,6 +7042,19 @@ img.dbl{flex:none;width:auto}
 .rbx-hero .rbx-art-glow{background:radial-gradient(closest-side,rgba(239,68,68,.45),rgba(59,130,246,.35) 55%,transparent)}
 @media(max-width:640px){.rbx-burst{inset:0;background-size:100% 100%;-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent 100%);mask-image:linear-gradient(180deg,#000 70%,transparent 100%)}}
 @media(prefers-reduced-motion:reduce){.rbx-burst{animation:none}}
+
+/* Double: Jammy's 50% commission share */
+.dbx-share{position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;gap:clamp(18px,4vw,48px);align-items:center;margin-top:22px;padding:clamp(22px,4vw,42px);border-radius:26px;background:linear-gradient(90deg,rgba(12,14,26,.55) 0%,rgba(12,14,26,.88) 45%,rgba(12,14,26,.94) 100%),url(dbl-bg-orbit.webp?v=1127) center/cover,#12141e;box-shadow:inset 0 0 0 1px rgba(255,166,43,.35),0 24px 60px -20px rgba(255,166,43,.35)}
+.dbx-share::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(110deg,transparent 30%,rgba(255,220,150,.10) 45%,transparent 60%);background-size:250% 100%;animation:dbxShareSweep 6s ease-in-out infinite}
+@keyframes dbxShareSweep{0%,40%{background-position:120% 0}100%{background-position:-120% 0}}
+.dbx-share-num{display:flex;align-items:flex-start;font:400 clamp(6rem,15vw,11rem)/.82 'Anton',Impact,sans-serif;background:linear-gradient(180deg,#fff3df 0%,#ffc56e 45%,#ffa62b 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 10px 30px rgba(255,166,43,.35))}
+.dbx-share-num i{font-style:normal;font-size:.45em;margin-top:.12em}
+.dbx-share-tag{display:inline-block;padding:6px 12px;border-radius:99px;background:rgba(255,166,43,.12);box-shadow:inset 0 0 0 1px rgba(255,166,43,.45);color:#ffd08a;font:700 .75rem 'Poppins',sans-serif}
+.dbx-share h3{margin:14px 0 10px;font:400 clamp(1.7rem,3.6vw,2.6rem)/1.05 'Anton',Impact,sans-serif;text-transform:uppercase}
+.dbx-share p{max-width:52ch;margin:0 0 20px;color:#cfd3e6;line-height:1.6}
+.dbx-share p b{color:#fff}
+@media(max-width:640px){.dbx-share{grid-template-columns:1fr;text-align:center}.dbx-share-num{justify-content:center}.dbx-share p{margin-left:auto;margin-right:auto}.dbx-share .dbx-cta{justify-content:center}}
+@media(prefers-reduced-motion:reduce){.dbx-share::after{animation:none}}
 /* toast */
 .dbl-toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translate(-50%,20px);z-index:9999;max-width:min(92vw,440px);padding:13px 18px;border-radius:14px;background:#1d2030;box-shadow:0 0 0 1px rgba(var(--dbl-blue),.45),0 18px 40px rgba(0,0,0,.5);color:#fff;font:600 .88rem/1.45 'Poppins',sans-serif;text-align:center;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none}
 .dbl-toast.on{opacity:1;transform:translate(-50%,0)}
@@ -7448,6 +7461,7 @@ img.dbl{flex:none;width:auto}
           <div class="hx-p-body">
             <div class="hx-p-name">Double <span class="hx-p-badge live">Live now</span></div>
             <ul class="hx-p-feats">
+              <li><i>💸</i>50% Commission Back from Jammy</li>
               <li><i>⚡</i>Instant Rakeback</li>
               <li><i>🏆</i>$500 Leaderboard Bi-Weekly</li>
               <li><i>🏁</i>$10,000 Weekly Race</li>
@@ -8124,7 +8138,7 @@ img.dbl{flex:none;width:auto}
             <span class="dbx-badge"><i aria-hidden="true"></i>Live now</span>
             <img class="dbx-word" src="double.svg" width="88" height="28" alt="Double">
             <h2 class="dbx-h"><span class="g">The new casino</span><br>&amp; sportsbook</h2>
-            <p class="dbx-lede">Instant rakeback on every bet, weekly bonuses and a $10,000 weekly race. Sign up with code <b>JAMMMY</b> and you're also in Jammy's own <b>$500 bi-weekly leaderboard</b>.</p>
+            <p class="dbx-lede">Instant rakeback on every bet, weekly bonuses and a $10,000 weekly race. Sign up with code <b>JAMMMY</b> and Jammy gives <b>50% of his commission back to you</b>, plus a spot in his <b>$500 bi-weekly leaderboard</b>.</p>
             <div class="dbx-cta">
               <button type="button" class="dbx-code" onclick="dblCopy(this)"><small>Use code</small><b>JAMMMY</b><span>Copy</span></button>
               <a class="dbx-go dbl-link" href="https://double.com/?ref=Jammmy" target="_blank" rel="noopener"><img class="dbx-go-ic" src="double-x2-dark.svg" alt="" aria-hidden="true">Sign up on Double</a>
@@ -8133,6 +8147,19 @@ img.dbl{flex:none;width:auto}
           <div class="dbx-fx" aria-hidden="true"><img class="dbl-wm hero" src="double-x2.svg" alt=""><i class="dbx-coin c1"></i><i class="dbx-coin c2"></i><i class="dbx-coin c3"></i><i class="dbx-orb o1"></i><i class="dbx-orb o2"></i></div>
           <div class="dbx-art"><img src="dbl-poster-newcasino.webp" width="676" height="840" alt="Double, the new casino and sportsbook: use code JAMMMY"></div>
         </header>
+
+        <section class="dbx-share" aria-label="Jammy gives back 50% of his commission">
+          <div class="dbx-share-num" aria-hidden="true"><span>50</span><i>%</i></div>
+          <div class="dbx-share-copy">
+            <span class="dbx-share-tag">Only with code JAMMMY</span>
+            <h3>Jammy gives <span class="g">50%</span> of his commission back to you</h3>
+            <p>Every player on code <b>JAMMMY</b> gets half of the commission Jammy earns from their play on Double. It's on top of everything Double already gives you.</p>
+            <div class="dbx-cta">
+              <button type="button" class="dbx-code" onclick="dblCopy(this)"><small>Use code</small><b>JAMMMY</b><span>Copy</span></button>
+              <a class="dbx-go dbl-link" href="https://double.com/?ref=Jammmy" target="_blank" rel="noopener"><img class="dbx-go-ic" src="double-x2-dark.svg" alt="" aria-hidden="true">Sign up on Double</a>
+            </div>
+          </div>
+        </section>
 
         <div class="dbx-sh"><h3>What you get on Double</h3><p>Promotions Double runs for every player.</p></div>
         <div class="dbx-offers">
@@ -18802,7 +18829,7 @@ var DOUBLE = { url: 'https://double.com/?ref=Jammmy', code: 'JAMMMY', start: nul
   /* Double page: reveal sections on scroll, spotlight follows the cursor on offer cards */
   (function(){
     var sec = document.getElementById('pt-sec-double'); if(!sec) return;
-    var groups = ['.dbx-sh', '.dbx-o', '.dbx-pk', '.dbx-lb', '.dbx-steps li', '.dbx-posters img', '.dbx-fine'];
+    var groups = ['.dbx-share', '.dbx-sh', '.dbx-o', '.dbx-pk', '.dbx-lb', '.dbx-steps li', '.dbx-posters img', '.dbx-fine'];
     groups.forEach(function(sel){ sec.querySelectorAll(sel).forEach(function(el, i){ el.classList.add('dbx-rv'); el.style.setProperty('--i', i % 6); }); });
     var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     var els = sec.querySelectorAll('.dbx-rv');
