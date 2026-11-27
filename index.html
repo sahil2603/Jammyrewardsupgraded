@@ -7055,6 +7055,41 @@ img.dbl{flex:none;width:auto}
 .dbx-share p b{color:#fff}
 @media(max-width:640px){.dbx-share{grid-template-columns:1fr;text-align:center}.dbx-share-num{justify-content:center}.dbx-share p{margin-left:auto;margin-right:auto}.dbx-share .dbx-cta{justify-content:center}}
 @media(prefers-reduced-motion:reduce){.dbx-share::after{animation:none}}
+
+/* Double: 2x rank-up bonus (limited) */
+.drk{position:relative;overflow:hidden;margin-top:22px;padding:clamp(20px,3.6vw,38px);border-radius:28px;
+ background:radial-gradient(ellipse 60% 90% at 100% 0%,rgba(255,166,43,.28),transparent 60%),linear-gradient(180deg,rgba(14,17,32,.92),rgba(14,17,32,.96)),url(dbl-bg-rings.webp?v=1127) center/cover,#0f1220;
+ box-shadow:inset 0 0 0 2px rgba(255,190,90,.75),0 0 60px -10px rgba(255,166,43,.45),0 30px 70px -24px rgba(0,0,0,.7)}
+.drk::before{content:'';position:absolute;inset:-2px;border-radius:inherit;pointer-events:none;background:linear-gradient(110deg,transparent 35%,rgba(255,230,170,.16) 48%,transparent 60%);background-size:250% 100%;animation:dbxShareSweep 5s ease-in-out infinite}
+.drk-top{position:relative;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.drk-tag{display:inline-flex;align-items:center;gap:9px;padding:8px 14px;border-radius:99px;background:linear-gradient(180deg,#ffd08a,#ffa62b);color:#1a1200;font:800 .78rem 'Poppins',sans-serif;letter-spacing:.02em;box-shadow:0 8px 24px rgba(255,166,43,.35)}
+.drk-tag i{width:8px;height:8px;border-radius:50%;background:#e11d48;box-shadow:0 0 0 0 rgba(225,29,72,.7);animation:drkPing 1.6s infinite}
+@keyframes drkPing{70%{box-shadow:0 0 0 8px rgba(225,29,72,0)}100%{box-shadow:0 0 0 0 rgba(225,29,72,0)}}
+.drk-ends{padding:8px 14px;border-radius:12px;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);color:#cfd3e6;font:600 .86rem 'Poppins',sans-serif}
+.drk-ends b{color:#ffd08a;font-variant-numeric:tabular-nums}
+.drk-main{position:relative;display:grid;grid-template-columns:1fr auto;gap:clamp(16px,4vw,44px);align-items:center;margin-top:18px}
+.drk h3{margin:0 0 12px;font:400 clamp(2.2rem,5.4vw,3.8rem)/.98 'Anton',Impact,sans-serif;text-transform:uppercase}
+.drk-copy>p{max-width:58ch;margin:0 0 20px;color:#cfd3e6;line-height:1.6}
+.drk-copy>p b{color:#fff}
+.drk-cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.drk-sec{display:inline-flex;align-items:center;padding:13px 20px;border-radius:14px;color:#fff;text-decoration:none;font:700 .92rem 'Poppins',sans-serif;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16);transition:background .2s,transform .2s}
+.drk-sec:hover{background:rgba(255,255,255,.12);transform:translateY(-2px)}
+.drk-fine{margin:16px 0 0!important;font-size:.8rem!important;color:#8f97b8!important}
+.drk-x{display:grid;place-items:center;text-align:center;width:clamp(150px,18vw,210px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 28%,#fff3d6,#ffc15a 40%,#e9870f 85%);box-shadow:0 0 0 8px rgba(255,166,43,.15),0 0 60px rgba(255,166,43,.5),inset 0 -10px 0 rgba(150,80,0,.3);animation:drkBob 4s ease-in-out infinite}
+.drk-x span{font:400 clamp(3.6rem,8vw,5.4rem)/.8 'Anton',Impact,sans-serif;color:#14110b}
+.drk-x small{margin-top:-18px;font:800 .78rem/1.1 'Poppins',sans-serif;color:#3a2200;text-transform:uppercase;letter-spacing:.04em}
+@keyframes drkBob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-8px) rotate(3deg)}}
+.drk-ranks{position:relative;list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.drk-ranks::before{content:'';position:absolute;left:8%;right:8%;top:38px;height:3px;border-radius:3px;background:linear-gradient(90deg,#e8743b,#c9ced8,#f5b70a,#9cc7e0,#34d399);opacity:.55}
+.drk-r{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 6px 14px;border-radius:18px;transition:transform .25s}
+.drk-r img{width:76px;height:76px;filter:drop-shadow(0 10px 14px rgba(0,0,0,.45));transition:transform .35s cubic-bezier(.3,1.6,.4,1)}
+.drk-r b{margin-top:10px;font:700 .98rem 'Poppins',sans-serif}
+.drk-r span{color:#8f97b8;font-size:.78rem;margin-top:2px}
+.drk-r em{margin-top:8px;padding:4px 9px;border-radius:8px;font:700 .7rem 'Poppins',sans-serif;font-style:normal;color:#14110b;background:linear-gradient(180deg,#ffd08a,#ffa62b)}
+.drk-r:hover{transform:translateY(-4px)}.drk-r:hover img{transform:rotate(-8deg) scale(1.08)}
+.drk-r.bronze b{color:#f0a47a}.drk-r.silver b{color:#e2e6ee}.drk-r.gold b{color:#fbbf24}.drk-r.platinum b{color:#a8d4ee}.drk-r.emerald b{color:#4ade80}
+@media(max-width:760px){.drk-main{grid-template-columns:1fr}.drk-x{order:-1;width:130px;justify-self:start}.drk-ranks{grid-template-columns:repeat(5,minmax(96px,1fr));overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory}.drk-r{scroll-snap-align:start}.drk-ranks::before{display:none}.drk-cta a{flex:1 1 100%;justify-content:center;text-align:center}}
+@media(prefers-reduced-motion:reduce){.drk::before,.drk-x,.drk-tag i{animation:none}}
 /* toast */
 .dbl-toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translate(-50%,20px);z-index:9999;max-width:min(92vw,440px);padding:13px 18px;border-radius:14px;background:#1d2030;box-shadow:0 0 0 1px rgba(var(--dbl-blue),.45),0 18px 40px rgba(0,0,0,.5);color:#fff;font:600 .88rem/1.45 'Poppins',sans-serif;text-align:center;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none}
 .dbl-toast.on{opacity:1;transform:translate(-50%,0)}
@@ -7461,6 +7496,7 @@ img.dbl{flex:none;width:auto}
           <div class="hx-p-body">
             <div class="hx-p-name">Double <span class="hx-p-badge live">Live now</span></div>
             <ul class="hx-p-feats">
+              <li><i>🚀</i>2× Rank-Up Bonuses (30 days)</li>
               <li><i>💸</i>50% Commission Back from Jammy</li>
               <li><i>⚡</i>Instant Rakeback</li>
               <li><i>🏆</i>$500 Leaderboard Bi-Weekly</li>
@@ -8147,6 +8183,26 @@ img.dbl{flex:none;width:auto}
           <div class="dbx-fx" aria-hidden="true"><img class="dbl-wm hero" src="double-x2.svg" alt=""><i class="dbx-coin c1"></i><i class="dbx-coin c2"></i><i class="dbx-coin c3"></i><i class="dbx-orb o1"></i><i class="dbx-orb o2"></i></div>
           <div class="dbx-art"><img src="dbl-poster-newcasino.webp" width="676" height="840" alt="Double, the new casino and sportsbook: use code JAMMMY"></div>
         </header>
+
+        <section class="drk" aria-label="Exclusive: double rank-up bonuses for 30 days">
+          <div class="drk-top">
+            <span class="drk-tag"><i aria-hidden="true"></i>Super exclusive · 30 days only</span>
+            <div class="drk-ends">Ends in <b id="drkCd">30d 0h 0m</b></div>
+          </div>
+          <div class="drk-main">
+            <div class="drk-copy">
+              <h3>Double <span class="g">rank-up</span> bonuses</h3>
+              <p>Every time you level up on Double, Double pays your level-up bonus, and <b>Jammy pays you the same amount again</b>. Two bonuses for every rank you hit, only on code <b>JAMMMY</b>.</p>
+              <div class="drk-cta">
+                <a class="dbx-go" href="https://discord.gg/jammmy" target="_blank" rel="noopener">Claim it: open a Discord ticket</a>
+                <a class="drk-sec dbl-link" href="https://double.com/?ref=Jammmy" target="_blank" rel="noopener">Sign up on Double</a>
+              </div>
+              <p class="drk-fine">Hit a new level, then open a ticket in our Discord with a screenshot of your Double level-up bonus. Need help? Open a ticket any time.</p>
+            </div>
+            <div class="drk-x" aria-hidden="true"><span>2×</span><small>Level-up<br>bonus</small></div>
+          </div>
+          <ol class="drk-ranks"><li class="drk-r bronze"><img src="dbl-rank-bronze.png?v=1128b" alt="" width="68" height="68"><b>Bronze</b><span>$1,000 wagered</span><em>2× level-up bonus</em></li><li class="drk-r silver"><img src="dbl-rank-silver.png?v=1128b" alt="" width="68" height="68"><b>Silver</b><span>$10,000 wagered</span><em>2× level-up bonus</em></li><li class="drk-r gold"><img src="dbl-rank-gold.png?v=1128b" alt="" width="68" height="68"><b>Gold</b><span>$50,000 wagered</span><em>2× level-up bonus</em></li><li class="drk-r platinum"><img src="dbl-rank-platinum.png?v=1128b" alt="" width="68" height="68"><b>Platinum</b><span>$250,000 wagered</span><em>2× level-up bonus</em></li><li class="drk-r emerald"><img src="dbl-rank-emerald.png?v=1128b" alt="" width="68" height="68"><b>Emerald</b><span>$1,000,000 wagered</span><em>2× level-up bonus</em></li></ol>
+        </section>
 
         <section class="dbx-share" aria-label="Jammy gives back 50% of his commission">
           <div class="dbx-share-num" aria-hidden="true"><span>50</span><i>%</i></div>
@@ -18726,7 +18782,7 @@ function tggRaceEnd(kind, now){
    DOUBLE.start : first race start, e.g. Date.UTC(2026, 10, 30, 0, 0, 0) (months count from 0).
                   null shows "in the next few days".
    DOUBLE.live  : set to true once the worker has Double's API; the normal live leaderboard then shows. */
-var DOUBLE = { url: 'https://double.com/?ref=Jammmy', code: 'JAMMMY', start: null, len: 14 * 864e5, live: false,
+var DOUBLE = { rankUpEnds: Date.UTC(2026, 11, 28, 18, 29, 0), url: 'https://double.com/?ref=Jammmy', code: 'JAMMMY', start: null, len: 14 * 864e5, live: false,
   prizes: {1:150, 2:100, 3:75, 4:50, 5:35, 6:25, 7:20, 8:15, 9:15, 10:15} };
 (function(){
   if(typeof LB_CASINO_PRIZES !== 'undefined') LB_CASINO_PRIZES.double = DOUBLE.prizes;
@@ -18829,7 +18885,7 @@ var DOUBLE = { url: 'https://double.com/?ref=Jammmy', code: 'JAMMMY', start: nul
   /* Double page: reveal sections on scroll, spotlight follows the cursor on offer cards */
   (function(){
     var sec = document.getElementById('pt-sec-double'); if(!sec) return;
-    var groups = ['.dbx-share', '.dbx-sh', '.dbx-o', '.dbx-pk', '.dbx-lb', '.dbx-steps li', '.dbx-posters img', '.dbx-fine'];
+    var groups = ['.drk', '.dbx-share', '.dbx-sh', '.dbx-o', '.dbx-pk', '.dbx-lb', '.dbx-steps li', '.dbx-posters img', '.dbx-fine'];
     groups.forEach(function(sel){ sec.querySelectorAll(sel).forEach(function(el, i){ el.classList.add('dbx-rv'); el.style.setProperty('--i', i % 6); }); });
     var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     var els = sec.querySelectorAll('.dbx-rv');
@@ -18851,6 +18907,15 @@ var DOUBLE = { url: 'https://double.com/?ref=Jammmy', code: 'JAMMMY', start: nul
   })();
   paintPrizes(); paintStart(); wireLinks();
   setInterval(paintStart, 30000);
+  /* 2x rank-up offer: countdown, and the whole block hides itself once the 30 days are over */
+  function paintRank(){
+    var box = document.querySelector('.drk'), el = document.getElementById('drkCd'); if(!box || !el) return;
+    var ms = DOUBLE.rankUpEnds - Date.now();
+    if(ms <= 0){ box.style.display = 'none'; return; }
+    var d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4);
+    el.textContent = d + 'd ' + h + 'h ' + m + 'm';
+  }
+  paintRank(); setInterval(paintRank, 30000);
   /* Double is the first tab and opens by default */
   var first = document.querySelector('#lbxTabs .lbt-dbl');
   if(first) lbTab(first, 'double');
