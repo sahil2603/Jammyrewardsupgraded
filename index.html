@@ -6992,6 +6992,16 @@ img.dbl{flex:none;width:auto}
   .dbx *,.dbx *::before,.dbx *::after,.dlb .g,.pt-switch .pt-chip,.pt-switch .pt-chip *{animation:none!important;transition:none!important}
   .dbx-rv{opacity:1;transform:none}
 }
+
+/* games hero: rotating play button */
+#games .gx-cta{min-width:214px}
+#games .gx-cta .gx-cta-in{display:inline-flex;align-items:center;justify-content:center;gap:10px;transition:transform .26s cubic-bezier(.3,.7,.3,1),opacity .26s}
+#games .gx-cta .gx-cta-in img{width:30px;height:30px;object-fit:contain;filter:drop-shadow(0 2px 3px rgba(120,10,70,.4))}
+#games .gx-cta .gx-cta-in.out{transform:translateY(-140%);opacity:0}
+#games .gx-cta .gx-cta-in.in{transform:translateY(140%);opacity:0;transition:none}
+@media(max-width:640px){#games .gx-cta{min-width:0}#games .gx-cta .gx-cta-in img{width:24px;height:24px}}
+@media(max-width:440px){#games .gx-cta{padding:0 16px!important;font-size:1.05rem!important}#games .gx-cta .gx-cta-in{gap:0}#games .gx-cta .gx-cta-in img{display:none}#games .gx-actions{flex-wrap:nowrap}#games .gx-wallet{min-width:0}}
+@media(prefers-reduced-motion:reduce){#games .gx-cta .gx-cta-in{transition:opacity .2s}#games .gx-cta .gx-cta-in.out,#games .gx-cta .gx-cta-in.in{transform:none}}
 /* toast */
 .dbl-toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translate(-50%,20px);z-index:9999;max-width:min(92vw,440px);padding:13px 18px;border-radius:14px;background:#1d2030;box-shadow:0 0 0 1px rgba(var(--dbl-blue),.45),0 18px 40px rgba(0,0,0,.5);color:#fff;font:600 .88rem/1.45 'Poppins',sans-serif;text-align:center;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none}
 .dbl-toast.on{opacity:1;transform:translate(-50%,0)}
@@ -7498,7 +7508,7 @@ img.dbl{flex:none;width:auto}
           <h1 class="gm-h1 gx-title"><img class="gx-logo" src="games/art/hero-logo.webp?v=20261126" alt="Jammmy Games" width="1100" height="529"></h1>
           <p class="gm-sub gx-sub">Our own games, played with your Jammmy Coins. Every result is provably fair.</p>
           <div class="gx-actions">
-            <button type="button" class="gx-cta" onclick="gmOpen('mines')">Play Mines</button>
+            <button type="button" class="gx-cta" id="gxCta" onclick="gmOpen(this.dataset.g || 'mines')" data-g="mines"><span class="gx-cta-in"><img src="games/art/icon-mines.webp?v=20261126" alt=""><span>Play Mines</span></span></button>
             <div class="gm-wallet gx-wallet" id="gmWallet">
               <img src="jammmy-coin.webp" alt="">
               <div><span class="gm-wl">Your coins</span><b id="gmBal">—</b></div>
@@ -7506,14 +7516,6 @@ img.dbl{flex:none;width:auto}
           </div>
         </div>
         <div class="gx-stage" aria-hidden="true">
-          <div class="gx-glow"></div>
-          <img class="gx-jar" src="games/art/hero-jar.webp?v=20261126" alt="">
-          <img class="gx-fl f1" src="games/art/icon-mines.webp?v=20261126" alt="">
-          <img class="gx-fl f2" src="games/art/icon-blackjack.webp?v=20261126" alt="">
-          <img class="gx-fl f3" src="games/art/icon-plinko.webp?v=20261126" alt="">
-          <img class="gx-fl f4" src="games/art/icon-hilo.webp?v=20261126" alt="">
-          <img class="gx-fl f5" src="games/art/float-coin.webp?v=20261126" alt="">
-          <img class="gx-fl f6" src="games/art/float-candy.webp?v=20261126" alt="">
           <img class="gx-fl f7" src="games/art/gem.webp?v=20261126" alt="">
         </div>
       </header>
@@ -16420,6 +16422,24 @@ window.addEventListener('scroll', forceRevealFallback, { passive:true, once:true
     w.classList.add('out'); b.textContent = 'Log in to play';
     w.onclick = function(){ if(typeof startDiscordLogin === 'function') startDiscordLogin(); };
   }
+  /* hero button: cycles through the games you can play, one every 5 seconds */
+  var CTA_ORDER = ['mines', 'plinko', 'hilo', 'blackjack', 'keno'], ctaI = 0;
+  function ctaList(){ return CTA_ORDER.filter(function(k){ return ENABLED ? !!ENABLED[k] : !LAUNCH[k]; }); }
+  function ctaShow(k, animate){
+    var b = $('gxCta'); if(!b || !GAMES[k]) return;
+    var inner = b.querySelector('.gx-cta-in');
+    var html = '<img src="games/art/icon-' + k + '.webp?v=20261126" alt=""><span>Play ' + GAMES[k] + '</span>';
+    b.dataset.g = k; b.setAttribute('aria-label', 'Play ' + GAMES[k]);
+    if(!animate || !inner){ if(inner) inner.innerHTML = html; return; }
+    inner.classList.add('out');
+    setTimeout(function(){ inner.innerHTML = html; inner.classList.remove('out'); inner.classList.add('in'); requestAnimationFrame(function(){ requestAnimationFrame(function(){ inner.classList.remove('in'); }); }); }, 260);
+  }
+  setInterval(function(){
+    var b = $('gxCta'); if(!b || !b.offsetParent || document.hidden || b.matches(':hover')) return;   /* only while the Games page is on screen, and not under the cursor */
+    var list = ctaList(); if(list.length < 2) return;
+    ctaI = (list.indexOf(b.dataset.g) + 1) % list.length;
+    ctaShow(list[ctaI], true);
+  }, 5000);
   function paintCards(){
     document.querySelectorAll('.gm-card[data-game]').forEach(function(c){
       var k = c.dataset.game, tag = c.querySelector('.gm-tag');
