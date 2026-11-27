@@ -38,7 +38,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Pirata+One&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Lilita+One&family=Pirata+One&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <style>
 :root{
   --bg:#05101e;
@@ -6298,7 +6298,7 @@ body.on-admin #skyParticles{opacity:.18!important}
 #ptSwitch{margin-bottom:30px}
 .pwx .pt-view,#ptOther.pt-view{display:none}
 .pwx[data-pt]:not([data-pt="powerwin"])>*:not(.pt-switch):not(.pwx-aurora):not(.pt-view){display:none!important}
-.pwx[data-pt="double"] #pt-sec-double{display:grid;animation:ptxIn .5s cubic-bezier(.2,.9,.3,1) both}
+.pwx[data-pt="double"] #pt-sec-double{display:block;animation:ptxIn .5s cubic-bezier(.2,.9,.3,1) both}
 .pwx[data-pt="other"] #ptOther{display:block;animation:ptxIn .5s cubic-bezier(.2,.9,.3,1) both}
 @keyframes ptxIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 .pwx[data-pt="double"]{min-height:70vh}
@@ -6782,6 +6782,136 @@ img.dbl{flex:none;width:auto}
 @media(min-width:1101px) and (max-width:1799px){ .nav-in{gap:14px} .nav-links a{padding:8px 8px} .socials{gap:10px} }
 @media(min-width:1101px) and (max-width:1799px){ .nav-in>.brand>span{display:none} }
 </style>
+<style id="dbl-css">
+/* ===== Double: partner #1 (navy, blue glow, gold-to-cream headings, condensed caps like Double's own art) ===== */
+:root{--dbl-bg:#12141e;--dbl-card:#1b1d2a;--dbl-card2:#22253a;--dbl-line:rgba(255,255,255,.08);--dbl-blue:59,130,246;--dbl-mute:#a9adc6;--dbl-green:#4ade80}
+.dbl-g,.dbx .g,.dlb .g{background:linear-gradient(180deg,#ffa62b 0%,#ffc56e 45%,#ffe9cc 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* code button + main button (shared) */
+.dbx-code{display:inline-flex;align-items:center;gap:12px;padding:10px 12px 10px 16px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:#151722;color:#fff;cursor:pointer;font:600 .8rem 'Poppins',system-ui;transition:border-color .2s,transform .2s}
+.dbx-code small{color:var(--dbl-mute);font-size:.72rem;font-weight:600}
+.dbx-code b{font:400 1.45rem/1 'Anton','Archivo Black',Impact,sans-serif;letter-spacing:.04em}
+.dbx-code span{padding:7px 11px;border-radius:9px;background:rgba(255,255,255,.08);font-size:.74rem;font-weight:700}
+.dbx-code:hover{border-color:rgba(var(--dbl-blue),.7);transform:translateY(-1px)}
+.dbx-code.ok span{background:rgba(74,222,128,.18);color:var(--dbl-green)}
+.dbx-go{display:inline-flex;align-items:center;justify-content:center;padding:14px 22px;border-radius:14px;border:0;cursor:pointer;text-decoration:none;color:#14110b;font:700 .95rem 'Poppins',system-ui;background:linear-gradient(180deg,#ffd08a,#ffa62b);box-shadow:0 10px 30px rgba(255,166,43,.25),inset 0 1px 0 rgba(255,255,255,.5);transition:transform .2s,box-shadow .2s}
+.dbx-go:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(255,166,43,.35),inset 0 1px 0 rgba(255,255,255,.5)}
+.dbx-code:focus-visible,.dbx-go:focus-visible,.dbl-banner-code:focus-visible,.dbl-banner-v:focus-visible{outline:3px solid #93c5fd;outline-offset:3px}
+
+/* ---- home: banner (animated card + code card) ---- */
+.dbl-banner{display:grid;grid-template-columns:836fr 300fr;gap:clamp(8px,1.2vw,14px);max-width:900px;margin:6px auto 22px}
+.dbl-banner-v{display:block;aspect-ratio:836/196;border-radius:2.2%/9.5%;overflow:hidden;background:#1d1e28 url(double-banner.jpg) center/cover;box-shadow:0 18px 50px rgba(0,0,0,.45);transition:transform .25s,box-shadow .25s}
+.dbl-banner-v video{display:block;width:100%;height:100%;object-fit:cover}
+.dbl-banner-v:hover{transform:translateY(-3px);box-shadow:0 0 0 1px rgba(var(--dbl-blue),.6),0 24px 60px rgba(0,0,0,.55),0 0 50px rgba(var(--dbl-blue),.3)}
+.dbl-banner-code{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border:0;border-radius:clamp(10px,1.6vw,20px);background:#1d1e28;color:#fff;cursor:pointer;padding:8px;box-shadow:0 18px 50px rgba(0,0,0,.45);transition:transform .25s}
+.dbl-banner-code:hover{transform:translateY(-3px)}
+.dbl-banner-code span{font:900 clamp(.62rem,1.5vw,1rem)/1 'Archivo Black','Poppins',sans-serif;letter-spacing:.06em;background:linear-gradient(180deg,#ffa62b,#ffe2bd);-webkit-background-clip:text;background-clip:text;color:transparent}
+.dbl-banner-code b{display:block;width:86%;padding:clamp(4px,1vw,10px) 0;border-radius:10px;background:#282a38;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);font:400 clamp(1rem,3vw,2rem)/1.1 'Anton',Impact,sans-serif;letter-spacing:.05em}
+.dbl-banner-code em{font:600 clamp(.55rem,1.1vw,.68rem) 'Poppins',sans-serif;font-style:normal;color:var(--dbl-mute)}
+.dbl-banner-code.ok em{color:var(--dbl-green)}
+@media(max-width:560px){.dbl-banner{grid-template-columns:1fr;max-width:520px}.dbl-banner-code{flex-direction:row;padding:10px 14px;gap:12px}.dbl-banner-code b{width:auto;padding:6px 18px;font-size:1.3rem}.dbl-banner-code span{font-size:.8rem}}
+.hx-trust-dbl img.dbl{height:16px}
+.hx-p-dbl .hx-p-logo img.dbl{max-width:58%;max-height:40px}
+.hx-chip-card.dbl-chip img.dbl{height:18px;width:auto;margin-bottom:6px}
+.foot-partner-row img.dbl{height:20px}
+
+/* ---- partners page ---- */
+.dbx{position:relative;color:#fff;font-family:'Poppins',system-ui,sans-serif}
+.dbx-hero{position:relative;display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:clamp(18px,4vw,48px);padding:clamp(24px,4vw,46px);border-radius:28px;overflow:hidden;background:radial-gradient(ellipse 70% 90% at 80% 120%,rgba(255,166,43,.22),transparent 60%),radial-gradient(ellipse 80% 80% at 70% -10%,rgba(var(--dbl-blue),.35),transparent 60%),var(--dbl-bg);box-shadow:inset 0 0 0 1px var(--dbl-line)}
+.dbx-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle,rgba(255,255,255,.07) 1.4px,transparent 1.6px) 0 0/14px 14px;-webkit-mask:radial-gradient(ellipse 60% 70% at 70% 40%,#000,transparent 75%);mask:radial-gradient(ellipse 60% 70% at 70% 40%,#000,transparent 75%);pointer-events:none}
+.dbx-copy{position:relative}
+.dbx-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:99px;background:rgba(74,222,128,.1);box-shadow:inset 0 0 0 1px rgba(74,222,128,.35);color:#86efac;font-size:.74rem;font-weight:700}
+.dbx-badge i{width:7px;height:7px;border-radius:50%;background:var(--dbl-green);box-shadow:0 0 0 0 rgba(74,222,128,.6);animation:dblPing 2s infinite}
+@keyframes dblPing{70%{box-shadow:0 0 0 8px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
+.dbx-word{display:block;height:clamp(28px,4vw,40px);width:auto;margin:22px 0 12px}
+.dbx-h{margin:0 0 14px;font:400 clamp(2.4rem,6vw,4.6rem)/.98 'Anton',Impact,sans-serif;text-transform:uppercase;letter-spacing:.01em}
+.dbx-lede{max-width:46ch;margin:0 0 24px;color:#cfd3e6;font-size:1rem;line-height:1.6}
+.dbx-lede b{color:#fff}
+.dbx-cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.dbx-art{position:relative;justify-self:center;width:min(100%,360px)}
+.dbx-art img{display:block;width:100%;height:auto;border-radius:22px;box-shadow:0 30px 70px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06);transform:rotate(2deg);transition:transform .5s cubic-bezier(.2,.9,.3,1)}
+.dbx-art:hover img{transform:rotate(0) scale(1.02)}
+.dbx-sh{margin:54px 0 18px}
+.dbx-sh h3{margin:0;font:400 clamp(1.6rem,3.4vw,2.3rem)/1.05 'Anton',Impact,sans-serif;text-transform:uppercase;letter-spacing:.01em}
+.dbx-sh p{margin:6px 0 0;color:var(--dbl-mute);font-size:.92rem}
+.dbx-offers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.dbx-o{display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:var(--dbl-card);box-shadow:inset 0 0 0 1px var(--dbl-line);transition:transform .25s,box-shadow .25s}
+.dbx-o:hover{transform:translateY(-4px);box-shadow:inset 0 0 0 1px rgba(var(--dbl-blue),.45),0 20px 40px rgba(0,0,0,.35)}
+.dbx-o img{display:block;width:100%;height:auto;aspect-ratio:2/1;object-fit:cover}
+.dbx-o div{padding:16px 18px 20px}
+.dbx-o h4{margin:0 0 6px;font:700 1.05rem 'Poppins',sans-serif}
+.dbx-o p{margin:0;color:var(--dbl-mute);font-size:.88rem;line-height:1.5}
+.dbx-perks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.dbx-pk{display:flex;gap:14px;align-items:center;padding:14px;border-radius:18px;background:var(--dbl-card);box-shadow:inset 0 0 0 1px var(--dbl-line)}
+.dbx-pk img{flex:none;width:58px;height:58px;border-radius:14px}
+.dbx-pk b{display:block;font-size:.95rem;margin-bottom:3px}
+.dbx-pk span{display:block;color:var(--dbl-mute);font-size:.82rem;line-height:1.45}
+.dbx-lb{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(18px,4vw,40px);align-items:center;margin-top:54px;padding:clamp(22px,3.5vw,36px);border-radius:26px;background:radial-gradient(ellipse 60% 80% at 0% 0%,rgba(255,166,43,.14),transparent 60%),var(--dbl-bg);box-shadow:inset 0 0 0 1px var(--dbl-line)}
+.dbx-lb-h{margin:14px 0 10px;font:400 clamp(2rem,4.6vw,3.2rem)/1 'Anton',Impact,sans-serif;text-transform:uppercase}
+.dbx-lb-copy p{margin:0 0 20px;color:#cfd3e6;line-height:1.6}
+.dbx-lb-copy p b{color:#fff}
+.dbx-lb-list,.dlb-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.dbx-lb-list{grid-template-columns:1fr 1fr}
+.dbl-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:12px;background:var(--dbl-card2);font-size:.92rem;font-weight:600}
+.dbl-row .pl{display:flex;align-items:center;gap:9px}
+.dbl-row .md{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:.62rem;font-weight:800;color:#1a1200}
+.dbl-row .md.m1{background:radial-gradient(circle at 35% 30%,#fff3b0,#f5b70a)}.dbl-row .md.m2{background:radial-gradient(circle at 35% 30%,#fff,#9aa3b8)}.dbl-row .md.m3{background:radial-gradient(circle at 35% 30%,#ffd1a8,#e8743b)}
+.dbl-row .md.mn{background:none;color:var(--dbl-mute)}
+.dbl-row .amt{color:var(--dbl-green);font-weight:700;font-variant-numeric:tabular-nums}
+.dbx-steps{list-style:none;counter-reset:s;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.dbx-steps li{counter-increment:s;position:relative;padding:20px 18px 18px 64px;border-radius:18px;background:var(--dbl-card);box-shadow:inset 0 0 0 1px var(--dbl-line)}
+.dbx-steps li::before{content:counter(s);position:absolute;left:18px;top:18px;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:rgba(var(--dbl-blue),.18);color:#93c5fd;font:400 1.1rem 'Anton',sans-serif}
+.dbx-steps b{display:block;margin-bottom:4px}
+.dbx-steps span{color:var(--dbl-mute);font-size:.86rem;line-height:1.5}
+.dbx-steps a{color:#93c5fd}
+.dbx-posters{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:40px}
+.dbx-posters img{display:block;width:100%;height:auto;border-radius:16px;box-shadow:0 0 0 1px rgba(255,255,255,.06)}
+.dbx-fine{margin:26px 0 0;color:#7d8199;font-size:.78rem;text-align:center}
+@media(max-width:900px){.dbx-offers,.dbx-perks{grid-template-columns:1fr 1fr}.dbx-lb{grid-template-columns:1fr}.dbx-steps{grid-template-columns:1fr}
+  .dbx-posters{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}.dbx-posters img{flex:0 0 62%;scroll-snap-align:start}}
+@media(max-width:640px){.dbx-hero{grid-template-columns:1fr;border-radius:22px}.dbx-art{width:min(78%,300px);order:-1}.dbx-offers{grid-template-columns:1fr}.dbx-perks{grid-template-columns:1fr}.dbx-lb-list{grid-template-columns:1fr}.dbx-sh{margin:40px 0 14px}.dbx-cta .dbx-go{flex:1}}
+
+/* ---- leaderboards page: Double tab ---- */
+.lbt img.dbl{height:18px;width:auto}
+#leaderboards.lb-dbl #lbxRaceTog,#leaderboards.lb-dbl #lbHold,#leaderboards.lb-dbl #lbxNotice,#leaderboards.lb-dbl #lbxInfo,#leaderboards.lb-dbl #lbxPodium,#leaderboards.lb-dbl #lb-full-list{display:none!important}
+.dlb{max-width:980px;margin:22px auto 10px;color:#fff;font-family:'Poppins',system-ui,sans-serif}
+.dlb[hidden]{display:none}
+.dlb-top{position:relative;text-align:center;padding:clamp(26px,4vw,42px) clamp(18px,4vw,40px);border-radius:26px;overflow:hidden;background:radial-gradient(ellipse 70% 70% at 50% -20%,rgba(var(--dbl-blue),.4),transparent 65%),radial-gradient(ellipse 60% 60% at 50% 130%,rgba(255,166,43,.22),transparent 60%),var(--dbl-bg);box-shadow:inset 0 0 0 1px var(--dbl-line)}
+.dlb-soon{display:inline-flex;align-items:center;gap:9px;padding:7px 14px;border-radius:99px;background:rgba(255,166,43,.1);box-shadow:inset 0 0 0 1px rgba(255,166,43,.4);color:#ffd08a;font:700 .78rem 'Poppins',sans-serif}
+.dlb-pulse{width:8px;height:8px;border-radius:50%;background:#ffa62b;animation:dblPingO 1.8s infinite}
+@keyframes dblPingO{0%{box-shadow:0 0 0 0 rgba(255,166,43,.6)}70%{box-shadow:0 0 0 9px rgba(255,166,43,0)}100%{box-shadow:0 0 0 0 rgba(255,166,43,0)}}
+.dlb-h{margin:16px 0 10px;font:400 clamp(2.4rem,7vw,4.4rem)/1 'Anton',Impact,sans-serif;text-transform:uppercase}
+.dlb-p{max-width:56ch;margin:0 auto 14px;color:#cfd3e6;line-height:1.6}
+.dlb-p b{color:#fff}
+.dlb-start{display:inline-block;margin:0 0 22px;padding:8px 14px;border-radius:10px;background:rgba(255,255,255,.05);color:#e2e5f3;font-size:.86rem;font-weight:600}
+.dlb-start b{color:#ffd08a;font-variant-numeric:tabular-nums}
+.dlb-cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.dlb-pod{display:grid;grid-template-columns:1fr 1.12fr 1fr;align-items:end;gap:12px;margin:18px 0 12px}
+.dlb-pc{position:relative;text-align:center;padding:22px 12px 20px;border-radius:20px;background:var(--dbl-card);box-shadow:inset 0 0 0 1px var(--dbl-line);overflow:hidden}
+.dlb-pc::before{content:'';position:absolute;inset:0 0 auto;height:3px;background:var(--pc)}
+.dlb-pc.p1{padding:30px 12px 26px;background:radial-gradient(ellipse 80% 70% at 50% 0%,rgba(255,200,60,.18),transparent 70%),var(--dbl-card)}
+.dlb-pc .md{width:38px;height:38px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;font:800 .95rem 'Poppins',sans-serif;color:#1a1200;background:var(--md)}
+.dlb-pc .pl{color:var(--dbl-mute);font-size:.82rem;font-weight:600}
+.dlb-pc .amt{display:block;margin-top:4px;font:400 clamp(1.6rem,4vw,2.4rem)/1.1 'Anton',Impact,sans-serif;color:var(--dbl-green);letter-spacing:.02em}
+.dlb-pc .nm{display:block;margin-top:8px;color:#6f7390;font-size:.75rem}
+.dlb-list{grid-template-columns:repeat(2,1fr)}
+@media(max-width:640px){.dlb{margin-top:14px}.dlb-pod{grid-template-columns:1fr 1fr;gap:8px}.dlb-pc.p1{grid-column:1/-1;order:-1}.dlb-list{grid-template-columns:1fr}.dlb-cta .dbx-go{flex:1}}
+
+#leaderboards.lb-dbl #lbxLivePill{display:none}
+.dbx-lb-list{grid-template-rows:repeat(5,auto);grid-auto-flow:column}
+@media(max-width:640px){
+  .dbx-lb-list{grid-template-rows:none;grid-auto-flow:row}
+  .lbx-tabs{max-width:100%}
+  .lbx-tabs .lbt{min-width:0!important;padding:0 6px!important}
+  .lbx-tabs .lbt img.dbl{height:14px!important}
+  .lbx-tabs .lbt img.pw{height:24px!important}
+  .lbx-tabs .lbt .lbt-jg{white-space:normal;line-height:1.05;text-align:center;font-size:.76rem}
+  .lbx-tabs .lbt .lbt-jg img{display:none}
+}
+/* toast */
+.dbl-toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translate(-50%,20px);z-index:9999;max-width:min(92vw,440px);padding:13px 18px;border-radius:14px;background:#1d2030;box-shadow:0 0 0 1px rgba(var(--dbl-blue),.45),0 18px 40px rgba(0,0,0,.5);color:#fff;font:600 .88rem/1.45 'Poppins',sans-serif;text-align:center;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none}
+.dbl-toast.on{opacity:1;transform:translate(-50%,0)}
+@media(prefers-reduced-motion:reduce){.dbx-art img,.dbx-o,.dbl-banner-v,.dbl-banner-code{transition:none;transform:none}.dbx-badge i,.dlb-pulse{animation:none}}
+</style>
 </head>
 <body>
 <svg id="frDefs" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false"><defs>
@@ -7006,7 +7136,7 @@ img.dbl{flex:none;width:auto}
         </div>
 
         <div class="hx-cta center hx-in" style="--d:1s">
-          <button type="button" class="hx-btn hx-btn-p hx-mag" onclick="nav('new')"><span>Power.win offers</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button type="button" class="hx-btn hx-btn-p hx-mag" onclick="ptGo('double')"><span>Double offers</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <button type="button" class="hx-btn hx-btn-g hx-mag" onclick="nav('games')"><span>Play games</span></button>
           <button type="button" class="hx-btn hx-btn-c hx-mag" onclick="nav('leaderboards')"><span class="hx-live-dot"></span><span>Leaderboards</span></button>
         </div>
@@ -7017,9 +7147,9 @@ img.dbl{flex:none;width:auto}
           </button>
           <div class="hx-trust">
             <span>Official partners</span>
-            <img src="powerwin.webp" alt="Power.win" class="hx-trust-pw">
+            <a class="hx-trust-live hx-trust-dbl" onclick="ptGo('double')" title="Double: our main partner"><img class="dbl" src="double.svg" alt="Double"></a>
+            <a class="hx-trust-live" onclick="ptGo('powerwin')" title="Power.win"><img src="powerwin.webp" alt="Power.win" class="hx-trust-pw"></a>
             <a class="hx-trust-live" onclick="ptGo('treasuregg')" title="TreasureGG: live now"><img src="tgg-logo.webp" alt="TreasureGG" class="hx-trust-tgg"></a>
-            <a class="hx-trust-soon" onclick="ptGo('double')" title="Double: coming soon"><img class="dbl" src="double.svg" alt="Double"><em class="soon-tag">Soon</em></a>
           </div>
         </div>
       </div>
@@ -7073,15 +7203,15 @@ img.dbl{flex:none;width:auto}
       </div>
 
       <div class="hx-bento">
-        <article class="hx-b hx-b-bonus hx-rv hx-tilt hx-spotlight" style="--c:168,85,247" onclick="nav('new')">
+        <article class="hx-b hx-b-bonus hx-rv hx-tilt hx-spotlight" style="--c:59,130,246" onclick="ptGo('double')">
           <div class="hx-b-txt">
-            <span class="hx-b-tag">Power.win</span>
+            <span class="hx-b-tag">Double</span>
             <h3>Exclusive bonus codes</h3>
-            <p>Hand-picked deposit matches, rakeback and cashback from our verified partners. Sign up under <b>JAMMMY</b> to unlock everything.</p>
-            <span class="hx-b-link">View Power.win offers <em>→</em></span>
+            <p>Instant rakeback, weekly bonuses and a $10,000 weekly race on Double, plus offers from all our partners. Sign up under <b>JAMMMY</b> to unlock everything.</p>
+            <span class="hx-b-link">View Double offers <em>→</em></span>
           </div>
           <div class="hx-b-art hx-bonus-art solo" aria-hidden="true">
-            <div class="hx-chip-card c1"><img src="powerwin.webp" alt=""><b>100%</b><small>Cash match</small></div>
+            <div class="hx-chip-card c1 dbl-chip"><img class="dbl" src="double.svg" alt=""><b>Instant</b><small>Rakeback</small></div>
           </div>
         </article>
 
@@ -7169,10 +7299,32 @@ img.dbl{flex:none;width:auto}
         <span class="hx-kicker">Verified partners</span>
         <h2 class="hx-h2">Hand-picked <span class="hx-grad">casino partners</span></h2>
       </div>
-      <p class="hx-p-sub hx-rv"><b>Power.win</b> and <b>TreasureGG</b> are live now. <b>Double</b> is joining soon.</p>
+      <p class="hx-p-sub hx-rv"><b>Double</b>, <b>Power.win</b> and <b>TreasureGG</b> are all live. Sign up with code <b>JAMMMY</b> on any of them.</p>
+      <div class="dbl-banner hx-rv">
+        <a class="dbl-banner-v dbl-link" href="#" aria-label="Sign up on Double with code JAMMMY: instant rakeback, weekly bonuses and a $500 leaderboard every 2 weeks"><video muted loop playsinline preload="none" poster="double-banner.jpg" data-src="double-banner.mp4"></video></a>
+        <button type="button" class="dbl-banner-code" onclick="dblCopy(this)" aria-label="Copy code JAMMMY"><span>Use code:</span><b>JAMMMY</b><em>Tap to copy</em></button>
+      </div>
       <a class="pw-banner hx-rv" href="https://power.win/?aff=jammmy" target="_blank" rel="noopener" aria-label="Sign up on Power.win with code JAMMMY: 100% first deposit cash match and a $750 leaderboard every 2 weeks"><video muted loop playsinline preload="none" poster="powerwin-banner.jpg" data-src="powerwin-banner.mp4"></video></a>
       <a class="pw-banner tgg-banner hx-rv tgg-link" href="https://treasure.gg/r/jammmy" target="_blank" rel="noopener" aria-label="Sign up on TreasureGG with code JAMMMY: 10% lossback, VIP transfer and a $500 leaderboard every 2 weeks"><video muted loop playsinline preload="none" poster="treasuregg-banner.jpg" data-src="treasuregg-banner.mp4"></video></a>
       <div class="hx-partners trio">
+        <article class="hx-p hx-p-dbl hx-rv hx-tilt" style="--c:59,130,246">
+          <div class="hx-p-beam" aria-hidden="true"></div>
+          <div class="hx-p-logo"><img class="dbl" src="double.svg" alt="Double"></div>
+          <div class="hx-p-body">
+            <div class="hx-p-name">Double <span class="hx-p-badge live">Live now</span></div>
+            <ul class="hx-p-feats">
+              <li><i>⚡</i>Instant Rakeback</li>
+              <li><i>🏆</i>$500 Leaderboard Bi-Weekly</li>
+              <li><i>🏁</i>$10,000 Weekly Race</li>
+              <li><i>🎁</i>Weekly Bonuses</li>
+              <li><i>👑</i>VIP Transfer</li>
+            </ul>
+            <div class="hx-p-btns">
+              <button type="button" class="hx-btn hx-btn-p sm" onclick="ptGo('double')"><span>View all offers</span></button>
+              <button type="button" class="hx-btn hx-btn-g sm" onclick="goToLeaderboard('double')"><span>Leaderboard</span></button>
+            </div>
+          </div>
+        </article>
         <article class="hx-p hx-rv hx-tilt" style="--c:192,132,252">
           <div class="hx-p-beam" aria-hidden="true"></div>
           <div class="hx-p-logo"><img src="powerwin.webp" alt="Power.win"></div>
@@ -7185,7 +7337,7 @@ img.dbl{flex:none;width:auto}
               <li><i>🏁</i>Weekly Live Races</li>
             </ul>
             <div class="hx-p-btns">
-              <button type="button" class="hx-btn hx-btn-p sm" onclick="nav('new')"><span>View all offers</span></button>
+              <button type="button" class="hx-btn hx-btn-p sm" onclick="ptGo('powerwin')"><span>View all offers</span></button>
               <button type="button" class="hx-btn hx-btn-g sm" onclick="goToLeaderboard('powerwin')"><span>Leaderboard</span></button>
             </div>
           </div>
@@ -7205,17 +7357,6 @@ img.dbl{flex:none;width:auto}
             <div class="hx-p-btns">
               <button type="button" class="hx-btn hx-btn-p sm" onclick="ptGo('treasuregg')"><span>View all offers</span></button>
               <button type="button" class="hx-btn hx-btn-g sm" onclick="goToLeaderboard('treasuregg')"><span>Leaderboard</span></button>
-            </div>
-          </div>
-        </article>
-        <article class="hx-p soon hx-rv hx-tilt" style="--c:226,232,240">
-          <div class="hx-p-beam" aria-hidden="true"></div>
-          <div class="hx-p-logo"><img class="dbl" src="double.svg" alt="Double"></div>
-          <div class="hx-p-body">
-            <div class="hx-p-name">Double <span class="hx-p-badge soon">Coming soon</span></div>
-            <p class="hx-p-soonline">Double (X2) is our next partner. Its offers go up here the day it launches.</p>
-            <div class="hx-p-btns">
-              <button type="button" class="hx-btn hx-btn-g sm" onclick="ptGo('double')"><span>See what's coming</span></button>
             </div>
           </div>
         </article>
@@ -7251,7 +7392,7 @@ img.dbl{flex:none;width:auto}
         <p>Log in, claim your casino username and start stacking rewards today.</p>
         <div class="hx-cta center">
           <button type="button" class="hx-btn hx-btn-p hx-mag" onclick="nav('loyalty')"><span>Get started</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <button type="button" class="hx-btn hx-btn-g hx-mag" onclick="nav('new')"><span>Power.win offers</span></button>
+          <button type="button" class="hx-btn hx-btn-g hx-mag" onclick="ptGo('double')"><span>Double offers</span></button>
         </div>
       </section>
     </div>
@@ -7448,6 +7589,7 @@ img.dbl{flex:none;width:auto}
         <p class="lbx-sub" id="lbxSub">Wager under code <b>JAMMMY</b>, climb the ranks and win a share of the prize pool. Updated live.</p>
         <div class="lbx-tabs" id="lbxTabs">
           <span class="lbx-tab-ind" id="lbxTabInd"></span>
+          <button class="lbt lbt-dbl" onclick="lbTab(this,'double')"><img src="double.svg" alt="Double" class="dbl"></button>
           <button class="lbt active" onclick="lbTab(this,'powerwin')"><img src="powerwin.webp" alt="Power.win" class="pw"></button>
           <button class="lbt" onclick="lbTab(this,'treasuregg')"><img src="tgg-logo.webp" alt="TreasureGG" class="tgg"></button>
           <button class="lbt" onclick="lbTab(this,'jammmygames')"><span class="lbt-jg"><img src="jar-clean.webp" alt="">Jammmy Games</span></button>
@@ -7478,12 +7620,33 @@ img.dbl{flex:none;width:auto}
             <p>The top 10 split <b>$500</b>. Winners claim their prize by opening a ticket in our Discord.</p>
             <p class="lbx-how-s">TreasureGG's own Daily Case Race and Weekly Race (reset at 17:55 UTC) are separate. See them on the TreasureGG partner page.</p>
           </div>
+          <div class="lbx-how-b" data-for="double" hidden>
+            <p>Double ranks this leaderboard by how much you <b>wager on Double</b> under code <b>JAMMMY</b>. We'll post the exact counting rules here before the first race starts.</p>
+            <p>The top 10 split <b>$500</b> every two weeks. Winners claim their prize by opening a ticket in our Discord.</p>
+            <p class="lbx-how-s">Double's own $10,000 Weekly Race is separate and open to everyone on Double. You can win both.</p>
+          </div>
           <div class="lbx-how-b" data-for="jammmygames" hidden>
             <p>Every coin you wager in Jammmy Games counts, weighted by <b>the multiplier you play for</b>. Safe, low-multiplier play counts less, so nobody can farm the board.</p>
             <div class="lbx-how-t"><div><span>Mines and HiLo at <em>2× or more</em></span><b>100% counts</b></div><div><span>Mines and HiLo at <em>1.5× to 2×</em></span><b>50% counts</b></div><div><span>Mines and HiLo <em>under 1.5×</em></span><b>25% counts</b></div><div><span>Plinko <em>high / medium / low risk</em></span><b>100% / 50% / 25%</b></div><div><span>Blackjack <em>main bet / side bets</em></span><b>50% / 100%</b></div></div>
             <p class="lbx-how-s">Mines and HiLo: the multiplier you cash out at, or the one your last pick was going for. Example: 100 coins on Mines cashed out at 3.2× counts 100; at 1.2× it counts 25.</p>
           </div>
         </details>
+      </div>
+
+      <!-- Double: leaderboard opens soon (prizes shown) -->
+      <div class="dlb" id="dblLb" hidden>
+        <div class="dlb-top">
+          <div class="dlb-soon"><span class="dlb-pulse" aria-hidden="true"></span>Leaderboard opens soon</div>
+          <h2 class="dlb-h"><span class="g">$500</span> every two weeks</h2>
+          <p class="dlb-p">The top 10 Double players on code <b>JAMMMY</b> split $500 every two weeks. Live standings show up here as soon as Double connects our data. Sign up now so you're ready for race one.</p>
+          <div class="dlb-start" id="dlbStart">First race starts in the next few days</div>
+          <div class="dlb-cta">
+            <button type="button" class="dbx-code" onclick="dblCopy(this)"><small>Use code</small><b>JAMMMY</b><span>Copy</span></button>
+            <a class="dbx-go dbl-link" href="#">Sign up on Double</a>
+          </div>
+        </div>
+        <div class="dlb-pod" id="dlbPod"></div>
+        <ol class="dlb-list" id="dlbList"></ol>
       </div>
 
       <!-- race info -->
@@ -7827,19 +7990,61 @@ img.dbl{flex:none;width:auto}
         <p class="tgx-fine">18+ only. Play responsibly. TreasureGG's own terms apply to all play and offers on TreasureGG.</p>
       </section>
       <!-- COMING SOON partner: its own view (#partners/double) -->
-      <section class="ptx-soon pt-view" id="pt-sec-double" style="--a:226,232,240" aria-label="Double, coming soon">
-        <div class="ptx-soon-logo"><img class="dbl" src="double.svg" alt="Double"><img class="x2" src="double-x2.svg" alt="" aria-hidden="true"></div>
-        <div class="ptx-soon-body">
-          <span class="ptx-pill"><i></i>Coming soon</span>
-          <h2>Double <small>(X2)</small></h2>
-          <p>Double is our next partner. Its offers will be listed right here the day it goes live.</p>
-          <div class="ptx-locked">
-            <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><b>Sign-up offer</b><span>Revealed at launch</span></div>
-            <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><b>Player rewards</b><span>Revealed at launch</span></div>
-            <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><b>How to join</b><span>Revealed at launch</span></div>
+      <!-- MAIN partner: Double (#partners, opens first) -->
+      <section class="dbx pt-view" id="pt-sec-double" aria-label="Double, our main partner">
+        <header class="dbx-hero">
+          <div class="dbx-copy">
+            <span class="dbx-badge"><i aria-hidden="true"></i>Our main partner</span>
+            <img class="dbx-word" src="double.svg" width="88" height="28" alt="Double">
+            <h2 class="dbx-h"><span class="g">The new casino</span><br>&amp; sportsbook</h2>
+            <p class="dbx-lede">Instant rakeback on every bet, weekly bonuses and a $10,000 weekly race. Sign up with code <b>JAMMMY</b> and you're also in Jammy's own <b>$500 leaderboard</b> every two weeks.</p>
+            <div class="dbx-cta">
+              <button type="button" class="dbx-code" onclick="dblCopy(this)"><small>Use code</small><b>JAMMMY</b><span>Copy</span></button>
+              <a class="dbx-go dbl-link" href="#">Sign up on Double</a>
+            </div>
           </div>
-          <a class="ptx-btn" href="https://discord.gg/jammmy" target="_blank" rel="noopener">Get the launch news on Discord</a>
+          <div class="dbx-art"><img src="dbl-poster-newcasino.webp" width="676" height="840" alt="Double, the new casino and sportsbook: use code JAMMMY"></div>
+        </header>
+
+        <div class="dbx-sh"><h3>What you get on Double</h3><p>Promotions Double runs for every player.</p></div>
+        <div class="dbx-offers">
+          <article class="dbx-o"><img src="dbl-pr-vip.webp" width="146" height="145" alt="" loading="lazy"><div><h4>Transfer your VIP status</h4><p>Already a VIP somewhere else? Bring your level with you to Double.</p></div></article>
+          <article class="dbx-o"><img src="dbl-pr-protect.webp" width="146" height="145" alt="" loading="lazy"><div><h4>First bet protection</h4><p>Your first bet is 100% protected, so a loss on it comes back to you.</p></div></article>
+          <article class="dbx-o"><img src="dbl-pr-race.webp" width="146" height="145" alt="" loading="lazy"><div><h4>$10,000 weekly race</h4><p>Double's own race for every player. Compete for your share each week.</p></div></article>
         </div>
+        <div class="dbx-perks">
+          <div class="dbx-pk"><img src="dbl-ic-boosts.webp" width="79" height="79" alt="" loading="lazy"><div><b>Boosts</b><span>Weekly and monthly bonuses based on how you play.</span></div></div>
+          <div class="dbx-pk"><img src="dbl-ic-levelup.webp" width="79" height="79" alt="" loading="lazy"><div><b>Level-up bonuses</b><span>A cash bonus with every new level, bigger as you climb.</span></div></div>
+          <div class="dbx-pk"><img src="dbl-ic-lossback.webp" width="79" height="79" alt="" loading="lazy"><div><b>Lossback</b><span>A share of your losses back each time you reach a new VIP level.</span></div></div>
+          <div class="dbx-pk"><img src="dbl-ic-rain.webp" width="79" height="79" alt="" loading="lazy"><div><b>Hourly rain &amp; events</b><span>Crypto dropped in chat every hour, plus community events.</span></div></div>
+          <div class="dbx-pk"><img src="dbl-ic-vip-host.webp" width="79" height="79" alt="" loading="lazy"><div><b>Dedicated VIP host</b><span>Your own host for support and exclusive offers.</span></div></div>
+          <div class="dbx-pk"><img src="dbl-ic-bespoke.webp" width="79" height="79" alt="" loading="lazy"><div><b>Bespoke benefits</b><span>Personal bonuses and custom offers from your VIP host.</span></div></div>
+        </div>
+
+        <div class="dbx-lb">
+          <div class="dbx-lb-copy">
+            <span class="dlb-soon"><span class="dlb-pulse" aria-hidden="true"></span>Opens soon</span>
+            <h3 class="dbx-lb-h"><span class="g">$500</span> leaderboard<br>every two weeks</h3>
+            <p>Only for Jammy's players: the top 10 Double wagerers on code <b>JAMMMY</b> split $500 each race. Live standings go up as soon as Double connects our data.</p>
+            <button type="button" class="dbx-go" onclick="goToLeaderboard('double')">See the prizes</button>
+          </div>
+          <ol class="dbx-lb-list" id="dbxPrizes"></ol>
+        </div>
+
+        <div class="dbx-sh"><h3>How to join</h3></div>
+        <ol class="dbx-steps">
+          <li><b>Sign up on Double</b><span>Create your account on <a class="dbl-link" href="#">Double</a>.</span></li>
+          <li><b>Use code JAMMMY</b><span>Enter it when you sign up so your play counts for Jammy's leaderboard.</span></li>
+          <li><b>Link your account here</b><span>Account linking for the vault and ranks opens the day the Double leaderboard goes live.</span></li>
+        </ol>
+
+        <div class="dbx-posters" aria-label="Double promotions">
+          <img src="dbl-poster-rakeback.webp" width="676" height="840" alt="Instant rakeback on Double: use code JAMMMY" loading="lazy">
+          <img src="dbl-poster-race.webp" width="676" height="840" alt="$10,000 weekly race on Double: use code JAMMMY" loading="lazy">
+          <img src="dbl-poster-bonuses.webp" width="676" height="840" alt="Weekly bonuses on Double: use code JAMMMY" loading="lazy">
+          <img src="dbl-poster-bonuses2.webp" width="676" height="840" alt="Weekly bonuses on Double: use code JAMMMY" loading="lazy">
+        </div>
+        <p class="dbx-fine">18+ only. Play responsibly. Double's own terms apply to all play and offers on Double.</p>
       </section>
       <div id="ptOther" class="pt-view"></div>
     </div>
@@ -7916,8 +8121,8 @@ img.dbl{flex:none;width:auto}
 
           <section class="gd-sec" id="gdLink">
             <h2>Link your accounts</h2>
-            <div class="gd-tabs" role="tablist"><button class="on" data-l="pw">Power.win</button><button data-l="p2">TreasureGG &amp; Double</button><button data-l="kick">Kick</button><button data-l="dc">Discord</button></div>
-            <div class="gd-link" data-l="pw">
+            <div class="gd-tabs" role="tablist"><button class="on" data-l="dbl">Double</button><button data-l="pw">Power.win</button><button data-l="p2">TreasureGG</button><button data-l="kick">Kick</button><button data-l="dc">Discord</button></div>
+            <div class="gd-link" data-l="pw" hidden>
               <div class="gd-wv"><div>
               <ol class="gd-steps sm">
                 <li>Sign up on <a href="https://power.win/?aff=jammmy" target="_blank" rel="noopener">Power.win</a> with code <b>JAMMMY</b> and place a bet, so your name shows up on our leaderboard.</li>
@@ -7927,9 +8132,15 @@ img.dbl{flex:none;width:auto}
               <p class="gd-note">Changed your Power.win username? Tell an admin your new one so your wagering keeps counting.</p>
               </div><figure class="gd-vid"><div class="gd-phone"><video muted loop playsinline preload="none" poster="guide-link-powerwin.jpg" data-src="guide-link-powerwin.mp4" aria-label="Linking your Power.win account"></video><button type="button" class="gd-vplay" aria-label="Play video"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></button></div><figcaption>Linking your Power.win account</figcaption></figure></div>
             </div>
+            <div class="gd-link" data-l="dbl">
+              <ol class="gd-steps sm">
+                <li>Sign up on <a class="dbl-link" href="#">Double</a> with code <b>JAMMMY</b>.</li>
+                <li>Play as usual. Your wagering counts for Jammy's $500 Double leaderboard, and later for the vault and ranks.</li>
+                <li>Linking your Double username in <b>Profile</b> opens the day the Double leaderboard goes live. We'll announce it in Discord.</li>
+              </ol>
+            </div>
             <div class="gd-link" data-l="p2" hidden>
               <p class="gd-p"><b>TreasureGG:</b> sign up on <a class="tgg-link" href="https://treasure.gg/r/jammmy" target="_blank" rel="noopener">treasure.gg</a> with code <b>JAMMMY</b>. Your wagering shows up on our $500 TreasureGG leaderboard. Account linking for the vault and ranks opens once TreasureGG's data is connected.</p>
-              <p class="gd-p"><b>Double</b> is on its way. Steps land here the day it goes live.</p>
             </div>
             <div class="gd-link" data-l="kick" hidden>
               <div class="gd-wv"><div>
@@ -8073,6 +8284,7 @@ img.dbl{flex:none;width:auto}
           <button class="vpp-tab active" data-casino="">All</button>
           <button class="vpp-tab" data-casino="verified">✓ Verified</button>
           <button class="vpp-tab" data-casino="unclaimed">Not claimed yet</button>
+          <button class="vpp-tab" data-casino="double">Double</button>
           <button class="vpp-tab" data-casino="powerwin">Power.win</button>
           <button class="vpp-tab" data-casino="treasuregg">TreasureGG</button>
         </div>
@@ -8180,6 +8392,7 @@ img.dbl{flex:none;width:auto}
             <button id="pfRedeemLocked" class="pf-btn-locked" style="display:none" disabled></button>
             <div id="pfRedeemForm" style="display:none">
               <div class="rdx-seg">
+                <button type="button" class="pf-redeem-method" data-method="double" onclick="setRedeemMethod('double')">Double</button>
                 <button type="button" class="pf-redeem-method active" data-method="powerwin" onclick="setRedeemMethod('powerwin')">Power.win</button>
                 <button type="button" class="pf-redeem-method" data-method="treasuregg" onclick="setRedeemMethod('treasuregg')">TreasureGG</button>
                 <button type="button" class="pf-redeem-method" data-method="crypto" onclick="setRedeemMethod('crypto')">Crypto</button>
@@ -9017,9 +9230,9 @@ img.dbl{flex:none;width:auto}
     <div class="foot-col">
       <h4>Partners</h4>
       <div class="foot-partners">
-        <a class="foot-partner-row" onclick="nav('new')"><img loading="lazy" class="foot-partner-logo" src="powerwin.webp" alt="Power.win" style="height:38px;margin-top:-6px"></a>
+        <a class="foot-partner-row" onclick="ptGo('double')"><img loading="lazy" class="dbl" src="double.svg" alt="Double"></a>
+        <a class="foot-partner-row" onclick="ptGo('powerwin')"><img loading="lazy" class="foot-partner-logo" src="powerwin.webp" alt="Power.win" style="height:38px;margin-top:-6px"></a>
         <a class="foot-partner-row" onclick="ptGo('treasuregg')"><img loading="lazy" class="tgg" src="tgg-logo.webp" alt="TreasureGG"></a>
-        <a class="foot-partner-row soon" onclick="ptGo('double')"><img loading="lazy" class="dbl" src="double.svg" alt="Double"><em class="soon-tag">Coming soon</em></a>
 
 
       </div>
@@ -9921,8 +10134,8 @@ function fmtCoins(n){
 }
 
 /* includes former partners (RustMafia, DegenCity...) so OLD records (past claims/redemptions) still show a proper name */
-var CASINO_DISPLAY_NAMES = {upgrader:'Upgrader', rustmagic:'RustMagic', rustmafia:'RustMafia', degencity:'DegenCity', powerwin:'Power.win', rbxwin:'RBXWIN', treasuregg:'TreasureGG'};
-var KNOWN_CASINOS_DISPLAY_LIST = ['powerwin', 'treasuregg'];
+var CASINO_DISPLAY_NAMES = {double:'Double', upgrader:'Upgrader', rustmagic:'RustMagic', rustmafia:'RustMafia', degencity:'DegenCity', powerwin:'Power.win', rbxwin:'RBXWIN', treasuregg:'TreasureGG'};
+var KNOWN_CASINOS_DISPLAY_LIST = ['double', 'powerwin', 'treasuregg'];
 var _vaultPlayersData = [];
 var _vaultPlayerCasinoFilter = '';
 
@@ -10024,6 +10237,7 @@ function renderUnclaimedCard(data){
   if(estEl) estEl.textContent = Math.round(potentialCoins).toLocaleString()+' Coins';
 
   var CASINO_LOGOS = {
+    double: '<img src="double.svg" alt="Double" style="max-height:18px;max-width:100%;width:auto;object-fit:contain">',
     powerwin: '<img src="powerwin.webp" alt="Power.win" style="max-height:22px;max-width:100%;width:auto;object-fit:contain">',
     treasuregg: '<img src="tgg-logo.webp" alt="TreasureGG" style="max-height:22px;max-width:100%;width:auto;object-fit:contain">',
   };
@@ -11358,7 +11572,7 @@ trackPageView(location.hash ? pageId(location.hash.slice(1)) : 'home'); /* showP
 /* ══════════════════════════════════════════════════════════════════════════
    PROFILE PAGE
    ══════════════════════════════════════════════════════════════════════════ */
-var KNOWN_CASINOS_DISPLAY = {powerwin:'Power.win', treasuregg:'TreasureGG'};
+var KNOWN_CASINOS_DISPLAY = {double:'Double', powerwin:'Power.win', treasuregg:'TreasureGG'};
 
 async function loadProfile(){
   var token = localStorage.getItem('jammy_session_token');
@@ -11455,9 +11669,16 @@ function renderProfile(data){
     approved: '<span class="admin-pill admin-pill-profit">✓ Approved</span>',
     pending: '<span class="admin-pill" style="background:rgba(251,191,36,.14);color:#fbbf24;border:1px solid rgba(251,191,36,.35)">⏳ Pending review</span>',
   };
-  var CASINO_GLOW = {degencity:'244,114,182', powerwin:'192,132,252', treasuregg:'245,180,40'};
+  var CASINO_GLOW = {degencity:'244,114,182', double:'59,130,246', powerwin:'192,132,252', treasuregg:'245,180,40'};
   var html = '';
   Object.keys(KNOWN_CASINOS_DISPLAY).forEach(function(key){
+    if(key === 'double' && !(window.DOUBLE && DOUBLE.live) && !linksByStatus[key]){
+      html += '<div class="pcc-card" style="--pcc-glow:59,130,246"><div class="pcc-card-top"></div><div style="padding:18px 20px">'
+        + '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px"><b style="font-size:1rem">Double</b><em class="soon-tag">Opens soon</em></div>'
+        + '<p class="pcc-hint" style="margin:0">Sign up on <a class="dbl-link" href="#">Double</a> with code <b>JAMMMY</b> now. You can link your Double username here the day the Double leaderboard goes live.</p>'
+        + '</div></div>';
+      return;
+    }
     var status = linksByStatus[key];
     var isLocked = status === 'pending' || status === 'approved';
     var glow = CASINO_GLOW[key] || '148,163,184';
@@ -11841,7 +12062,7 @@ function updateNetworkOptions(){
 
 var _pfRedeemMethod = 'powerwin';
 var _pfVerified = {};
-var PLATFORM_LABELS = {powerwin:'Power.win', treasuregg:'TreasureGG'};
+var PLATFORM_LABELS = {double:'Double', powerwin:'Power.win', treasuregg:'TreasureGG'};
 var _redeemMinCrypto = 10000, _redeemMinPlatform = 2000, _redeemBalance = 0;
 var _depositProof = null;
 /* Deposit proof: resized and re-encoded as JPEG in the browser (same as claim proofs), so the
@@ -12665,7 +12886,7 @@ async function loadAdminUsers(){
     _admTotalUsers = data.total_users;
     if(!data.users.length){ listEl.innerHTML = adminEmptyState('👥', 'No users found', 'Try a different search, or check back once people sign up.'); return; }
     listEl.innerHTML = data.users.map(function(u, i){
-      var VERIFIED_OK = { powerwin:1, treasuregg:1 };
+      var VERIFIED_OK = { double:1, powerwin:1, treasuregg:1 };
       var vLinks = (u.casino_links || []).filter(function(l){ return VERIFIED_OK[l.casino]; });
       var linksHtml = vLinks.length
         ? vLinks.map(function(l){ return '<span class="admin-tag vlink '+pccEsc(l.casino)+'"><i>✓</i>'+pccEsc(CASINO_DISPLAY_NAMES[l.casino]||l.casino)+': <b>'+pccEsc(l.username)+'</b></span>'; }).join(' ')
@@ -13191,7 +13412,7 @@ async function secUnblock(id){
   try{ await secSetBlocked(id, false); secRefreshViews(); }catch(e){ alert(e.message); }
 }
 
-var RD_LOGOS = { powerwin:'powerwin.webp', treasuregg:'tgg-logo.webp', degencity:'degencity.png' };
+var RD_LOGOS = { double:'double.svg', powerwin:'powerwin.webp', treasuregg:'tgg-logo.webp', degencity:'degencity.png' };
 var _rdProofCache = {};
 /* Staff-only "payout requested" flag (e.g. Power.win transfer already requested, waiting for approval). */
 async function adminSetRequested(btn, id, on){
@@ -17250,23 +17471,23 @@ window.fruitSvg = function(key){
   function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   var P = [];
   function hexA(h, a){ var n = parseInt(String(h).slice(1), 16); return 'rgba(' + (n >> 16 & 255) + ',' + (n >> 8 & 255) + ',' + (n & 255) + ',' + a + ')'; }
-  var CUR = 'powerwin';
+  var CUR = 'double';
   /* each partner has its own view; the chips switch between them and the address follows (#partners/double) */
   function paintSwitch(){
     var sw = document.getElementById('ptSwitch'); if(!sw) return;
     function on(k){ return CUR === k ? ' on' : ''; }
     sw.innerHTML = '<div class="pt-h">Our partners</div>'
+      + '<button type="button" class="pt-chip' + on('double') + '" data-k="double"><img class="dbl" src="double.svg" alt="Double"><em class="live-tag">Live</em></button>'
       + '<button type="button" class="pt-chip' + on('powerwin') + '" data-k="powerwin"><img src="powerwin.webp" alt="Power.win"><em class="live-tag">Live</em></button>'
-      + '<button type="button" class="pt-chip' + on('double') + '" data-k="double"><img class="dbl" src="double.svg" alt="Double"><em class="soon-tag">Soon</em></button>'
       + P.map(function(p){ return '<button type="button" class="pt-chip' + on(p.key) + '" data-k="' + esc(p.key) + '">' + (p.logo ? '<img src="' + esc(p.logo) + '" alt="' + esc(p.name) + '">' : esc(p.name)) + '</button>'; }).join('');
     sw.querySelectorAll('.pt-chip').forEach(function(b){ b.onclick = function(){ ptShow(b.dataset.k); }; });
   }
   /* show one partner's view (no history change) */
   window.ptView = function(k){
     var root = document.querySelector('#new .pwx'), box = document.getElementById('ptOther'); if(!root) return;
-    k = k || 'powerwin';
+    k = k || 'double';
     var p = P.filter(function(x){ return x.key === k; })[0];
-    if(k !== 'powerwin' && k !== 'double' && !p){ window._ptWant = k; k = 'powerwin'; } else window._ptWant = null;   /* admin partners may still be loading */
+    if(k !== 'powerwin' && k !== 'double' && !p){ window._ptWant = k; k = 'double'; } else window._ptWant = null;   /* admin partners may still be loading */
     CUR = k; paintSwitch();
     if(p){
       root.setAttribute('data-pt', 'other');
@@ -17281,7 +17502,7 @@ window.fruitSvg = function(key){
   };
   /* chips, and links from anywhere on the site: open that partner's own page */
   window.ptShow = window.ptGo = function(k){
-    if(typeof nav === 'function') nav(k && k !== 'powerwin' ? 'new/' + k : 'new');
+    if(typeof nav === 'function') nav(k && k !== 'double' ? 'new/' + k : 'new');
   };
   async function load(){ try{ var r = await fetch(AUTH_API + '/api/partners'); var d = await r.json(); P = d.partners || []; }catch(e){ P = []; } paintSwitch(); if(window._ptWant) ptView(window._ptWant); }
   paintSwitch();
@@ -17989,7 +18210,7 @@ window.fruitSvg = function(key){
   if(calm || !('IntersectionObserver' in window)) return;
   var io = new IntersectionObserver(function(es){ es.forEach(function(e){ var v = e.target;
     if(e.isIntersecting){ if(!v.src) v.src = v.dataset.src; var p = v.play(); if(p && p.catch) p.catch(function(){}); } else if(!v.paused) v.pause(); }); }, { threshold: .25 });
-  document.querySelectorAll('.pw-banner video').forEach(function(v){ io.observe(v); });
+  document.querySelectorAll('.pw-banner video, .dbl-banner-v video').forEach(function(v){ io.observe(v); });
 })();
 </script>
 <script>
@@ -18322,6 +18543,119 @@ function tggRaceEnd(kind, now){
     if(!raf) raf = requestAnimationFrame(function(){ raf = 0; st.style.setProperty('--mx', x.toFixed(3)); st.style.setProperty('--my', y.toFixed(3)); });
   });
   h.addEventListener('pointerleave', function(){ st.style.setProperty('--mx', 0); st.style.setProperty('--my', 0); });
+})();
+</script>
+<script>
+/* ===== Double: partner #1 =====
+   DOUBLE.url   : Double sign-up link. Empty for now: every "Sign up on Double" button copies code
+                  JAMMMY and says the link is coming. Paste the referral link here when Double sends it.
+   DOUBLE.start : first race start, e.g. Date.UTC(2026, 10, 30, 0, 0, 0) (months count from 0).
+                  null shows "in the next few days".
+   DOUBLE.live  : set to true once the worker has Double's API; the normal live leaderboard then shows. */
+var DOUBLE = { url: '', code: 'JAMMMY', start: null, len: 14 * 864e5, live: false,
+  prizes: {1:150, 2:90, 3:65, 4:45, 5:35, 6:30, 7:25, 8:22, 9:20, 10:18} };
+(function(){
+  if(typeof LB_CASINO_PRIZES !== 'undefined') LB_CASINO_PRIZES.double = DOUBLE.prizes;
+  var ORD = ['', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th'];
+  function usd(n){ return '$' + Number(n).toLocaleString('en-US'); }
+
+  var tt;
+  function toast(msg){
+    var t = document.getElementById('dblToast');
+    if(!t){ t = document.createElement('div'); t.id = 'dblToast'; t.className = 'dbl-toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(function(){ t.classList.remove('on'); }, 3600);
+  }
+  function copyCode(){ try{ navigator.clipboard.writeText(DOUBLE.code); return true; }catch(e){ return false; } }
+  window.dblCopy = function(btn){
+    copyCode(); if(!btn) return;
+    var lab = btn.querySelector('span:last-child, em'), old = lab ? lab.textContent : '';
+    btn.classList.add('ok'); if(lab) lab.textContent = 'Copied!';
+    setTimeout(function(){ btn.classList.remove('ok'); if(lab) lab.textContent = old; }, 1600);
+  };
+  /* every Double sign-up link on the site (also ones added later) */
+  function wireLinks(){
+    if(!DOUBLE.url) return;
+    document.querySelectorAll('a.dbl-link').forEach(function(a){ a.href = DOUBLE.url; a.target = '_blank'; a.rel = 'noopener'; });
+  }
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a.dbl-link'); if(!a) return;
+    if(DOUBLE.url){ copyCode(); return; }   /* normal link: also copy the code on the way out */
+    e.preventDefault(); copyCode();
+    toast('The Double sign-up link is coming soon. Code JAMMMY is copied, so use it when you sign up.');
+  });
+
+  /* prize lists */
+  function row(i){
+    var md = i <= 3 ? '<span class="md m' + i + '">' + i + '</span>' : '<span class="md mn">' + i + '</span>';
+    return '<li class="dbl-row"><span class="pl">' + md + ORD[i] + '</span><span class="amt">' + usd(DOUBLE.prizes[i]) + '</span></li>';
+  }
+  function paintPrizes(){
+    var a = document.getElementById('dbxPrizes'); if(a){ var h = ''; for(var i = 1; i <= 10; i++) h += row(i); a.innerHTML = h; }
+    var l = document.getElementById('dlbList'); if(l){ var h2 = ''; for(var j = 4; j <= 10; j++) h2 += row(j); l.innerHTML = h2; }
+    var p = document.getElementById('dlbPod');
+    if(p){
+      var C = { 1: ['#f5b70a', 'radial-gradient(circle at 35% 30%,#fff3b0,#f5b70a)'], 2: ['#9aa3b8', 'radial-gradient(circle at 35% 30%,#fff,#9aa3b8)'], 3: ['#e8743b', 'radial-gradient(circle at 35% 30%,#ffd1a8,#e8743b)'] };
+      p.innerHTML = [2, 1, 3].map(function(i){
+        return '<div class="dlb-pc p' + i + '" style="--pc:' + C[i][0] + ';--md:' + C[i][1] + '"><div class="md">' + i + '</div><span class="pl">' + ORD[i] + ' place</span><span class="amt">' + usd(DOUBLE.prizes[i]) + '</span><span class="nm">Could be you</span></div>';
+      }).join('');
+    }
+  }
+  /* "first race starts in ..." */
+  function paintStart(){
+    var el = document.getElementById('dlbStart'); if(!el) return;
+    if(!DOUBLE.start){ el.innerHTML = 'First race starts in the next few days'; return; }
+    var ms = DOUBLE.start - Date.now();
+    if(ms <= 0){ el.innerHTML = 'Race 1 is running. Standings go up as soon as Double connects our data.'; return; }
+    var d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4);
+    el.innerHTML = 'First race starts in <b>' + (d ? d + 'd ' : '') + h + 'h ' + m + 'm</b>';
+  }
+
+  /* Leaderboards page: Double tab (prizes + "opens soon" until the API is in) */
+  var LB = document.getElementById('leaderboards'), BOX = document.getElementById('dblLb');
+  var SUB = document.getElementById('lbxSub'), SUB0 = SUB ? SUB.innerHTML : '';
+  function howFor(c){
+    document.querySelectorAll('#lbxHow .lbx-how-b').forEach(function(b){ b.hidden = b.dataset.for !== c; });
+  }
+  var _tab = window.lbTab;
+  window.lbTab = lbTab = function(btn, casino){
+    var dbl = casino === 'double' && !DOUBLE.live;
+    if(dbl){
+      document.querySelectorAll('.lbt').forEach(function(b){ b.classList.remove('active'); });
+      if(btn) btn.classList.add('active');
+      if(typeof lbxMoveInd === 'function') lbxMoveInd();
+      CURRENT_LB_CASINO = 'double';
+      try{ lbRequestSeq++; }catch(e){}   /* a board still loading for another tab must not paint over this one */
+      var cn = document.getElementById('lbxCasinoName'); if(cn) cn.textContent = 'Double';
+      var lt = document.getElementById('lbxLiveTxt'); if(lt) lt.textContent = 'SOON';
+      if(SUB) SUB.innerHTML = 'Wager on Double under code <b>JAMMMY</b> and win a share of <b>$500</b> every two weeks.';
+      howFor('double');
+      var ht = document.getElementById('lbxHowT'); if(ht) ht.textContent = 'How the Double leaderboard works';
+      ['lbJoinPowerwin', 'lbJoinTreasure'].forEach(function(id){ var j = document.getElementById(id); if(j) j.style.display = 'none'; });
+      if(LB){ LB.classList.add('lb-dbl'); LB.classList.remove('lb-tgg'); }
+      if(BOX) BOX.hidden = false;
+      paintStart();
+      return;
+    }
+    if(LB) LB.classList.remove('lb-dbl');
+    if(BOX) BOX.hidden = true;
+    if(SUB && CURRENT_LB_CASINO === 'double') SUB.innerHTML = SUB0;
+    var ht2 = document.getElementById('lbxHowT'); if(ht2) ht2.textContent = 'How points work';
+    var lt2 = document.getElementById('lbxLiveTxt'); if(lt2 && lt2.textContent === 'SOON') lt2.textContent = 'LIVE';
+    howFor(casino === 'treasuregg' || casino === 'jammmygames' ? casino : 'powerwin');
+    var jp = document.getElementById('lbJoinPowerwin'); if(jp) jp.style.display = '';
+    return _tab(btn, casino);
+  };
+  var _load = window.loadLeaderboard;
+  window.loadLeaderboard = loadLeaderboard = function(casino){
+    if(casino === 'double' && !DOUBLE.live) return Promise.resolve();
+    return _load.apply(this, arguments);
+  };
+
+  paintPrizes(); paintStart(); wireLinks();
+  setInterval(paintStart, 30000);
+  /* Double is the first tab and opens by default */
+  var first = document.querySelector('#lbxTabs .lbt-dbl');
+  if(first) lbTab(first, 'double');
 })();
 </script>
 </body>
