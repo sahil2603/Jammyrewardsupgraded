@@ -7002,6 +7002,46 @@ img.dbl{flex:none;width:auto}
 @media(max-width:640px){#games .gx-cta{min-width:0}#games .gx-cta .gx-cta-in img{width:24px;height:24px}}
 @media(max-width:440px){#games .gx-cta{padding:0 16px!important;font-size:1.05rem!important}#games .gx-cta .gx-cta-in{gap:0}#games .gx-cta .gx-cta-in img{display:none}#games .gx-actions{flex-wrap:nowrap}#games .gx-wallet{min-width:0}}
 @media(prefers-reduced-motion:reduce){#games .gx-cta .gx-cta-in{transition:opacity .2s}#games .gx-cta .gx-cta-in.out,#games .gx-cta .gx-cta-in.in{transform:none}}
+
+/* official Double logo and x2 mark */
+.dbl-inline{display:inline-block;height:13px;width:auto;vertical-align:-1px}
+.lbx-kick-dbl{height:12px;vertical-align:-1px;opacity:.9}
+.hx-b-tag-dbl{display:inline-flex;align-items:center}
+.hx-b-tag-dbl img{height:11px;width:auto}
+.gd-tabs button .dbl-inline{height:14px}
+.vpp-tab .dbl-inline{height:12px}
+.pf-redeem-method .dbl-inline{height:13px}
+.dbx-go-ic{width:auto;height:15px;margin-right:9px}
+.dbl-wm{position:absolute;pointer-events:none;opacity:.05;width:auto}
+.dlb-top .dbl-wm{right:-30px;bottom:-60px;height:300px;transform:rotate(-8deg)}
+.dbl-wm.hero{left:34%;top:-40px;height:380px;opacity:.04;transform:rotate(-10deg)}
+.dlb-logo{display:block;height:26px;width:auto;margin:0 auto 14px;opacity:.95}
+.dlb-top>*{position:relative}
+.dlb-top>.dbl-wm{position:absolute}
+.dbl-toast{display:flex;align-items:center;gap:12px;text-align:left}
+.dbl-toast img{flex:none;height:22px;width:auto}
+@media(max-width:640px){.dbl-wm.hero{display:none}.dlb-top .dbl-wm{height:200px}}
+
+/* Double backgrounds (brand art) */
+.dbx-hero{background:linear-gradient(90deg,rgba(10,12,22,.88) 0%,rgba(10,12,22,.55) 50%,rgba(10,12,22,.2) 100%),url(dbl-bg-rings.webp) center/cover,#0f1220}
+.dbx-lb{background:linear-gradient(90deg,rgba(12,14,26,.94) 0%,rgba(12,14,26,.8) 42%,rgba(12,14,26,.45) 100%),url(dbl-bg-blocks.webp) center/cover,#12141e}
+.dbx-steps{padding:clamp(14px,2.4vw,24px);border-radius:24px;background:linear-gradient(180deg,rgba(10,12,22,.25),rgba(10,12,22,.7)),url(dbl-bg-chevron.webp) center/cover,#0f1220;box-shadow:inset 0 0 0 1px var(--dbl-line)}
+.dbx-steps li{background:rgba(20,22,34,.82);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.dlb-top{background:radial-gradient(ellipse 75% 85% at 50% 50%,rgba(12,14,26,.9) 35%,rgba(12,14,26,.55) 100%),url(dbl-bg-orbit.webp) center/cover,#12141e}
+.dbl-banner-code{background:linear-gradient(rgba(18,20,32,.5),rgba(18,20,32,.5)),url(dbl-bg-rings.webp) center/cover,#1d1e28}
+.hx-p-dbl .hx-p-logo{background:linear-gradient(rgba(10,12,22,.35),rgba(10,12,22,.35)),url(dbl-bg-rings.webp) center/cover}
+@media(max-width:640px){
+  .dbx-hero{background:linear-gradient(180deg,rgba(10,12,22,.35) 0%,rgba(10,12,22,.82) 45%,rgba(10,12,22,.92) 100%),url(dbl-bg-rings.webp) center/cover,#0f1220}
+  .dbx-lb{background:linear-gradient(180deg,rgba(12,14,26,.92),rgba(12,14,26,.8)),url(dbl-bg-blocks.webp) center/cover,#12141e}
+}
+
+/* Request a Battle: red burst behind the arena */
+.rbx-burst{position:absolute;inset:-4%;z-index:0;pointer-events:none;background:url(bg-red-burst.webp) center/cover no-repeat;opacity:.9;animation:rbxBurst 9s ease-in-out infinite;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 100%);mask-image:linear-gradient(180deg,#000 55%,transparent 100%)}
+@keyframes rbxBurst{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.06) rotate(.8deg)}}
+.rbx-hero-in{position:relative;z-index:1}
+.rbx-hero .rbx-art-glow{background:radial-gradient(closest-side,rgba(239,68,68,.45),rgba(59,130,246,.35) 55%,transparent)}
+@media(max-width:640px){.rbx-burst{inset:0;background-size:100% 100%;-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent 100%);mask-image:linear-gradient(180deg,#000 70%,transparent 100%)}}
+@media(prefers-reduced-motion:reduce){.rbx-burst{animation:none}}
 /* toast */
 .dbl-toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translate(-50%,20px);z-index:9999;max-width:min(92vw,440px);padding:13px 18px;border-radius:14px;background:#1d2030;box-shadow:0 0 0 1px rgba(var(--dbl-blue),.45),0 18px 40px rgba(0,0,0,.5);color:#fff;font:600 .88rem/1.45 'Poppins',sans-serif;text-align:center;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none}
 .dbl-toast.on{opacity:1;transform:translate(-50%,0)}
@@ -7300,7 +7340,7 @@ img.dbl{flex:none;width:auto}
       <div class="hx-bento">
         <article class="hx-b hx-b-bonus hx-rv hx-tilt hx-spotlight" style="--c:59,130,246" onclick="ptGo('double')">
           <div class="hx-b-txt">
-            <span class="hx-b-tag">Double</span>
+            <span class="hx-b-tag hx-b-tag-dbl"><img src="double.svg" alt="Double"></span>
             <h3>Exclusive bonus codes</h3>
             <p>Instant rakeback, weekly bonuses and a $10,000 weekly race on Double, plus offers from all our partners. Sign up under <b>JAMMMY</b> to unlock everything.</p>
             <span class="hx-b-link">View Double offers <em>→</em></span>
@@ -7721,13 +7761,15 @@ img.dbl{flex:none;width:auto}
       <!-- Double: leaderboard opens soon (prizes shown) -->
       <div class="dlb" id="dblLb" hidden>
         <div class="dlb-top">
+          <img class="dbl-wm" src="double-x2.svg" alt="" aria-hidden="true">
+          <img class="dlb-logo" src="double.svg" width="88" height="28" alt="Double">
           <div class="dlb-soon"><span class="dlb-pulse" aria-hidden="true"></span>Leaderboard opens soon</div>
           <h2 class="dlb-h"><span class="g">$500</span> bi-weekly leaderboard</h2>
           <p class="dlb-p">The top 10 Double players on code <b>JAMMMY</b> split $500 in every bi-weekly race. Live standings show up here as soon as Double connects our data. Sign up now so you're ready for race one.</p>
           <div class="dlb-start" id="dlbStart">First race starts in the next few days</div>
           <div class="dlb-cta">
             <button type="button" class="dbx-code" onclick="dblCopy(this)"><small>Use code</small><b>JAMMMY</b><span>Copy</span></button>
-            <a class="dbx-go dbl-link" href="#">Sign up on Double</a>
+            <a class="dbx-go dbl-link" href="#"><img class="dbx-go-ic" src="double-x2-dark.svg" alt="" aria-hidden="true">Sign up on Double</a>
           </div>
         </div>
         <div class="dlb-pod" id="dlbPod"></div>
@@ -8085,10 +8127,10 @@ img.dbl{flex:none;width:auto}
             <p class="dbx-lede">Instant rakeback on every bet, weekly bonuses and a $10,000 weekly race. Sign up with code <b>JAMMMY</b> and you're also in Jammy's own <b>$500 bi-weekly leaderboard</b>.</p>
             <div class="dbx-cta">
               <button type="button" class="dbx-code" onclick="dblCopy(this)"><small>Use code</small><b>JAMMMY</b><span>Copy</span></button>
-              <a class="dbx-go dbl-link" href="#">Sign up on Double</a>
+              <a class="dbx-go dbl-link" href="#"><img class="dbx-go-ic" src="double-x2-dark.svg" alt="" aria-hidden="true">Sign up on Double</a>
             </div>
           </div>
-          <div class="dbx-fx" aria-hidden="true"><i class="dbx-coin c1"></i><i class="dbx-coin c2"></i><i class="dbx-coin c3"></i><i class="dbx-orb o1"></i><i class="dbx-orb o2"></i></div>
+          <div class="dbx-fx" aria-hidden="true"><img class="dbl-wm hero" src="double-x2.svg" alt=""><i class="dbx-coin c1"></i><i class="dbx-coin c2"></i><i class="dbx-coin c3"></i><i class="dbx-orb o1"></i><i class="dbx-orb o2"></i></div>
           <div class="dbx-art"><img src="dbl-poster-newcasino.webp" width="676" height="840" alt="Double, the new casino and sportsbook: use code JAMMMY"></div>
         </header>
 
@@ -8207,7 +8249,7 @@ img.dbl{flex:none;width:auto}
 
           <section class="gd-sec" id="gdLink">
             <h2>Link your accounts</h2>
-            <div class="gd-tabs" role="tablist"><button class="on" data-l="dbl">Double</button><button data-l="pw">Power.win</button><button data-l="p2">TreasureGG</button><button data-l="kick">Kick</button><button data-l="dc">Discord</button></div>
+            <div class="gd-tabs" role="tablist"><button class="on" data-l="dbl" aria-label="Double"><img class="dbl-inline" src="double.svg" alt="Double"></button><button data-l="pw">Power.win</button><button data-l="p2">TreasureGG</button><button data-l="kick">Kick</button><button data-l="dc">Discord</button></div>
             <div class="gd-link" data-l="pw" hidden>
               <div class="gd-wv"><div>
               <ol class="gd-steps sm">
@@ -8370,7 +8412,7 @@ img.dbl{flex:none;width:auto}
           <button class="vpp-tab active" data-casino="">All</button>
           <button class="vpp-tab" data-casino="verified">✓ Verified</button>
           <button class="vpp-tab" data-casino="unclaimed">Not claimed yet</button>
-          <button class="vpp-tab" data-casino="double">Double</button>
+          <button class="vpp-tab" data-casino="double" aria-label="Double"><img class="dbl-inline" src="double.svg" alt="Double"></button>
           <button class="vpp-tab" data-casino="powerwin">Power.win</button>
           <button class="vpp-tab" data-casino="treasuregg">TreasureGG</button>
         </div>
@@ -8478,7 +8520,7 @@ img.dbl{flex:none;width:auto}
             <button id="pfRedeemLocked" class="pf-btn-locked" style="display:none" disabled></button>
             <div id="pfRedeemForm" style="display:none">
               <div class="rdx-seg">
-                <button type="button" class="pf-redeem-method" data-method="double" onclick="setRedeemMethod('double')">Double</button>
+                <button type="button" class="pf-redeem-method" data-method="double" onclick="setRedeemMethod('double')" aria-label="Double"><img class="dbl-inline" src="double.svg" alt="Double"></button>
                 <button type="button" class="pf-redeem-method active" data-method="powerwin" onclick="setRedeemMethod('powerwin')">Power.win</button>
                 <button type="button" class="pf-redeem-method" data-method="treasuregg" onclick="setRedeemMethod('treasuregg')">TreasureGG</button>
                 <button type="button" class="pf-redeem-method" data-method="crypto" onclick="setRedeemMethod('crypto')">Crypto</button>
@@ -8626,6 +8668,7 @@ img.dbl{flex:none;width:auto}
     <div class="rbx">
       <!-- Hero: electric-blue arena with live sparks off the crossed swords -->
       <div class="rbx-hero">
+        <div class="rbx-burst" aria-hidden="true"></div>
         <canvas id="rbSparks" class="rbx-sparks" aria-hidden="true"></canvas>
         <div class="rbx-hero-in">
           <div class="rbx-copy">
@@ -11760,7 +11803,7 @@ function renderProfile(data){
   Object.keys(KNOWN_CASINOS_DISPLAY).forEach(function(key){
     if(key === 'double' && !(window.DOUBLE && DOUBLE.live) && !linksByStatus[key]){
       html += '<div class="pcc-card" style="--pcc-glow:59,130,246"><div class="pcc-card-top"></div><div style="padding:18px 20px">'
-        + '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px"><b style="font-size:1rem">Double</b><em class="soon-tag">Opens soon</em></div>'
+        + '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px"><img class="dbl-inline" src="double.svg" alt="Double" style="height:16px"><em class="soon-tag">Opens soon</em></div>'
         + '<p class="pcc-hint" style="margin:0">Sign up on <a class="dbl-link" href="#">Double</a> with code <b>JAMMMY</b> now. You can link your Double username here the day the Double leaderboard goes live.</p>'
         + '</div></div>';
       return;
@@ -18667,7 +18710,7 @@ var DOUBLE = { url: '', code: 'JAMMMY', start: null, len: 14 * 864e5, live: fals
   function toast(msg){
     var t = document.getElementById('dblToast');
     if(!t){ t = document.createElement('div'); t.id = 'dblToast'; t.className = 'dbl-toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
-    t.textContent = msg; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(function(){ t.classList.remove('on'); }, 3600);
+    t.innerHTML = '<img src="double-x2.svg" alt="" aria-hidden="true">'; t.appendChild(document.createTextNode(msg)); t.classList.add('on'); clearTimeout(tt); tt = setTimeout(function(){ t.classList.remove('on'); }, 3600);
   }
   function copyCode(){ try{ navigator.clipboard.writeText(DOUBLE.code); return true; }catch(e){ return false; } }
   window.dblCopy = function(btn){
@@ -18729,7 +18772,7 @@ var DOUBLE = { url: '', code: 'JAMMMY', start: null, len: 14 * 864e5, live: fals
       if(typeof lbxMoveInd === 'function') lbxMoveInd();
       CURRENT_LB_CASINO = 'double';
       try{ lbRequestSeq++; }catch(e){}   /* a board still loading for another tab must not paint over this one */
-      var cn = document.getElementById('lbxCasinoName'); if(cn) cn.textContent = 'Double';
+      var cn = document.getElementById('lbxCasinoName'); if(cn) cn.innerHTML = '<img class="dbl-inline lbx-kick-dbl" src="double.svg" alt="Double">';
       var lt = document.getElementById('lbxLiveTxt'); if(lt) lt.textContent = 'SOON';
       if(SUB) SUB.innerHTML = 'Wager on Double under code <b>JAMMMY</b> and win a share of the <b>$500</b> bi-weekly leaderboard.';
       howFor('double');
